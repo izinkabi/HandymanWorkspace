@@ -58,6 +58,7 @@
     <Folder Include="Properties" />
     <Folder Include="Stored Procedures" />
     <Folder Include="Tables" />
+    <Folder Include="Publish\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Stored Procedures\spUserLookUp.sql" />
@@ -86,5 +87,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="HandymanDB.publish.xml" />
+    <None Include="Publish\HandymanDB.publish.xml" />
   </ItemGroup>
 </Project>

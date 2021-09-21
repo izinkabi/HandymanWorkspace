@@ -7,6 +7,6 @@
 AS
 Begin
 
-	INSERT INTO [Transaction] (Date,ServiceId,type,ConsumerId,RequestId)
-	VALUES (@Date,@ServiceId,@ServiceId,@type,@ConsumerId,@RequestId)
+	INSERT INTO [Transaction] (Date,ServiceId,Type,ConsumerId,RequestId)
+	VALUES (@Date,@ServiceId,@type,@ConsumerId,@RequestId)
 End
