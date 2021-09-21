@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "HandymanDB", "HandymanDB\HandymanDB.sqlproj", "{76BFD8A1-C899-48A8-8995-DA8707E1AAD1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HandymanAPI", "HandymanAPI\HandymanAPI.csproj", "{B2AA8EF6-0509-4C98-906A-428B50159EF7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +19,10 @@ Global
 		{76BFD8A1-C899-48A8-8995-DA8707E1AAD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76BFD8A1-C899-48A8-8995-DA8707E1AAD1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{76BFD8A1-C899-48A8-8995-DA8707E1AAD1}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{B2AA8EF6-0509-4C98-906A-428B50159EF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2AA8EF6-0509-4C98-906A-428B50159EF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2AA8EF6-0509-4C98-906A-428B50159EF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2AA8EF6-0509-4C98-906A-428B50159EF7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

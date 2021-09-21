@@ -86,7 +86,6 @@
     <Build Include="Stored Procedures\spProfileInsert.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="HandymanDB.publish.xml" />
     <None Include="Publish\HandymanDB.publish.xml" />
   </ItemGroup>
 </Project>
