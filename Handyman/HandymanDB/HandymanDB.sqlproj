@@ -56,5 +56,35 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="Stored Procedures" />
+    <Folder Include="Tables" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Stored Procedures\spUserLookUp.sql" />
+    <Build Include="Stored Procedures\spProfileLookUp.sql" />
+    <Build Include="Stored Procedures\spActivationInsert.sql" />
+    <Build Include="Stored Procedures\spActivationLookUp.sql" />
+    <Build Include="Stored Procedures\spConsumerLookUp.sql" />
+    <Build Include="Stored Procedures\spConsumerInsert.sql" />
+    <Build Include="Stored Procedures\spTransactionInsert.sql" />
+    <Build Include="Stored Procedures\spTransactionLookUp.sql" />
+    <Build Include="Stored Procedures\spServiceInsert.sql" />
+    <Build Include="Stored Procedures\spServiceLookUp.sql" />
+    <Build Include="Stored Procedures\spServiceProviderInsert.sql" />
+    <Build Include="Stored Procedures\spServiceProviderLookUp.sql" />
+    <Build Include="Tables\User.sql" />
+    <Build Include="Tables\Transaction.sql" />
+    <Build Include="Tables\ServiceProvider.sql" />
+    <Build Include="Tables\Service.sql" />
+    <Build Include="Tables\Request.sql" />
+    <Build Include="Tables\Profile.sql" />
+    <Build Include="Tables\Consumer.sql" />
+    <Build Include="Tables\Activation.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Stored Procedures\spProfileInsert.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="HandymanDB.publish.xml" />
   </ItemGroup>
 </Project>
