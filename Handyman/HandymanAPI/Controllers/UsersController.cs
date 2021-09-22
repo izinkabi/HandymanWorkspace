@@ -3,21 +3,17 @@ using HandymanDataLibrary.Internal;
 using System.Linq;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
-using System.Web.Mvc;
 
 namespace HandymanAPI.Controllers
 {
     public class UsersController : ApiController
     {
-        //[Authorize]
-
+        [Authorize]
         //Getting the Id on the ApiDatabase
         // GET: User/Details/3
-
-
-        public UserModel GetById(string userId)
+        public UserModel GetById()
         {
-           // string userId = RequestContext.Principal.Identity.GetUserId();
+            string userId = RequestContext.Principal.Identity.GetUserId();
             UserData data = new UserData();
             return data.GetUserById(userId).First();
         }
