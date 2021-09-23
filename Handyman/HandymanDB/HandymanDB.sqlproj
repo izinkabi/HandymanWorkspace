@@ -81,6 +81,7 @@
     <Build Include="Tables\Profile.sql" />
     <Build Include="Tables\Consumer.sql" />
     <Build Include="Tables\Activation.sql" />
+    <Build Include="Stored Procedures\spUserInsert.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Stored Procedures\spProfileInsert.sql" />

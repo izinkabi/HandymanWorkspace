@@ -5,7 +5,7 @@ AS
 begin
 
 	set nocount on;
-	SELECT Id 
+	SELECT Id ,type,userId
 	from dbo.Profile
 	where Id = @Id;
 End

@@ -2,22 +2,23 @@
 using HandymanDataLibrary.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace HandymanDataLibrary.Internal
 {
     public class UserData
     {
-        /*Getting a users by ID*/
-        public List<UserModel> GetUserById(string Id)
+        /*Getting a user by ID*/
+        public UserModel GetUserById(string Id)
         {
             SQLDataAccess sql = new SQLDataAccess();
 
             var p = new { Id = Id };
 
-            var output = sql.LoadData<UserModel, dynamic>("dbo.spUserLookUp", p, "DefaultConnection");
+            var output = sql.LoadData<UserModel, dynamic>("dbo.spUserLookUp", p, "HandymanDB");
 
-            return output;
+            return output.First();
 
         }
 
@@ -28,7 +29,7 @@ namespace HandymanDataLibrary.Internal
             var p = new { Email = email };
 
             SQLDataAccess sql = new SQLDataAccess();
-            var output = sql.LoadData<UserModel, dynamic>("dbo.spASPUserLookUp", p, "DefaultConnection");
+            var output = sql.LoadData<UserModel, dynamic>("dbo.spUserLookUp", p, "HandymanDB");
             return output;
         }
 
@@ -36,7 +37,7 @@ namespace HandymanDataLibrary.Internal
         public void PostUser(UserModel val)
         {
             SQLDataAccess sql = new SQLDataAccess();
-            sql.SaveData<UserModel>("dbo.spUserInsert", val, "DefaultConnection");
+            sql.SaveData<UserModel>("dbo.spUserInsert", val, "HandymanDB");
         }
 
         /*Modify and Delete are to be implemented*/
