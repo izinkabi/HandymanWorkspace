@@ -1,9 +1,19 @@
-﻿namespace HandymanUILibrary.API
+﻿using System.Net.Http;
+using System.Threading.Tasks;
+using HandymanUILibrary.Models;
+
+namespace HandymanUILibrary.API
 {
     /// <summary>
     ///Interface for API helper 
     /// </summary>
-    public class IAPIHelper
+    public interface IAPIHelper
     {
+        HttpClient ApiClient { get; }
+        Task<AuthenticatedUserModel> AuthenticateUser(string username, string password);
+        Task GetLoggedInUserInfor(string token);
+
+        void LogOutuser();
+
     }
 }

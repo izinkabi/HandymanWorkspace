@@ -96,5 +96,6 @@ namespace HandymanUILibrary.API
         {
             _apiClient.DefaultRequestHeaders.Clear();
         }
+
     }
 }

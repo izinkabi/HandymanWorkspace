@@ -2,7 +2,7 @@
 
 namespace HandymanUILibrary.Models
 {
-    interface IloggedInUserModel
+    public interface IloggedInUserModel
     {
         DateTime CreateDate { get; set; }
         string Email { get; set; }

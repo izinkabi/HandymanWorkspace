@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HandymanUILibrary.Models
 {
-    class loggedInUserModel : IloggedInUserModel
+    public class loggedInUserModel : IloggedInUserModel
     {
         public string Token { get; set; }
         public string UserId { get; set; }

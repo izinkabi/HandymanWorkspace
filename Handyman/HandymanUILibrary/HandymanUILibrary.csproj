@@ -50,7 +50,6 @@
   <ItemGroup>
     <Compile Include="API\APIHelper.cs" />
     <Compile Include="API\IAPIHelper.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="Models\AuthenticatedUserModel.cs" />
     <Compile Include="Models\IloggedInUserModel.cs" />
     <Compile Include="Models\loggedInUserModel.cs" />
