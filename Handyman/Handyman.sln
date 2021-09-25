@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HandymanAPI", "HandymanAPI\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HandymanDataLibrary", "HandymanDataLibray\HandymanDataLibrary.csproj", "{84D8A002-571A-4CEB-BC33-A566BD410195}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HappymanUI", "HappymanUI\HappymanUI.csproj", "{D2B4306E-1E59-45A2-9F1D-420EF97FB751}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HandymanUILibrary", "HandymanUILibrary\HandymanUILibrary.csproj", "{AECFF5A7-61EC-46F3-9826-0AE9B43E12FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +33,14 @@ Global
 		{84D8A002-571A-4CEB-BC33-A566BD410195}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84D8A002-571A-4CEB-BC33-A566BD410195}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84D8A002-571A-4CEB-BC33-A566BD410195}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2B4306E-1E59-45A2-9F1D-420EF97FB751}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2B4306E-1E59-45A2-9F1D-420EF97FB751}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2B4306E-1E59-45A2-9F1D-420EF97FB751}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2B4306E-1E59-45A2-9F1D-420EF97FB751}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AECFF5A7-61EC-46F3-9826-0AE9B43E12FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AECFF5A7-61EC-46F3-9826-0AE9B43E12FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AECFF5A7-61EC-46F3-9826-0AE9B43E12FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AECFF5A7-61EC-46F3-9826-0AE9B43E12FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
