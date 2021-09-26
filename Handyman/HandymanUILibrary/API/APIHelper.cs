@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace HandymanUILibrary.API
 {
-     public class APIHelper : IAPIHelper
+     public class APIHelper 
     {
-        private HttpClient _apiClient;
-        private IloggedInUserModel _loggedInUserModel;
+        public HttpClient _apiClient;
+        public IloggedInUserModel _loggedInUserModel;
         public APIHelper()
         {
             InitializeCLient();
@@ -53,7 +53,7 @@ namespace HandymanUILibrary.API
 
             });
 
-            using (HttpResponseMessage httpResponse = await _apiClient.PostAsync("/Token", data))
+            using (HttpResponseMessage httpResponse = await _apiClient.PostAsync("/token", data))
             {
                 if (httpResponse.IsSuccessStatusCode)
                 {

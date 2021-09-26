@@ -72,6 +72,7 @@
     <Compile Include="DataAccess\UserData.cs" />
     <Compile Include="Internal\DataAccess\SQLDataAccess.cs" />
     <Compile Include="Models\ActivationModel.cs" />
+    <Compile Include="Models\AuthenticatedUser.cs" />
     <Compile Include="Models\ProfileModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
