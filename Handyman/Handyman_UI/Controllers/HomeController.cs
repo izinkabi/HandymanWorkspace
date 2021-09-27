@@ -13,9 +13,14 @@ namespace Handyman_UI.Controllers
     public class HomeController : Controller
     {
 
-        public APIHelper _apiHepler;
+        private APIHelper _apiHepler;
+        public string UserEmail { get; set; }
+        private string Token { get; set; }
+        static private string Username, Password; 
+
         public ActionResult Index()
         {
+            ViewBag.Username = UserEmail;
             return View();
         }
 
@@ -34,20 +39,54 @@ namespace Handyman_UI.Controllers
         }
         public async Task<ActionResult> SignIn(UserLoginModel model)
         {
+
+            Username = model.Username;
+            Password = model.Password;
+
             if (ModelState.IsValid)
             {
-                APIHelper aPIHelper = new APIHelper();
-                var results = await aPIHelper.AuthenticateUser(model.Username, model.Password);
-
-                var loggeduser =  await aPIHelper.GetLoggedInUserInfor(results.Access_Token);
-
-                ViewBag.Username = loggeduser.Email;
-                ViewBag.UsernameID = loggeduser.UserId;
-                RedirectToAction("Index");
+                _apiHepler = new APIHelper();
+                var results = await _apiHepler.AuthenticateUser(Username, Password);
+                Token = results.Access_Token;
                 
+
+                //ViewBag.Username = loggeduser.Email;
+                //ViewBag.UsernameID = loggeduser.UserId;
+                //UserEmail = loggeduser.Email;
+
+                return RedirectToAction("CreateProfile");
             }
             return View();
         }      
        
+        public async Task<ActionResult> CreateProfile(ProfileModel profile)
+        {
+           
+           
+            if (ModelState.IsValid)
+            {
+                if (_apiHepler == null)
+                {
+                    _apiHepler = new APIHelper();
+
+                    var results = await _apiHepler.AuthenticateUser(Username, Password);
+                    var loggeduser = await _apiHepler.GetLoggedInUserInfor(results.Access_Token);
+
+                    UserEmail = loggeduser.Email;
+                    ViewBag.UserEmail = UserEmail;
+
+                    RedirectToAction("Index");
+                }
+                else
+                {
+                    ViewBag.UserEmail = UserEmail;
+                }
+
+              
+                
+            }
+
+            return View();
+        }
     }
 }
