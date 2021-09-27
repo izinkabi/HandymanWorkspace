@@ -38,9 +38,11 @@ namespace Handyman_UI.Controllers
             {
                 APIHelper aPIHelper = new APIHelper();
                 var results = await aPIHelper.AuthenticateUser(model.Username, model.Password);
-               // await aPIHelper.GetLoggedInUserInfor(results.Access_Token);
-                ViewBag.AccessToken = results.Access_Token;
-                ViewBag.Username = results.UserName;
+
+                var loggeduser =  await aPIHelper.GetLoggedInUserInfor(results.Access_Token);
+
+                ViewBag.Username = loggeduser.Email;
+                ViewBag.UsernameID = loggeduser.UserId;
                 RedirectToAction("Index");
                 
             }

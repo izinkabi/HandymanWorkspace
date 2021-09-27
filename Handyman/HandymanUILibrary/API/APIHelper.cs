@@ -13,7 +13,7 @@ namespace HandymanUILibrary.API
      public class APIHelper 
     {
         public HttpClient _apiClient;
-        public IloggedInUserModel _loggedInUserModel;
+        public loggedInUserModel _loggedInUserModel;
         public APIHelper()
         {
             InitializeCLient();
@@ -67,17 +67,20 @@ namespace HandymanUILibrary.API
             }   
 
         }
-        public async Task GetLoggedInUserInfor(string Token)
+        public async Task<loggedInUserModel> GetLoggedInUserInfor(string Token)
         {
             _apiClient.DefaultRequestHeaders.Clear();
             _apiClient.DefaultRequestHeaders.Accept.Clear();
-            _apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("applications/json"));
-            _apiClient.DefaultRequestHeaders.Add("Authorazition", $"bearer {Token}");
+            _apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _apiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {Token}");
 
-            using (HttpResponseMessage httpResponseMessage = await _apiClient.GetAsync("/api/User"))
+            using (HttpResponseMessage httpResponseMessage = await _apiClient.GetAsync("/api/Users"))
             {
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
+                    //I'm so not sure about not using bootstraper because of alot of object instantiation 
+                    _loggedInUserModel = new loggedInUserModel();
+
                     var result = await httpResponseMessage.Content.ReadAsAsync<loggedInUserModel>();
                     _loggedInUserModel.Token = Token;
                     _loggedInUserModel.UserId = result.UserId;
@@ -90,6 +93,7 @@ namespace HandymanUILibrary.API
                     throw new Exception(httpResponseMessage.ReasonPhrase);
                 }
             }
+            return _loggedInUserModel;
 
         }
         public void LogOutuser()
