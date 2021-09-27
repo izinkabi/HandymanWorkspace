@@ -14,29 +14,34 @@ namespace Handyman_UI.Controllers
     {
 
         private APIHelper _apiHepler;
-        public string UserEmail { get; set; }
+        static private string UserEmail { get; set; }
         private string Token { get; set; }
         static private string Username, Password; 
 
+        //Home page Action funtion
         public ActionResult Index()
         {
+
             ViewBag.Username = UserEmail;
             return View();
         }
 
         public ActionResult About()
         {
+            
             ViewBag.Message = "Your application description page.";
-
+            ViewBag.Username = UserEmail;
             return View();
         }
 
         public ActionResult Contact()
         {
+            ViewBag.Username = UserEmail;
             ViewBag.Message = "Your contact page.";
-
             return View();
         }
+        
+        //Login action function
         public async Task<ActionResult> SignIn(UserLoginModel model)
         {
 
@@ -48,17 +53,17 @@ namespace Handyman_UI.Controllers
                 _apiHepler = new APIHelper();
                 var results = await _apiHepler.AuthenticateUser(Username, Password);
                 Token = results.Access_Token;
-                
 
-                //ViewBag.Username = loggeduser.Email;
-                //ViewBag.UsernameID = loggeduser.UserId;
-                //UserEmail = loggeduser.Email;
-
+                UserEmail = results.UserName;
+               
                 return RedirectToAction("CreateProfile");
             }
+            ViewBag.Username = UserEmail;
             return View();
         }      
        
+
+        //Create a profile action method
         public async Task<ActionResult> CreateProfile(ProfileModel profile)
         {
            
@@ -71,19 +76,12 @@ namespace Handyman_UI.Controllers
 
                     var results = await _apiHepler.AuthenticateUser(Username, Password);
                     var loggeduser = await _apiHepler.GetLoggedInUserInfor(results.Access_Token);
-
-                    UserEmail = loggeduser.Email;
-                    ViewBag.UserEmail = UserEmail;
+                    //ViewBag.Username = UserEmail;
 
                     RedirectToAction("Index");
                 }
-                else
-                {
-                    ViewBag.UserEmail = UserEmail;
-                }
-
-              
                 
+
             }
 
             return View();

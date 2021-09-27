@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@{  ViewBag.Title = "Menu Bar";}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -16,19 +17,19 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("HandyMan", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Sign In", "SignIn", "Home")</li>
-                    
-                    
 
+                    <li>@Html.ActionLink("Sign In", "SignIn", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 </ul>
+                <ul><p style="color :white" class="navbar-brand"> @ViewBag.Username </p></ul>
             </div>
+          
         </div>
     </div>
     <div class="container body-content">
