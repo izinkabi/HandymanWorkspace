@@ -5,8 +5,8 @@ begin
 --stored procedure for getting user information
 	set nocount on;
 
-	SELECT [userId], username, [Password],email,create_time
+	SELECT [Id], username, [Password],email,create_time
 	from [dbo].[User]
-	where UserId = @Id;
+	where Id = @Id;
 end
 

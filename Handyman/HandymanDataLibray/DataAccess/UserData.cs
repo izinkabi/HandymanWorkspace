@@ -40,6 +40,24 @@ namespace HandymanDataLibrary.Internal
             sql.SaveData<UserModel>("dbo.spUserInsert", val, "HandymanDB");
         }
 
+
+        public void RegisterUser(string email)
+        {
+          
+            using (SQLDataAccess sql = new SQLDataAccess())
+            {
+                
+                    //var p = new { Email = email };
+                    UserModel output = new UserModel();
+                    output = sql.LoadData<UserModel, dynamic>("dbo.spASPUserLookUp", new { Email = email } , "DefaultConnection").First();
+
+                    //var user = new {UserName = output.Username, Id = output.Id, Email = output.Email };
+
+                    int rowsaffected =  sql.SaveData<UserModel>("dbo.spUserInsert", output, "HandymanDB");
+                
+            }
+        }
+
         /*Modify and Delete are to be implemented*/
     }
 

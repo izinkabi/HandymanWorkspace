@@ -8,6 +8,17 @@ namespace HandymanAPI.Controllers
 {
     public class UsersController : ApiController
     {
+        //POST: User/Details/
+        public void PostUser(string email)
+        {
+            UserData data = new UserData();
+        
+                data.RegisterUser(email);
+            
+
+        }
+
+
         [Authorize]
         //Getting the Id on the ApiDatabase
         // GET: User/Details/3
@@ -18,14 +29,7 @@ namespace HandymanAPI.Controllers
             return data.GetUserById(userId);
         }
 
-        //POST: User/Details/
-        public void PostUser(UserModel usermodel)
-        {
-            UserData data = new UserData();
-            if(data!=null)
-            data.PostUser(usermodel);
-        }
-
+       
         
     }
 }
