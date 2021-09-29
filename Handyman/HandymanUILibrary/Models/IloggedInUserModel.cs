@@ -7,7 +7,7 @@ namespace HandymanUILibrary.Models
         DateTime CreateDate { get; set; }
         string Email { get; set; }
         string Token { get; set; }
-        string UserId { get; set; }
+        string Id { get; set; }
         string Username { get; set; }
         void ResetUserModel();
     }

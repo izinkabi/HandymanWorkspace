@@ -8,7 +8,7 @@ namespace Handyman_UI.Models
 {
     public class ProfileModel
     {
-        public int Id { get; }
+        //public int Id { get; }
         public string UserId { get; set; }
 
         //public string Type { get; }
@@ -28,7 +28,7 @@ namespace Handyman_UI.Models
         [DataType(DataType.Date)]
         [Display(Name = "Date Of Birth")]
         [Required(ErrorMessage = "Please enter your your date of birth")]
-        public DateTime DateTimeOfBirth { get; set; }
+        public string DateTimeOfBirth { get; set; }
 
         [DataType(DataType.MultilineText)]
         [Display(Name = "Home Address")]
@@ -44,5 +44,6 @@ namespace Handyman_UI.Models
         
         public int ActivationId { get; }
 
+        public string Type { get; set; }
     }
 }

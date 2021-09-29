@@ -83,7 +83,7 @@ namespace HandymanUILibrary.API
 
                     var result = await httpResponseMessage.Content.ReadAsAsync<loggedInUserModel>();
                     _loggedInUserModel.Token = Token;
-                    _loggedInUserModel.UserId = result.UserId;
+                    _loggedInUserModel.Id = result.Id;
                     _loggedInUserModel.Username = result.Username;
                     _loggedInUserModel.Email = result.Email;
                     _loggedInUserModel.CreateDate = result.CreateDate;

@@ -11,37 +11,37 @@ namespace HandymanDataLibrary.Internal
 {
     public class ProfileData
     {
-     
-        ///*Getting profile by Id*/
-        //public ProfileModel GetProfileById(int Id)
-        //{
-        //    SQLDataAccess sql = new SQLDataAccess();
 
-        //    var p = new { Id = Id };
+        /*Getting profile by Id*/
+        public ProfileModel GetProfileById(int Id)
+        {
+            SQLDataAccess sql = new SQLDataAccess();
 
-        //    var output = sql.LoadData<ProfileModel, dynamic>("dbo.spProfileLookUp", p, "HandymanDB");
+            var p = new { Id = Id };
 
-        //    return output.First();
+            var output = sql.LoadData<ProfileModel, dynamic>("dbo.spProfileLookUp", p, "HandymanDB");
 
-        //}
+            return output.First();
 
-        ///*Getting Profiles by username*/
+        }
 
-        //public List<ProfileModel> GetProfileByUserId(string userId)
-        //{
-        //    var p = new { Email = userId };
+        /*Getting Profiles by username*/
 
-        //    SQLDataAccess sql = new SQLDataAccess();
-        //    var output = sql.LoadData<ProfileModel, dynamic>("dbo.spProfileLookUp", p, "HandymanDB");
-        //    return output;
-        //}
+        public List<ProfileModel> GetProfileByUserId(string userId)
+        {
+            var p = new { Email = userId };
 
-        ///*Posting a new Profile*/
-        //public void PostProfile(ProfileModel val)
-        //{
-        //    SQLDataAccess sql = new SQLDataAccess();
-        //    sql.SaveData<ProfileModel>("dbo.spProfileInsert", val, "HandymanDB");
-        //}
+            SQLDataAccess sql = new SQLDataAccess();
+            var output = sql.LoadData<ProfileModel, dynamic>("dbo.spProfileLookUp", p, "HandymanDB");
+            return output;
+        }
+
+        /*Posting a new Profile*/
+        public void PostProfile(ProfileModel val)
+        {
+            SQLDataAccess sql = new SQLDataAccess();
+            sql.SaveData<ProfileModel>("dbo.spProfileInsert", val, "HandymanDB");
+        }
 
     }
 }

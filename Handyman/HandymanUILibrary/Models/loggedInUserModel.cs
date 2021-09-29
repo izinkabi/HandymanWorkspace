@@ -9,7 +9,7 @@ namespace HandymanUILibrary.Models
     public class loggedInUserModel : IloggedInUserModel
     {
         public string Token { get; set; }
-        public string UserId { get; set; }
+        public string Id { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
         public DateTime CreateDate { get; set; }
@@ -18,7 +18,7 @@ namespace HandymanUILibrary.Models
         {
 
             Token = "";
-            UserId = "";
+            Id = "";
             Username = "";
             Email = "";
             CreateDate = DateTime.MinValue;

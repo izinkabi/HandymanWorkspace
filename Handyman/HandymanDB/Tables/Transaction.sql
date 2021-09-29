@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Transaction]
 (
-	[Id] INT NOT NULL PRIMARY KEY, 
+	[Id] INT IDENTITY(1,1) NOT NULL PRIMARY KEY, 
     [Date] DATETIME NULL, 
     [ServiceId] INT NULL, 
     [Type] VARCHAR(45) NULL, 
