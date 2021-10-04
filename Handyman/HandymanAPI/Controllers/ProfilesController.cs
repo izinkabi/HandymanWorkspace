@@ -11,7 +11,18 @@ namespace HandymanAPI.Controllers
 {
     public class ProfilesController : ApiController
     {
+
+
         [Authorize]
+
+        public void PostProfile(ProfileModel profile)
+        {
+            ProfileData data = new ProfileData();
+            data.PostProfile(profile);
+        }
+
+
+        
         // GET: Profiles
         public ProfileModel GetProfileById(int Id)
         {
@@ -21,10 +32,6 @@ namespace HandymanAPI.Controllers
 
         //POST: Profile
 
-        public void PostProfile(ProfileModel profile)
-        {
-            ProfileData data = new ProfileData();
-            data.PostProfile(profile);
-        }
+        
     }
 }

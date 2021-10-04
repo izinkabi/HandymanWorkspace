@@ -20,6 +20,7 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.ActivationCode, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.ActivationCode, "", new { @class = "text-danger" })
+                @ViewBag.ErrorMsgCode
             </div>
         </div>
 

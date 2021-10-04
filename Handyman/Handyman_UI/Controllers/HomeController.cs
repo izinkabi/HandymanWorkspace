@@ -1,5 +1,6 @@
 ﻿using Handyman_UI.Models;
 using HandymanUILibrary.API;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,8 @@ namespace Handyman_UI.Controllers
 
 
         static private string Token { get; set; }
-        static private string Username, Password;
+        static private string Username;
+        static private string Password;
         static private int ProfileId;
         private ProfileEndPoint profileEndPoint;
         private bool loggedIn;
@@ -27,10 +29,10 @@ namespace Handyman_UI.Controllers
 
 
         //Home page Action funtion
-        public ActionResult Index()
+        public  async Task<ActionResult> Index()
         {
-
-            ViewBag.Username = UserEmail;
+          
+            //ViewBag.Username = UserEmail;
             return View();
         }
 
@@ -38,7 +40,7 @@ namespace Handyman_UI.Controllers
         {
             
             ViewBag.Message = "Your application description page.";
-            ViewBag.Username = UserEmail;
+            //ViewBag.Username = UserEmail;
             return View();
         }
 
@@ -59,22 +61,56 @@ namespace Handyman_UI.Controllers
             if (ModelState.IsValid)
             {
                 _apiHepler = new APIHelper();
-                var results = await _apiHepler.AuthenticateUser(Username, Password);           
-                Token = results.Access_Token;
-                ViewBag.Username = Username;
-                
-                return RedirectToAction("CreateProfile","Home");
+                try
+                {
+                    var results = await _apiHepler.AuthenticateUser(Username, Password);
+                    Token = results.Access_Token;
+                    UserEmail = Username;
+                    ViewBag.Username = UserEmail;
+                    Session["log"] = Username;
+                    return RedirectToAction("Index", "Home");
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.ErrorMsg = ex.Message;
+                }
+               
                
             }
-          
+            return View();
            
         }
+
+
+        //RegisterUser helper method
+        //saving a user in our local DB
+
         
+       /* public async Task SaveUser()
+        {
+            RegisterEndPoint registerUser = new RegisterEndPoint(_apiHepler);
+           
+                try
+                {
+                    _apiHepler = new APIHelper();
+                    registerUser = new RegisterEndPoint(_apiHepler);
+                    var results = await registerUser.SaveNewUser(UserEmail);
+                     RedirectToAction("CreateProfile");
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.ErrorMsgCode = ex.Message;
+                }
+            
+
+        }*/
 
         //Create a profile action method
-
         public async Task<ActionResult> CreateProfile(ProfileModel profile)
         {
+
+
+            
             HandymanUILibrary.Models.ProfileModel profileModel = new HandymanUILibrary.Models.ProfileModel();
             profileModel.Name = profile.Name;
             profileModel.Surname = profile.Surname;
@@ -83,6 +119,7 @@ namespace Handyman_UI.Controllers
             profileModel.DateofBirth = profile.DateTimeOfBirth;
             profileModel.Type = "user";
 
+          
             if (ModelState.IsValid)
             {
                 if (_apiHepler == null)
@@ -91,32 +128,103 @@ namespace Handyman_UI.Controllers
                     profileEndPoint = new ProfileEndPoint(_apiHepler);
 
 
-                    var results = await _apiHepler.AuthenticateUser(Username, Password);           
-                    Token = results.Access_Token;
+                    try
+                    {
+                        
+                       var results = await _apiHepler.AuthenticateUser(Username, Password);
+                        Token = results.Access_Token;
+                        var loggeduser = await _apiHepler.GetLoggedInUserInfor(Token);
+                        profileModel.UserId = loggeduser.Id;
+
+                        await profileEndPoint.PostProfile(profileModel);
+                        
+                        return RedirectToAction("GetOTP");
+
+                    }
+                    catch (Exception ex)
+                    {
+                        ViewBag.ErrorMsg = ex.Message;
+                    }
+                }
+                else
+                {
                     var loggeduser = await _apiHepler.GetLoggedInUserInfor(Token);
                     profileModel.UserId = loggeduser.Id;
 
                     await profileEndPoint.PostProfile(profileModel);
-                   return RedirectToAction("GetOTP");
-
+                    return RedirectToAction("GetOTP");
                 }
                 
-     
+
             }
 
-            return View("Index");
+            return View();
         }
 
-        public ActionResult GetOTP()
+
+       
+        public async Task<ActionResult> Register(CreateUserModel newUser)
         {
+           
+            if (ModelState.IsValid)
+            {
+                try {
+                    
+
+                    HandymanUILibrary.Models.NewUserModel user = new HandymanUILibrary.Models.NewUserModel();
+
+                    user.Email = newUser.Username;
+                    UserEmail = newUser.Username;
+                    Username = UserEmail;
+                    Password = newUser.Password;
+                    user.Password = newUser.Password;
+                    user.ConfirmPassword = newUser.ConfirmPassword;
+                    _apiHepler = new APIHelper();
+
+                    RegisterEndPoint registerUser = new RegisterEndPoint(_apiHepler);
+
+                //var tasks = new Task[] {
+                //          registerUser.RegisterUser(user),
+                //            registerUser.SaveNewUser(user)
+                // };
+                //   await Task.WhenAll(tasks);
+
+                    var result = await registerUser.RegisterUser(user);
+                   
+                    var results = await registerUser.SaveNewUser(user);
+                    
+                    UserEmail = Username;
+                    //await SaveUser();
+                    Session["log"] = Username;
+                    
+                    
+                    return RedirectToAction("CreateProfile");
+                    
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.RegisterErrorMsg = ex.Message;
+                }
+            }
+                return View();
+        }
 
 
+       
+
+        public async Task<ActionResult> GetOTP()
+        {
+          
             return View();
         }
 
         public ActionResult Logout()
         {
-            return View();
+            _apiHepler = new APIHelper();
+
+                _apiHepler.LogOutuser();
+                return RedirectToAction("Index");
+          
         }
     }
 }

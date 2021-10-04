@@ -41,7 +41,7 @@ namespace HandymanDataLibrary.Internal
         }
 
 
-        public void RegisterUser(string email)
+        public void RegisterUser(UserModel userModel)
         {
           
             using (SQLDataAccess sql = new SQLDataAccess())
@@ -49,7 +49,7 @@ namespace HandymanDataLibrary.Internal
                 
                     //var p = new { Email = email };
                     UserModel output = new UserModel();
-                    output = sql.LoadData<UserModel, dynamic>("dbo.spASPUserLookUp", new { Email = email } , "DefaultConnection").First();
+                    output = sql.LoadData<UserModel, dynamic>("dbo.spASPUserLookUp", new{ email = userModel.Email}, "DefaultConnection").First();
 
                     //var user = new {UserName = output.Username, Id = output.Id, Email = output.Email };
 

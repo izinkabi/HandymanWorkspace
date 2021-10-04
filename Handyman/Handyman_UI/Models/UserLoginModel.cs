@@ -9,6 +9,7 @@ namespace Handyman_UI.Models
 {
     public class UserLoginModel
     {
+       [DataType(DataType.EmailAddress)]
        [Display(Name = "Username")]
        [Required(ErrorMessage ="Please enter your username/email")]
         public string Username { get; set; }

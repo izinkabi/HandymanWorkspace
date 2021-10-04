@@ -23,22 +23,22 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
-
-                   
-
-                    @if (Request.IsAuthenticated)
-                    {
-                        <li>@Html.ActionLink("Sign Out", "Logout", "Home")</li>
-
-                    }
-                    else 
-                    {
-                        <li>@Html.ActionLink("Sign In", "SignIn", "Home")</li>
-                    }
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
 
+
+                    @if (Session["log"] == null)
+                    {
+                        <li>@Html.ActionLink("Sign In", "SignIn", "Home")</li>
+                        <li>@Html.ActionLink("Sign Up", "Register", "Home")</li>
+
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Sign Out", "Logout", "Home")</li>
+                    }
+
                 </ul>
-                <ul class="navbar-brand"><p1 style="color :white" > @ViewBag.Username </p1></ul>
+                <ul class="navbar-brand"> @ViewBag.Username </ul>
             </div>
           
         </div>
