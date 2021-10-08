@@ -4,7 +4,7 @@ CREATE PROCEDURE [dbo].[spServiceLookUp]
 AS
 Begin 
 set nocount on;
-	SELECT ServiceId,type,ServiceProviderId
+	SELECT *
 	FROM dbo.Service
 	WHERE ServiceId = @Id
 End

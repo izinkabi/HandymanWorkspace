@@ -37,8 +37,8 @@ namespace Handyman_UI.Models
 
         [DataType(DataType.PhoneNumber)]
         [Display(Name = "Phone Number")]
-        [Required(ErrorMessage = "Please enter your Phone Number")]
-        public int PhoneNumber { get; set; }
+        [Required(ErrorMessage = "Please enter your phone number with a contry code example(+27 ---)")]
+        public string PhoneNumber { get; set; }
 
 
         

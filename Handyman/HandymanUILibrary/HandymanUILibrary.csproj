@@ -34,6 +34,9 @@
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Otp.NET, Version=1.2.2.0, Culture=neutral, PublicKeyToken=38a48df817e173a6, processorArchitecture=MSIL">
+      <HintPath>..\packages\Otp.NET.1.2.2\lib\net45\Otp.NET.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -50,13 +53,19 @@
   <ItemGroup>
     <Compile Include="API\APIHelper.cs" />
     <Compile Include="API\IAPIHelper.cs" />
+    <Compile Include="API\OTPGenerator.cs" />
     <Compile Include="API\ProfileEndPoint.cs" />
     <Compile Include="API\RegisterEndPoint.cs" />
+    <Compile Include="API\RegisterProviderEndPoint.cs" />
     <Compile Include="Models\AuthenticatedUserModel.cs" />
     <Compile Include="Models\IloggedInUserModel.cs" />
     <Compile Include="Models\loggedInUserModel.cs" />
     <Compile Include="Models\NewUserModel.cs" />
+    <Compile Include="Models\OTPEnvironmentModel.cs" />
+    <Compile Include="Models\OTPResult.cs" />
     <Compile Include="Models\ProfileModel.cs" />
+    <Compile Include="Models\ServiceModel.cs" />
+    <Compile Include="Models\ServiceProviderModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

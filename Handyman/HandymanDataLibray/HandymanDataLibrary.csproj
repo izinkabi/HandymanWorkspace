@@ -69,12 +69,16 @@
   <ItemGroup>
     <Compile Include="DataAccess\ActivationData.cs" />
     <Compile Include="DataAccess\ProfileData.cs" />
+    <Compile Include="DataAccess\ServiceData.cs" />
+    <Compile Include="DataAccess\ServiceProviderData.cs" />
     <Compile Include="DataAccess\UserData.cs" />
     <Compile Include="Internal\DataAccess\SQLDataAccess.cs" />
     <Compile Include="Models\ActivationModel.cs" />
     <Compile Include="Models\AuthenticatedUser.cs" />
     <Compile Include="Models\NewUserModel.cs" />
     <Compile Include="Models\ProfileModel.cs" />
+    <Compile Include="Models\ServiceModel.cs" />
+    <Compile Include="Models\ServiceProviderModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

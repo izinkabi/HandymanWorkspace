@@ -1,12 +1,13 @@
 ﻿using Handyman_UI.Models;
 using HandymanUILibrary.API;
-
+using HandymanUILibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using static Handyman_UI.Models.ServiceProviderModel;
 
 namespace Handyman_UI.Controllers
 {
@@ -22,11 +23,40 @@ namespace Handyman_UI.Controllers
         static private string Username;
         static private string Password;
         static private int ProfileId;
+        static private string PhoneNumber;
         private ProfileEndPoint profileEndPoint;
+        private OTPGenerator oTPGenerator;
         private bool loggedIn;
        
 
 
+        public ActionResult RegisterServiceProvider()
+        {
+            ServiceProviderModel serviceProvider = new ServiceProviderModel();
+
+
+            var servicesList = new List<ServiceModel>();
+            servicesList.Add(new ServiceModel { Name="Plumbing" ,Type="water and sanitation"});
+            servicesList.Add(new ServiceModel { Name = "Cell repair", Type = "Electronic" });
+            servicesList.Add(new ServiceModel { Name = "Couch", Type = "Furniture" });
+
+            serviceProvider.Services = (IEnumerable < SelectListItem >) servicesList;
+
+            if (ModelState.IsValid)
+            {
+
+                //servicesList.Add();
+
+                serviceProvider.Services = servicesList.
+                                               Select(a => new SelectListItem
+                                               {
+                                                   Text = a.Name, // name to show in html dropdown
+                                                   Value = a.Name // value of html dropdown
+                                               }).ToList();
+            }
+           
+            return View();
+        }
 
         //Home page Action funtion
         public  async Task<ActionResult> Index()
@@ -68,7 +98,7 @@ namespace Handyman_UI.Controllers
                     UserEmail = Username;
                     ViewBag.Username = UserEmail;
                     Session["log"] = Username;
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("CreateProfile", "Home");
                 }
                 catch (Exception ex)
                 {
@@ -82,9 +112,7 @@ namespace Handyman_UI.Controllers
         }
 
 
-        //RegisterUser helper method
-        //saving a user in our local DB
-
+       
         
        /* public async Task SaveUser()
         {
@@ -106,7 +134,7 @@ namespace Handyman_UI.Controllers
         }*/
 
         //Create a profile action method
-        public async Task<ActionResult> CreateProfile(ProfileModel profile)
+        public async Task<ActionResult> CreateProfile(Models.ProfileModel profile)
         {
 
 
@@ -130,13 +158,17 @@ namespace Handyman_UI.Controllers
 
                     try
                     {
-                        
-                       var results = await _apiHepler.AuthenticateUser(Username, Password);
-                        Token = results.Access_Token;
-                        var loggeduser = await _apiHepler.GetLoggedInUserInfor(Token);
-                        profileModel.UserId = loggeduser.Id;
-
-                        await profileEndPoint.PostProfile(profileModel);
+                        //We await multiple tasks to create the profile
+                        //First Get the token with auth and get the loggedin user
+                        //Then pass the user ID but keep it to track the user 
+                        //Finally we await the profile post task and if successful redict to the mentioned view/method
+                        var results = await _apiHepler.AuthenticateUser(Username, Password);//auth awaited task
+                        Token = results.Access_Token;//Token
+                        var loggeduser = await _apiHepler.GetLoggedInUserInfor(Token);// awaited loggedUser
+                        profileModel.UserId = loggeduser.Id;//pass user ID
+                        PhoneNumber = profile.PhoneNumber;
+                        UserId = loggeduser.Id;//track user
+                        await profileEndPoint.PostProfile(profileModel);//waited results of posted user profile
                         
                         return RedirectToAction("GetOTP");
 
@@ -162,7 +194,9 @@ namespace Handyman_UI.Controllers
         }
 
 
-       
+        //RegisterUser helper method
+        //saving a user in our local DB
+
         public async Task<ActionResult> Register(CreateUserModel newUser)
         {
            
@@ -211,13 +245,44 @@ namespace Handyman_UI.Controllers
 
 
        
-
-        public async Task<ActionResult> GetOTP()
+        //Get OTP
+        public async Task<ActionResult> GetOTP(OTPModel otmodel)
         {
-          
+            if (ModelState.IsValid)
+            {
+                //might not work
+                if (oTPGenerator==null)
+                {
+
+                    oTPGenerator = new OTPGenerator();
+                    var result = await oTPGenerator.CreateOTPEnvironment(UserId, PhoneNumber, Username);
+                    
+                    try
+                    {
+                        //await the OTP to validate
+                        var lastValidation = await oTPGenerator.ValidateOTP(otmodel.OTP);
+                        ViewBag.ErrorMsgCode = lastValidation.messageDescription;
+                        return RedirectToAction("Index");
+
+                    }
+                        catch (Exception ex)
+                        {
+                            throw new Exception(ex.Message);
+                        }
+                }
+                    else
+                    {
+                        var lastValidation = await oTPGenerator.ValidateOTP(otmodel.OTP);
+                        ViewBag.ErrorMsgCode = lastValidation.messageDescription;
+                        return RedirectToAction("Index");
+                    }
+
+            }
+
             return View();
         }
 
+        //Loggin out method
         public ActionResult Logout()
         {
             _apiHepler = new APIHelper();

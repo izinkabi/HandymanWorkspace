@@ -1,10 +1,17 @@
 ﻿/*Inserting a ServiceProvider SP*/
 CREATE PROCEDURE [dbo].[spServiceProviderInsert]
-	@RequestId int = 0,
-	@ProfileId int
+	
+	
+	@UserId NVARCHAR (128)='',
+	@name VARCHAR (50)='',
+	@surname VARCHAR(50) ='',
+	@PhoneNumber INT = 0,
+	@homeAddress VARCHAR(150)='',
+	@dateofbirth NVARCHAR(50) =''
+	
+
 AS
-
-	INSERT INTO ServiceProvider (RequestId,ProfileId)
-	VALUES (@RequestId,@ProfileId)
-
-RETURN 0
+Begin
+	INSERT INTO [ServiceProvider] (Name,surname,HomeAddress,PhoneNumber,DateOfBirth,UserId)
+	VALUES (@Name,@Surname,@HomeAddress,@PhoneNumber,@DateOfBirth,@UserId)
+End
