@@ -57,6 +57,7 @@
     <Compile Include="API\ProfileEndPoint.cs" />
     <Compile Include="API\RegisterEndPoint.cs" />
     <Compile Include="API\RegisterProviderEndPoint.cs" />
+    <Compile Include="API\ServiceEndPoint.cs" />
     <Compile Include="Models\AuthenticatedUserModel.cs" />
     <Compile Include="Models\IloggedInUserModel.cs" />
     <Compile Include="Models\loggedInUserModel.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Models\OTPEnvironmentModel.cs" />
     <Compile Include="Models\OTPResult.cs" />
     <Compile Include="Models\ProfileModel.cs" />
+    <Compile Include="Models\ProvidersServiceModel.cs" />
     <Compile Include="Models\ServiceModel.cs" />
     <Compile Include="Models\ServiceProviderModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

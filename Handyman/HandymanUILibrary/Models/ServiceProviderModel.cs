@@ -17,7 +17,7 @@ namespace HandymanUILibrary.Models
         public string DateOfBirth { get; set; }
         public string UserId { get; set; }
 
-        public IEnumerable<ServiceProviderModel> Services { get; set; }
+       
 
     }
 }

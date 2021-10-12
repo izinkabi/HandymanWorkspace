@@ -4,5 +4,5 @@ AS
 Begin
 set nocount on;
 	SELECT *
-	FROM ServiceProviders
+	FROM ServiceProvider
 End

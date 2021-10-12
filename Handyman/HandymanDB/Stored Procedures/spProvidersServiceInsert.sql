@@ -1,4 +1,5 @@
-﻿CREATE PROCEDURE [dbo].[spProvidersServicerInsert]
+﻿CREATE PROCEDURE [dbo].[spProvidersServiceInsert]
+	@Id int,
 	@ServiceProviderId int,
 	@ServiceId int
 AS
