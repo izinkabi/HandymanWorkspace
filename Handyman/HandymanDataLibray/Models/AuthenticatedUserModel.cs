@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace HandymanDataLibray.Models
 {
-    public class AuthenticatedUser
+    public class AuthenticatedUserModel
     {
         public string Access_Token { get; set; }
-
         public string UserName { get; set; }
     }
 }

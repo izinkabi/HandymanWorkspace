@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HandymanUILibrary.Models
+namespace HandymanDataLibray.Models
 {
-    public class ServiceModel
+    public class ProvidersServiceModel
     {
-        public string Name { get; set; }
         public int Id { get; set; }
-        public string Type { get; set; }
-       
+        public int ServiceId { get; set; }
+        public int ServiceProviderId { get; set; }
     }
 }

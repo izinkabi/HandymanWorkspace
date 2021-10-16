@@ -7,9 +7,9 @@ using System.Web;
 namespace HandymanDataLibrary.Models
 {
     public class ServiceProviderModel
-    {      
-       
-        public int Id { get; set; } 
+    {
+
+        public int Id { get; set; }
         public string Name { get; set; }     
         public string Surname { get; set; }  
         public string HomeAddress { get; set; }
@@ -17,7 +17,7 @@ namespace HandymanDataLibrary.Models
         public string DateOfBirth { get; set; }
         public string UserId { get; set; }
 
-        public IEnumerable<ServiceProviderModel> Services { get; set; } 
+        
         
     }
 }

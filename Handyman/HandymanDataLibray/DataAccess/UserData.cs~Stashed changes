@@ -1,6 +1,5 @@
-﻿
+﻿using HandymanDataLibrary.Internal.DataAccess;
 using HandymanDataLibrary.Models;
-using HandymanDataLibray.DataAccess.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,9 +43,9 @@ namespace HandymanDataLibrary.Internal
 
         public void RegisterUser(UserModel userModel)
         {
-
-                    SQLDataAccess sql = new SQLDataAccess();
-            
+          
+            using (SQLDataAccess sql = new SQLDataAccess())
+            {
                 
                     //var p = new { Email = email };
                     UserModel output = new UserModel();
@@ -56,7 +55,7 @@ namespace HandymanDataLibrary.Internal
 
                     int rowsaffected =  sql.SaveData<UserModel>("dbo.spUserInsert", output, "HandymanDB");
                 
-            
+            }
         }
 
         /*Modify and Delete are to be implemented*/

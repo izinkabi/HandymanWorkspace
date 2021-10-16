@@ -35,10 +35,11 @@
                     else
                     {
                         <li>@Html.ActionLink("Sign Out", "Logout", "Home")</li>
+                        <li class="navbar-brand"> @ViewBag.Username </li>
                     }
 
                 </ul>
-                <ul class="navbar-brand"> @ViewBag.Username </ul>
+                
             </div>
           
         </div>
