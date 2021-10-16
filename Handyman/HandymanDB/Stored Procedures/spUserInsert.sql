@@ -5,6 +5,6 @@
 	
 AS
 Begin
-	INSERT INTO [User] (Id,username,Email)
+	INSERT INTO [User] (Id,username,email)
 	VALUES (@Id,@username,@Email)
 End

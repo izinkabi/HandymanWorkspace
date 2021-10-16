@@ -4,8 +4,8 @@ CREATE PROCEDURE [dbo].[spTransactionLookUp]
 	
 AS
 Begin
-
-	SELECT Id, Date, ServiceId,type,ConsumerId,RequestId
+set nocount on;
+	SELECT Id, Date, ServiceId,Type,ConsumerId,RequestId
 	FROM [dbo].[Transaction]
 	WHERE Id = @Id
 End
