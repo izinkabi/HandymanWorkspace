@@ -15,9 +15,7 @@ namespace HandymanAPI.Controllers
 
         private ServiceModel serviceModel;
         private ServiceData serviceData;
-
-        //Get: api/Services
-        public IEnumerable<ServiceModel> GetServices()
+        public IEnumerable<ServiceModel> Get()
         {
             serviceData = new ServiceData();
             return serviceData.GetServices();
@@ -40,7 +38,6 @@ namespace HandymanAPI.Controllers
         // PUT: api/Services/5
         public void Put(int id, [FromBody]string value)
         {
-
         }
 
         // DELETE: api/Services/5

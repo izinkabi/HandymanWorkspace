@@ -83,7 +83,7 @@
     <Build Include="Tables\Activation.sql" />
     <Build Include="Stored Procedures\spUserInsert.sql" />
     <Build Include="Tables\ProvidersService.sql" />
-    <Build Include="Stored Procedures\spProvidersServiceInsert.sql" />
+    <Build Include="Stored Procedures\spProvidersServicerInsert.sql" />
     <Build Include="Stored Procedures\spProvidersServiceLookUp.sql" />
     <Build Include="Stored Procedures\spServicesProviderLookUp.sql" />
     <Build Include="Stored Procedures\spServiceProvidersLookUp.sql" />

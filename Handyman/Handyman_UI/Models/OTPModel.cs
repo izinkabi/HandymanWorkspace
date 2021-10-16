@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Handyman_UI.Models
+namespace HandymanUILibrary.Models
 {
     public class OTPModel
     {

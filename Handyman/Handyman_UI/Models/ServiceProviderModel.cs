@@ -9,7 +9,7 @@ namespace Handyman_UI.Models
 {
     public class ServiceProviderModel
     {
-        
+        public int Id { get; set; }
 
         [DataType(DataType.Text)]
         [Display(Name = "Name")]
@@ -36,16 +36,16 @@ namespace Handyman_UI.Models
         [Required(ErrorMessage = "Please enter your your date of birth")]
         public string DateOfBirth { get; set; }
         public string UserId { get; set; }
-
-
         
-        [Display(Name = "Available Services")]
-        [Required(ErrorMessage = "Select a service")]
-        public List<SelectListItem> Services { get; set; }
-        public int? ServiceId { get; set; }
-        public string ServiceName { get; set; }
 
+      
+            public IEnumerable<SelectListItem> Services { get; set; }
 
+            //for first dropdown selected value
+            public string Selected1 { get; set; }
 
+            //for second dropdown selected value
+            public string SelectedService2 { get; set; }
+        
     }
 }

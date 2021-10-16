@@ -1,12 +1,13 @@
 ﻿using Handyman_UI.Models;
 using HandymanUILibrary.API;
+using HandymanUILibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-
+using static Handyman_UI.Models.ServiceProviderModel;
 
 namespace Handyman_UI.Controllers
 {
@@ -24,107 +25,37 @@ namespace Handyman_UI.Controllers
         static private int ProfileId;
         static private string PhoneNumber;
         private ProfileEndPoint profileEndPoint;
-        private RegisterProviderEndPoint registerProviderEndpoint;
         private OTPGenerator oTPGenerator;
         private bool loggedIn;
-        
+       
 
 
-        public async Task<ActionResult> RegisterServiceProvider(ServiceProviderModel serviceProviderModel)
+        public ActionResult RegisterServiceProvider()
         {
-            //ServiceProviderModel serviceProvider = new ServiceProviderModel();
-            HandymanUILibrary.Models.ServiceProviderModel sp = new HandymanUILibrary.Models.ServiceProviderModel();
-            HandymanUILibrary.Models.ProvidersServiceModel  ps = new HandymanUILibrary.Models.ProvidersServiceModel();
-            string singleservice = "";
-           
-
-           
-            
-
-            _apiHepler = new APIHelper();
-            RegisterProviderEndPoint registerProvider = new RegisterProviderEndPoint(_apiHepler);
-
-            #region ViewData
-            // Services = new List<SelectListItem>();
+            ServiceProviderModel serviceProvider = new ServiceProviderModel();
 
 
-            List<SelectListItem> Services = new List<SelectListItem>() {
-                       
-                        new SelectListItem {
-                            Text = "Electronic", Value = "1"
-                        },
-                        new SelectListItem {
-                            Text = "Furniture", Value = "2"
-                        },
-                        new SelectListItem {
-                            Text = "Plumbing", Value = "3"
-                        },
-                        new SelectListItem {
-                            Text = "Interrior Design", Value = "4"
-                        },
-                        new SelectListItem {
-                            Text = "Mechanics", Value = "5"
-                        },
-                        new SelectListItem {
-                            Text = "Furniture", Value = "6"
-                        },
-                        new SelectListItem {
-                            Text = "Garderning", Value = "7"
-                        }
-                     };
+            var servicesList = new List<ServiceModel>();
+            servicesList.Add(new ServiceModel { Name="Plumbing" ,Type="water and sanitation"});
+            servicesList.Add(new ServiceModel { Name = "Cell repair", Type = "Electronic" });
+            servicesList.Add(new ServiceModel { Name = "Couch", Type = "Furniture" });
 
-            serviceProviderModel.Services = Services;
-            var selectedItem = Services.Find(p => p.Value == serviceProviderModel.ServiceId.ToString());
-
-            if (selectedItem != null)
-            {
-                sp.Name = serviceProviderModel.Name;
-                sp.Surname = serviceProviderModel.Surname;
-                sp.HomeAddress = serviceProviderModel.HomeAddress;
-                sp.PhoneNumber = serviceProviderModel.PhoneNumber;
-                sp.DateOfBirth = serviceProviderModel.DateOfBirth;
-
-
-                selectedItem.Selected = true;
-                ViewBag.MessageService = "Service: " + selectedItem.Text;
-                ps.ServiceId = Int32.Parse(selectedItem.Value);
-               
-                var results = await _apiHepler.AuthenticateUser(Username, Password);//auth awaited task
-                Token = results.Access_Token;//Token
-                var loggeduser = await _apiHepler.GetLoggedInUserInfor(Token);// awaited loggedUser
-                UserId = loggeduser.Id;//pass user ID
-                sp.UserId = UserId;
-
-                HandymanUILibrary.Models.ServiceProviderModel sprov = new HandymanUILibrary.Models.ServiceProviderModel();
-                try
-                {
-                   
-
-                    await registerProvider.PostServiceProvider(sp);
-                    sprov = await registerProvider.GetServiceProviders(sp);
-
-                    ps.ServiceProviderId = sprov.Id;
-                    await registerProvider.PostProvidersService(ps);
-
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(ex.Message);
-                }
-                return RedirectToAction("Index");
-            }
-            //ViewData["Services"] = Services;
-           
+            serviceProvider.Services = (IEnumerable < SelectListItem >) servicesList;
 
             if (ModelState.IsValid)
             {
 
-               
+                //servicesList.Add();
 
+                serviceProvider.Services = servicesList.
+                                               Select(a => new SelectListItem
+                                               {
+                                                   Text = a.Name, // name to show in html dropdown
+                                                   Value = a.Name // value of html dropdown
+                                               }).ToList();
             }
-
-            return View(serviceProviderModel);
-            #endregion
+           
+            return View();
         }
 
         //Home page Action funtion
@@ -164,7 +95,6 @@ namespace Handyman_UI.Controllers
                 {
                     var results = await _apiHepler.AuthenticateUser(Username, Password);
                     Token = results.Access_Token;
-                   
                     UserEmail = Username;
                     ViewBag.Username = UserEmail;
                     Session["log"] = Username;
@@ -287,7 +217,12 @@ namespace Handyman_UI.Controllers
 
                     RegisterEndPoint registerUser = new RegisterEndPoint(_apiHepler);
 
-                
+                //var tasks = new Task[] {
+                //          registerUser.RegisterUser(user),
+                //            registerUser.SaveNewUser(user)
+                // };
+                //   await Task.WhenAll(tasks);
+
                     var result = await registerUser.RegisterUser(user);
                    
                     var results = await registerUser.SaveNewUser(user);
