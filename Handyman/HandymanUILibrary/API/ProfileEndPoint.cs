@@ -42,7 +42,7 @@ namespace HandymanUILibrary.API
         public async Task<ProfileModel> GetProfile()
         {
            
-            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync("/api/Profile"))
+            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync("/api/Profiles"))
             {
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {

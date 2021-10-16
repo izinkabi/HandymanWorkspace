@@ -98,6 +98,8 @@ namespace HandymanUILibrary.API
         }
 
 
+       
+
         public void LogOutuser()
         {
             _apiClient.DefaultRequestHeaders.Clear();

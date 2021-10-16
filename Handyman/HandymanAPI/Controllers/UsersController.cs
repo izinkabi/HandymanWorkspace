@@ -8,14 +8,14 @@ namespace HandymanAPI.Controllers
 {
     public class UsersController : ApiController
     {
+        
         //POST: User/Details/
-        public void PostUser(string email)
+      
+        public void PostUser(UserModel userModel)
         {
             UserData data = new UserData();
         
-                data.RegisterUser(email);
-            
-
+                data.RegisterUser(userModel);
         }
 
 
