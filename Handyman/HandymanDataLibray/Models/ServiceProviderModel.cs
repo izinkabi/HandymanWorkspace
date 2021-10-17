@@ -13,7 +13,7 @@ namespace HandymanDataLibrary.Models
         public string Name { get; set; }     
         public string Surname { get; set; }  
         public string HomeAddress { get; set; }
-        public string PhoneNumber { get; set; }
+        public int PhoneNumber { get; set; }
         public string DateOfBirth { get; set; }
         public string UserId { get; set; }
 
