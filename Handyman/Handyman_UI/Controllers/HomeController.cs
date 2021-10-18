@@ -131,7 +131,7 @@ namespace Handyman_UI.Controllers
         public  async Task<ActionResult> Index()
         {
           
-            //ViewBag.Username = UserEmail;
+            ViewBag.Username = "Welcome " + UserEmail;
             return View();
         }
 
@@ -139,13 +139,13 @@ namespace Handyman_UI.Controllers
         {
             
             ViewBag.Message = "Your application description page.";
-            //ViewBag.Username = UserEmail;
+            ViewBag.Username = "Welcome "+UserEmail;
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Username = UserEmail;
+            ViewBag.Username = "Welcome " + UserEmail;
             ViewBag.Message = "Your contact page.";
             return View();
         }
@@ -166,7 +166,7 @@ namespace Handyman_UI.Controllers
                     Token = results.Access_Token;
                    
                     UserEmail = Username;
-                    ViewBag.Username = UserEmail;
+                   
                     Session["log"] = Username;
                     return RedirectToAction("Index", "Home");
                 }
@@ -177,6 +177,8 @@ namespace Handyman_UI.Controllers
                
                
             }
+            ViewBag.Username = UserEmail;
+
             return View();
            
         }
@@ -295,7 +297,7 @@ namespace Handyman_UI.Controllers
                     UserEmail = Username;
                     //await SaveUser();
                     Session["log"] = Username;
-                    ViewBag.Username = Username;
+                    
 
 
                     return RedirectToAction("CreateProfile");
@@ -305,6 +307,7 @@ namespace Handyman_UI.Controllers
                 {
                     ViewBag.RegisterErrorMsg = ex.Message;
                 }
+                ViewBag.Username = Username;
             }
                 return View();
         }

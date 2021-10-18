@@ -26,20 +26,26 @@
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
 
 
+                   
+
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
                     @if (Session["log"] == null)
                     {
-                        <li>@Html.ActionLink("Sign In", "SignIn", "Home")</li>
-                        <li>@Html.ActionLink("Sign Up", "Register", "Home")</li>
+                        <li><a href="https://localhost:44365/Home/Register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                        <li><a href="https://localhost:44365/Home/SignIn"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
 
                     }
                     else
                     {
+                        <p class="navbar-text"> @ViewBag.Username </p>
                         <li>@Html.ActionLink("Sign Out", "Logout", "Home")</li>
-                        <li class="navbar-brand"> @ViewBag.Username </li>
+
                     }
 
                 </ul>
-                
+
             </div>
           
         </div>
@@ -48,7 +54,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Izinkabi property</p>
         </footer>
     </div>
 

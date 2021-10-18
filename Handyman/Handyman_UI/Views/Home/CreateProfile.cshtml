@@ -87,7 +87,7 @@
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create Profile" class="btn btn-default" />
 
-                <Button runat="server" class="btn btn-default">@Html.ActionLink("Be a handyman", "RegisterServiceProvider", "Home")</Button>
+                <Button type="button" onclick="location.href = '@Url.Action("RegisterServiceProvider", "Home", new {})'" class="btn btn-default">Become a Handyman</Button>
             </div>
         </div>
     </div>
