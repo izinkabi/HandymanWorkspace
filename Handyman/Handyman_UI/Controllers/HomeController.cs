@@ -105,7 +105,7 @@ namespace Handyman_UI.Controllers
 
                     ps.ServiceProviderId = sprov.Id;
                     await registerProvider.PostProvidersService(ps);
-
+                    Session["providername"] = Token;
                 }
                 catch (Exception ex)
                 {
@@ -113,14 +113,14 @@ namespace Handyman_UI.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            //ViewData["Services"] = Services;
+           
            
 
             if (ModelState.IsValid)
             {
+                ViewBag.Providername = sp.Name +" " +sp.Surname;
 
-               
-                
+
             }
 
             return View(serviceProviderModel);
@@ -168,6 +168,7 @@ namespace Handyman_UI.Controllers
                     UserEmail = Username;
                    
                     Session["log"] = Username;
+                    Session["profilename"] = Token;
                     return RedirectToAction("Index", "Home");
                 }
                 catch (Exception ex)
@@ -182,9 +183,7 @@ namespace Handyman_UI.Controllers
             return View();
            
         }
-
-
-       
+  
         
        /* public async Task SaveUser()
         {
@@ -218,8 +217,10 @@ namespace Handyman_UI.Controllers
             profileModel.HomeAddress = profile.HomeAddress;
             profileModel.DateofBirth = profile.DateTimeOfBirth;
             profileModel.Type = "user";
+            ViewBag.profilename = profile.Name + profile.Surname ;
+           
 
-          
+
             if (ModelState.IsValid)
             {
                 if (_apiHepler == null)
@@ -241,7 +242,7 @@ namespace Handyman_UI.Controllers
                         PhoneNumber = profile.PhoneNumber;
                         UserId = loggeduser.Id;//track user
                         await profileEndPoint.PostProfile(profileModel);//waited results of posted user profile
-                        
+                        Session["profilename"] = Token;
                         return RedirectToAction("Index");
 
                     }
@@ -354,7 +355,10 @@ namespace Handyman_UI.Controllers
         //Loggin out method
         public ActionResult Logout()
         {
-            _apiHepler = new APIHelper();
+            Token = null;
+            Session["providername"] = null;
+            Session["profilename"] = null;
+             _apiHepler = new APIHelper();
                 _apiHepler.LogOutuser();
             Session["log"] = null;
             _apiHepler = null;          

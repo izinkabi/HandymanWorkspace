@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Handyman Tech </title>
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -24,10 +25,6 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-
-
-                   
-
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
@@ -35,7 +32,6 @@
                     {
                         <li><a href="https://localhost:44365/Home/Register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
                         <li><a href="https://localhost:44365/Home/SignIn"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-
                     }
                     else
                     {
@@ -47,19 +43,92 @@
                 </ul>
 
             </div>
-          
+
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
+
+    
+
+    <div class="container body-content pull-left">
+        <div class="row">
+            <div class="container-fluid ">
+
+                @if (Session["profilename"] != null)
+                {
+                <div class="col-sm-2 col-md-2 col-lg-2  sidenav">
+                    @*profilesname*@
+                    <h2>Welcome </h2>@ViewBag.profilename
+
+
+                    <div id="demo" class="collapse in">
+                        <ul class="nav nav-pills nav-stacked">
+                            <li><a href="#section1">Services</a></li>
+                            <li><a href="#section2">Transaction history</a></li>
+                            <li><a href="#section3">Support</a></li>
+                            <li><a href="#section3">Report</a></li>
+                        </ul><br>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search a Service..">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">
+                                    <span class="glyphicon glyphicon-search"></span>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+                }
+                else if (Session["providername"] != null)
+                {
+            <div class="col-xs-2 col-sm-3 col-md-2 col-lg-2 sidenav">
+                @*providername*@
+                <h2>Welcome </h2> @ViewBag.providername
+
+
+                <div id="demo" class="collapse in">
+                    <ul class="nav nav-pills nav-stacked">
+                        <li><a href="#section1">Request History</a></li>
+                        <li><a href="#section2">Requests </a></li>
+                        <li><a href="#section3">Support</a></li>
+                        <li><a href="#section3">Report</a></li>
+                    </ul><br>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+                }
+
+                <div class="col-ms-4 col-md-4 col-lg-5">
+                    @RenderBody()
+
+
+                </div>
+                <div class="col-ms-4 col-md-4 col-lg-5 col-lg-offset-5">
+
+
+                </div>
+            </div>
+            
+
+        </div>
+
+
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - Izinkabi property</p>
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
 </body>
 </html>

@@ -169,6 +169,25 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="images\background.jpg" />
+    <Content Include="images\background2.jpg" />
+    <Content Include="images\cleaning 2.jpg" />
+    <Content Include="images\cleaning.jpg" />
+    <Content Include="images\cleaning3.jpg" />
+    <Content Include="images\concrete.jpg" />
+    <Content Include="images\furniture.jpg" />
+    <Content Include="images\gardening.jpg" />
+    <Content Include="images\grass cutting.jpg" />
+    <Content Include="images\interior design.jpg" />
+    <Content Include="images\interior design2.jpg" />
+    <Content Include="images\laptop.jpg" />
+    <Content Include="images\laptoprepair.jpg" />
+    <Content Include="images\laptoprepair2.jpg" />
+    <Content Include="images\lightbulb.jpg" />
+    <Content Include="images\logo.jpg" />
+    <Content Include="images\outdoorcleaning.jpg" />
+    <Content Include="images\plasturing.jpg" />
+    <Content Include="images\plumbli-slide1.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\loadingArea\Views\web.config" />
@@ -202,6 +221,7 @@
     <Content Include="Views\Home\GetOTP.cshtml" />
     <Content Include="Views\Home\Register.cshtml" />
     <Content Include="Views\Home\RegisterServiceProvider.cshtml" />
+    <Content Include="Views\Home\UserDashBoard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
