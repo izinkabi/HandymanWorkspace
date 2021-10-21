@@ -131,7 +131,7 @@ namespace Handyman_UI.Controllers
         public  async Task<ActionResult> Index()
         {
           
-            ViewBag.Username = "Welcome " + UserEmail;
+            ViewBag.Username = UserEmail;
             return View();
         }
 
@@ -139,13 +139,13 @@ namespace Handyman_UI.Controllers
         {
             
             ViewBag.Message = "Your application description page.";
-            ViewBag.Username = "Welcome "+UserEmail;
+            ViewBag.Username = UserEmail;
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Username = "Welcome " + UserEmail;
+            ViewBag.Username = UserEmail;
             ViewBag.Message = "Your contact page.";
             return View();
         }
@@ -183,33 +183,31 @@ namespace Handyman_UI.Controllers
             return View();
            
         }
-  
-        
-       /* public async Task SaveUser()
-        {
-            RegisterEndPoint registerUser = new RegisterEndPoint(_apiHepler);
-           
-                try
-                {
-                    _apiHepler = new APIHelper();
-                    registerUser = new RegisterEndPoint(_apiHepler);
-                    var results = await registerUser.SaveNewUser(UserEmail);
-                     RedirectToAction("CreateProfile");
-                }
-                catch (Exception ex)
-                {
-                    ViewBag.ErrorMsgCode = ex.Message;
-                }
-            
 
-        }*/
+
+        //public async Task SaveUser()
+        //{
+        //    RegisterEndPoint registerUser = new RegisterEndPoint(_apiHepler);
+
+        //    try
+        //    {
+        //        _apiHepler = new APIHelper();
+        //        registerUser = new RegisterEndPoint(_apiHepler);
+        //        var results = await registerUser.SaveNewUser(UserEmail);
+        //        RedirectToAction("CreateProfile");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ViewBag.ErrorMsgCode = ex.Message;
+        //    }
+
+
+        //}
 
         //Create a profile action method
         public async Task<ActionResult> CreateProfile(Models.ProfileModel profile)
         {
 
-
-            
             HandymanUILibrary.Models.ProfileModel profileModel = new HandymanUILibrary.Models.ProfileModel();
             profileModel.Name = profile.Name;
             profileModel.Surname = profile.Surname;
@@ -358,8 +356,8 @@ namespace Handyman_UI.Controllers
             Token = null;
             Session["providername"] = null;
             Session["profilename"] = null;
-             _apiHepler = new APIHelper();
-                _apiHepler.LogOutuser();
+            _apiHepler = new APIHelper();
+            _apiHepler.LogOutuser();
             Session["log"] = null;
             _apiHepler = null;          
                return RedirectToAction("Index");
