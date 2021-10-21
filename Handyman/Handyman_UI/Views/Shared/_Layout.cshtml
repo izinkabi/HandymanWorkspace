@@ -10,63 +10,61 @@
     <title>@ViewBag.Title - Handyman Tech </title>
 
     <style>
-body {
-  font-family: "Lato", sans-serif;
-}
+        body {
+            font-family: "Lato", sans-serif;
+        }
 
-.sidebar {
-  height: 100%;
-  width: 0;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: #111;
-  overflow-x: hidden;
-  transition: 0.5s;
-  padding-top: 60px;
-}
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
 
-.sidebar a {
-  padding: 8px 8px 8px 32px;
-  text-decoration: none;
-  font-size: 25px;
-  color: #818181;
-  display: block;
-  transition: 0.3s;
-}
+            .sidebar a {
+                padding: 8px 8px 8px 32px;
+                text-decoration: none;
+                font-size: 25px;
+                color: #818181;
+                display: block;
+                transition: 0.3s;
+            }
 
-.sidebar a:hover {
-  color: #f1f1f1;
-}
+                .sidebar a:hover {
+                    color: #f1f1f1;
+                }
 
-.sidebar .closebtn {
-  position: absolute;
-  top: 0;
-  right: 25px;
-  font-size: 36px;
-  margin-left: 50px;
-}
+            .sidebar .closebtn {
+                position: absolute;
+                top: 0;
+                right: 25px;
+                font-size: 36px;
+                margin-left: 50px;
+            }
 
-.openbtn {
-  font-size: 20px;
-  cursor: pointer;
-  background-color: #111;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-}
+        .openbtn {
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #111;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+        }
 
-.openbtn:hover {
-  background-color: #444;
-}
+            .openbtn:hover {
+                background-color: #444;
+            }
 
-#main {
-  transition: margin-left .5s;
-  padding: 16px;
-}
-
-
+        #main {
+            transition: margin-left .5s;
+            padding: 16px;
+        }
     </style>
 
     @Styles.Render("~/Content/css")
@@ -102,11 +100,11 @@ body {
                     else
                     {
                         //Drop down menu for User Profile and settings
-                        <div class="dropdown">
-                            <button class=" dropdown dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
+                        <li class="dropdown ">
+                            <a class=" dropdown dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
 
                                 <span class="glyphicon glyphicon-user"></span>
-                            </button>
+                            </a>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
                                 <li role="presentation" class="divider"></li>
                                 <li role="presentation"><a href="#">@ViewBag.Username</a></li>
@@ -118,11 +116,11 @@ body {
                                 <li class="dropdown-header">Settings</li>
                                 <li role="presentation"><a role="menuitem" tabindex="-1" href="#">@Html.ActionLink("Sign Out", "Logout", "Home")</a></li>
                             </ul>
-                        </div>
+                        </li>
 
 
                     }
-                    </ul>
+                </ul>
 
 
             </div>
@@ -130,27 +128,31 @@ body {
     </div>
 
 
+    @*This left side navbar was inside the container body-content and this is where it should be*@
+    <div id="main" class="col-lg-1 pull-left">
+        <button class="openbtn pull-left" onclick="openNav()">☰</button>
+    </div>
+    @*------------------------------------------*@
 
-    <div class="container body-content container-fluid">
-        <hr />
-        <div id="main">
-            <button class="openbtn pull-left" onclick="openNav()">☰</button>
-        </div>
+    <div class=" body-content container-fluid well">
+
         <div id="mySidebar" class="sidebar">
             <a href="#">About</a>
             <a href="#">Services</a>
             <a href="#">Clients</a>
-            <a href="#" lass="closebtn" onclick="closeNav()" >X</a>
-            
+            <a href="#" lass="closebtn" onclick="closeNav()">X</a>
+
+        </div>
+        <div class="col-lg-11 ">
+            @RenderBody()
         </div>
 
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Izinkabi property</p>
-        </footer>
     </div>
 
+
+    <footer>
+        <p>&copy; @DateTime.Now.Year - Izinkabi property</p>
+    </footer>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
