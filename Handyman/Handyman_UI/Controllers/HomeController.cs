@@ -135,6 +135,11 @@ namespace Handyman_UI.Controllers
             return View();
         }
 
+        public async Task<ActionResult> ElectronicCategory()
+        {
+            return View();
+        }
+
         public ActionResult About()
         {
             

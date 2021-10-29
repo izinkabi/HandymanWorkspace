@@ -1,0 +1,136 @@
+﻿
+@{
+    ViewBag.Title = "ElectronicCategory";
+}
+
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        /*Modal for displaying a group of services*/
+        .modal-header, h4, .close {
+            background-color: #5cb85c;
+            color: white !important;
+            text-align: center;
+            font-size: 30px;
+        }
+
+        .modal-footer {
+            background-color: #f9f9f9;
+        }
+
+
+        /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
+        .row.content {
+            height: 1500px
+        }
+
+        /* Set gray background color and 100% height */
+
+
+        /* Set black background color, white text and some padding */
+        footer {
+            background-color: #555;
+            color: white;
+            padding: 15px;
+        }
+
+        h3, h4 {
+            margin: 10px 0 30px 0;
+            letter-spacing: 10px;
+            font-size: 20px;
+            color: #111;
+        }
+
+        /* On small screens, set height to 'auto' for sidenav and grid */
+
+    </style>
+</head>
+<div class="container text-center">
+    <h2>Electronics Service Category</h2>
+    <hr/>
+
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="panel panel-danger">
+                <div class="panel-heading">Cleanig Service</div>
+                <div class="panel-body">
+                    <img src="~/img/cleaning 2.jpg" class="img-responsive" tyle="width:100%" alt="Image">
+                </div>
+                <div class="panel-footer"><a id="btnCleaning" href="#" class="btn btn-danger">View Service</a></div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="panel panel-danger">
+                <div class="panel-heading">Gardening Services</div>
+                <div class="panel-body">
+                    <img src="~/img/grass cutting.jpg" class="img-responsive" style="width:100%" alt="Image">
+                </div>
+                <div class="panel-footer"><a href="#" class="btn btn-danger">View Service</a></div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="panel panel-danger">
+                <div class="panel-heading">Electronics Services</div>
+                <div class="panel-body">
+                    <img src="~/img/laptoprepair2.jpg" class="img-responsive" style="width:330px; height:180px" alt="Image">
+                </div>
+                <div class="panel-footer"><a href="#" class="btn btn-danger">View Service</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@*Modals section*@
+<div class="container">
+    <!-- Trigger the modal with a button -->
+    @*<button type="button" class="btn btn-default btn-lg" id="btnCleaning">Login</button>*@
+
+    <!-- Modal -->
+    <div class="modal fade" id="CleaningModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="padding:35px 50px;">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4> Repairs</h4>
+                </div>
+                <div class="modal-body" style="padding:40px 50px;">
+                    <form role="form">
+                        <div class="row">
+                            <div class="text-center">
+                                <div class="panel panel-danger hover-overlay">
+                                    <div class="panel-heading">Cleaning Service</div>
+                                    <div class="panel-body">
+                                        <img src="~/img/cleaning 2.jpg" class="img-responsive" style="width:100%" alt="Image">
+                                    </div>
+                                    <div class="panel-footer"><a id="btnCleaning" href="#" class="btn btn-danger">Request</a></div>
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $("#btnCleaning").click(function () {
+                $("#CleaningModal").modal();
+            });
+        });
+    </script>

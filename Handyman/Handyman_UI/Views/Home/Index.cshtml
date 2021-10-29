@@ -36,7 +36,7 @@
 
 
     
-<div class="container">
+<div class="container" >
 
 
     <head>
@@ -44,11 +44,24 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-        
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <style>
+            /*Modal for displaying a group of services*/
+            .modal-header, h4, .close {
+                background-color: #5cb85c;
+                color: white !important;
+                text-align: center;
+                font-size: 30px;
+            }
+
+            .modal-footer {
+                background-color: #f9f9f9;
+            }
+
+
             /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
             .row.content {
                 height: 1500px
@@ -93,7 +106,7 @@
                 <div class="card-img-overlay">
                     <h4 class="card-title">Indoor and outdoor</h4>
                     <p class="card-text">Handyman is a service provider with repairs of anything indoor and outside </p>
-                    <a href="#" class="btn btn-danger">View Servicse</a>
+                    <a href="#" class="btn btn-danger">View Service</a>
                 </div>
             </div>
 
@@ -110,8 +123,10 @@
                 <img src="~/img/plumbli-slide1.png" class="card-img-top" style="height:500px; width:1200px" />
                 <div class="card-img-overlay">
                     <h4 class="card-title">Plumbing</h4>
-                    <p class="card-text">You need plumbing?<br /> 
-                       Well there's a Handyman for that</p>
+                    <p class="card-text">
+                        You need plumbing?<br />
+                        Well there's a Handyman for that
+                    </p>
                     <a href="#" class="btn btn-danger">View Service</a>
                 </div>
             </div>
@@ -127,7 +142,7 @@
         </a>
     </div>
 
-    <hr/>
+    <hr />
 
     <div class="container text-center">
         <div class="container ">
@@ -140,21 +155,21 @@
                         <div class="panel-body">
                             <img src="~/img/concrete.jpg" class="img-responsive" style="width:100%" alt="Image">
                         </div>
-                        <div class="panel-footer"><a href="#" class="btn btn-danger">View Service</a></div>
+                        <div class="panel-footer"><a id="myBtn" href="#" class="btn btn-danger">View Services</a></div>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="panel panel-danger">
-                        <div class="panel-heading">Electronic repair Services</div>
+                        <div class="panel-heading">Electronic repair Services Category</div>
                         <div class="panel-body">
                             <img src="~/img/lightbulb.jpg" class="img-responsive" style="width:100%" alt="Image">
                         </div>
-                        <div class="panel-footer"><a href="#" class="btn btn-danger">View Service</a></div>
+                        <div class="panel-footer"><a href="https://localhost:44365/Home/ElectronicCategory" class="btn btn-danger">View Category</a></div>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="panel panel-danger">
-                        <div class="panel-heading">Concrete wall repair Services</div>
+                        <div class="panel-heading">Construction Services</div>
                         <div class="panel-body">
                             <img src="~/img/concrete.jpg" class="img-responsive" style="width:100%" alt="Image">
                         </div>
@@ -166,8 +181,6 @@
 
 
         <br>
-
-
         <div class="container">
             <div class="row">
                 <div class="col-sm-4">
@@ -190,7 +203,7 @@
                 </div>
                 <div class="col-sm-4">
                     <div class="panel panel-danger">
-                        <div class="panel-heading">Laptop repair Services</div>
+                        <div class="panel-heading">Electronics Services</div>
                         <div class="panel-body">
                             <img src="~/img/laptoprepair2.jpg" class="img-responsive" style="width:330px; height:180px" alt="Image">
                         </div>
@@ -199,5 +212,77 @@
                 </div>
             </div>
         </div>
-  </div>
+    </div>
+
+
+
+
+
+
+
+
+
+    <div class="container">
+        <!-- Trigger the modal with a button -->
+        @*<button type="button" class="btn btn-default btn-lg" id="myBtn">Login</button>*@
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header" style="padding:35px 50px;">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4> Repairs</h4>
+                    </div>
+                    <div class="modal-body" style="padding:40px 50px;">
+                        <form role="form">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="panel panel-danger hover-overlay">
+                                        <div class="panel-heading">Concrete floor Repair Services</div>
+                                        <div class="panel-body">
+                                            <img src="~/img/concrete.jpg" class="img-responsive" style="width:100%" alt="Image">
+                                        </div>
+                                        <div class="panel-footer"><a id="myBtn" href="#" class="btn btn-danger">View Service</a></div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="panel panel-danger">
+                                        <div class="panel-heading">Electronic repair Services</div>
+                                        <div class="panel-body">
+                                            <img src="~/img/lightbulb.jpg" class="img-responsive" style="width:100%" alt="Image">
+                                        </div>
+                                        <div class="panel-footer"><a href="#" class="btn btn-danger">View Service</a></div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="panel panel-danger">
+                                        <div class="panel-heading">Concrete wall repair Services</div>
+                                        <div class="panel-body">
+                                            <img src="~/img/concrete.jpg" class="img-responsive" style="width:100%" alt="Image">
+                                        </div>
+                                        <div class="panel-footer"><a href="#" class="btn btn-danger">View Service</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                   
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
 </div>
+<script>
+    $(document).ready(function () {
+        $("#myBtn").click(function () {
+            $("#myModal").modal();
+        });
+    });
+</script>
