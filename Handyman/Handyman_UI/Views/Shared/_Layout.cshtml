@@ -114,7 +114,7 @@
                                 <li role="presentation"><a role="menuitem" tabindex="-1" href="#">JavaScript</a></li>
                                 <li role="presentation" class="divider"></li>
                                 <li class="dropdown-header">Settings</li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">@Html.ActionLink("Sign Out", "Logout", "Home")</a></li>
+                                <li role="presentation"> @Html.ActionLink("Sign Out", "Logout", "Home")</li>
                             </ul>
                         </li>
                     }
@@ -124,37 +124,40 @@
             </div>
         </div>
     </div>
-
-
-    @*This left side navbar was inside the container body-content and this is where it should be*@
     <div id="main" class="col-lg-1 pull-left">
-        <button class="openbtn pull-left" onclick="openNav()">☰</button>
+        @if (Session["log"] != null)
+        {
+
+            @*This left side navbar was inside the container body-content and this is where it should be*@
+
+            <button class="openbtn pull-left" onclick="openNav()">☰</button>
+
+            @*------------------------------------------*@
+        }
     </div>
-    @*------------------------------------------*@
+        <div class=" body-content container-fluid well">
 
-    <div class=" body-content container-fluid well">
+            <div id="mySidebar" class="sidebar">
+                <a href="#">About</a>
+                <a href="#">Services</a>
+                <a href="#">Clients</a>
+                <a href="#" lass="closebtn" onclick="closeNav() "><span class="glyphicon glyphicon-chevron-left"></span></a>
 
-        <div id="mySidebar" class="sidebar">
-            <a href="#">About</a>
-            <a href="#">Services</a>
-            <a href="#">Clients</a>
-            <a href="#" lass="closebtn" onclick="closeNav()">X</a>
+            </div>
+            <div class="col-lg-11 ">
+                @RenderBody()
+            </div>
 
         </div>
-        <div class="col-lg-11 ">
-            @RenderBody()
-        </div>
-
-    </div>
 
 
-    <footer>
-        <p>&copy; @DateTime.Now.Year - Izinkabi property</p>
-    </footer>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
-</body>
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Izinkabi property</p>
+        </footer>
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+    </body>
 </html>
 
 
