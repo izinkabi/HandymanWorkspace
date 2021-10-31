@@ -25,5 +25,13 @@ namespace Handyman_UI.Controllers.ServiceProvider
         {
             return View();
         }
+        public ActionResult Profile()
+        {
+            return View();
+        }
+        public ActionResult ActiveRequests()
+        {
+            return View();
+        }
     }
 }

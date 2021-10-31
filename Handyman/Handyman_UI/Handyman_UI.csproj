@@ -233,6 +233,8 @@
     <Content Include="Views\Shared\DashBLayout.cshtml" />
     <Content Include="Views\spHome\TestView.cshtml" />
     <Content Include="Views\spHome\Services.cshtml" />
+    <Content Include="Views\spHome\Profile.cshtml" />
+    <Content Include="Views\spHome\ActiveRequests.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
