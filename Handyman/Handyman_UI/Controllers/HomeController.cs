@@ -147,6 +147,13 @@ namespace Handyman_UI.Controllers
             ViewBag.Username = UserEmail;
             return View();
         }
+        public ActionResult Services()
+        {
+
+            ViewBag.Message = "Your application description page.";
+            ViewBag.Username = UserEmail;
+            return View();
+        }
 
         public ActionResult Contact()
         {

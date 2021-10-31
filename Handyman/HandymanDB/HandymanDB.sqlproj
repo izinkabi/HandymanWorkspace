@@ -94,5 +94,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish\HandymanDB.publish.xml" />
+    <None Include="HandymanDB.publish.xml" />
   </ItemGroup>
 </Project>
