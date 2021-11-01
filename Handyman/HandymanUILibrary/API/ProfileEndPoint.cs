@@ -8,15 +8,17 @@ using System.Threading.Tasks;
 
 namespace HandymanUILibrary.API
 {
-    public class ProfileEndPoint
+    public class ProfileEndPoint: IProfileEndPoint
     {
 
         private IAPIHelper _aPIHelper;
-        public ProfileModel profileModel;
+        private  ProfileModel profileModel;
+        private IloggedInUserModel _loggedInUserModel;
         //Initializing
-        public ProfileEndPoint(IAPIHelper aPIHelper)
+        public ProfileEndPoint(IAPIHelper aPIHelper, IloggedInUserModel loggedInUserModel)
         {
             _aPIHelper = aPIHelper;
+            _loggedInUserModel = loggedInUserModel;
         }
 
         //a Profile Post endpoint
@@ -52,7 +54,7 @@ namespace HandymanUILibrary.API
 
                     var result = await httpResponseMessage.Content.ReadAsAsync<ProfileModel>();
                     
-                    profileModel.UserId = result.UserId;
+                    profileModel.UserId = _loggedInUserModel.Id;
                     profileModel.Name = result.Name;
                     profileModel.Type = "user";
                     profileModel.Surname = result.Surname;

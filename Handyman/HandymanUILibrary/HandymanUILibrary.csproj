@@ -53,6 +53,9 @@
   <ItemGroup>
     <Compile Include="API\APIHelper.cs" />
     <Compile Include="API\IAPIHelper.cs" />
+    <Compile Include="API\IProfileEndPoint.cs" />
+    <Compile Include="API\IRegisterEndPoint.cs" />
+    <Compile Include="API\IRegisterProviderEndPoint.cs" />
     <Compile Include="API\OTPGenerator.cs" />
     <Compile Include="API\ProfileEndPoint.cs" />
     <Compile Include="API\RegisterEndPoint.cs" />

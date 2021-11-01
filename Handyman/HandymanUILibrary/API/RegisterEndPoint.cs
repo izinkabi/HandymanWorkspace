@@ -8,30 +8,36 @@ using System.Threading.Tasks;
 
 namespace HandymanUILibrary.API
 {
-    public class RegisterEndPoint
+    public class RegisterEndPoint: IRegisterEndPoint
     {
-        private IAPIHelper _apiClient;
-        private string email;
-        public RegisterEndPoint(IAPIHelper aPIHelper)
+        private IAPIHelper _apiHelper;
+        static private string email;
+        static private IloggedInUserModel _loggedInUserModel;
+        public RegisterEndPoint(IAPIHelper aPIHelper,IloggedInUserModel loggedInUserModel)
         {
-            _apiClient = aPIHelper;
+            _apiHelper = aPIHelper;
+            _loggedInUserModel = loggedInUserModel;
         }
 
 
-        public async Task<NewUserModel> RegisterUser(NewUserModel newUser)
+        public async Task<IloggedInUserModel> RegisterUser(NewUserModel newUser)
         {
 
-            email = newUser.Email;
+            var user = new FormUrlEncodedContent(new[]
+          {
 
-            using (HttpResponseMessage httpResponse = await _apiClient.ApiClient.PostAsJsonAsync("/api/Account/Register", newUser))
+                 new KeyValuePair<string, string>("email", newUser.Email),
+                 new KeyValuePair<string, string>("password", newUser.Password),
+                 new KeyValuePair<string, string>("confirmPassword", newUser.ConfirmPassword),
+
+           });
+
+            using (HttpResponseMessage httpResponse = await _apiHelper.ApiClient.PostAsync("/api/Account/Register", user))
             {
                 if (httpResponse.IsSuccessStatusCode)
                 {
-
-
                     var result = await httpResponse.Content.ReadAsAsync<NewUserModel>();
-
-                    return result;
+                    return _loggedInUserModel;
                 }
                 else
                 {
@@ -43,23 +49,23 @@ namespace HandymanUILibrary.API
 
         }
 
-        public async Task<NewUserModel> SaveNewUser(NewUserModel userModel)
+        public async Task<IloggedInUserModel> SaveNewUser(NewUserModel userModel)
         {
-            // var data = new FormUrlEncodedContent(new[]
-            //{
+            var data = new FormUrlEncodedContent(new[]
+           {
 
-            //     new KeyValuePair<string, string>("email", email),
+                 new KeyValuePair<string, string>("email", userModel.Email),
 
-            // });
-           // _apiClient = new APIHelper();
-          
-            
-                HttpResponseMessage httpResponse = await _apiClient.ApiClient.PostAsJsonAsync("/api/Users", new { email = email });
+           });
+           
+
+
+            HttpResponseMessage httpResponse = await _apiHelper.ApiClient.PostAsync("/api/Users", data);
             
                 if (httpResponse.IsSuccessStatusCode)
                 {
                     var result = await httpResponse.Content.ReadAsAsync<NewUserModel>();
-                    return result;
+                return _loggedInUserModel;
                 }
                 else
                 {

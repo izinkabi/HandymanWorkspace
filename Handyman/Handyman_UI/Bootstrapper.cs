@@ -24,9 +24,13 @@ namespace Handyman_UI
            
             // register all your components with the container here
             // it is NOT necessary to register your controllers
-            container.RegisterType<IloggedInUserModel, loggedInUserModel>("LoggedUser");
+            container.RegisterType<IloggedInUserModel, loggedInUserModel>();
             container.RegisterType<IAPIHelper, APIHelper>();
-          
+            container.RegisterType<IProfileEndPoint, ProfileEndPoint>();
+            container.RegisterType<IRegisterEndPoint, RegisterEndPoint>();
+            container.RegisterType<IRegisterProviderEndPoint, RegisterProviderEndPoint>();
+
+
             // e.g. container.RegisterType<ITestService, TestService>();            
 
             return container;

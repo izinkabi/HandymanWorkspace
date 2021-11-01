@@ -15,24 +15,28 @@ namespace Handyman_UI.Controllers
     {
 
         private IAPIHelper _apiHepler;
-        private IloggedInUserModel loggedInUserModel;
-        static private string UserEmail { get; set; }
-        static private string UserId;
-        static private string Token { get; set; }
+        private IloggedInUserModel _loggedInUserModel;
+        private IRegisterEndPoint _registerEndPoint;
+
+
+        static private string DisplayUserName;
         static private string Username;
         static private string Password;
-        static private int ProfileId;
-        static private string PhoneNumber;
-        private ProfileEndPoint profileEndPoint;
-        private RegisterProviderEndPoint registerProviderEndpoint;
-        private OTPGenerator oTPGenerator;
+
+        private IProfileEndPoint _profileEndPoint;
+
+        //private IRegisterProviderEndPoint _registerProviderEndpoint;
+       
         private bool loggedIn;
         
 
         //The use of constructor allows for the Imterfaces to be rendered
-        public HomeController(IAPIHelper aPIHelper)
+        public HomeController(IAPIHelper aPIHelper,IProfileEndPoint profileEndpoint,IloggedInUserModel loggedInUser,IRegisterEndPoint register)
         {
             _apiHepler = aPIHelper;
+            _profileEndPoint = profileEndpoint;
+            _loggedInUserModel = loggedInUser;
+            _registerEndPoint = register;
         }
 
         public async Task<ActionResult> RegisterServiceProvider(Models.ServiceProviderModel serviceProviderModel)
@@ -95,10 +99,10 @@ namespace Handyman_UI.Controllers
                 ps.ServiceId = Int32.Parse(selectedItem.Value);
                
                 var results = await _apiHepler.AuthenticateUser(Username, Password);//auth awaited task
-                Token = results.Access_Token;//Token
-                await _apiHepler.GetLoggedInUserInfor(Token);// awaited loggedUser
-                UserId = loggedInUserModel.Id;//pass user ID
-                sp.UserId = UserId;
+                //Token = results.Access_Token;//Token
+                await _apiHepler.GetLoggedInUserInfor(results.Access_Token);// awaited loggedUser
+                //UserId = loggedInUserModel.Id;//pass user ID
+                sp.UserId = _loggedInUserModel.Id;
 
                 HandymanUILibrary.Models.ServiceProviderModel sprov = new HandymanUILibrary.Models.ServiceProviderModel();
                 try
@@ -110,7 +114,7 @@ namespace Handyman_UI.Controllers
 
                     ps.ServiceProviderId = sprov.Id;
                     await registerProvider.PostProvidersService(ps);
-                    Session["providername"] = Token;
+                    Session["providername"] = _loggedInUserModel.Username;
                 }
                 catch (Exception ex)
                 {
@@ -136,7 +140,7 @@ namespace Handyman_UI.Controllers
         public  async Task<ActionResult> Index()
         {
           
-            ViewBag.Username = UserEmail;
+            ViewBag.Username = DisplayUserName;
             return View();
         }
 
@@ -149,20 +153,20 @@ namespace Handyman_UI.Controllers
         {
             
             ViewBag.Message = "Your application description page.";
-            ViewBag.Username = UserEmail;
+            ViewBag.Username = DisplayUserName;
             return View();
         }
         public ActionResult Services()
         {
 
             ViewBag.Message = "Your application description page.";
-            ViewBag.Username = UserEmail;
+            ViewBag.Username = DisplayUserName;
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Username = UserEmail;
+            ViewBag.Username = DisplayUserName;
             ViewBag.Message = "Your contact page.";
             return View();
         }
@@ -176,16 +180,14 @@ namespace Handyman_UI.Controllers
 
             if (ModelState.IsValid)
             {
-              //  _apiHepler = new APIHelper();
+            
                 try
                 {
                     var results = await _apiHepler.AuthenticateUser(Username, Password);
-                    Token = results.Access_Token;
-                   
-                    UserEmail = Username;
-                   
-                    Session["log"] = Username;
-                    Session["profilename"] = Token;
+                    await _apiHepler.GetLoggedInUserInfor(results.Access_Token);
+                    DisplayUserName = results.UserName;
+                    Session["log"] = results.Access_Token;
+                    Session["profilename"] = DisplayUserName;
                     return RedirectToAction("Index", "Home");
                 }
                 catch (Exception ex)
@@ -195,69 +197,49 @@ namespace Handyman_UI.Controllers
                
                
             }
-            ViewBag.Username = UserEmail;
+            ViewBag.Username = DisplayUserName;
 
             return View();
            
         }
 
 
-        //public async Task SaveUser()
-        //{
-        //    RegisterEndPoint registerUser = new RegisterEndPoint(_apiHepler);
-
-        //    try
-        //    {
-        //        _apiHepler = new APIHelper();
-        //        registerUser = new RegisterEndPoint(_apiHepler);
-        //        var results = await registerUser.SaveNewUser(UserEmail);
-        //        RedirectToAction("CreateProfile");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ViewBag.ErrorMsgCode = ex.Message;
-        //    }
-
-
-        //}
-
         //Create a profile action method
         public async Task<ActionResult> CreateProfile(Models.ProfileModel profile)
         {
 
-            HandymanUILibrary.Models.ProfileModel profileModel = new HandymanUILibrary.Models.ProfileModel();
-            profileModel.Name = profile.Name;
-            profileModel.Surname = profile.Surname;
-            profileModel.PhoneNumber = profile.PhoneNumber;
-            profileModel.HomeAddress = profile.HomeAddress;
-            profileModel.DateofBirth = profile.DateTimeOfBirth;
-            profileModel.Type = "user";
-            ViewBag.profilename = profile.Name + profile.Surname ;
+           
            
 
 
             if (ModelState.IsValid)
             {
-                if (_apiHepler == null)
-                {
-                   // _apiHepler = new APIHelper();
-                    profileEndPoint = new ProfileEndPoint(_apiHepler);
 
+                HandymanUILibrary.Models.ProfileModel profileModel = new HandymanUILibrary.Models.ProfileModel();
+                profileModel.Name = profile.Name;
+                profileModel.Surname = profile.Surname;
+                profileModel.PhoneNumber = profile.PhoneNumber;
+                profileModel.HomeAddress = profile.HomeAddress;
+                profileModel.DateofBirth = profile.DateTimeOfBirth;
+                profileModel.Type = "user";
+                ViewBag.profilename = profile.Name + profile.Surname;
 
-                    try
+                try
                     {
                         //We await multiple tasks to create the profile
                         //First Get the token with auth and get the loggedin user
                         //Then pass the user ID but keep it to track the user 
                         //Finally we await the profile post task and if successful redict to the mentioned view/method
+
+
                         var results = await _apiHepler.AuthenticateUser(Username, Password);//auth awaited task
-                    
+                            
                         await _apiHepler.GetLoggedInUserInfor(results.Access_Token);// awaited loggedUser
-                        profileModel.UserId = loggedInUserModel.Id;//pass user ID
-                        PhoneNumber = profile.PhoneNumber;
-                        UserId = loggedInUserModel.Id;//track user
-                        await profileEndPoint.PostProfile(profileModel);//waited results of posted user profile
-                        Session["profilename"] = Token;
+
+                        profileModel.UserId = _loggedInUserModel.Id;//pass user ID
+                       
+                        await _profileEndPoint.PostProfile(profileModel);//waited results of posted user profile
+                        Session["profilename"] = _loggedInUserModel.Token;
                         return RedirectToAction("Index");
 
                     }
@@ -265,15 +247,15 @@ namespace Handyman_UI.Controllers
                     {
                         ViewBag.ErrorMsg = ex.Message;
                     }
-                }
-                else
-                {
-                     await _apiHepler.GetLoggedInUserInfor(Token);
-                    profileModel.UserId = loggedInUserModel.Id;
+                
+                //else
+                //{
+                //     await _apiHepler.GetLoggedInUserInfor(Token);
+                //    profileModel.UserId = loggedInUserModel.Id;
 
-                    await profileEndPoint.PostProfile(profileModel);
-                    return RedirectToAction("Index");
-                }
+                //    await _profileEndPoint.PostProfile(profileModel);
+                //    return RedirectToAction("Index");
+                //}
                 
 
             }
@@ -295,24 +277,25 @@ namespace Handyman_UI.Controllers
 
                     HandymanUILibrary.Models.NewUserModel user = new HandymanUILibrary.Models.NewUserModel();
 
+                    //Username and password are given a value once here and once in sign in
+                    //that might need a credentials interface and its class
                     user.Email = newUser.Username;
-                    UserEmail = newUser.Username;
-                    Username = UserEmail;
+                    Username = newUser.Username;
+
+                    //UserEmail = newUser.Username;
+                    //Username = UserEmail;
                     Password = newUser.Password;
                     user.Password = newUser.Password;
                     user.ConfirmPassword = newUser.ConfirmPassword;
                
-
-                    RegisterEndPoint registerUser = new RegisterEndPoint(_apiHepler);
-
                 
-                    var result = await registerUser.RegisterUser(user);
+                    var result = await _registerEndPoint.RegisterUser(user);
                    
-                    var results = await registerUser.SaveNewUser(user);
+                    var results = await _registerEndPoint.SaveNewUser(user);
                     
-                    UserEmail = Username;
+                    //UserEmail = Username;
                     //await SaveUser();
-                    Session["log"] = Username;
+                    Session["log"] = result.Email;
                     
 
 
@@ -336,31 +319,31 @@ namespace Handyman_UI.Controllers
             if (ModelState.IsValid)
             {
                 //might not work
-                if (oTPGenerator==null)
-                {
+                //if (oTPGenerator==null)
+                //{
 
-                    oTPGenerator = new OTPGenerator();
-                    var result = await oTPGenerator.CreateOTPEnvironment(UserId, PhoneNumber, Username);
+                //    oTPGenerator = new OTPGenerator();
+                //    var result = await oTPGenerator.CreateOTPEnvironment(UserId, PhoneNumber, Username);
                     
-                    try
-                    {
-                        //await the OTP to validate
-                        var lastValidation = await oTPGenerator.ValidateOTP(otmodel.OTP);
-                        ViewBag.ErrorMsgCode = lastValidation.messageDescription;
-                        return RedirectToAction("Index");
+                //    try
+                //    {
+                //        //await the OTP to validate
+                //        var lastValidation = await oTPGenerator.ValidateOTP(otmodel.OTP);
+                //        ViewBag.ErrorMsgCode = lastValidation.messageDescription;
+                //        return RedirectToAction("Index");
 
-                    }
-                        catch (Exception ex)
-                        {
-                            throw new Exception(ex.Message);
-                        }
-                }
-                    else
-                    {
-                        var lastValidation = await oTPGenerator.ValidateOTP(otmodel.OTP);
-                        ViewBag.ErrorMsgCode = lastValidation.messageDescription;
-                        return RedirectToAction("Index");
-                    }
+                //    }
+                //        catch (Exception ex)
+                //        {
+                //            throw new Exception(ex.Message);
+                //        }
+                //}
+                //    else
+                //    {
+                //        var lastValidation = await oTPGenerator.ValidateOTP(otmodel.OTP);
+                //        ViewBag.ErrorMsgCode = lastValidation.messageDescription;
+                //        return RedirectToAction("Index");
+                //    }
 
             }
 
@@ -370,9 +353,10 @@ namespace Handyman_UI.Controllers
         //Loggin out method
         public ActionResult Logout()
         {
-            Token = null;
+            //clear the instances in the container
             Session["providername"] = null;
             Session["profilename"] = null;
+            _loggedInUserModel = null;
            
             _apiHepler.LogOutuser();
             Session["log"] = null;

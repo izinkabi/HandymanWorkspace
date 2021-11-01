@@ -162,6 +162,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\ServiceProvider\spHomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -250,6 +252,7 @@
     <Content Include="Views\spHome\Services.cshtml" />
     <Content Include="Views\spHome\Profile.cshtml" />
     <Content Include="Views\spHome\ActiveRequests.cshtml" />
+    <Content Include="Views\Profile\CreateAProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -257,6 +260,7 @@
     <Folder Include="Areas\loadingArea\Data\" />
     <Folder Include="Areas\loadingArea\Views\Shared\" />
     <Folder Include="Views\Customer\" />
+    <Folder Include="Views\Login\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
