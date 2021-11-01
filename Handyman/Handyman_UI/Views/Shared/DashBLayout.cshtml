@@ -55,22 +55,22 @@
 
             <ul class="list-unstyled components">
                 <li class="active">
-                
-                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                    <i class="fas fa-briefcase"></i>
-                    Requests
-                </a>
-                <ul class="collapse list-unstyled" id="homeSubmenu">
-                    <li>
-                        <a href="#">Active Requests</a>
-                    </li>
-                    <li>
-                        <a href="#">Closed Requests</a>
-                    </li>
-                    <li>
-                        <a href="#">History</a>
-                    </li>
-                </ul>
+
+                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <i class="fas fa-briefcase"></i>
+                        Requests
+                    </a>
+                    <ul class="collapse list-unstyled" id="homeSubmenu">
+                        <li>
+                            <a href="#">Active Requests</a>
+                        </li>
+                        <li>
+                            <a href="#">Closed Requests</a>
+                        </li>
+                        <li>
+                            <a href="#">History</a>
+                        </li>
+                    </ul>
                 </li>
                 <li>
                     <a href="#">
@@ -83,11 +83,11 @@
                     </a>
                     <ul class="collapse list-unstyled" id="pageSubmenu">
                         <li>
-                            <a href="#">Profile</a>
+                            @Html.ActionLink("Profile", "Profile", "spHome")
                         </li>
                         <li>
                             @Html.ActionLink("Services", "Services", "spHome")
-                           
+
                         </li>
                         <li>
                             <a href="#">Page 3</a>
@@ -99,76 +99,91 @@
         </nav>
 
         <!-- Page Content  -->
-        <div class="col-lg-11 " style="padding:5px 5px;">
-
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="container-fluid">
-
-                    <button type="button" id="sidebarCollapse" class="btn btn-light">
-                        <i class="fas fa-align-left"></i>
-                        <span>T</span>
-                    </button>
-                    <div class="container">
-                        <div class="navbar-header">
-                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
+        <div class="col-sm-9 col-md-6 col-lg-8 col-xl-10" style="padding:5px 5px;">
+            <!-- NAVBAR-->
+            <nav class="navbar navbar-expand-lg py-3 navbar shadow-sm">
+                <div>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <button type="button" id="sidebarCollapse" class="btn btn-light">
+                                <i class="fas fa-align-left"></i>
+                                <span>T</span>
                             </button>
-                            @Html.ActionLink("HandyMan", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-                        </div>
-                        <div class="navbar-collapse collapse">
-                            <ul class="nav navbar-nav">
-                                <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                                <li>@Html.ActionLink("About", "About", "Home")</li>
-                                <li>@Html.ActionLink("Service", "Services", "Home")</li>
-                                <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                            </ul>
+                            </a>
+                        </li>
+                        <li class="nav-item"><a href="#" class="navbar-brand">
+    <!-- Logo Image -->
+    <img src="https://bootstrapious.com/i/snippets/sn-nav-logo/logo.png" width="35" alt="" class="d-inline-block align-middle mr-2">
+    <!-- Logo Text -->
+    <span class="text-uppercase font-weight-bold">Handyman</span>
+</a></li>
+                    </ul>
+                    </div>
+                <div class="container">
+                    
+                    <button type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"><span class="navbar-toggler-icon"></span></button>
 
-                            <ul class="nav navbar-nav navbar-right">
-                                @if (Session["log"] == null)
-                                {
-
-                                    <li><a href="https://localhost:44365/Home/Register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                                    <li><a href="https://localhost:44365/Home/SignIn"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-
-                                }
-                                else
-                                {
-                                    //Drop down menu for User Profile and settings
-                                    //Works well in an anchor and a link
-                                    <li class="dropdown ">
-                                        <a class=" dropdown dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
-                                            <span class="glyphicon glyphicon-user"></span>
-                                        </a>
-                                        <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                                            <li role="presentation" class="divider"></li>
-                                            <li role="presentation"><a href="#">@ViewBag.Username</a></li>
-                                            <li role="presentation" class="divider"></li>
-                                            <li class="dropdown-header">Profile</li>
-                                            <li role="presentation"><a href="#">CSS</a></li>
-                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">JavaScript</a></li>
-                                            <li role="presentation" class="divider"></li>
-                                            <li class="dropdown-header">Settings</li>
-                                            <li role="presentation"> @Html.ActionLink("Sign Out", "Logout", "Home")</li>
-                                        </ul>
-                                    </li>
-                                }
-                            </ul>
-
-
-                        </div>
+                    <div id="navbarSupportedContent" class="collapse navbar-collapse">
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item active"><a href="#" class="nav-link">Home <span class="sr-only">(current)</span></a></li>
+                            <li class="nav-item"><a href="#" class="nav-link">About</a></li>
+                            <li class="nav-item"><a href="#" class="nav-link">Services</a></li>
+                            <li class="nav-item"><a href="#" class="nav-link">Contact</a></li>
+                        </ul>
                     </div>
                 </div>
             </nav>
-                
-        @RenderBody()
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+
+
+                </div>
+
+            </nav>
+
+            @RenderBody()
         </div>
 
     </div>
-    <footer>
-        <p>&copy; @DateTime.Now.Year - Izinkabi property</p>
+    <!-- FOOTER -->
+    <footer class="w-100 py-4 flex-shrink-0">
+        <div class="container py-4">
+            <div class="row gy-4 gx-5">
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="h1 text-white">FB.</h5>
+                    <p class="small text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p>
+                    <p class="small text-muted mb-0">&copy; Copyrights. All rights reserved. <a class="text-primary" href="#">Bootstrapious.com</a></p>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="text-white mb-3">Quick links</h5>
+                    <ul class="list-unstyled text-muted">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Get started</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="text-white mb-3">Quick links</h5>
+                    <ul class="list-unstyled text-muted">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Get started</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="text-white mb-3">Newsletter</h5>
+                    <p class="small text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p>
+                    <form action="#">
+                        <div class="input-group mb-3">
+                            <input class="form-control" type="text" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <button class="btn btn-primary" id="button-addon2" type="button"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </footer>
 </body>
 
