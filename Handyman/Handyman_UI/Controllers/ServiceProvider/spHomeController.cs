@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace Handyman_UI.Controllers.ServiceProvider
 {
-    public class spHomeController : Controller
+    public class spController : Controller
     {
         // GET: spHome
         public ActionResult Home()

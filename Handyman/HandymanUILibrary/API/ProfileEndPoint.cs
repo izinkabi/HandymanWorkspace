@@ -11,10 +11,10 @@ namespace HandymanUILibrary.API
     public class ProfileEndPoint
     {
 
-        private APIHelper _aPIHelper;
+        private IAPIHelper _aPIHelper;
         public ProfileModel profileModel;
         //Initializing
-        public ProfileEndPoint(APIHelper aPIHelper)
+        public ProfileEndPoint(IAPIHelper aPIHelper)
         {
             _aPIHelper = aPIHelper;
         }

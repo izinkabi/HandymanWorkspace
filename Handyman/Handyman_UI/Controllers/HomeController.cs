@@ -1,5 +1,6 @@
 ﻿using Handyman_UI.Models;
 using HandymanUILibrary.API;
+using HandymanUILibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,10 @@ namespace Handyman_UI.Controllers
     public class HomeController : Controller
     {
 
-        private APIHelper _apiHepler;
+        private IAPIHelper _apiHepler;
+        private IloggedInUserModel loggedInUserModel;
         static private string UserEmail { get; set; }
         static private string UserId;
-
-
         static private string Token { get; set; }
         static private string Username;
         static private string Password;
@@ -29,10 +29,15 @@ namespace Handyman_UI.Controllers
         private bool loggedIn;
         
 
-
-        public async Task<ActionResult> RegisterServiceProvider(ServiceProviderModel serviceProviderModel)
+        //The use of constructor allows for the Imterfaces to be rendered
+        public HomeController(IAPIHelper aPIHelper)
         {
-            //ServiceProviderModel serviceProvider = new ServiceProviderModel();
+            _apiHepler = aPIHelper;
+        }
+
+        public async Task<ActionResult> RegisterServiceProvider(Models.ServiceProviderModel serviceProviderModel)
+        {
+            
             HandymanUILibrary.Models.ServiceProviderModel sp = new HandymanUILibrary.Models.ServiceProviderModel();
             HandymanUILibrary.Models.ProvidersServiceModel  ps = new HandymanUILibrary.Models.ProvidersServiceModel();
             string singleservice = "";
@@ -41,7 +46,7 @@ namespace Handyman_UI.Controllers
            
             
 
-            _apiHepler = new APIHelper();
+            
             RegisterProviderEndPoint registerProvider = new RegisterProviderEndPoint(_apiHepler);
 
             #region ViewData
@@ -91,8 +96,8 @@ namespace Handyman_UI.Controllers
                
                 var results = await _apiHepler.AuthenticateUser(Username, Password);//auth awaited task
                 Token = results.Access_Token;//Token
-                var loggeduser = await _apiHepler.GetLoggedInUserInfor(Token);// awaited loggedUser
-                UserId = loggeduser.Id;//pass user ID
+                await _apiHepler.GetLoggedInUserInfor(Token);// awaited loggedUser
+                UserId = loggedInUserModel.Id;//pass user ID
                 sp.UserId = UserId;
 
                 HandymanUILibrary.Models.ServiceProviderModel sprov = new HandymanUILibrary.Models.ServiceProviderModel();
@@ -171,7 +176,7 @@ namespace Handyman_UI.Controllers
 
             if (ModelState.IsValid)
             {
-                _apiHepler = new APIHelper();
+              //  _apiHepler = new APIHelper();
                 try
                 {
                     var results = await _apiHepler.AuthenticateUser(Username, Password);
@@ -235,7 +240,7 @@ namespace Handyman_UI.Controllers
             {
                 if (_apiHepler == null)
                 {
-                    _apiHepler = new APIHelper();
+                   // _apiHepler = new APIHelper();
                     profileEndPoint = new ProfileEndPoint(_apiHepler);
 
 
@@ -246,11 +251,11 @@ namespace Handyman_UI.Controllers
                         //Then pass the user ID but keep it to track the user 
                         //Finally we await the profile post task and if successful redict to the mentioned view/method
                         var results = await _apiHepler.AuthenticateUser(Username, Password);//auth awaited task
-                        Token = results.Access_Token;//Token
-                        var loggeduser = await _apiHepler.GetLoggedInUserInfor(Token);// awaited loggedUser
-                        profileModel.UserId = loggeduser.Id;//pass user ID
+                    
+                        await _apiHepler.GetLoggedInUserInfor(results.Access_Token);// awaited loggedUser
+                        profileModel.UserId = loggedInUserModel.Id;//pass user ID
                         PhoneNumber = profile.PhoneNumber;
-                        UserId = loggeduser.Id;//track user
+                        UserId = loggedInUserModel.Id;//track user
                         await profileEndPoint.PostProfile(profileModel);//waited results of posted user profile
                         Session["profilename"] = Token;
                         return RedirectToAction("Index");
@@ -263,8 +268,8 @@ namespace Handyman_UI.Controllers
                 }
                 else
                 {
-                    var loggeduser = await _apiHepler.GetLoggedInUserInfor(Token);
-                    profileModel.UserId = loggeduser.Id;
+                     await _apiHepler.GetLoggedInUserInfor(Token);
+                    profileModel.UserId = loggedInUserModel.Id;
 
                     await profileEndPoint.PostProfile(profileModel);
                     return RedirectToAction("Index");
@@ -296,7 +301,7 @@ namespace Handyman_UI.Controllers
                     Password = newUser.Password;
                     user.Password = newUser.Password;
                     user.ConfirmPassword = newUser.ConfirmPassword;
-                    _apiHepler = new APIHelper();
+               
 
                     RegisterEndPoint registerUser = new RegisterEndPoint(_apiHepler);
 
@@ -311,7 +316,7 @@ namespace Handyman_UI.Controllers
                     
 
 
-                    return RedirectToAction("CreateProfile");
+                    return RedirectToAction("SignIn");
                     
                 }
                 catch (Exception ex)
@@ -368,7 +373,7 @@ namespace Handyman_UI.Controllers
             Token = null;
             Session["providername"] = null;
             Session["profilename"] = null;
-            _apiHepler = new APIHelper();
+           
             _apiHepler.LogOutuser();
             Session["log"] = null;
             _apiHepler = null;          

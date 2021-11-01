@@ -10,9 +10,9 @@ namespace HandymanUILibrary.API
 {
     public class RegisterEndPoint
     {
-        private APIHelper _apiClient;
+        private IAPIHelper _apiClient;
         private string email;
-        public RegisterEndPoint(APIHelper aPIHelper)
+        public RegisterEndPoint(IAPIHelper aPIHelper)
         {
             _apiClient = aPIHelper;
         }
@@ -65,8 +65,6 @@ namespace HandymanUILibrary.API
                 {
                     throw new Exception(httpResponse.ReasonPhrase);
                 }
-
-            
 
         }
 

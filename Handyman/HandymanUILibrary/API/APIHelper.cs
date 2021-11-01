@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace HandymanUILibrary.API
 {
-     public class APIHelper 
+     public class APIHelper : IAPIHelper
     {
         public HttpClient _apiClient;
         public loggedInUserModel _loggedInUserModel;
@@ -105,5 +105,6 @@ namespace HandymanUILibrary.API
             _apiClient.DefaultRequestHeaders.Clear();
         }
 
+       
     }
 }

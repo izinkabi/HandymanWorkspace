@@ -11,7 +11,7 @@ namespace HandymanUILibrary.API
     {
         HttpClient ApiClient { get; }
         Task<AuthenticatedUserModel> AuthenticateUser(string username, string password);
-        Task GetLoggedInUserInfor(string token);
+        Task<loggedInUserModel> GetLoggedInUserInfor(string token);
 
         void LogOutuser();
 

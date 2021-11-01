@@ -11,10 +11,10 @@ namespace HandymanUILibrary.API
     public class RegisterProviderEndPoint
     {
 
-        private APIHelper _aPIHelper;
+        private IAPIHelper _aPIHelper;
         private ServiceProviderModel providerModel;
         //Initializing
-        public RegisterProviderEndPoint(APIHelper aPIHelper)
+        public RegisterProviderEndPoint(IAPIHelper aPIHelper)
         {
             _aPIHelper = aPIHelper;
         }
