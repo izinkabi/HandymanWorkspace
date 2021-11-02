@@ -10,10 +10,10 @@ namespace HandymanUILibrary.API
 {
     public class ServiceEndPoint
     {
-        private APIHelper _aPIHelper;
+        private IAPIHelper _aPIHelper;
         private ServiceModel serviceModel;
 
-        public ServiceEndPoint(APIHelper aPIHelper)
+        public ServiceEndPoint(IAPIHelper aPIHelper)
         {
             _aPIHelper = aPIHelper;
         }
@@ -21,7 +21,7 @@ namespace HandymanUILibrary.API
         public async Task<List<ServiceModel>> GetServices()
         {
 
-            _aPIHelper = new APIHelper();
+           
             using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync("/api/Services"))
             {
                 if (httpResponseMessage.IsSuccessStatusCode)

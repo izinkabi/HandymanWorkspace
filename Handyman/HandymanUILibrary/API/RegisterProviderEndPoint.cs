@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HandymanUILibrary.API
 {
-    public class RegisterProviderEndPoint
+    public class RegisterProviderEndPoint: IRegisterProviderEndPoint
     {
 
         private IAPIHelper _aPIHelper;
@@ -22,7 +22,7 @@ namespace HandymanUILibrary.API
         //a Profile Post endpoint
         public async Task<ServiceProviderModel> PostServiceProvider(ServiceProviderModel serviceProviderModel)
         {
-            _aPIHelper = new APIHelper();
+           
             using (HttpResponseMessage responseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync("/api/ServiceProviders", serviceProviderModel))
             {
                 if (responseMessage.IsSuccessStatusCode)
@@ -42,7 +42,7 @@ namespace HandymanUILibrary.API
         public async Task<ServiceProviderModel> GetProviderByUserId(ServiceProviderModel sp)
         {
             //ServiceProviderModel serviceProvider = new ServiceProviderModel();
-            _aPIHelper = new APIHelper();
+         
             using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync("/api/GetServiceProviderById"))
             {
                 if (httpResponseMessage.IsSuccessStatusCode)

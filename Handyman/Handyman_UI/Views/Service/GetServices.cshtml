@@ -1,7 +1,8 @@
 ﻿
 
 @{
-    Layout = null;
+    ViewBag.Title = "GetServices";
+    Layout = "~/Views/Shared/DashBLayout.cshtml";
 }
 
 <!DOCTYPE html>
@@ -14,22 +15,6 @@
 
     <title>Collapsible sidebar using Bootstrap 4</title>
 
-    <!-- Bootstrap CSS CDN -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-
-    <!-- Our Custom CSS -->
-    <link href="~/Content/CustomCSS/navbarStyling.css" rel="stylesheet" />
-
-    <!-- Scrollbar Custom CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
-
-    <!-- Font Awesome JS -->
-    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
-    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
-</head>
-
-<body>
-
 
     <!-- jQuery CDN - Slim version (=without AJAX) -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -41,9 +26,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
 
-    <div class="wrapper">
+</head>
+
+<body>
+
+
+    
+
+    <div >
         <!-- Sidebar  -->
-        <nav id="sidebar">
+        @*<nav id="sidebar">
             <div class="sidebar-header">
                 <h3>Service Provider</h3>
                 <strong>SP</strong>
@@ -90,10 +82,10 @@
                 </li>
             </ul>
 
-        </nav>
+        </nav>*@
 
         <!-- Page Content  -->
-        <div id="content">
+        @*<div id="content">
 
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
@@ -104,13 +96,12 @@
                     </button>
                 </div>
             </nav>
-        </div>
+        </div>*@
     </div>
-    <footer>
+    @*<footer>
         <p>&copy; @DateTime.Now.Year - Izinkabi property</p>
-    </footer>
+    </footer*@
 </body>
-
 </html>
 <script>
     $(document).ready(function () {

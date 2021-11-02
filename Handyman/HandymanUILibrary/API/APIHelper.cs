@@ -12,11 +12,13 @@ namespace HandymanUILibrary.API
 {
      public class APIHelper : IAPIHelper
     {
-        public HttpClient _apiClient;
-        public loggedInUserModel _loggedInUserModel;
-        public APIHelper()
+        private HttpClient _apiClient;
+        private IloggedInUserModel _loggedInUserModel;
+
+        public APIHelper(IloggedInUserModel loggedInUser)
         {
             InitializeCLient();
+            _loggedInUserModel = loggedInUser;  
         }
 
         public HttpClient ApiClient
@@ -67,33 +69,33 @@ namespace HandymanUILibrary.API
             }   
 
         }
-        public async Task<loggedInUserModel> GetLoggedInUserInfor(string Token)
+        public async Task GetLoggedInUserInfor(string Token)
         {
             _apiClient.DefaultRequestHeaders.Clear();
             _apiClient.DefaultRequestHeaders.Accept.Clear();
-            _apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("applications/json"));
             _apiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {Token}");
 
             using (HttpResponseMessage httpResponseMessage = await _apiClient.GetAsync("/api/Users"))
             {
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
-                    //I'm so not sure about not using bootstraper because of alot of object instantiation 
-                    _loggedInUserModel = new loggedInUserModel();
-
+                   
                     var result = await httpResponseMessage.Content.ReadAsAsync<loggedInUserModel>();
                     _loggedInUserModel.Token = Token;
                     _loggedInUserModel.Id = result.Id;
                     _loggedInUserModel.Username = result.Username;
                     _loggedInUserModel.Email = result.Email;
                     _loggedInUserModel.CreateDate = result.CreateDate;
+                //    _loggedInUserModel.FirstName = result.FirstName;
+                //    _loggedInUserModel.LastName = result.LastName;
                 }
                 else
                 {
                     throw new Exception(httpResponseMessage.ReasonPhrase);
                 }
             }
-            return _loggedInUserModel;
+           
 
         }
 
