@@ -1,5 +1,6 @@
 ﻿using Handyman_UI.Models;
 using HandymanUILibrary.API;
+using HandymanUILibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,15 @@ namespace Handyman_UI.Controllers
     {
          private string Username;
          private string Password;
-        private IAPIHelper _apiHepler;
+         private IAPIHelper _apiHepler;
+        // private IloggedInUserModel _loggedInUserModel;
 
-        private string DisplayUserName;
+        static private string DisplayUserName;
 
+        public LoginController(IAPIHelper aPIHelper)
+        {
+            _apiHepler = aPIHelper;
+        }
 
         //Login action function
         public async Task<ActionResult> SignIn(UserLoginModel model)
@@ -37,8 +43,9 @@ namespace Handyman_UI.Controllers
                     await _apiHepler.GetLoggedInUserInfor(results.Access_Token);
                     DisplayUserName = results.UserName;
                     Session["log"] = results.Access_Token;
-                    Session["profilename"] = DisplayUserName;
-                    return RedirectToAction("Index", "Home");
+                    //Session["profilename"] = DisplayUserName;
+                    ViewBag.Username = DisplayUserName;
+                    return RedirectToAction("Index", "CustomerHome");
                 }
                 catch (Exception ex)
                 {
@@ -47,7 +54,7 @@ namespace Handyman_UI.Controllers
 
 
             }
-            ViewBag.Username = DisplayUserName;
+          
 
             return View();
 

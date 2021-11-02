@@ -161,7 +161,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\Customer\CustomerHomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
@@ -234,33 +234,32 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\SignIn.cshtml" />
-    <Content Include="Views\Home\CreateProfile.cshtml" />
-    <Content Include="Views\Home\GetOTP.cshtml" />
-    <Content Include="Views\Home\Register.cshtml" />
-    <Content Include="Views\Home\RegisterServiceProvider.cshtml" />
-    <Content Include="Views\Home\UserDashBoard.cshtml" />
-    <Content Include="Views\Home\ElectronicCategory.cshtml" />
+    <Content Include="Views\CustomerHome\About.cshtml" />
+    <Content Include="Views\CustomerHome\Contact.cshtml" />
+    <Content Include="Views\CustomerHome\Index.cshtml" />
+    <Content Include="Views\CustomerHome\CreateProfile.cshtml" />
+    <Content Include="Views\CustomerHome\GetOTP.cshtml" />
+    <Content Include="Views\sp\RegisterServiceProvider.cshtml" />
+    <Content Include="Views\CustomerHome\UserDashBoard.cshtml" />
+    <Content Include="Views\Service\ElectronicCategory.cshtml" />
     <Content Include="Views\Service\GetServices.cshtml" />
-    <Content Include="Views\spHome\spHome.cshtml" />
-    <Content Include="Views\spHome\Requests.cshtml" />
+    <Content Include="Views\sp\Home.cshtml" />
+    <Content Include="Views\sp\Requests.cshtml" />
     <Content Include="Views\Shared\DashBLayout.cshtml" />
-    <Content Include="Views\spHome\TestView.cshtml" />
-    <Content Include="Views\spHome\Services.cshtml" />
-    <Content Include="Views\spHome\Profile.cshtml" />
-    <Content Include="Views\spHome\ActiveRequests.cshtml" />
+    <Content Include="Views\sp\TestView.cshtml" />
+    <Content Include="Views\sp\Services.cshtml" />
+    <Content Include="Views\sp\Profile.cshtml" />
+    <Content Include="Views\sp\ActiveRequests.cshtml" />
     <Content Include="Views\Profile\CreateAProfile.cshtml" />
+    <Content Include="Views\sp\ServiceDisplay.cshtml" />
+    <Content Include="Views\CustomerHome\Register.cshtml" />
+    <Content Include="Views\Login\SignIn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\loadingArea\Controllers\" />
     <Folder Include="Areas\loadingArea\Data\" />
     <Folder Include="Areas\loadingArea\Views\Shared\" />
-    <Folder Include="Views\Customer\" />
-    <Folder Include="Views\Login\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

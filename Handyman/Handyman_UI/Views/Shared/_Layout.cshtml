@@ -80,22 +80,22 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("HandyMan", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("HandyMan", "Index", "CustomerHome", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Service", "Services", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Home", "Index", "CustomerHome")</li>
+                    <li>@Html.ActionLink("About", "About", "CustomerHome")</li>
+                    <li>@Html.ActionLink("Service", "Services", "CustomerHome")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "CustomerHome")</li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
                     @if (Session["log"] == null)
                     {
 
-                        <li><a href="https://localhost:44365/Home/Register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                        <li><a href="https://localhost:44365/Home/SignIn"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                        <li><a href="https://localhost:44365/CustomerHome/Register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                        <li><a href="https://localhost:44365/Login/SignIn"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
 
                     }
                     else
@@ -111,11 +111,11 @@
                                 <li role="presentation"><a href="#">@ViewBag.Username</a></li>
                                 <li role="presentation" class="divider"></li>
                                 <li class="dropdown-header">Profile</li>
-                                <li role="presentation"><a href="#">CSS</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">JavaScript</a></li>
+                                <li role="presentation"><a href="#">Request History</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Support</a></li>
                                 <li role="presentation" class="divider"></li>
                                 <li class="dropdown-header">Settings</li>
-                                <li role="presentation"> @Html.ActionLink("Sign Out", "Logout", "Home")</li>
+                                <li role="presentation"> @Html.ActionLink("Sign Out", "Logout", "CustomerHome")</li>
                             </ul>
                         </li>
                     }
@@ -125,6 +125,8 @@
             </div>
         </div>
     </div>
+
+
     <div id="main" class="col-lg-1 pull-left">
         @if (Session["log"] != null)
         {

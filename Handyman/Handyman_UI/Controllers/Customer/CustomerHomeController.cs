@@ -11,7 +11,7 @@ using System.Web.Mvc;
 
 namespace Handyman_UI.Controllers
 {
-    public class HomeController : Controller
+    public class CustomerHomeController : Controller
     {
 
         private IAPIHelper _apiHepler;
@@ -31,7 +31,7 @@ namespace Handyman_UI.Controllers
         
 
         //The use of constructor allows for the Imterfaces to be rendered
-        public HomeController(IAPIHelper aPIHelper,IProfileEndPoint profileEndpoint,IloggedInUserModel loggedInUser,IRegisterEndPoint register)
+        public CustomerHomeController(IAPIHelper aPIHelper,IProfileEndPoint profileEndpoint,IloggedInUserModel loggedInUser,IRegisterEndPoint register)
         {
             _apiHepler = aPIHelper;
             _profileEndPoint = profileEndpoint;
@@ -39,102 +39,7 @@ namespace Handyman_UI.Controllers
             _registerEndPoint = register;
         }
 
-        public async Task<ActionResult> RegisterServiceProvider(Models.ServiceProviderModel serviceProviderModel)
-        {
-            
-            HandymanUILibrary.Models.ServiceProviderModel sp = new HandymanUILibrary.Models.ServiceProviderModel();
-            HandymanUILibrary.Models.ProvidersServiceModel  ps = new HandymanUILibrary.Models.ProvidersServiceModel();
-            string singleservice = "";
-           
-
-           
-            
-
-            
-            RegisterProviderEndPoint registerProvider = new RegisterProviderEndPoint(_apiHepler);
-
-            #region ViewData
-            // Services = new List<SelectListItem>();
-
-
-            List<SelectListItem> Services = new List<SelectListItem>() {
-                       
-                        new SelectListItem {
-                            Text = "Electronic", Value = "1"
-                        },
-                        new SelectListItem {
-                            Text = "Furniture", Value = "2"
-                        },
-                        new SelectListItem {
-                            Text = "Plumbing", Value = "3"
-                        },
-                        new SelectListItem {
-                            Text = "Interrior Design", Value = "4"
-                        },
-                        new SelectListItem {
-                            Text = "Mechanics", Value = "5"
-                        },
-                        new SelectListItem {
-                            Text = "Furniture", Value = "6"
-                        },
-                        new SelectListItem {
-                            Text = "Garderning", Value = "7"
-                        }
-                     };
-
-            serviceProviderModel.Services = Services;
-            var selectedItem = Services.Find(p => p.Value == serviceProviderModel.ServiceId.ToString());
-
-            if (selectedItem != null)
-            {
-                sp.Name = serviceProviderModel.Name;
-                sp.Surname = serviceProviderModel.Surname;
-                sp.HomeAddress = serviceProviderModel.HomeAddress;
-                sp.PhoneNumber = serviceProviderModel.PhoneNumber;
-                sp.DateOfBirth = serviceProviderModel.DateOfBirth;
-
-
-                selectedItem.Selected = true;
-                ViewBag.MessageService = "Service: " + selectedItem.Text;
-                ps.ServiceId = Int32.Parse(selectedItem.Value);
-               
-                var results = await _apiHepler.AuthenticateUser(Username, Password);//auth awaited task
-                //Token = results.Access_Token;//Token
-                await _apiHepler.GetLoggedInUserInfor(results.Access_Token);// awaited loggedUser
-                //UserId = loggedInUserModel.Id;//pass user ID
-                sp.UserId = _loggedInUserModel.Id;
-
-                HandymanUILibrary.Models.ServiceProviderModel sprov = new HandymanUILibrary.Models.ServiceProviderModel();
-                try
-                {
-                   
-
-                    await registerProvider.PostServiceProvider(sp);
-                    sprov = await registerProvider.GetServiceProviders(sp);
-
-                    ps.ServiceProviderId = sprov.Id;
-                    await registerProvider.PostProvidersService(ps);
-                    Session["providername"] = _loggedInUserModel.Username;
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(ex.Message);
-                }
-                return RedirectToAction("Index");
-            }
-           
-           
-
-            if (ModelState.IsValid)
-            {
-                ViewBag.Providername = sp.Name +" " +sp.Surname;
-
-
-            }
-
-            return View(serviceProviderModel);
-            #endregion
-        }
+        
 
         //Home page Action funtion
         public  async Task<ActionResult> Index()
@@ -172,36 +77,36 @@ namespace Handyman_UI.Controllers
         }
         
         //Login action function
-        public async Task<ActionResult> SignIn(UserLoginModel model)
-        {
+        //public async Task<ActionResult> SignIn(UserLoginModel model)
+        //{
 
-            Username = model.Username;
-            Password = model.Password;
+        //    Username = model.Username;
+        //    Password = model.Password;
 
-            if (ModelState.IsValid)
-            {
+        //    if (ModelState.IsValid)
+        //    {
             
-                try
-                {
-                    var results = await _apiHepler.AuthenticateUser(Username, Password);
-                    await _apiHepler.GetLoggedInUserInfor(results.Access_Token);
-                    DisplayUserName = results.UserName;
-                    Session["log"] = results.Access_Token;
-                    Session["profilename"] = DisplayUserName;
-                    return RedirectToAction("Index", "Home");
-                }
-                catch (Exception ex)
-                {
-                    ViewBag.ErrorMsg = ex.Message;
-                }
+        //        try
+        //        {
+        //            var results = await _apiHepler.AuthenticateUser(Username, Password);
+        //            await _apiHepler.GetLoggedInUserInfor(results.Access_Token);
+        //            DisplayUserName = results.UserName;
+        //            Session["log"] = results.Access_Token;
+        //            Session["profilename"] = DisplayUserName;
+        //            return RedirectToAction("Index", "CustomerHome");
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            ViewBag.ErrorMsg = ex.Message;
+        //        }
                
                
-            }
-            ViewBag.Username = DisplayUserName;
+        //    }
+        //    ViewBag.Username = DisplayUserName;
 
-            return View();
+        //    return View();
            
-        }
+        //}
 
 
         //Create a profile action method
@@ -240,7 +145,7 @@ namespace Handyman_UI.Controllers
                        
                         await _profileEndPoint.PostProfile(profileModel);//waited results of posted user profile
                         Session["profilename"] = _loggedInUserModel.Token;
-                        return RedirectToAction("Index");
+                        return RedirectToAction("Index", "CustomerHome");
 
                     }
                     catch (Exception ex)
@@ -292,21 +197,24 @@ namespace Handyman_UI.Controllers
                     var result = await _registerEndPoint.RegisterUser(user);
                    
                     var results = await _registerEndPoint.SaveNewUser(user);
-                    
+
                     //UserEmail = Username;
                     //await SaveUser();
+                    DisplayUserName = result.FirstName;
                     Session["log"] = result.Email;
-                    
+                    Session["profilename"] = result.Email;
 
 
-                    return RedirectToAction("SignIn");
+
+                    //ViewBag.Username = DisplayUserName;
+                    return RedirectToAction("SignIn", "Login");
                     
                 }
                 catch (Exception ex)
                 {
                     ViewBag.RegisterErrorMsg = ex.Message;
                 }
-                ViewBag.Username = Username;
+               
             }
                 return View();
         }
@@ -361,7 +269,7 @@ namespace Handyman_UI.Controllers
             _apiHepler.LogOutuser();
             Session["log"] = null;
             _apiHepler = null;          
-               return RedirectToAction("Index");
+               return RedirectToAction("Index", "CustomerHome");
           
         }
     }
