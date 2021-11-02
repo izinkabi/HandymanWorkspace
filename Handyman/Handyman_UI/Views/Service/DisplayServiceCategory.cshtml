@@ -1,0 +1,100 @@
+﻿@model Handyman_UI.Models.ServiceModel
+
+@{
+    ViewBag.Title = "DisplayServiceCategory";
+}
+<head>
+    <title>Service Category</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+
+  body {
+    position: relative;
+  }
+        ul.nav-pills {
+            top: 180px;
+            background-color: #ced5f5;
+            opacity: 0.5;
+            left: 10px;
+            position: fixed;
+        }
+        div.col-sm-11 div {
+        
+            height: 650px;
+            font-size: 28px;
+        }
+  #section1 {color: #fff; background-color: #1E88E5;}
+  #section2 {color: #fff; background-color: #673ab7;}
+  #section3 {color: #fff; background-color: #ff9800;}
+  #section41 {color: #fff; background-color: #00bcd4;}
+  #section42 {color: #fff; background-color: #009688;}
+
+  @@media screen and (max-width: 810px) {
+    #section1, #section2, #section3, #section41, #section42  {
+      margin-left: 150px;
+    }
+  }
+    </style>
+</head>
+
+
+<h2 class="text-center">Handyman's duties </h2>
+<hr/>
+
+<body>
+    
+    <div data-spy="scroll" data-target="#myScrollspy" data-offset="20">
+
+        <div class="container">
+            <div class="row">
+                
+                <nav class="col-sm-1 col-md-1 col-lg-1 pull-left" id="myScrollspy">
+                    
+                    <ul class="nav nav-pills nav-stacked">
+                        <strong>Categories</strong>
+                        <br />
+                        <br />
+                        <li class="active"><a href="#section1">Electronics </a></li>
+                        <li><a href="#section2">Mechanics </a></li>
+                        <li><a href="#section3">Plumbing </a></li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Renovations <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#section41">Indoor </a></li>
+                                <li><a href="#section42">Outdoor </a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+
+                <div class="col-sm-11 col-md-11 col-lg-11">
+                    <div id="section1">
+                        <h1>Section 1</h1>
+                        <p>Try to scroll this section and look at the navigation list while scrolling!</p>
+                    </div>
+                    <div id="section2">
+                        <h1>Section 2</h1>
+                        <p>Try to scroll this section and look at the navigation list while scrolling!</p>
+                    </div>
+                    <div id="section3">
+                        <h1>Section 3</h1>
+                        <p>Try to scroll this section and look at the navigation list while scrolling!</p>
+                    </div>
+                    <div id="section41">
+                        <h1>Section 4-1</h1>
+                        <p>Try to scroll this section and look at the navigation list while scrolling!</p>
+                    </div>
+                    <div id="section42">
+                       
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</div>
+ </body>

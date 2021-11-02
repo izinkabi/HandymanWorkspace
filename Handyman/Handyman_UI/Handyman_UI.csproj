@@ -254,6 +254,7 @@
     <Content Include="Views\sp\ServiceDisplay.cshtml" />
     <Content Include="Views\CustomerHome\Register.cshtml" />
     <Content Include="Views\Login\SignIn.cshtml" />
+    <Content Include="Views\Service\DisplayServiceCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

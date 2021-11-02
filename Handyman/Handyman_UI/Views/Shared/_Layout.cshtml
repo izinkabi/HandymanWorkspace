@@ -10,6 +10,10 @@
     <title>@ViewBag.Title - Handyman Tech </title>
 
     <style>
+
+        
+
+
         body {
             font-family: "Lato", sans-serif;
         }
@@ -27,6 +31,13 @@
             padding-top: 60px;
         }
 
+        .leftnavsection {
+           
+            top: 100px;
+            left: 10px;
+            position: fixed;
+        
+        }
             .sidebar a {
                 padding: 8px 8px 8px 32px;
                 text-decoration: none;
@@ -125,20 +136,23 @@
             </div>
         </div>
     </div>
+    <div class="row">
+    @if (Session["log"] != null)
+    {
+        <div id="main" class="col-lg-1 pull-left">
 
-
-    <div id="main" class="col-lg-1 pull-left">
-        @if (Session["log"] != null)
-        {
 
             @*This left side navbar was inside the container body-content and this is where it should be*@
 
             <button class="openbtn pull-left" onclick="openNav()">☰</button>
 
             @*------------------------------------------*@
-        }
+            
+        </div>
+    }
+   
     </div>
-        <div class=" body-content container-fluid well">
+   <div class=" body-content container-fluid well">
 
             <div id="mySidebar" class="sidebar">
                 <a href="#">About</a>

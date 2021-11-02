@@ -25,6 +25,10 @@ namespace Handyman_UI.Controllers
             return View();
         }
 
+        public ActionResult DisplayServiceCategory()
+        {
+            return View();
+        }
         // GET: Service/Create
         public ActionResult Create()
         {
