@@ -25,8 +25,10 @@ namespace HandymanAPI.Controllers
         public UserModel GetById()
         {
             string userId = RequestContext.Principal.Identity.GetUserId();
+            var userModel = new UserModel();
+            userModel.Id = userId;
             UserData data = new UserData();
-            return data.GetUserById(userId);
+            return data.GetUserById(userModel);
         }
 
        
