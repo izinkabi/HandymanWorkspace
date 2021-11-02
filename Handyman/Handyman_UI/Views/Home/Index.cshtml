@@ -1,233 +1,640 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-    
-<div class="container" >
-    <head>
-        <title>Bootstrap Example</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<head>
+    <style>
+        body {
+            margin-top: 20px;
+            background: #f1f2f7;
+        }
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-        <style>
-            /*Modal for displaying a group of services*/
-            .modal-header, h4, .close {
-                background-color: #5cb85c;
-                color: white !important;
-                text-align: center;
-                font-size: 30px;
+        /*panel*/
+        .panel {
+            border: none;
+            box-shadow: none;
+        }
+
+        .panel-heading {
+            border-color: #eff2f7;
+            font-size: 16px;
+            font-weight: 300;
+        }
+
+        .panel-title {
+            color: #2A3542;
+            font-size: 14px;
+            font-weight: 400;
+            margin-bottom: 0;
+            margin-top: 0;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+
+        /*product list*/
+
+        .prod-cat li a {
+            border-bottom: 1px dashed #d9d9d9;
+        }
+
+        .prod-cat li a {
+            color: #3b3b3b;
+        }
+
+        .prod-cat li ul {
+            margin-left: 30px;
+        }
+
+            .prod-cat li ul li a {
+                border-bottom: none;
             }
 
-            .modal-footer {
-                background-color: #f9f9f9;
+                .prod-cat li ul li a:hover, .prod-cat li ul li a:focus, .prod-cat li ul li.active a, .prod-cat li a:hover, .prod-cat li a:focus, .prod-cat li a.active {
+                    background: none;
+                    color: #ff7261;
+                }
+
+        .pro-lab {
+            margin-right: 20px;
+            font-weight: normal;
+        }
+
+        .pro-sort {
+            padding-right: 20px;
+            float: left;
+        }
+
+        .pro-page-list {
+            margin: 5px 0 0 0;
+        }
+
+        .product-list img {
+            width: 100%;
+            border-radius: 4px 4px 0 0;
+            -webkit-border-radius: 4px 4px 0 0;
+        }
+
+        .product-list .pro-img-box {
+            position: relative;
+        }
+
+        .adtocart {
+            background: #fc5959;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            -webkit-border-radius: 50%;
+            color: #fff;
+            display: inline-block;
+            text-align: center;
+            border: 3px solid #fff;
+            left: 45%;
+            bottom: -25px;
+            position: absolute;
+        }
+
+            .adtocart i {
+                color: #fff;
+                font-size: 25px;
+                line-height: 42px;
             }
 
+        .pro-title {
+            color: #5A5A5A;
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 16px;
+        }
 
-            /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
-            .row.content {
-                height: 1500px
+        .product-list .price {
+            color: #fc5959;
+            font-size: 15px;
+        }
+
+        .pro-img-details {
+            margin-left: -15px;
+        }
+
+            .pro-img-details img {
+                width: 100%;
             }
 
-            /* Set gray background color and 100% height */
+        .pro-d-title {
+            font-size: 16px;
+            margin-top: 0;
+        }
 
+        .product_meta {
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+            margin: 15px 0;
+        }
 
-            /* Set black background color, white text and some padding */
-            footer {
-                background-color: #555;
-                color: white;
-                padding: 15px;
+            .product_meta span {
+                display: block;
+                margin-bottom: 10px;
             }
 
-            h3, h4 {
-                margin: 10px 0 30px 0;
-                letter-spacing: 10px;
-                font-size: 20px;
-                color: #111;
+            .product_meta a, .pro-price {
+                color: #fc5959;
             }
 
-            /* On small screens, set height to 'auto' for sidenav and grid */
+        .pro-price, .amount-old {
+            font-size: 18px;
+            padding: 0 10px;
+        }
 
-        </style>
-    </head>
+        .amount-old {
+            text-decoration: line-through;
+        }
 
-    <div id="myCarousel" class="carousel slide text-center" data-ride="carousel">
-        @*Indicators*@
-        <ol class="carousel-indicators">
-            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-            <li data-target="#myCarousel" data-slide-to="1"></li>
-            <li data-target="#myCarousel" data-slide-to="2"></li>
-        </ol>
+        .quantity {
+            width: 120px;
+        }
 
-        @*Wrapper for slides*@
+        .pro-img-list {
+            margin: 10px 0 0 -15px;
+            width: 100%;
+            display: inline-block;
+        }
 
-        @*These are wrapped in cards*@
-        <div class=" container carousel-inner ">
-            <div class="item active card img-fluid ">
-                <img src="~/img/background.jpg" class="card-img-top" style="height:500px; width:1200px" />
-                <div class="card-img-overlay">
-                    <h4 class="card-title">Indoor and outdoor</h4>
-                    <p class="card-text">Handyman is a service provider with repairs of anything indoor and outside </p>
-                    <a href="#" class="btn btn-danger">View Service</a>
+            .pro-img-list a {
+                float: left;
+                margin-right: 10px;
+                margin-bottom: 10px;
+            }
+
+        .pro-d-head {
+            font-size: 18px;
+            font-weight: 300;
+        }
+
+        /* E-commerce */
+        .product-box {
+            padding: 0;
+            border: 1px solid #e7eaec;
+        }
+
+            .product-box:hover,
+            .product-box.active {
+                border: 1px solid transparent;
+                -webkit-box-shadow: 0 3px 7px 0 #a8a8a8;
+                -moz-box-shadow: 0 3px 7px 0 #a8a8a8;
+                box-shadow: 0 3px 7px 0 #a8a8a8;
+            }
+
+        .product-imitation {
+            text-align: center;
+            padding: 90px 0;
+            background-color: #f8f8f9;
+            color: #bebec3;
+            font-weight: 600;
+        }
+
+        .cart-product-imitation {
+            text-align: center;
+            padding-top: 30px;
+            height: 80px;
+            width: 80px;
+            background-color: #f8f8f9;
+        }
+
+        .product-imitation.xl {
+            padding: 120px 0;
+        }
+
+        .product-desc {
+            padding: 20px;
+            position: relative;
+        }
+
+        .ecommerce .tag-list {
+            padding: 0;
+        }
+
+        .ecommerce .fa-star {
+            color: #d1dade;
+        }
+
+            .ecommerce .fa-star.active {
+                color: #f8ac59;
+            }
+
+        .ecommerce .note-editor {
+            border: 1px solid #e7eaec;
+        }
+
+        table.shoping-cart-table {
+            margin-bottom: 0;
+        }
+
+            table.shoping-cart-table tr td {
+                border: none;
+                text-align: right;
+            }
+
+                table.shoping-cart-table tr td.desc,
+                table.shoping-cart-table tr td:first-child {
+                    text-align: left;
+                }
+
+                table.shoping-cart-table tr td:last-child {
+                    width: 80px;
+                }
+
+        .product-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #676a6c;
+            display: block;
+            margin: 2px 0 5px 0;
+        }
+
+            .product-name:hover,
+            .product-name:focus {
+                color: #1ab394;
+            }
+
+        .product-price {
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+            background-color: #1ab394;
+            padding: 6px 12px;
+            position: absolute;
+            top: -32px;
+            right: 0;
+        }
+
+        .product-detail .ibox-content {
+            padding: 30px 30px 50px 30px;
+        }
+
+        .image-imitation {
+            background-color: #f8f8f9;
+            text-align: center;
+            padding: 200px 0;
+        }
+
+        .product-main-price small {
+            font-size: 10px;
+        }
+
+        .product-images {
+            margin: 0 20px;
+        }
+
+        .ibox {
+            clear: both;
+            margin-bottom: 25px;
+            margin-top: 0;
+            padding: 0;
+        }
+
+            .ibox.collapsed .ibox-content {
+                display: none;
+            }
+
+            .ibox.collapsed .fa.fa-chevron-up:before {
+                content: "\f078";
+            }
+
+            .ibox.collapsed .fa.fa-chevron-down:before {
+                content: "\f077";
+            }
+
+            .ibox:after,
+            .ibox:before {
+                display: table;
+            }
+
+        .ibox-title {
+            -moz-border-bottom-colors: none;
+            -moz-border-left-colors: none;
+            -moz-border-right-colors: none;
+            -moz-border-top-colors: none;
+            background-color: #ffffff;
+            border-color: #e7eaec;
+            border-image: none;
+            border-style: solid solid none;
+            border-width: 3px 0 0;
+            color: inherit;
+            margin-bottom: 0;
+            padding: 14px 15px 7px;
+            min-height: 48px;
+        }
+
+        .ibox-content {
+            background-color: #ffffff;
+            color: inherit;
+            padding: 15px 20px 20px 20px;
+            border-color: #e7eaec;
+            border-image: none;
+            border-style: solid solid none;
+            border-width: 1px 0;
+        }
+
+        .ibox-footer {
+            color: inherit;
+            border-top: 1px solid #e7eaec;
+            font-size: 90%;
+            background: #ffffff;
+            padding: 10px 15px;
+        }
+
+    </style>
+</head>
+<body>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
+    <div class="container bootdey">
+        <div class="col-md-3">
+            <section class="panel">
+                <div class="panel-body">
+                    <input type="text" placeholder="Keyword Search" class="form-control" />
                 </div>
-            </div>
-
-            <div class="item">
-                <img src="~/img/background2.jpg" class="card-img-top" style="height:500px; width:1200px" />
-                <div class="card-img-overlay">
-                    <h4 class="card-title">Mechanics</h4>
-                    <p class="card-text">Anything mechanic is in our repair list and there is a Handyman for it</p>
-                    <a href="#" class="btn btn-danger">View Service</a>
+            </section>
+            <section class="panel">
+                <header class="panel-heading">
+                    Services Category
+                </header>
+                <div class="panel-body">
+                    <ul class="nav prod-cat">
+                        <li>
+                            <a href="#" class="active"><i class="fa fa-angle-right"></i> Household</a>
+                            <ul class="nav">
+                                <li class="active"><a href="#">- Grass cutting</a></li>
+                                <li><a href="#">- Pipes</a></li>
+                                <li><a href="#">- Roof</a></li>
+                                <li><a href="#">- Tiling</a></li>
+                                <li><a href="#">- Windows</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-angle-right"></i> Electornics &amp; Mobile</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-angle-right"></i> </a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-angle-right"></i> Coat &amp; Jacket</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-angle-right"></i> Jeans</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-angle-right"></i> Jewellery</a>
+                        </li>
+                        
+                    </ul>
                 </div>
-            </div>
-
-            <div class="item">
-                <img src="~/img/plumbli-slide1.png" class="card-img-top" style="height:500px; width:1200px" />
-                <div class="card-img-overlay">
-                    <h4 class="card-title">Plumbing</h4>
-                    <p class="card-text">
-                        You need plumbing?<br />
-                        Well there's a Handyman for that
-                    </p>
-                    <a href="#" class="btn btn-danger">View Service</a>
+            </section>
+            @*//Price Range*@
+            <section class="panel">
+                <header class="panel-heading">
+                    Price Range
+                </header>
+                <div class="panel-body sliders">
+                    <div id="slider-range" class="slider"></div>
+                    <div class="slider-info">
+                        <span id="slider-range-amount"></span>
+                    </div>
                 </div>
-            </div>
+            </section>
+            @*//FILTER SECTION*@
+            <section class="panel">
+                <header class="panel-heading">
+                    Filter
+                </header>
+                <div class="panel-body">
+                    <form role="form product-form">
+                        <div class="form-group">
+                            <label>Brand</label>
+                            <select class="form-control hasCustomSelect" style="-webkit-appearance: menulist-button; width: 231px; position: absolute; opacity: 0; height: 34px; font-size: 12px;">
+                                <option>Wallmart</option>
+                                <option>Catseye</option>
+                                <option>Moonsoon</option>
+                                <option>Textmart</option>
+                            </select>
+                            <span class="customSelect form-control" style="display: inline-block;"><span class="customSelectInner" style="width: 209px; display: inline-block;">Wallmart</span></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Color</label>
+                            <select class="form-control hasCustomSelect" style="-webkit-appearance: menulist-button; width: 231px; position: absolute; opacity: 0; height: 34px; font-size: 12px;">
+                                <option>White</option>
+                                <option>Black</option>
+                                <option>Red</option>
+                                <option>Green</option>
+                            </select>
+                            <span class="customSelect form-control" style="display: inline-block;"><span class="customSelectInner" style="width: 209px; display: inline-block;">White</span></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Type</label>
+                            <select class="form-control hasCustomSelect" style="-webkit-appearance: menulist-button; width: 231px; position: absolute; opacity: 0; height: 34px; font-size: 12px;">
+                                <option>Small</option>
+                                <option>Medium</option>
+                                <option>Large</option>
+                                <option>Extra Large</option>
+                            </select>
+                            <span class="customSelect form-control" style="display: inline-block;"><span class="customSelectInner" style="width: 209px; display: inline-block;">Small</span></span>
+                        </div>
+                        <button class="btn btn-primary" type="submit">Filter</button>
+                    </form>
+                </div>
+            </section>
+
         </div>
-        @*Left and right controls*@
-        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-            <span class="glyphicon glyphicon-chevron-left"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="right carousel-control" href="#myCarousel" data-slide="next">
-            <span class="glyphicon glyphicon-chevron-right"></span>
-            <span class="sr-only">Next</span>
-        </a>
+        @* ///space for paging *@
+        <div class="col-md-9">
+            <div class="row product-list">
+                <div class="col-md-4">
+                    <section class="panel">
+                        <div class="pro-img-box">
+                            <img src="https://via.placeholder.com/250x220/ADD8E6/000000" alt="" />
+                            <a href="#" class="adtocart">
+                                <i class="fa fa-home"></i>
+                            </a>
+                        </div>
+
+                        <div class="panel-body text-center">
+                            <h4>
+                                <a href="#" class="pro-title">
+                                    Grass cutting
+                                </a>
+                            </h4>
+                            <p class="price">Johannesburg</p>
+                        </div>
+                    </section>
+                </div>
+                <div class="col-md-4">
+                    <section class="panel">
+                        <div class="pro-img-box">
+                            <img src="https://via.placeholder.com/250x220/6495ED/000000" alt="" />
+                            <a href="#" class="adtocart">
+                                <i class="fa fa-mobile"></i>
+                            </a>
+                        </div>
+
+                        <div class="panel-body text-center">
+                            <h4>
+                                <a href="#" class="pro-title">
+                                    Mobile Phone Repair
+                                </a>
+                            </h4>
+                            <p class="price">Soweto, Protea Glen</p>
+                        </div>
+                    </section>
+                </div>
+                <div class="col-md-4">
+                    <section class="panel">
+                        <div class="pro-img-box">
+                            <img src="https://via.placeholder.com/250x220/00CED1/000000" alt="" />
+                            <a href="#" class="adtocart">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+
+                        <div class="panel-body text-center">
+                            <h4>
+                                <a href="#" class="pro-title">
+                                    Roof Repair
+                                </a>
+                            </h4>
+                            <p class="price">Rossetenville</p>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="col-md-4">
+                    <section class="panel">
+                        <div class="pro-img-box">
+                            <img src="https://via.placeholder.com/250x220/00CED1/000000" alt="" />
+                            <a href="#" class="adtocart">
+                                <i class="fa fa-shopping-cart"></i>
+                            </a>
+                        </div>
+
+                        <div class="panel-body text-center">
+                            <h4>
+                                <a href="#" class="pro-title">
+                                    Grass cutting
+                                </a>
+                            </h4>
+                            <p class="price">Johannesburg</p>
+                        </div>
+                    </section>
+                </div>
+                <div class="col-md-4">
+                    <section class="panel">
+                        <div class="pro-img-box">
+                            <img src="https://via.placeholder.com/250x220/00BFFF/000000" alt="" />
+                            <a href="#" class="adtocart">
+                                <i class="fa fa-automobile"></i>
+                            </a>
+                        </div>
+
+                        <div class="panel-body text-center">
+                            <h4>
+                                <a href="#" class="pro-title">
+                                    Mobile Phone Repair
+                                </a>
+                            </h4>
+                            <p class="price">Soweto, Protea Glen</p>
+                        </div>
+                    </section>
+                </div>
+                <div class="col-md-4">
+                    <section class="panel">
+                        <div class="pro-img-box">
+                            <img src="https://via.placeholder.com/250x220/20B2AA/000000" alt="" />
+                            <a href="#" class="adtocart">
+                                <i class="fa fa-shopping-cart"></i>
+                            </a>
+                        </div>
+
+                        <div class="panel-body text-center">
+                            <h4>
+                                <a href="#" class="pro-title">
+                                    Roof Repair
+                                </a>
+                            </h4>
+                            <p class="price">Rossetenville</p>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="col-md-4">
+                    <section class="panel">
+                        <div class="pro-img-box">
+                            <img src="https://via.placeholder.com/250x220/00BFFF/000000" alt="" />
+                            <a href="#" class="adtocart">
+                                <i class="fa fa-desktop"></i>
+                            </a>
+                        </div>
+
+                        <div class="panel-body text-center">
+                            <h4>
+                                <a href="#" class="pro-title">
+                                    Leopard Shirt Dress
+                                </a>
+                            </h4>
+                            <p class="price">$300.00</p>
+                        </div>
+                    </section>
+                </div>
+                <div class="col-md-4">
+                    <section class="panel">
+                        <div class="pro-img-box">
+                            <img src="https://via.placeholder.com/250x220/00CED1/000000" alt="" />
+                            <a href="#" class="adtocart">
+                                <i class="fa fa-shopping-cart"></i>
+                            </a>
+                        </div>
+
+                        <div class="panel-body text-center">
+                            <h4>
+                                <a href="#" class="pro-title">
+                                    Leopard Shirt Dress
+                                </a>
+                            </h4>
+                            <p class="price">$300.00</p>
+                        </div>
+                    </section>
+                </div>
+                <div class="col-md-4">
+                    <section class="panel">
+                        <div class="pro-img-box">
+                            <img src="https://via.placeholder.com/250x220/9400D3/000000" alt="" />
+                            <a href="#" class="adtocart">
+                                <i class="fa fa-shopping-cart"></i>
+                            </a>
+                        </div>
+
+                        <div class="panel-body text-center">
+                            <h4>
+                                <a href="#" class="pro-title">
+                                    Leopard Shirt Dress
+                                </a>
+                            </h4>
+                            <p class="price">$300.00</p>
+                        </div>
+                    </section>
+                </div>
+
+            </div>
+            <section class="panel">
+                <div class="panel-body">
+                    <div class="pull-right">
+                        <ul class="pagination pagination-sm pro-page-list">
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">»</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+        </div>
     </div>
-    <hr />
-    <div class="container text-center">
-        <div class="container ">
-            <h3>Services</h3>
 
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="panel panel-danger hover-overlay">
-                        <div class="panel-heading">Concrete floor Repair Services</div>
-                        <div class="panel-body">
-                            <img src="~/img/concrete.jpg" class="img-responsive" style="width:100%" alt="Image">
-                        </div>
-                        <div class="panel-footer"><a id="myBtn" href="#" class="btn btn-danger">View Services</a></div>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="panel panel-danger">
-                        <div class="panel-heading">Electronic repair Services Category</div>
-                        <div class="panel-body">
-                            <img src="~/img/lightbulb.jpg" class="img-responsive" style="width:100%" alt="Image">
-                        </div>
-                        <div class="panel-footer"><a href="https://localhost:44365/Home/ElectronicCategory" class="btn btn-danger">View Category</a></div>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="panel panel-danger">
-                        <div class="panel-heading">Construction Services</div>
-                        <div class="panel-body">
-                            <img src="~/img/concrete.jpg" class="img-responsive" style="width:100%" alt="Image">
-                        </div>
-                        <div class="panel-footer"><a href="#" class="btn btn-danger">View Service</a></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="panel panel-danger">
-                        <div class="panel-heading">Cleanig Service</div>
-                        <div class="panel-body">
-                            <img src="~/img/cleaning 2.jpg" class="img-responsive" tyle="width:100%" alt="Image">
-                        </div>
-                        <div class="panel-footer"><a href="#" class="btn btn-danger">View Service</a></div>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="panel panel-danger">
-                        <div class="panel-heading">Gardening Services</div>
-                        <div class="panel-body">
-                            <img src="~/img/grass cutting.jpg" class="img-responsive" style="width:100%" alt="Image">
-                        </div>
-                        <div class="panel-footer"><a href="#" class="btn btn-danger">View Service</a></div>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="panel panel-danger">
-                        <div class="panel-heading">Electronics Services</div>
-                        <div class="panel-body">
-                            <img src="~/img/laptoprepair2.jpg" class="img-responsive" style="width:330px; height:180px" alt="Image">
-                        </div>
-                        <div class="panel-footer"><a href="#" class="btn btn-danger">View Service</a></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container">
-        <!-- Trigger the modal with a button -->
-        @*<button type="button" class="btn btn-default btn-lg" id="myBtn">Login</button>*@
-
-        <!-- Modal -->
-        <div class="modal fade" id="myModal" role="dialog">
-            <div class="modal-dialog">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header" style="padding:35px 50px;">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4> Repairs</h4>
-                    </div>
-                    <div class="modal-body" style="padding:40px 50px;">
-                        <form role="form">
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <div class="panel panel-danger hover-overlay">
-                                        <div class="panel-heading">Concrete floor Repair Services</div>
-                                        <div class="panel-body">
-                                            <img src="~/img/concrete.jpg" class="img-responsive" style="width:100%" alt="Image">
-                                        </div>
-                                        <div class="panel-footer"><a id="myBtn" href="#" class="btn btn-danger">View Service</a></div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="panel panel-danger">
-                                        <div class="panel-heading">Electronic repair Services</div>
-                                        <div class="panel-body">
-                                            <img src="~/img/lightbulb.jpg" class="img-responsive" style="width:100%" alt="Image">
-                                        </div>
-                                        <div class="panel-footer"><a href="#" class="btn btn-danger">View Service</a></div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="panel panel-danger">
-                                        <div class="panel-heading">Concrete wall repair Services</div>
-                                        <div class="panel-body">
-                                            <img src="~/img/concrete.jpg" class="img-responsive" style="width:100%" alt="Image">
-                                        </div>
-                                        <div class="panel-footer"><a href="#" class="btn btn-danger">View Service</a></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<script>
-    $(document).ready(function () {
-        $("#myBtn").click(function () {
-            $("#myModal").modal();
-        });
-    });
-</script>
+</body>

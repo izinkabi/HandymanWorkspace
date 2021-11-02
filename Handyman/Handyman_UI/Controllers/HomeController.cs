@@ -41,11 +41,6 @@ namespace Handyman_UI.Controllers
             HandymanUILibrary.Models.ServiceProviderModel sp = new HandymanUILibrary.Models.ServiceProviderModel();
             HandymanUILibrary.Models.ProvidersServiceModel  ps = new HandymanUILibrary.Models.ProvidersServiceModel();
             string singleservice = "";
-           
-
-           
-            
-
             
             RegisterProviderEndPoint registerProvider = new RegisterProviderEndPoint(_apiHepler);
 
@@ -202,26 +197,7 @@ namespace Handyman_UI.Controllers
         }
 
 
-        //public async Task SaveUser()
-        //{
-        //    RegisterEndPoint registerUser = new RegisterEndPoint(_apiHepler);
-
-        //    try
-        //    {
-        //        _apiHepler = new APIHelper();
-        //        registerUser = new RegisterEndPoint(_apiHepler);
-        //        var results = await registerUser.SaveNewUser(UserEmail);
-        //        RedirectToAction("CreateProfile");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ViewBag.ErrorMsgCode = ex.Message;
-        //    }
-
-
-        //}
-
-        //Create a profile action method
+       //Create a profile action method
         public async Task<ActionResult> CreateProfile(Models.ProfileModel profile)
         {
 

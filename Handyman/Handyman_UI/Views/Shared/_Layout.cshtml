@@ -6,159 +6,142 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  
+
+    <link href="~/Content/CustomCSS/user_navbarStyling.css" rel="stylesheet" />
+
     <title>@ViewBag.Title - Handyman Tech </title>
-
-    <style>
-        body {
-            font-family: "Lato", sans-serif;
-        }
-
-        .sidebar {
-            height: 100%;
-            width: 0;
-            position: fixed;
-            z-index: 1;
-            top: 0;
-            left: 0;
-            background-color: #111;
-            overflow-x: hidden;
-            transition: 0.5s;
-            padding-top: 60px;
-        }
-
-            .sidebar a {
-                padding: 8px 8px 8px 32px;
-                text-decoration: none;
-                font-size: 25px;
-                color: #818181;
-                display: block;
-                transition: 0.3s;
-            }
-
-                .sidebar a:hover {
-                    color: #f1f1f1;
-                }
-
-            .sidebar .closebtn {
-                position: absolute;
-                top: 0;
-                right: 25px;
-                font-size: 36px;
-                margin-left: 50px;
-            }
-
-        .openbtn {
-            font-size: 20px;
-            cursor: pointer;
-            background-color: #111;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-        }
-
-            .openbtn:hover {
-                background-color: #444;
-            }
-
-        #main {
-            transition: margin-left .5s;
-            padding: 16px;
-        }
-    </style>
 
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
+
+    
     <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("HandyMan", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Service", "Services", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-
-                <ul class="nav navbar-nav navbar-right">
-                    @if (Session["log"] == null)
-                    {
-
-                        <li><a href="https://localhost:44365/Home/Register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                        <li><a href="https://localhost:44365/Home/SignIn"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-
-                    }
-                    else
-                    {
-                        //Drop down menu for User Profile and settings
-                        //Works well in an anchor and a link
-                        <li class="dropdown ">
-                            <a class=" dropdown dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
-                                <span class="glyphicon glyphicon-user"></span>
-                            </a>
-                            <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                                <li role="presentation" class="divider"></li>
-                                <li role="presentation"><a href="#">@ViewBag.Username</a></li>
-                                <li role="presentation" class="divider"></li>
-                                <li class="dropdown-header">Profile</li>
-                                <li role="presentation"><a href="#">CSS</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">JavaScript</a></li>
-                                <li role="presentation" class="divider"></li>
-                                <li class="dropdown-header">Settings</li>
-                                <li role="presentation"> @Html.ActionLink("Sign Out", "Logout", "Home")</li>
-                            </ul>
-                        </li>
-                    }
-                </ul>
 
 
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("HandyMan", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Service", "Services", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        @if (Session["log"] == null)
+                        {
+
+                            <li><a href="https://localhost:44365/Home/Register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                            <li><a href="https://localhost:44365/Home/SignIn"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+
+                        }
+                        else
+                        {
+
+                            //Drop down menu for User Profile and settings
+                            //Works well in an anchor and a link
+                            <li class="dropdown ">
+                                <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                                        <li role="presentation" class="divider"></li>
+                                        <li role="presentation"><a href="#">@ViewBag.Username</a></li>
+                                        <li role="presentation" class="divider"></li>
+                                        <li class="dropdown-header">Profile</li>
+                                        <li role="presentation"><a href="#">CSS</a></li>
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">JavaScript</a></li>
+                                        <li role="presentation" class="divider"></li>
+                                        <li class="dropdown-header">Settings</li>
+                                        <li role="presentation"> @Html.ActionLink("Sign Out", "Logout", "Home")</li>
+                                    </ul>
+                            </li>
+                        }
+                    </ul>
+
+
+                </div>
             </div>
         </div>
+
+    <div class=" body-content container-fluid well">
+        <div class="col-lg-11 ">
+            @RenderBody()
+        </div>
     </div>
-    <div id="main" class="col-lg-1 pull-left">
-        @if (Session["log"] != null)
-        {
 
-            @*This left side navbar was inside the container body-content and this is where it should be*@
-
-            <button class="openbtn pull-left" onclick="openNav()">☰</button>
-
-            @*------------------------------------------*@
-        }
-    </div>
-        <div class=" body-content container-fluid well">
-
-            <div id="mySidebar" class="sidebar">
-                <a href="#">About</a>
-                <a href="#">Services</a>
-                <a href="#">Clients</a>
-                <a href="#" lass="closebtn" onclick="closeNav() "><span class="glyphicon glyphicon-chevron-left"></span></a>
-
+    <!-- Footer -->
+    <footer class="bg-white">
+        <div class="container py-5">
+            <div class="row py-4">
+                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                    <img src="img/logo.png" alt="" width="180" class="mb-3">
+                    <p class="font-italic text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p>
+                    <ul class="list-inline mt-4">
+                        <li class="list-inline-item"><a href="#" target="_blank" title="twitter"><i class="fa fa-twitter"></i></a></li>
+                        <li class="list-inline-item"><a href="#" target="_blank" title="facebook"><i class="fa fa-facebook"></i></a></li>
+                        <li class="list-inline-item"><a href="#" target="_blank" title="instagram"><i class="fa fa-instagram"></i></a></li>
+                        <li class="list-inline-item"><a href="#" target="_blank" title="pinterest"><i class="fa fa-pinterest"></i></a></li>
+                        <li class="list-inline-item"><a href="#" target="_blank" title="vimeo"><i class="fa fa-vimeo"></i></a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+                    <h6 class="text-uppercase font-weight-bold mb-4">Shop</h6>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2"><a href="#" class="text-muted">For Women</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted">For Men</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted">Stores</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted">Our Blog</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+                    <h6 class="text-uppercase font-weight-bold mb-4">Company</h6>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2"><a href="#" class="text-muted">Login</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted">Register</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted">Wishlist</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted">Our Products</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-lg-0">
+                    <h6 class="text-uppercase font-weight-bold mb-4">Newsletter</h6>
+                    <p class="text-muted mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. At itaque temporibus.</p>
+                    <div class="p-1 rounded border">
+                        <div class="input-group">
+                            <input type="email" placeholder="Enter your email address" aria-describedby="button-addon1" class="form-control border-0 shadow-0">
+                            <div class="input-group-append">
+                                <button id="button-addon1" type="submit" class="btn btn-link"><i class="fa fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-11 ">
-                @RenderBody()
-            </div>
-
         </div>
 
-
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Izinkabi property</p>
-        </footer>
-        @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")
-        @RenderSection("scripts", required: false)
-    </body>
+        <!-- Copyrights -->
+        <div class="bg-light py-4">
+            <div class="container text-center">
+                <p class="text-muted mb-0 py-2">&copy; @DateTime.Now.Year - Izinkabi property</p>
+            </div>
+        </div>
+    </footer>
+    <!-- End -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
 </html>
 
 
@@ -172,4 +155,18 @@
         document.getElementById("mySidebar").style.width = "0";
         document.getElementById("main").style.marginLeft = "0";
     }
+
+    $(function () {
+        $(window).on('scroll', function () {
+            if ($(window).scrollTop() > 10) {
+                $('.navbar').addClass('active');
+            } else {
+                $('.navbar').removeClass('active');
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover();
+    });
 </script>
