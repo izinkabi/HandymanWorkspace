@@ -8,13 +8,13 @@ using System.Web.Mvc;
 
 namespace Handyman_UI.Controllers.ServiceProvider
 {
-    public class spController : Controller
+    public class ServiceProviderHomeController : Controller
     {
         private IRegisterProviderEndPoint _registerProvider;
         private IAPIHelper _apiHepler;
         static private string Username, Password;
 
-        public spController(IAPIHelper aPIHelper,IRegisterProviderEndPoint registerProvider)
+        public ServiceProviderHomeController(IAPIHelper aPIHelper,IRegisterProviderEndPoint registerProvider)
         {
             _apiHepler = aPIHelper;
             _registerProvider = registerProvider;

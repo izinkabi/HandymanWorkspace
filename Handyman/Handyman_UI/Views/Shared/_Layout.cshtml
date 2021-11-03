@@ -29,22 +29,22 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    @Html.ActionLink("HandyMan", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                    @Html.ActionLink("HandyMan", "", "CustomerHome", new { area = "" }, new { @class = "navbar-brand" })
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li>@Html.ActionLink("About", "About", "Home")</li>
-                        <li>@Html.ActionLink("Service", "Services", "Home")</li>
-                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                        <li>@Html.ActionLink("Home", "Index", "CustomerHome")</li>
+                        <li>@Html.ActionLink("About", "About", "CustomerHome")</li>
+                        <li>@Html.ActionLink("Service", "Services", "CustomerHome")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "CustomerHome")</li>
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
                         @if (Session["log"] == null)
                         {
 
-                            <li><a href="https://localhost:44365/Home/Register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                            <li><a href="https://localhost:44365/Home/SignIn"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                            <li><a href="https://localhost:44365/CustomerHome/Register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                            <li><a href="https://localhost:44365/Login/SignIn"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
 
                         }
                         else

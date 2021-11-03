@@ -165,7 +165,7 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
-    <Compile Include="Controllers\ServiceProvider\spHomeController.cs" />
+    <Compile Include="Controllers\ServiceProvider\ServiceProviderHomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -241,19 +241,19 @@
     <Content Include="Views\CustomerHome\Index.cshtml" />
     <Content Include="Views\CustomerHome\CreateProfile.cshtml" />
     <Content Include="Views\CustomerHome\GetOTP.cshtml" />
-    <Content Include="Views\sp\RegisterServiceProvider.cshtml" />
+    <Content Include="Views\ServiceProviderHome\RegisterServiceProvider.cshtml" />
     <Content Include="Views\CustomerHome\UserDashBoard.cshtml" />
     <Content Include="Views\Service\ElectronicCategory.cshtml" />
     <Content Include="Views\Service\GetServices.cshtml" />
-    <Content Include="Views\sp\Home.cshtml" />
-    <Content Include="Views\sp\Requests.cshtml" />
+    <Content Include="Views\ServiceProviderHome\Home.cshtml" />
+    <Content Include="Views\ServiceProviderHome\Requests.cshtml" />
     <Content Include="Views\Shared\DashBLayout.cshtml" />
-    <Content Include="Views\sp\TestView.cshtml" />
-    <Content Include="Views\sp\Services.cshtml" />
-    <Content Include="Views\sp\Profile.cshtml" />
-    <Content Include="Views\sp\ActiveRequests.cshtml" />
+    <Content Include="Views\ServiceProviderHome\TestView.cshtml" />
+    <Content Include="Views\ServiceProviderHome\Services.cshtml" />
+    <Content Include="Views\ServiceProviderHome\Profile.cshtml" />
+    <Content Include="Views\ServiceProviderHome\ActiveRequests.cshtml" />
     <Content Include="Views\Profile\CreateAProfile.cshtml" />
-    <Content Include="Views\sp\ServiceDisplay.cshtml" />
+    <Content Include="Views\ServiceProviderHome\ServiceDisplay.cshtml" />
     <Content Include="Views\CustomerHome\Register.cshtml" />
     <Content Include="Views\Login\SignIn.cshtml" />
   </ItemGroup>
