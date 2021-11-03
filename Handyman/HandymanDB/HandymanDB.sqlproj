@@ -88,6 +88,8 @@
     <Build Include="Stored Procedures\spServicesProviderLookUp.sql" />
     <Build Include="Stored Procedures\spServiceProvidersLookUp.sql" />
     <Build Include="Stored Procedures\spServicesLookUp.sql" />
+    <Build Include="Tables\Address.sql" />
+    <Build Include="Tables\ServiceCategory.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Stored Procedures\spProfileInsert.sql" />
@@ -95,5 +97,8 @@
   <ItemGroup>
     <None Include="Publish\HandymanDB.publish.xml" />
     <None Include="HandymanDB.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="HandymanDB.refactorlog" />
   </ItemGroup>
 </Project>

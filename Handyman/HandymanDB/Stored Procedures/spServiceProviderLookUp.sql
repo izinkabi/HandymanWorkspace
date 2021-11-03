@@ -1,10 +1,10 @@
 ﻿/*Looking for ServiceProvider with a given ID*/
 CREATE PROCEDURE [dbo].[spServiceProviderLookUp]
-	@UserId nvarchar(128) = '' 
+	@Id int  
 AS
 Begin
 set nocount on;
-	SELECT Id,Name,Surname,HomeAddress,PhoneNumber
+	SELECT *
 	FROM ServiceProvider
-	WHERE UserId = @UserId
+	WHERE Id = @Id
 End

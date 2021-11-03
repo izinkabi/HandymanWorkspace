@@ -11,13 +11,13 @@ namespace HandymanDataLibrary.Internal
     public class UserData
     {
         /*Getting a user by ID*/
-        public UserModel GetUserById(string Id)
+        public UserModel GetUserById(UserModel userModel)
         {
             SQLDataAccess sql = new SQLDataAccess();
 
-            var p = new { Id = Id };
+            var p = new { Id = userModel.Id };
 
-            var output = sql.LoadData<UserModel, dynamic>("dbo.spUserLookUp", p, "HandymanDB");
+            var output = sql.LoadData<UserModel, dynamic>("dbo.spUserLookUp", p, "DefaultConnection");//Using the 
 
             return output.First();
 
