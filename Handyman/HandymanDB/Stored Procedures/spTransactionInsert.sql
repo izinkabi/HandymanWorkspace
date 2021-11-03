@@ -1,12 +1,9 @@
 ﻿CREATE PROCEDURE [dbo].[spTransactionInsert]
-	@Date Date ,
-	@ServiceId int = 0,
-	@type VARCHAR (45) = '',
-	@ConsumerId int = 0,
-	@RequestId int = 0
+	@RequestId int,
+	@DateCreated DATETIME
 AS
 Begin
 
-	INSERT INTO [Transaction] (Date,ServiceId,Type,ConsumerId,RequestId)
-	VALUES (@Date,@ServiceId,@type,@ConsumerId,@RequestId)
+	INSERT INTO [Transaction] (DateCreated,RequestId)
+	VALUES (@DateCreated,@RequestId)
 End

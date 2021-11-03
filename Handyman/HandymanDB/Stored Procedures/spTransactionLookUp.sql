@@ -1,11 +1,11 @@
 ﻿/*Transaction Look up SP*/
 CREATE PROCEDURE [dbo].[spTransactionLookUp]
-	@Id int = 0
+	@Id int 
 	
 AS
 Begin
 set nocount on;
-	SELECT Id, Date, ServiceId,Type,ConsumerId,RequestId
+	SELECT *
 	FROM [dbo].[Transaction]
 	WHERE Id = @Id
 End
