@@ -28,10 +28,8 @@ namespace Handyman_UI
             container.RegisterType<IAPIHelper, APIHelper>();
             container.RegisterType<IProfileEndPoint, ProfileEndPoint>();
             container.RegisterType<IRegisterEndPoint, RegisterEndPoint>();
+            container.RegisterType<IServiceEndPoint, ServiceEndPoint>();
             container.RegisterType<IRegisterProviderEndPoint, RegisterProviderEndPoint>();
-
-
-            // e.g. container.RegisterType<ITestService, TestService>();            
 
             return container;
         }

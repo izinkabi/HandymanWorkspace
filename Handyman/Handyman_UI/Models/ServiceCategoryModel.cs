@@ -5,12 +5,10 @@ using System.Web;
 
 namespace Handyman_UI.Models
 {
-    public class ServiceModel
+    public class ServiceCategoryModel
     {
-        public string Name { get; set; }
         public int Id { get; set; }
+        public string Name { get; set; }
         public string Description { get; set; }
-        public int CategoryId { get; set; }
-
     }
 }

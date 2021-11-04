@@ -1,5 +1,6 @@
 ﻿using HandymanDataLibrary.Models;
 using HandymanDataLibray.DataAccess;
+using HandymanDataLibray.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,12 @@ namespace HandymanAPI.Controllers
             serviceData.PostService(service);
         }
 
+        //Get the list of service categories
+        public List<ServiceCategoryModel> GetServiceCategories()
+        {
+            serviceData = new ServiceData();
+            return serviceData.GetServiceCategories();
+        }
         // PUT: api/Services/5
         public void Put(int id, [FromBody]string value)
         {

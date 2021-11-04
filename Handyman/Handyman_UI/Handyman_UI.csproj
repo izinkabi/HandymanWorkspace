@@ -162,10 +162,12 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Controllers\Customer\CustomerHomeController.cs" />
+    <Compile Include="Controllers\IServicesLoader.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\ServiceProvider\ServiceProviderHomeController.cs" />
+    <Compile Include="Controllers\ServicesLoader.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -173,6 +175,7 @@
     <Compile Include="Models\CreateUserModel.cs" />
     <Compile Include="Models\OTPModel.cs" />
     <Compile Include="Models\ProfileModel.cs" />
+    <Compile Include="Models\ServiceCategoryModel.cs" />
     <Compile Include="Models\ServiceModel.cs" />
     <Compile Include="Models\ServiceProviderModel.cs" />
     <Compile Include="Models\UserLoginModel.cs" />

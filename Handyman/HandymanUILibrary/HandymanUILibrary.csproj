@@ -56,6 +56,7 @@
     <Compile Include="API\IProfileEndPoint.cs" />
     <Compile Include="API\IRegisterEndPoint.cs" />
     <Compile Include="API\IRegisterProviderEndPoint.cs" />
+    <Compile Include="API\IServiceEndPoint.cs" />
     <Compile Include="API\OTPGenerator.cs" />
     <Compile Include="API\ProfileEndPoint.cs" />
     <Compile Include="API\RegisterEndPoint.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Models\OTPResult.cs" />
     <Compile Include="Models\ProfileModel.cs" />
     <Compile Include="Models\ProvidersServiceModel.cs" />
+    <Compile Include="Models\ServiceCategoryModel.cs" />
     <Compile Include="Models\ServiceModel.cs" />
     <Compile Include="Models\ServiceProviderModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

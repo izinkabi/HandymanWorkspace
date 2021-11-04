@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace HandymanUILibrary.API
 {
-    public class ServiceEndPoint
+    public class ServiceEndPoint: IServiceEndPoint
     {
         private IAPIHelper _aPIHelper;
-        private ServiceModel serviceModel;
+        
 
         public ServiceEndPoint(IAPIHelper aPIHelper)
         {
@@ -27,10 +27,29 @@ namespace HandymanUILibrary.API
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
 
-
-                    serviceModel = new ServiceModel();
-
                     var result = await httpResponseMessage.Content.ReadAsAsync<List<ServiceModel>>();
+
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(httpResponseMessage.ReasonPhrase);
+                }
+            }
+
+        }
+
+
+        public async Task<List<ServiceCategoryModel>> GetServiceCategories()
+        {
+
+
+            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync("/api/GetServiceCategories"))
+            {
+                if (httpResponseMessage.IsSuccessStatusCode)
+                {
+
+                    var result = await httpResponseMessage.Content.ReadAsAsync<List<ServiceCategoryModel>>();
 
                     return result;
                 }

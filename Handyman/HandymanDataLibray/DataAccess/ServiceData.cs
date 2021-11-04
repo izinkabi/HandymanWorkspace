@@ -1,6 +1,7 @@
 ﻿
 using HandymanDataLibrary.Models;
 using HandymanDataLibray.DataAccess.Internal;
+using HandymanDataLibray.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,5 +42,11 @@ namespace HandymanDataLibray.DataAccess
         }
 
 
+        public List<ServiceCategoryModel> GetServiceCategories()
+        {
+            SQLDataAccess sql = new SQLDataAccess();
+            var output = sql.LoadData<ServiceCategoryModel, dynamic>("dbo.spServiceCategoriesLookUp", new { }, "HandymanDB");
+            return output;
+        }
     }
 }
