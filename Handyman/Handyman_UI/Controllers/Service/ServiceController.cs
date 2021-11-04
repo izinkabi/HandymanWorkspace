@@ -8,6 +8,13 @@ namespace Handyman_UI.Controllers
 {
     public class ServiceController : Controller
     {
+        private IServicesLoader _serviceLoader;
+        public ServiceController(IServicesLoader servicesLoader)
+        {
+            _serviceLoader = servicesLoader;
+        }
+
+       
         // GET: Service
         public ActionResult Index()
         {

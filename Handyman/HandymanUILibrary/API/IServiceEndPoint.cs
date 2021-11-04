@@ -7,6 +7,7 @@ namespace HandymanUILibrary.API
     public interface IServiceEndPoint
     {
         Task<List<ServiceModel>> GetServices();
+        Task<List<ServiceCategoryModel>> GetServiceCategories();
 
     }
 }
