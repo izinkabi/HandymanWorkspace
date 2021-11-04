@@ -34,15 +34,19 @@ namespace Handyman_UI.Controllers
             {
 
                 var tempServices = await _serviceEndPoint.GetServices();
-
-                foreach (HandymanUILibrary.Models.ServiceModel sv in tempServices)
+                
+                Services = new List<ServiceModel>();//initialize the list
+                for (int i = 0;i< tempServices.Count; i++)
                 {
-                    var tempService = new ServiceModel();
-                    tempService.Id = sv.Id;
-                    tempService.Name = sv.Name;
-                    tempService.CategoryId = sv.CategoryId;
-                    Services = new List<ServiceModel>();
+                    var tempService = new ServiceModel();// this is new everytime the for-Loop loops only, not in the foreach
+                     //the following is populating the data from UILibrary
+                     tempService.Id = tempServices.ElementAt(i).Id;
+                    tempService.Name = tempServices.ElementAt(i).Name;
+                    tempService.Description = tempServices.ElementAt(i).Description;
+                    tempService.ServiceCategoryId = tempServices.ElementAt(i).ServiceCategoryId;
+                    
                     Services.Add(tempService);//Add to the sevices list
+                   
                 }
             }
             catch (Exception ex)
@@ -58,15 +62,16 @@ namespace Handyman_UI.Controllers
         {
             try
             {
-                var tempCategories = await _serviceEndPoint.GetServiceCategories();
-
-                foreach(HandymanUILibrary.Models.ServiceCategoryModel serviceCategory in tempCategories)
+                var tempCategories = await _serviceEndPoint.GetServiceCategories();//await the 
+                Categories = new List<ServiceCategoryModel>();//initialize the list
+                foreach (HandymanUILibrary.Models.ServiceCategoryModel serviceCategory in tempCategories)
                 {
-                    var tempCategory = new ServiceCategoryModel();
+                    var tempCategory = new ServiceCategoryModel();//this is new everytime the for-Loop loops only, not in the foreach
+                    //the following is populating the data from UILibrary
                     tempCategory.Id = serviceCategory.Id;
                     tempCategory.Name = serviceCategory.Name;
                     tempCategory.Description = serviceCategory.Description;
-                    Categories = new List<ServiceCategoryModel>();
+                  
                     Categories.Add(tempCategory);
                      
                 }
@@ -87,14 +92,16 @@ namespace Handyman_UI.Controllers
                 
                  await LoadServiceCategories();
                  await LoadServices();
-                var tempServCat = new ServiceDisplayModel();
-                
+                 
+                displayCategories = new List<ServiceDisplayModel>();//initialize the list
                 foreach (ServiceModel sv in Services)
                 {
-                    for (int i = 0; i <= Categories.Count;i++)
+                    for (int i = 0; i < Categories.Count;i++)
                     {
-                        if(sv.CategoryId == Categories.ElementAt(i).Id)
+                        if(sv.ServiceCategoryId == Categories.ElementAt(i).Id)
                         {
+                            var tempServCat = new ServiceDisplayModel();//this is new everytime the for-Loop loops only, not in the foreach
+                            //the following is populating the data from UILibrary
                             tempServCat.Name = sv.Name;
                             tempServCat.Category = Categories.ElementAt(i).Name;
                             displayCategories.Add(tempServCat);

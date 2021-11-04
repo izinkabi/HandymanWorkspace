@@ -37,7 +37,7 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "CustomerHome")</li>
                     <li>@Html.ActionLink("About", "About", "CustomerHome")</li>
-                    <li>@Html.ActionLink("Service", "Services", "CustomerHome")</li>
+                    <li>@Html.ActionLink("Service", "Test", "Service")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "CustomerHome")</li>
                 </ul>
 
@@ -55,9 +55,9 @@
                         //Drop down menu for User Profile and settings
                         //Works well in an anchor and a link
                         <li class="dropdown ">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
+                            <a class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
                                 <span class="glyphicon glyphicon-user"></span>
-                            </button>
+                            </a>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
                                 <li role="presentation" class="divider"></li>
                                 <li role="presentation"><a href="#">@ViewBag.Username</a></li>
@@ -67,7 +67,7 @@
                                 <li role="presentation"><a role="menuitem" tabindex="-1" href="#">JavaScript</a></li>
                                 <li role="presentation" class="divider"></li>
                                 <li class="dropdown-header">Settings</li>
-                                <li role="presentation"> @Html.ActionLink("Sign Out", "Logout", "Home")</li>
+                                <li role="presentation"> @Html.ActionLink("Sign Out", "Logout", "CustomerHome")</li>
                             </ul>
                         </li>
                     }

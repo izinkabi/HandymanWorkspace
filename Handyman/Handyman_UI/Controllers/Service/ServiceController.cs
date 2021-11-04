@@ -25,9 +25,10 @@ namespace Handyman_UI.Controllers
         }
 
         // GET: Service/GetServices
-        public ActionResult GetServices()
+        public async Task<ActionResult>  GetServices()
         {
-            
+            //this niggah actualy works
+           
             return View();
         }
         // GET: Service/Details/5
@@ -107,8 +108,9 @@ namespace Handyman_UI.Controllers
         }
         public async Task<ActionResult> Test()
         {
-              IEnumerable<ServiceModel> services = await _serviceLoader.LoadServices();
-            return View(services);
+            IEnumerable<ServiceDisplayModel> displayCategories = await _serviceLoader.getDisplayServices();
+            //<ServiceModel> services = await _serviceLoader.LoadServices();
+            return View(displayCategories);
         }
     }
 }
