@@ -163,8 +163,8 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Controllers\Customer\CustomerHomeController.cs" />
     <Compile Include="Controllers\Service\IServicesLoader.cs" />
-    <Compile Include="Controllers\User\LoginController.cs" />
-    <Compile Include="Controllers\User\ProfileController.cs" />
+    <Compile Include="Controllers\Authentification\LoginController.cs" />
+    <Compile Include="Controllers\Authentification\ProfileController.cs" />
     <Compile Include="Controllers\Service\ServiceController.cs" />
     <Compile Include="Controllers\ServiceProvider\ServiceProviderHomeController.cs" />
     <Compile Include="Controllers\Service\ServicesLoader.cs" />
@@ -252,7 +252,6 @@
     <Content Include="Views\ServiceProviderHome\Home.cshtml" />
     <Content Include="Views\ServiceProviderHome\Requests.cshtml" />
     <Content Include="Views\Shared\DashBLayout.cshtml" />
-    <Content Include="Views\ServiceProviderHome\TestView.cshtml" />
     <Content Include="Views\ServiceProviderHome\Services.cshtml" />
     <Content Include="Views\ServiceProviderHome\Profile.cshtml" />
     <Content Include="Views\ServiceProviderHome\ActiveRequests.cshtml" />
@@ -261,6 +260,7 @@
     <Content Include="Views\CustomerHome\Register.cshtml" />
     <Content Include="Views\Login\SignIn.cshtml" />
     <Content Include="Views\Service\DisplayServiceCategory.cshtml" />
+    <Content Include="Views\ServiceProviderHome\Test.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -17,7 +17,7 @@ namespace Handyman_UI.Controllers
          private IAPIHelper _apiHepler;
         // private IloggedInUserModel _loggedInUserModel;
 
-        static private string DisplayUserName;
+        private string DisplayUserName;
 
         public LoginController(IAPIHelper aPIHelper)
         {

@@ -6,7 +6,9 @@ namespace Handyman_UI.Controllers
 {
     public interface IServicesLoader
     {
+        Task<List<ServiceModel>> LoadServices();
         Task<List<ServiceDisplayModel>> getDisplayServices();
+        Task<List<ServiceCategoryModel>> LoadServiceCategories();
     }
       
 }

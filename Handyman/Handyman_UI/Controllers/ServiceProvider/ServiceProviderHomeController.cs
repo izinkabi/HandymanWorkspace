@@ -107,7 +107,6 @@ namespace Handyman_UI.Controllers.ServiceProvider
             {
                 ViewBag.Providername = sp.Name + " " + sp.Surname;
 
-
             }
 
             return View(serviceProviderModel);
@@ -130,6 +129,10 @@ namespace Handyman_UI.Controllers.ServiceProvider
             return View();
         }
         public ActionResult ActiveRequests()
+        {
+            return View();
+        }
+        public ActionResult Test()
         {
             return View();
         }

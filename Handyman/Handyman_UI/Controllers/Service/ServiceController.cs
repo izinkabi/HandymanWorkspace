@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Handyman_UI.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -14,16 +16,18 @@ namespace Handyman_UI.Controllers
             _serviceLoader = servicesLoader;
         }
 
-       
+
         // GET: Service
         public ActionResult Index()
         {
+            
             return View();
         }
 
         // GET: Service/GetServices
         public ActionResult GetServices()
         {
+            
             return View();
         }
         // GET: Service/Details/5
@@ -100,6 +104,11 @@ namespace Handyman_UI.Controllers
             {
                 return View();
             }
+        }
+        public async Task<ActionResult> Test()
+        {
+              IEnumerable<ServiceModel> services = await _serviceLoader.LoadServices();
+            return View(services);
         }
     }
 }

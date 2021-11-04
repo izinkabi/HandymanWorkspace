@@ -69,6 +69,12 @@ namespace Handyman_UI.Controllers
             return View();
         }
 
+   
+        public ActionResult UserDashBoard()
+        {
+            return View();
+        }
+
         public ActionResult Contact()
         {
             ViewBag.Username = DisplayUserName;

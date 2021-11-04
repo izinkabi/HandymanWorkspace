@@ -28,14 +28,14 @@ namespace Handyman_UI.Controllers
         }
 
         //Load/populate services from the database to the local list
-        private async Task LoadServices()
+        public async Task<List<ServiceModel>> LoadServices()
         {
             try
             {
 
                 var tempServices = await _serviceEndPoint.GetServices();
-                
-                foreach(HandymanUILibrary.Models.ServiceModel sv in tempServices)
+
+                foreach (HandymanUILibrary.Models.ServiceModel sv in tempServices)
                 {
                     var tempService = new ServiceModel();
                     tempService.Id = sv.Id;
@@ -45,15 +45,16 @@ namespace Handyman_UI.Controllers
                     Services.Add(tempService);//Add to the sevices list
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 errorMsg = ex.Message;
             }
+                return Services;
            
         }
 
         //Loading the service categories 
-        private async Task LoadServiceCategories()
+        public async Task<List<ServiceCategoryModel>> LoadServiceCategories()
         {
             try
             {
@@ -67,6 +68,7 @@ namespace Handyman_UI.Controllers
                     tempCategory.Description = serviceCategory.Description;
                     Categories = new List<ServiceCategoryModel>();
                     Categories.Add(tempCategory);
+                     
                 }
                
             }
@@ -74,7 +76,7 @@ namespace Handyman_UI.Controllers
             {
                 errorMsg = ex.Message;
             }
-            
+            return Categories;
         }
 
         //Merging the Services and Categories list

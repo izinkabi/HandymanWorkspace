@@ -22,7 +22,7 @@ namespace HandymanUILibrary.API
         {
 
            
-            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync("/api/Services"))
+            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync("/GetServices"))
             {
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
@@ -44,7 +44,7 @@ namespace HandymanUILibrary.API
         {
 
 
-            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync("/api/GetServiceCategories"))
+            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync("/api/GetServiceCategory"))
             {
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {

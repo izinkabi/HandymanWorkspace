@@ -18,7 +18,8 @@ namespace HandymanAPI.Controllers
         private ServiceData serviceData;
 
         //Get: api/Services
-        public IEnumerable<ServiceModel> GetServices()
+        [Route ("GetServices")]
+        public List<ServiceModel> GetServices()
         {
             serviceData = new ServiceData();
             return serviceData.GetServices();
@@ -39,6 +40,7 @@ namespace HandymanAPI.Controllers
         }
 
         //Get the list of service categories
+        [Route("api/GetServiceCategory")]
         public List<ServiceCategoryModel> GetServiceCategories()
         {
             serviceData = new ServiceData();
