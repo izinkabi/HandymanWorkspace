@@ -1,5 +1,6 @@
 using System.Web.Mvc;
 using Caliburn.Micro;
+using Handyman_UI.Controllers;
 using HandymanUILibrary.API;
 using HandymanUILibrary.Models;
 using Microsoft.Practices.Unity;
@@ -28,6 +29,7 @@ namespace Handyman_UI
             container.RegisterType<IAPIHelper, APIHelper>();
             container.RegisterType<IProfileEndPoint, ProfileEndPoint>();
             container.RegisterType<IRegisterEndPoint, RegisterEndPoint>();
+            container.RegisterType<IServicesLoader,ServicesLoader>();
             container.RegisterType<IServiceEndPoint, ServiceEndPoint>();
             container.RegisterType<IRegisterProviderEndPoint, RegisterProviderEndPoint>();
 
