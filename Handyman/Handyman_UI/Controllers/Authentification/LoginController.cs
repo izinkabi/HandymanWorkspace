@@ -17,7 +17,7 @@ namespace Handyman_UI.Controllers
          private IAPIHelper _apiHepler;
         // private IloggedInUserModel _loggedInUserModel;
 
-        private string DisplayUserName;
+        static private string DisplayUserName;
 
         public LoginController(IAPIHelper aPIHelper)
         {
@@ -27,7 +27,7 @@ namespace Handyman_UI.Controllers
         //Login action function
         public async Task<ActionResult> SignIn(UserLoginModel model)
         {
-
+            
             Username = model.Username;
             Password = model.Password;
 
@@ -43,19 +43,20 @@ namespace Handyman_UI.Controllers
                     await _apiHepler.GetLoggedInUserInfor(results.Access_Token);
                     DisplayUserName = results.UserName;
                     Session["log"] = results.Access_Token;
+                    ViewBag.Email = DisplayUserName;
                     //Session["profilename"] = DisplayUserName;
-                    ViewBag.Username = DisplayUserName;
-                    return RedirectToAction("Index", "CustomerHome");
+
+                    return RedirectToAction("Index", "Service");
                 }
                 catch (Exception ex)
                 {
                     ViewBag.ErrorMsg = ex.Message;
                 }
 
-
+                
             }
-          
 
+           
             return View();
 
         }

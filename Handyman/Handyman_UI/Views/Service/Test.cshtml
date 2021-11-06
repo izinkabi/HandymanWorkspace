@@ -4,40 +4,62 @@
     ViewBag.Title = "Test";
 }
 
-<h2>Test</h2>
 
-<style>
+<Head>
+    
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+
+        body {
+            position: relative;
+            margin-top: 20px;
+            background: #f1f2f7;
+        }
+        ul.nav-pills {
+            top: 180px;
+            background-color: #ced5f5;
+            opacity: 0.5;
+            left: 10px;
+            position: fixed;
+        }
+        div.col-sm-11 div {
+
+            height: 650px;
+            font-size: 28px;
+        }
+        .leftNavMenuBar {
+            position: fixed;
+        }
 
 
-    body {
-        margin-top: 20px;
-        background: #f1f2f7;
-    }
+        /*panel*/
+        .panel {
+            border: none;
+            box-shadow: none;
+        }
 
-    /*panel*/
-    .panel {
-        border: none;
-        box-shadow: none;
-    }
+        .panel-heading {
+            border-color: #eff2f7;
+            font-size: 16px;
+            font-weight: 300;
+        }
 
-    .panel-heading {
-        border-color: #eff2f7;
-        font-size: 16px;
-        font-weight: 300;
-    }
-
-    .panel-title {
-        color: #2A3542;
-        font-size: 14px;
-        font-weight: 400;
-        margin-bottom: 0;
-        margin-top: 0;
-        font-family: 'Open Sans', sans-serif;
-    }
+        .panel-title {
+            color: #2A3542;
+            font-size: 14px;
+            font-weight: 400;
+            margin-bottom: 0;
+            margin-top: 0;
+            font-family: 'Open Sans', sans-serif;
+        }
 
 
-    @*Product list*@
-        .prod-cat li a {
+        @*Product list*@ .prod-cat li a {
             border-bottom: 1px dashed #d9d9d9;
         }
 
@@ -347,143 +369,285 @@
             padding: 10px 15px;
         }
 
-</style>
 
+
+  @@media screen and (max-width: 810px) {
+    #section1, #section2, #section3, #section41, #section42  {
+      margin-left: 150px;
+    }
+  }
+    </style>
+</Head>
 
 
 <body>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
-    <div class="container bootdey">
-        <div class="col-md-3">
-            <section class="panel">
-                <div class="panel-body">
-                    <input type="text" placeholder="Keyword Search" class="form-control" />
+    <div data-spy="scroll" data-target="#myScrollspy" data-offset="20">
+        <div class="container bootdey">
+
+
+            <div class="row">
+
+                <div class="col-md-3 leftNavMenuBar">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <input type="text" placeholder="Keyword Search" class="form-control" />
+                        </div>
+                    </section>
+                    <section class="panel">
+                        <header class="panel-heading">
+                            Services Category
+                        </header>
+                        <div class="panel-body">
+                            <nav id="myScrollspy">
+                                <ul class="nav prod-cat">
+                                    <li>
+                                        <a href="#" class="active"><i class="fa fa-angle-right"></i> Household</a>
+                                        <ul class="nav">
+                                            <li class="active"><a href="#">- Grass cutting</a></li>
+                                            <li><a href="#Plumbing">- Plumbing</a></li>
+                                            @*<li><a href="#">- Roof</a></li>
+                                            <li><a href="#">- Tiling</a></li>
+                                            <li><a href="#">- Windows</a></li>*@
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#Electornics"><i class="fa fa-angle-right"></i> Electornics &amp; Mobile</a>
+                                    </li>
+                                    <li>
+                                        <a href="#Mechanics"><i class="fa fa-angle-right"></i> Mechanics</a>
+                                    </li>
+                                    <li>
+                                        <a href="#Cleaning"><i class="fa fa-angle-right"></i>Cleaning</a>
+                                    </li>
+                                    <li>
+                                        <a href="#Gardening"><i class="fa fa-angle-right"></i>Gardening</a>
+                                    </li>
+
+
+                                </ul>
+                            </nav>
+                        </div>
+                    </section>
                 </div>
-            </section>
-            <section class="panel">
-                <header class="panel-heading">
-                    Services Category
-                </header>
-                <div class="panel-body">
-                    <ul class="nav prod-cat">
-                        <li>
-                            <a href="#" class="active"><i class="fa fa-angle-right"></i> Household</a>
-                            <ul class="nav">
-                                <li class="active"><a href="#">- Grass cutting</a></li>
-                                <li><a href="#">- Pipes</a></li>
-                                <li><a href="#">- Roof</a></li>
-                                <li><a href="#">- Tiling</a></li>
-                                <li><a href="#">- Windows</a></li>
+
+                @*******************************************************************@
+                @*<div class="row">
+            <div class="col-md-3">
+                <nav class="col-sm-1 col-md-1 col-lg-1 pull-left" id="myScrollspy">
+
+                    <ul class="nav nav-pills nav-stacked">
+                        <strong>Categories</strong>
+                        <br />
+                        <br />
+                        <li class="active"><a href="#section1">Electronics </a></li>
+                        <li><a href="#section2">Mechanics </a></li>
+                        <li><a href="#section3">Plumbing </a></li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Renovations <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#section41">Indoor </a></li>
+                                <li><a href="#section42">Outdoor </a></li>
                             </ul>
                         </li>
-                        <li>
-                            <a href="#"><i class="fa fa-angle-right"></i> Electornics &amp; Mobile</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-angle-right"></i> </a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-angle-right"></i> Coat &amp; Jacket</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-angle-right"></i> Jeans</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-angle-right"></i> Jewellery</a>
-                        </li>
-
                     </ul>
-                </div>
-            </section>
-            @*//Price Range*@
-            <section class="panel">
-                <header class="panel-heading">
-                    Price Range
-                </header>
-                <div class="panel-body sliders">
-                    <div id="slider-range" class="slider"></div>
-                    <div class="slider-info">
-                        <span id="slider-range-amount"></span>
+                </nav>
+            </div>
+        </div>*@
+                @*End Side Nav*@
+
+
+
+
+                @*Paging Section*@
+                @*Electronics Section*@
+            <div class="container col-md-10 pull-right">
+
+
+
+                <div id="Electornics" class="col-md-9 pull-right">
+
+                    <div class="row product-list">
+
+                        <h1 class="text-center">Electronics</h1>
+                        <hr />
+                        @foreach (var item in Model)
+                        {
+
+
+                            if (@Html.DisplayFor(modelItem => item.Category).ToString() == "Electronics")
+                            {
+                                <div class="col-md-4">
+                                    <section class="panel">
+                                        <div class="pro-img-box">
+                                            <img src="https://via.placeholder.com/250x220/ADD8E6/000000" alt="" />
+                                            <a href="#" class="adtocart">
+                                                <i class="fa fa-home"></i>
+                                            </a>
+                                        </div>
+
+                                        <div class="panel-body text-center">
+                                            <h4>
+                                                <a href="#" class="pro-title">
+                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                </a>
+                                            </h4>
+                                            <p class="price">Johannesburg</p>
+                                        </div>
+                                    </section>
+                                </div>
+                            }
+                        }
                     </div>
                 </div>
-            </section>
-            @*//FILTER SECTION*@
-            <section class="panel">
-                <header class="panel-heading">
-                    Filter
-                </header>
-                <div class="panel-body">
-                    <form role="form product-form">
-                        <div class="form-group">
-                            <label>Brand</label>
-                            <select class="form-control hasCustomSelect" style="-webkit-appearance: menulist-button; width: 231px; position: absolute; opacity: 0; height: 34px; font-size: 12px;">
-                                <option>Wallmart</option>
-                                <option>Catseye</option>
-                                <option>Moonsoon</option>
-                                <option>Textmart</option>
-                            </select>
-                            <span class="customSelect form-control" style="display: inline-block;"><span class="customSelectInner" style="width: 209px; display: inline-block;">Wallmart</span></span>
-                        </div>
-                        <div class="form-group">
-                            <label>Color</label>
-                            <select class="form-control hasCustomSelect" style="-webkit-appearance: menulist-button; width: 231px; position: absolute; opacity: 0; height: 34px; font-size: 12px;">
-                                <option>White</option>
-                                <option>Black</option>
-                                <option>Red</option>
-                                <option>Green</option>
-                            </select>
-                            <span class="customSelect form-control" style="display: inline-block;"><span class="customSelectInner" style="width: 209px; display: inline-block;">White</span></span>
-                        </div>
-                        <div class="form-group">
-                            <label>Type</label>
-                            <select class="form-control hasCustomSelect" style="-webkit-appearance: menulist-button; width: 231px; position: absolute; opacity: 0; height: 34px; font-size: 12px;">
-                                <option>Small</option>
-                                <option>Medium</option>
-                                <option>Large</option>
-                                <option>Extra Large</option>
-                            </select>
-                            <span class="customSelect form-control" style="display: inline-block;"><span class="customSelectInner" style="width: 209px; display: inline-block;">Small</span></span>
-                        </div>
-                        <button class="btn btn-primary" type="submit">Filter</button>
-                    </form>
-                </div>
-            </section>
 
-        </div>
-        @*End Side Nav*@
+                @*Plumbing Section*@
+                <div id="Plumbing" class="col-md-9  pull-right">
+
+                    <div class="row product-list">
+                        <h1 class="text-center">Plumbing</h1>
+                        <hr />
+                        @foreach (var item in Model)
+                        {
 
 
+                            if (@Html.DisplayFor(modelItem => item.Category).ToString() == "Plumbing")
+                            {
+                                <div class="col-md-4">
+                                    <section class="panel">
+                                        <div class="pro-img-box">
+                                            <img src="https://via.placeholder.com/250x220/ADD8E6/000000" alt="" />
+                                            <a href="#" class="adtocart">
+                                                <i class="fa fa-home"></i>
+                                            </a>
+                                        </div>
 
-
-        @*Paging Section*@
-
-        <div class="col-md-9">
-            <div class="row product-list">
-                @foreach (var item in Model)
-                {
-                    <div class="col-md-4">
-                        <section class="panel">
-                            <div class="pro-img-box">
-                                <img src="https://via.placeholder.com/250x220/ADD8E6/000000" alt="" />
-                                <a href="#" class="adtocart">
-                                    <i class="fa fa-home"></i>
-                                </a>
-                            </div>
-
-                            <div class="panel-body text-center">
-                                <h4>
-                                    <a href="#" class="pro-title">
-                                        @Html.DisplayFor(modelItem => item.Name)
-                                    </a>
-                                </h4>
-                                <p class="price">Johannesburg</p>
-                            </div>
-                        </section>
+                                        <div class="panel-body text-center">
+                                            <h4>
+                                                <a href="#" class="pro-title">
+                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                </a>
+                                            </h4>
+                                            <p class="price">Johannesburg</p>
+                                        </div>
+                                    </section>
+                                </div>
+                            }
+                        }
                     </div>
-                }
                 </div>
-        </div>
 
+
+                @*Cleaning Section*@
+                <div id="Cleaning" class="col-md-9  pull-right">
+
+                    <div class="row product-list">
+                        <h1 class="text-center">Cleaning</h1>
+                        <hr />
+                        @foreach (var item in Model)
+                        {
+
+
+                            if (@Html.DisplayFor(modelItem => item.Category).ToString() == "Cleaning")
+                            {
+                                <div class="col-md-4">
+                                    <section class="panel">
+                                        <div class="pro-img-box">
+                                            <img src="https://via.placeholder.com/250x220/ADD8E6/000000" alt="" />
+                                            <a href="#" class="adtocart">
+                                                <i class="fa fa-home"></i>
+                                            </a>
+                                        </div>
+
+                                        <div class="panel-body text-center">
+                                            <h4>
+                                                <a href="#" class="pro-title">
+                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                </a>
+                                            </h4>
+                                            <p class="price">Johannesburg</p>
+                                        </div>
+                                    </section>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+
+
+                @*Gardening*@
+                <div id="Gardening" class="col-md-9  pull-right">
+
+                    <div class="row product-list">
+                        <h1 class="text-center">Gardening</h1>
+                        <hr />
+                        @foreach (var item in Model)
+                        {
+
+
+                            if (@Html.DisplayFor(modelItem => item.Category).ToString() == "Gardening")
+                            {
+                                <div class="col-md-4">
+                                    <section class="panel">
+                                        <div class="pro-img-box">
+                                            <img src="https://via.placeholder.com/250x220/ADD8E6/000000" alt="" />
+                                            <a href="#" class="adtocart">
+                                                <i class="fa fa-home"></i>
+                                            </a>
+                                        </div>
+
+                                        <div class="panel-body text-center">
+                                            <h4>
+                                                <a href="#" class="pro-title">
+                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                </a>
+                                            </h4>
+                                            <p class="price">Johannesburg</p>
+                                        </div>
+                                    </section>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+
+
+                @*Mechanics*@
+                <div id="Mechanics" class="col-md-9  pull-right">
+
+                    <div class="row product-list">
+                        <h1 class="text-center">Machanics</h1>
+                        <hr />
+                        @foreach (var item in Model)
+                        {
+
+
+                            if (@Html.DisplayFor(modelItem => item.Category).ToString() == "Mechanics")
+                            {
+                                <div class="col-md-4">
+                                    <section class="panel">
+                                        <div class="pro-img-box">
+                                            <img src="https://via.placeholder.com/250x220/ADD8E6/000000" alt="" />
+                                            <a href="#" class="adtocart">
+                                                <i class="fa fa-home"></i>
+                                            </a>
+                                        </div>
+
+                                        <div class="panel-body text-center">
+                                            <h4>
+                                                <a href="#" class="pro-title">
+                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                </a>
+                                            </h4>
+                                            <p class="price">Johannesburg</p>
+                                        </div>
+                                    </section>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
                 @*End Paging Section*@
 
 
@@ -495,34 +659,36 @@
 
                 @*Default UI*@
                 @*<table class="table">
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Name)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Category)
-                        </th>
-                        <th></th>
-                    </tr>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Category)
+                </th>
+                <th></th>
+            </tr>
 
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Category)
-                            </td>
-                            <td>
-                                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                            </td>
-                        </tr>
-                    }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    </td>
+                </tr>
+            }
 
-                </table>*@
-    </div>
+        </table>*@
+            </div>
+            </div>
+        </div>
 
 </body>

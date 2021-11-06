@@ -45,7 +45,7 @@ namespace Handyman_UI.Controllers
         public  async Task<ActionResult> Index()
         {
           
-            ViewBag.Username = DisplayUserName;
+          
             return View();
         }
 
@@ -58,14 +58,14 @@ namespace Handyman_UI.Controllers
         {
             
             ViewBag.Message = "Your application description page.";
-            ViewBag.Username = DisplayUserName;
+            
             return View();
         }
         public ActionResult Services()
         {
 
             ViewBag.Message = "Your application description page.";
-            ViewBag.Username = DisplayUserName;
+           
             return View();
         }
 
@@ -77,7 +77,7 @@ namespace Handyman_UI.Controllers
 
         public ActionResult Contact()
         {
-            ViewBag.Username = DisplayUserName;
+            
             ViewBag.Message = "Your contact page.";
             return View();
         }
@@ -275,7 +275,7 @@ namespace Handyman_UI.Controllers
             _apiHepler.LogOutuser();
             Session["log"] = null;
             _apiHepler = null;          
-               return RedirectToAction("Index", "CustomerHome");
+               return RedirectToAction("Index", "Service");
           
         }
     }
