@@ -1,37 +1,42 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@model IEnumerable<Handyman_UI.Models.ServiceDisplayModel>
+
+@{
+    ViewBag.Title = "Index";
 }
-<head>
-    <style>
-        body {
-            margin-top: 20px;
-            background: #f1f2f7;
-        }
 
-        /*panel*/
-        .panel {
-            border: none;
-            box-shadow: none;
-        }
+<h2>Index</h2>
 
-        .panel-heading {
-            border-color: #eff2f7;
-            font-size: 16px;
-            font-weight: 300;
-        }
-
-        .panel-title {
-            color: #2A3542;
-            font-size: 14px;
-            font-weight: 400;
-            margin-bottom: 0;
-            margin-top: 0;
-            font-family: 'Open Sans', sans-serif;
-        }
+<style>
 
 
-        /*product list*/
+    body {
+        margin-top: 20px;
+        background: #f1f2f7;
+    }
 
+    /*panel*/
+    .panel {
+        border: none;
+        box-shadow: none;
+    }
+
+    .panel-heading {
+        border-color: #eff2f7;
+        font-size: 16px;
+        font-weight: 300;
+    }
+
+    .panel-title {
+        color: #2A3542;
+        font-size: 14px;
+        font-weight: 400;
+        margin-bottom: 0;
+        margin-top: 0;
+        font-family: 'Open Sans', sans-serif;
+    }
+
+
+    @*Product list*@
         .prod-cat li a {
             border-bottom: 1px dashed #d9d9d9;
         }
@@ -342,8 +347,10 @@
             padding: 10px 15px;
         }
 
-    </style>
-</head>
+</style>
+
+
+
 <body>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
     <div class="container bootdey">
@@ -384,7 +391,7 @@
                         <li>
                             <a href="#"><i class="fa fa-angle-right"></i> Jewellery</a>
                         </li>
-                        
+
                     </ul>
                 </div>
             </section>
@@ -443,198 +450,41 @@
             </section>
 
         </div>
-        @* ///space for paging *@
+        @*End Side Nav*@
+
+
+
+
+        @*Paging Section*@
+
         <div class="col-md-9">
             <div class="row product-list">
-                <div class="col-md-4">
-                    <section class="panel">
-                        <div class="pro-img-box">
-                            <img src="https://via.placeholder.com/250x220/ADD8E6/000000" alt="" />
-                            <a href="#" class="adtocart">
-                                <i class="fa fa-home"></i>
-                            </a>
-                        </div>
-
-                        <div class="panel-body text-center">
-                            <h4>
-                                <a href="#" class="pro-title">
-                                    Grass cutting
+                @foreach (var item in Model)
+                {
+                    <div class="col-md-4">
+                        <section class="panel">
+                            <div class="pro-img-box">
+                                <img src="https://via.placeholder.com/250x220/ADD8E6/000000" alt="" />
+                                <a href="#" class="adtocart">
+                                    <i class="fa fa-home"></i>
                                 </a>
-                            </h4>
-                            <p class="price">Johannesburg</p>
-                        </div>
-                    </section>
-                </div>
-                <div class="col-md-4">
-                    <section class="panel">
-                        <div class="pro-img-box">
-                            <img src="https://via.placeholder.com/250x220/6495ED/000000" alt="" />
-                            <a href="#" class="adtocart">
-                                <i class="fa fa-mobile"></i>
-                            </a>
-                        </div>
+                            </div>
 
-                        <div class="panel-body text-center">
-                            <h4>
-                                <a href="#" class="pro-title">
-                                    Mobile Phone Repair
-                                </a>
-                            </h4>
-                            <p class="price">Soweto, Protea Glen</p>
-                        </div>
-                    </section>
-                </div>
-                <div class="col-md-4">
-                    <section class="panel">
-                        <div class="pro-img-box">
-                            <img src="https://via.placeholder.com/250x220/00CED1/000000" alt="" />
-                            <a href="#" class="adtocart">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                        </div>
-
-                        <div class="panel-body text-center">
-                            <h4>
-                                <a href="#" class="pro-title">
-                                    Roof Repair
-                                </a>
-                            </h4>
-                            <p class="price">Rossetenville</p>
-                        </div>
-                    </section>
-                </div>
-
-                <div class="col-md-4">
-                    <section class="panel">
-                        <div class="pro-img-box">
-                            <img src="https://via.placeholder.com/250x220/00CED1/000000" alt="" />
-                            <a href="#" class="adtocart">
-                                <i class="fa fa-shopping-cart"></i>
-                            </a>
-                        </div>
-
-                        <div class="panel-body text-center">
-                            <h4>
-                                <a href="#" class="pro-title">
-                                    Grass cutting
-                                </a>
-                            </h4>
-                            <p class="price">Johannesburg</p>
-                        </div>
-                    </section>
-                </div>
-                <div class="col-md-4">
-                    <section class="panel">
-                        <div class="pro-img-box">
-                            <img src="https://via.placeholder.com/250x220/00BFFF/000000" alt="" />
-                            <a href="#" class="adtocart">
-                                <i class="fa fa-automobile"></i>
-                            </a>
-                        </div>
-
-                        <div class="panel-body text-center">
-                            <h4>
-                                <a href="#" class="pro-title">
-                                    Mobile Phone Repair
-                                </a>
-                            </h4>
-                            <p class="price">Soweto, Protea Glen</p>
-                        </div>
-                    </section>
-                </div>
-                <div class="col-md-4">
-                    <section class="panel">
-                        <div class="pro-img-box">
-                            <img src="https://via.placeholder.com/250x220/20B2AA/000000" alt="" />
-                            <a href="#" class="adtocart">
-                                <i class="fa fa-shopping-cart"></i>
-                            </a>
-                        </div>
-
-                        <div class="panel-body text-center">
-                            <h4>
-                                <a href="#" class="pro-title">
-                                    Roof Repair
-                                </a>
-                            </h4>
-                            <p class="price">Rossetenville</p>
-                        </div>
-                    </section>
-                </div>
-
-                <div class="col-md-4">
-                    <section class="panel">
-                        <div class="pro-img-box">
-                            <img src="https://via.placeholder.com/250x220/00BFFF/000000" alt="" />
-                            <a href="#" class="adtocart">
-                                <i class="fa fa-desktop"></i>
-                            </a>
-                        </div>
-
-                        <div class="panel-body text-center">
-                            <h4>
-                                <a href="#" class="pro-title">
-                                    Leopard Shirt Dress
-                                </a>
-                            </h4>
-                            <p class="price">$300.00</p>
-                        </div>
-                    </section>
-                </div>
-                <div class="col-md-4">
-                    <section class="panel">
-                        <div class="pro-img-box">
-                            <img src="https://via.placeholder.com/250x220/00CED1/000000" alt="" />
-                            <a href="#" class="adtocart">
-                                <i class="fa fa-shopping-cart"></i>
-                            </a>
-                        </div>
-
-                        <div class="panel-body text-center">
-                            <h4>
-                                <a href="#" class="pro-title">
-                                    Leopard Shirt Dress
-                                </a>
-                            </h4>
-                            <p class="price">$300.00</p>
-                        </div>
-                    </section>
-                </div>
-                <div class="col-md-4">
-                    <section class="panel">
-                        <div class="pro-img-box">
-                            <img src="https://via.placeholder.com/250x220/9400D3/000000" alt="" />
-                            <a href="#" class="adtocart">
-                                <i class="fa fa-shopping-cart"></i>
-                            </a>
-                        </div>
-
-                        <div class="panel-body text-center">
-                            <h4>
-                                <a href="#" class="pro-title">
-                                    Leopard Shirt Dress
-                                </a>
-                            </h4>
-                            <p class="price">$300.00</p>
-                        </div>
-                    </section>
-                </div>
-
-            </div>
-            <section class="panel">
-                <div class="panel-body">
-                    <div class="pull-right">
-                        <ul class="pagination pagination-sm pro-page-list">
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">»</a></li>
-                        </ul>
+                            <div class="panel-body text-center">
+                                <h4>
+                                    <a href="#" class="pro-title">
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </a>
+                                </h4>
+                                <p class="price">Johannesburg</p>
+                            </div>
+                        </section>
                     </div>
-                </div>
-            </section>
-
+                }
+            </div>
         </div>
-    </div>
 
+        @*End Paging Section*@
+       
+    </div>
 </body>

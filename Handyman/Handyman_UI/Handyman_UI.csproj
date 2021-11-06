@@ -242,7 +242,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\CustomerHome\About.cshtml" />
     <Content Include="Views\CustomerHome\Contact.cshtml" />
-    <Content Include="Views\CustomerHome\Index.cshtml" />
     <Content Include="Views\CustomerHome\CreateProfile.cshtml" />
     <Content Include="Views\CustomerHome\GetOTP.cshtml" />
     <Content Include="Views\ServiceProviderHome\RegisterServiceProvider.cshtml" />
@@ -261,6 +260,7 @@
     <Content Include="Views\Login\SignIn.cshtml" />
     <Content Include="Views\Service\DisplayServiceCategory.cshtml" />
     <Content Include="Views\Service\Test.cshtml" />
+    <Content Include="Views\Service\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

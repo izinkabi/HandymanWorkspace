@@ -6,34 +6,523 @@
 
 <h2>Test</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Category)
-        </th>
-        <th></th>
-    </tr>
+<style>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Category)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-        </td>
-    </tr>
-}
 
-</table>
+    body {
+        margin-top: 20px;
+        background: #f1f2f7;
+    }
+
+    /*panel*/
+    .panel {
+        border: none;
+        box-shadow: none;
+    }
+
+    .panel-heading {
+        border-color: #eff2f7;
+        font-size: 16px;
+        font-weight: 300;
+    }
+
+    .panel-title {
+        color: #2A3542;
+        font-size: 14px;
+        font-weight: 400;
+        margin-bottom: 0;
+        margin-top: 0;
+        font-family: 'Open Sans', sans-serif;
+    }
+
+
+    @*Product list*@
+        .prod-cat li a {
+            border-bottom: 1px dashed #d9d9d9;
+        }
+
+        .prod-cat li a {
+            color: #3b3b3b;
+        }
+
+        .prod-cat li ul {
+            margin-left: 30px;
+        }
+
+            .prod-cat li ul li a {
+                border-bottom: none;
+            }
+
+                .prod-cat li ul li a:hover, .prod-cat li ul li a:focus, .prod-cat li ul li.active a, .prod-cat li a:hover, .prod-cat li a:focus, .prod-cat li a.active {
+                    background: none;
+                    color: #ff7261;
+                }
+
+        .pro-lab {
+            margin-right: 20px;
+            font-weight: normal;
+        }
+
+        .pro-sort {
+            padding-right: 20px;
+            float: left;
+        }
+
+        .pro-page-list {
+            margin: 5px 0 0 0;
+        }
+
+        .product-list img {
+            width: 100%;
+            border-radius: 4px 4px 0 0;
+            -webkit-border-radius: 4px 4px 0 0;
+        }
+
+        .product-list .pro-img-box {
+            position: relative;
+        }
+
+        .adtocart {
+            background: #fc5959;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            -webkit-border-radius: 50%;
+            color: #fff;
+            display: inline-block;
+            text-align: center;
+            border: 3px solid #fff;
+            left: 45%;
+            bottom: -25px;
+            position: absolute;
+        }
+
+            .adtocart i {
+                color: #fff;
+                font-size: 25px;
+                line-height: 42px;
+            }
+
+        .pro-title {
+            color: #5A5A5A;
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .product-list .price {
+            color: #fc5959;
+            font-size: 15px;
+        }
+
+        .pro-img-details {
+            margin-left: -15px;
+        }
+
+            .pro-img-details img {
+                width: 100%;
+            }
+
+        .pro-d-title {
+            font-size: 16px;
+            margin-top: 0;
+        }
+
+        .product_meta {
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+            margin: 15px 0;
+        }
+
+            .product_meta span {
+                display: block;
+                margin-bottom: 10px;
+            }
+
+            .product_meta a, .pro-price {
+                color: #fc5959;
+            }
+
+        .pro-price, .amount-old {
+            font-size: 18px;
+            padding: 0 10px;
+        }
+
+        .amount-old {
+            text-decoration: line-through;
+        }
+
+        .quantity {
+            width: 120px;
+        }
+
+        .pro-img-list {
+            margin: 10px 0 0 -15px;
+            width: 100%;
+            display: inline-block;
+        }
+
+            .pro-img-list a {
+                float: left;
+                margin-right: 10px;
+                margin-bottom: 10px;
+            }
+
+        .pro-d-head {
+            font-size: 18px;
+            font-weight: 300;
+        }
+
+        /* E-commerce */
+        .product-box {
+            padding: 0;
+            border: 1px solid #e7eaec;
+        }
+
+            .product-box:hover,
+            .product-box.active {
+                border: 1px solid transparent;
+                -webkit-box-shadow: 0 3px 7px 0 #a8a8a8;
+                -moz-box-shadow: 0 3px 7px 0 #a8a8a8;
+                box-shadow: 0 3px 7px 0 #a8a8a8;
+            }
+
+        .product-imitation {
+            text-align: center;
+            padding: 90px 0;
+            background-color: #f8f8f9;
+            color: #bebec3;
+            font-weight: 600;
+        }
+
+        .cart-product-imitation {
+            text-align: center;
+            padding-top: 30px;
+            height: 80px;
+            width: 80px;
+            background-color: #f8f8f9;
+        }
+
+        .product-imitation.xl {
+            padding: 120px 0;
+        }
+
+        .product-desc {
+            padding: 20px;
+            position: relative;
+        }
+
+        .ecommerce .tag-list {
+            padding: 0;
+        }
+
+        .ecommerce .fa-star {
+            color: #d1dade;
+        }
+
+            .ecommerce .fa-star.active {
+                color: #f8ac59;
+            }
+
+        .ecommerce .note-editor {
+            border: 1px solid #e7eaec;
+        }
+
+        table.shoping-cart-table {
+            margin-bottom: 0;
+        }
+
+            table.shoping-cart-table tr td {
+                border: none;
+                text-align: right;
+            }
+
+                table.shoping-cart-table tr td.desc,
+                table.shoping-cart-table tr td:first-child {
+                    text-align: left;
+                }
+
+                table.shoping-cart-table tr td:last-child {
+                    width: 80px;
+                }
+
+        .product-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #676a6c;
+            display: block;
+            margin: 2px 0 5px 0;
+        }
+
+            .product-name:hover,
+            .product-name:focus {
+                color: #1ab394;
+            }
+
+        .product-price {
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+            background-color: #1ab394;
+            padding: 6px 12px;
+            position: absolute;
+            top: -32px;
+            right: 0;
+        }
+
+        .product-detail .ibox-content {
+            padding: 30px 30px 50px 30px;
+        }
+
+        .image-imitation {
+            background-color: #f8f8f9;
+            text-align: center;
+            padding: 200px 0;
+        }
+
+        .product-main-price small {
+            font-size: 10px;
+        }
+
+        .product-images {
+            margin: 0 20px;
+        }
+
+        .ibox {
+            clear: both;
+            margin-bottom: 25px;
+            margin-top: 0;
+            padding: 0;
+        }
+
+            .ibox.collapsed .ibox-content {
+                display: none;
+            }
+
+            .ibox.collapsed .fa.fa-chevron-up:before {
+                content: "\f078";
+            }
+
+            .ibox.collapsed .fa.fa-chevron-down:before {
+                content: "\f077";
+            }
+
+            .ibox:after,
+            .ibox:before {
+                display: table;
+            }
+
+        .ibox-title {
+            -moz-border-bottom-colors: none;
+            -moz-border-left-colors: none;
+            -moz-border-right-colors: none;
+            -moz-border-top-colors: none;
+            background-color: #ffffff;
+            border-color: #e7eaec;
+            border-image: none;
+            border-style: solid solid none;
+            border-width: 3px 0 0;
+            color: inherit;
+            margin-bottom: 0;
+            padding: 14px 15px 7px;
+            min-height: 48px;
+        }
+
+        .ibox-content {
+            background-color: #ffffff;
+            color: inherit;
+            padding: 15px 20px 20px 20px;
+            border-color: #e7eaec;
+            border-image: none;
+            border-style: solid solid none;
+            border-width: 1px 0;
+        }
+
+        .ibox-footer {
+            color: inherit;
+            border-top: 1px solid #e7eaec;
+            font-size: 90%;
+            background: #ffffff;
+            padding: 10px 15px;
+        }
+
+</style>
+
+
+
+<body>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
+    <div class="container bootdey">
+        <div class="col-md-3">
+            <section class="panel">
+                <div class="panel-body">
+                    <input type="text" placeholder="Keyword Search" class="form-control" />
+                </div>
+            </section>
+            <section class="panel">
+                <header class="panel-heading">
+                    Services Category
+                </header>
+                <div class="panel-body">
+                    <ul class="nav prod-cat">
+                        <li>
+                            <a href="#" class="active"><i class="fa fa-angle-right"></i> Household</a>
+                            <ul class="nav">
+                                <li class="active"><a href="#">- Grass cutting</a></li>
+                                <li><a href="#">- Pipes</a></li>
+                                <li><a href="#">- Roof</a></li>
+                                <li><a href="#">- Tiling</a></li>
+                                <li><a href="#">- Windows</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-angle-right"></i> Electornics &amp; Mobile</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-angle-right"></i> </a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-angle-right"></i> Coat &amp; Jacket</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-angle-right"></i> Jeans</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-angle-right"></i> Jewellery</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </section>
+            @*//Price Range*@
+            <section class="panel">
+                <header class="panel-heading">
+                    Price Range
+                </header>
+                <div class="panel-body sliders">
+                    <div id="slider-range" class="slider"></div>
+                    <div class="slider-info">
+                        <span id="slider-range-amount"></span>
+                    </div>
+                </div>
+            </section>
+            @*//FILTER SECTION*@
+            <section class="panel">
+                <header class="panel-heading">
+                    Filter
+                </header>
+                <div class="panel-body">
+                    <form role="form product-form">
+                        <div class="form-group">
+                            <label>Brand</label>
+                            <select class="form-control hasCustomSelect" style="-webkit-appearance: menulist-button; width: 231px; position: absolute; opacity: 0; height: 34px; font-size: 12px;">
+                                <option>Wallmart</option>
+                                <option>Catseye</option>
+                                <option>Moonsoon</option>
+                                <option>Textmart</option>
+                            </select>
+                            <span class="customSelect form-control" style="display: inline-block;"><span class="customSelectInner" style="width: 209px; display: inline-block;">Wallmart</span></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Color</label>
+                            <select class="form-control hasCustomSelect" style="-webkit-appearance: menulist-button; width: 231px; position: absolute; opacity: 0; height: 34px; font-size: 12px;">
+                                <option>White</option>
+                                <option>Black</option>
+                                <option>Red</option>
+                                <option>Green</option>
+                            </select>
+                            <span class="customSelect form-control" style="display: inline-block;"><span class="customSelectInner" style="width: 209px; display: inline-block;">White</span></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Type</label>
+                            <select class="form-control hasCustomSelect" style="-webkit-appearance: menulist-button; width: 231px; position: absolute; opacity: 0; height: 34px; font-size: 12px;">
+                                <option>Small</option>
+                                <option>Medium</option>
+                                <option>Large</option>
+                                <option>Extra Large</option>
+                            </select>
+                            <span class="customSelect form-control" style="display: inline-block;"><span class="customSelectInner" style="width: 209px; display: inline-block;">Small</span></span>
+                        </div>
+                        <button class="btn btn-primary" type="submit">Filter</button>
+                    </form>
+                </div>
+            </section>
+
+        </div>
+        @*End Side Nav*@
+
+
+
+
+        @*Paging Section*@
+
+        <div class="col-md-9">
+            <div class="row product-list">
+                @foreach (var item in Model)
+                {
+                    <div class="col-md-4">
+                        <section class="panel">
+                            <div class="pro-img-box">
+                                <img src="https://via.placeholder.com/250x220/ADD8E6/000000" alt="" />
+                                <a href="#" class="adtocart">
+                                    <i class="fa fa-home"></i>
+                                </a>
+                            </div>
+
+                            <div class="panel-body text-center">
+                                <h4>
+                                    <a href="#" class="pro-title">
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </a>
+                                </h4>
+                                <p class="price">Johannesburg</p>
+                            </div>
+                        </section>
+                    </div>
+                }
+                </div>
+        </div>
+
+                @*End Paging Section*@
+
+
+
+
+
+
+
+
+                @*Default UI*@
+                @*<table class="table">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Category)
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Category)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                            </td>
+                        </tr>
+                    }
+
+                </table>*@
+    </div>
+
+</body>

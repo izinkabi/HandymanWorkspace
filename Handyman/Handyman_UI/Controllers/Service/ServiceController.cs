@@ -18,10 +18,10 @@ namespace Handyman_UI.Controllers
 
 
         // GET: Service
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            
-            return View();
+            IEnumerable<ServiceDisplayModel> displayCategories = await _serviceLoader.getDisplayServices();
+            return View(displayCategories);
         }
 
         // GET: Service/GetServices
@@ -106,11 +106,12 @@ namespace Handyman_UI.Controllers
                 return View();
             }
         }
-        public async Task<ActionResult> Test()
+        public ActionResult Test()
         {
-            IEnumerable<ServiceDisplayModel> displayCategories = await _serviceLoader.getDisplayServices();
-            //<ServiceModel> services = await _serviceLoader.LoadServices();
-            return View(displayCategories);
+            //IEnumerable<ServiceDisplayModel> displayCategories = await _serviceLoader.getDisplayServices();
+            ////<ServiceModel> services = await _serviceLoader.LoadServices();
+            //return View(displayCategories);
+            return View();
         }
     }
 }
