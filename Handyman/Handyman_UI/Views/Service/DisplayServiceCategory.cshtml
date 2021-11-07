@@ -388,7 +388,7 @@
 
             <div class="row">
 
-                <div class="col-md-3 leftNavMenuBar">
+                <div class="col-md-2 leftNavMenuBar">
                     <section class="panel">
                         <div class="panel-body">
                             <input type="text" placeholder="Keyword Search" class="form-control" />
@@ -461,9 +461,7 @@
 
                 @*Paging Section*@
                 @*Electronics Section*@
-                <div class="container col-md-10 pull-right">
-
-
+               
 
                     <div id="Electornics" class="col-md-9 pull-right">
 
@@ -475,7 +473,7 @@
                             {
 
 
-                                if (@Html.DisplayFor(modelItem => item.Category).ToString() == "Electronics")
+                                if (item.Category.ToString() == "Electronics")
                                 {
                                     <div class="col-md-4">
                                         <section class="panel">
@@ -492,15 +490,61 @@
                                                         @Html.DisplayFor(modelItem => item.Name)
                                                     </a>
                                                 </h4>
-                                                <p class="price">Johannesburg</p>
+                                                <div class="form-group">
+                                                    <div class="col-md-offset-2 col-md-10">
+                                                        <input type="submit" id="btn-@{@item.Name}" value="View" class="btn btn-default" />
+                                                    </div>
+
+
+                                                </div>
+
+
                                             </div>
+
+
                                         </section>
+
+
                                     </div>
+
+
+                                    <div class="modal fade" id="my-@{@item.Name}" role="dialog">
+                                        <div class="modal-dialog">
+
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Modal Header</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>my@{@item.Name} </p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <script>
+
+                                        
+
+                                        $(document).ready(function () {
+                                            $( "#btn-@item.Name").click(function () {
+                                                $("#my-@item.Name").modal();
+                                                });
+                                            });
+
+                                    </script>
+
                                 }
                             }
                         </div>
                     </div>
-
+                 
                     @*Plumbing Section*@
                     <div id="Plumbing" class="col-md-9  pull-right">
 
@@ -528,14 +572,55 @@
                                                         @Html.DisplayFor(modelItem => item.Name)
                                                     </a>
                                                 </h4>
-                                                <p class="price">Johannesburg</p>
+                                                <div class="form-group">
+                                                    <div class="col-md-offset-2 col-md-10">
+                                                        <input type="submit" id="btn-@{@item.Name}" value="View" class="btn btn-default" />
+                                                    </div>
+                                                </div>
                                             </div>
+
                                         </section>
                                     </div>
+
+
+                                    <div class="modal fade" id="my-@{@item.Name}" role="dialog">
+                                        <div class="modal-dialog">
+
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Modal Header</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>my@{@item.Name} </p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <script>
+
+                                       
+                                        $(document).ready(function () {
+                                            $("#btn-@item.Name").click(function () {
+                                                $("#my-@item.Name").modal();
+                                                });
+                                            });
+
+                                    </script>
+
                                 }
                             }
                         </div>
                     </div>
+
+
+
 
 
                     @*Cleaning Section*@
@@ -565,10 +650,46 @@
                                                         @Html.DisplayFor(modelItem => item.Name)
                                                     </a>
                                                 </h4>
-                                                <p class="price">Johannesburg</p>
+                                                <div class="col-md-offset-2 col-md-10">
+                                                    <input type="submit" id="btn-@{@item.Name}" value="View" class="btn btn-default" />
+                                                </div>
                                             </div>
                                         </section>
                                     </div>
+
+
+                                    <div class="modal fade" id="my-@{@item.Name}" role="dialog">
+                                        <div class="modal-dialog">
+
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Modal Header</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>my@{@item.Name} </p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <script>
+
+                                    
+
+                                    $(document).ready(function () {
+                                        $("#btn-@item.Name").click(function () {
+                                            $("#my-@item.Name").modal();
+                                            });
+                                        });
+
+                                    </script>
+
                                 }
                             }
                         </div>
@@ -602,10 +723,45 @@
                                                         @Html.DisplayFor(modelItem => item.Name)
                                                     </a>
                                                 </h4>
-                                                <p class="price">Johannesburg</p>
+                                                <div class="col-md-offset-2 col-md-10">
+                                                    <input type="submit" id="btn-@{@item.Name}" value="View" class="btn btn-default" />
+                                                </div>
                                             </div>
                                         </section>
                                     </div>
+
+                                    <div class="modal fade" id="my-@{@item.Name}" role="dialog">
+                                        <div class="modal-dialog">
+
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Modal Header</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>my@{@item.Name} </p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <script>
+
+                                            
+
+                                            $(document).ready(function () {
+                                                $("#btn-@item.Name").click(function () {
+                                                    $("#my-@item.Name").modal();
+                                                    });
+                                                });
+
+                                    </script>
+
                                 }
                             }
                         </div>
@@ -639,10 +795,45 @@
                                                         @Html.DisplayFor(modelItem => item.Name)
                                                     </a>
                                                 </h4>
-                                                <p class="price">Johannesburg</p>
+                                                <div class="col-md-offset-2 col-md-10">
+                                                    <input type="submit" id="btn-@{@item.Name}" value="View" class="btn btn-default" />
+                                                </div>
                                             </div>
                                         </section>
                                     </div>
+
+                                    <div class="modal fade" id="my-@{@item.Name}" role="dialog">
+                                        <div class="modal-dialog">
+
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Modal Header</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>my@{@item.Name} </p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <script>
+
+                                        
+
+                                        $(document).ready(function () {
+                                            $( "#btn-@item.Name").click(function () {
+                                                $("m#y-@item.Name").modal();
+                                                });
+                                            });
+
+                                    </script>
+
                                 }
                             }
                         </div>
@@ -654,4 +845,6 @@
         </div>
     </div>
 
+   
 </body>
+
