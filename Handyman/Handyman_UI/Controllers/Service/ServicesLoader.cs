@@ -102,7 +102,7 @@ namespace Handyman_UI.Controllers
                         {
                             var tempServCat = new ServiceDisplayModel();//this is new everytime the for-Loop loops only, not in the foreach
                             //the following is populating the data from UILibrary
-                            tempServCat.displayId = String.Concat(sv.Name.Where(c => !Char.IsWhiteSpace(c)));
+                            tempServCat.displayId = String.Concat(sv.Name.Where(c => !Char.IsWhiteSpace(c)));//this is for the id value in views 
                             tempServCat.ServiceDescription = sv.Description;
                             tempServCat.Name = sv.Name;
                             tempServCat.Category = Categories.ElementAt(i).Name;
