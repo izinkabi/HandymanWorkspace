@@ -387,7 +387,7 @@
 
 
             <div class="row">
-
+                @**Left NavBar*@
                 <div class="col-md-2 leftNavMenuBar">
                     <section class="panel">
                         <div class="panel-body">
@@ -407,8 +407,8 @@
                                             <li class="active"><a href="#">- Grass cutting</a></li>
                                             <li><a href="#Plumbing">- Plumbing</a></li>
                                             @*<li><a href="#">- Roof</a></li>
-                                                <li><a href="#">- Tiling</a></li>
-                                                <li><a href="#">- Windows</a></li>*@
+                                    <li><a href="#">- Tiling</a></li>
+                                    <li><a href="#">- Windows</a></li>*@
                                         </ul>
                                     </li>
                                     <li>
@@ -431,417 +431,386 @@
                     </section>
                 </div>
 
-                @*******************************************************************@
-                @*<div class="row">
-                        <div class="col-md-3">
-                            <nav class="col-sm-1 col-md-1 col-lg-1 pull-left" id="myScrollspy">
+              
+                @********************Paging Section********************@
 
-                                <ul class="nav nav-pills nav-stacked">
-                                    <strong>Categories</strong>
-                                    <br />
-                                    <br />
-                                    <li class="active"><a href="#section1">Electronics </a></li>
-                                    <li><a href="#section2">Mechanics </a></li>
-                                    <li><a href="#section3">Plumbing </a></li>
-                                    <li class="dropdown">
-                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Renovations <span class="caret"></span></a>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#section41">Indoor </a></li>
-                                            <li><a href="#section42">Outdoor </a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>*@
-                @*End Side Nav*@
-
-
-
-
-                @*Paging Section*@
                 @*Electronics Section*@
-               
+                <div id="Electornics" class="col-md-9 pull-right">
 
-                    <div id="Electornics" class="col-md-9 pull-right">
+                    <div class="row product-list">
 
-                        <div class="row product-list">
+                        <h1 class="text-center">Electronics</h1>
+                        <hr />
+                        @foreach (var item in Model)
+                        {
 
-                            <h1 class="text-center">Electronics</h1>
-                            <hr />
-                            @foreach (var item in Model)
+
+                            if (item.Category.ToString() == "Electronics")
                             {
-
-
-                                if (item.Category.ToString() == "Electronics")
-                                {
-                                    <div class="col-md-4">
-                                        <section class="panel">
-                                            <div class="pro-img-box">
-                                                <img src="https://via.placeholder.com/250x220/ADD8E6/000000" alt="" />
-                                                <a href="#" class="adtocart">
-                                                    <i class="fa fa-home"></i>
-                                                </a>
-                                            </div>
-
-                                            <div class="panel-body text-center">
-                                                <h4>
-                                                    <a href="#" class="pro-title">
-                                                        @Html.DisplayFor(modelItem => item.Name)
-                                                    </a>
-                                                </h4>
-                                                <div class="form-group">
-                                                    <div class="col-md-offset-2 col-md-10">
-                                                        <input type="submit" id="btn-@{@item.Name}" value="View" class="btn btn-default" />
-                                                    </div>
-
-
-                                                </div>
-
-
-                                            </div>
-
-
-                                        </section>
-
-
-                                    </div>
-
-
-                                    <div class="modal fade" id="my-@{@item.Name}" role="dialog">
-                                        <div class="modal-dialog">
-
-                                            <!-- Modal content-->
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                    <h4 class="modal-title">Modal Header</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p>my@{@item.Name} </p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                </div>
-                                            </div>
-
+                                <div class="col-md-4">
+                                    <section class="panel">
+                                        <div class="pro-img-box">
+                                            <img src="https://via.placeholder.com/250x220/ADD8E6/000000" alt="" />
+                                            <a href="#" class="adtocart">
+                                                <i class="fa fa-home"></i>
+                                            </a>
                                         </div>
-                                    </div>
 
-                                    <script>
-
-                                        
-
-                                        $(document).ready(function () {
-                                            $( "#btn-@item.Name").click(function () {
-                                                $("#my-@item.Name").modal();
-                                                });
-                                            });
-
-                                    </script>
-
-                                }
-                            }
-                        </div>
-                    </div>
-                 
-                    @*Plumbing Section*@
-                    <div id="Plumbing" class="col-md-9  pull-right">
-
-                        <div class="row product-list">
-                            <h1 class="text-center">Plumbing</h1>
-                            <hr />
-                            @foreach (var item in Model)
-                            {
-
-
-                                if (@Html.DisplayFor(modelItem => item.Category).ToString() == "Plumbing")
-                                {
-                                    <div class="col-md-4">
-                                        <section class="panel">
-                                            <div class="pro-img-box">
-                                                <img src="https://via.placeholder.com/250x220/ADD8E6/000000" alt="" />
-                                                <a href="#" class="adtocart">
-                                                    <i class="fa fa-home"></i>
+                                        <div class="panel-body text-center">
+                                            <h4>
+                                                <a href="#" class="pro-title">
+                                                    @Html.DisplayFor(modelItem => item.Name)
                                                 </a>
-                                            </div>
-
-                                            <div class="panel-body text-center">
-                                                <h4>
-                                                    <a href="#" class="pro-title">
-                                                        @Html.DisplayFor(modelItem => item.Name)
-                                                    </a>
-                                                </h4>
-                                                <div class="form-group">
-                                                    <div class="col-md-offset-2 col-md-10">
-                                                        <input type="submit" id="btn-@{@item.Name}" value="View" class="btn btn-default" />
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </section>
-                                    </div>
-
-
-                                    <div class="modal fade" id="my-@{@item.Name}" role="dialog">
-                                        <div class="modal-dialog">
-
-                                            <!-- Modal content-->
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                    <h4 class="modal-title">Modal Header</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p>my@{@item.Name} </p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                    <script>
-
-                                       
-                                        $(document).ready(function () {
-                                            $("#btn-@item.Name").click(function () {
-                                                $("#my-@item.Name").modal();
-                                                });
-                                            });
-
-                                    </script>
-
-                                }
-                            }
-                        </div>
-                    </div>
-
-
-
-
-
-                    @*Cleaning Section*@
-                    <div id="Cleaning" class="col-md-9  pull-right">
-
-                        <div class="row product-list">
-                            <h1 class="text-center">Cleaning</h1>
-                            <hr />
-                            @foreach (var item in Model)
-                            {
-
-
-                                if (@Html.DisplayFor(modelItem => item.Category).ToString() == "Cleaning")
-                                {
-                                    <div class="col-md-4">
-                                        <section class="panel">
-                                            <div class="pro-img-box">
-                                                <img src="https://via.placeholder.com/250x220/ADD8E6/000000" alt="" />
-                                                <a href="#" class="adtocart">
-                                                    <i class="fa fa-home"></i>
-                                                </a>
-                                            </div>
-
-                                            <div class="panel-body text-center">
-                                                <h4>
-                                                    <a href="#" class="pro-title">
-                                                        @Html.DisplayFor(modelItem => item.Name)
-                                                    </a>
-                                                </h4>
+                                            </h4>
+                                            <div class="form-group">
                                                 <div class="col-md-offset-2 col-md-10">
-                                                    <input type="submit" id="btn-@{@item.Name}" value="View" class="btn btn-default" />
+                                                    <input type="submit" id="btn-@{@item.displayId}" value="View" class="btn btn-default" />
                                                 </div>
+
+
                                             </div>
-                                        </section>
-                                    </div>
 
-
-                                    <div class="modal fade" id="my-@{@item.Name}" role="dialog">
-                                        <div class="modal-dialog">
-
-                                            <!-- Modal content-->
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                    <h4 class="modal-title">Modal Header</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p>my@{@item.Name} </p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                </div>
-                                            </div>
 
                                         </div>
+
+
+                                    </section>
+
+
+                                </div>
+
+                                @*Modal*@
+                                <div class="modal fade" id="my-@{@item.displayId}" role="dialog">
+                                    <div class="modal-dialog">
+
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title">@{@item.Name} </h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>@{@item.ServiceDescription} </p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+
                                     </div>
+                                </div>
 
-                                    <script>
+                                <script>
 
-                                    
+
+
+                                        $(document).ready(function () {
+                                            $( "#btn-@item.displayId").click(function () {
+                                                $("#my-@item.displayId").modal();
+                                                });
+                                            });
+
+                                </script>
+
+                            }
+                        }
+                    </div>
+                </div>
+
+                @*Plumbing Section*@
+                <div id="Plumbing" class="col-md-9  pull-right">
+
+                    <div class="row product-list">
+                        <h1 class="text-center">Plumbing</h1>
+                        <hr />
+                        @foreach (var item in Model)
+                        {
+
+
+                            if (@Html.DisplayFor(modelItem => item.Category).ToString() == "Plumbing")
+                            {
+                                <div class="col-md-4">
+                                    <section class="panel">
+                                        <div class="pro-img-box">
+                                            <img src="https://via.placeholder.com/250x220/ADD8E6/000000" alt="" />
+                                            <a href="#" class="adtocart">
+                                                <i class="fa fa-home"></i>
+                                            </a>
+                                        </div>
+
+                                        <div class="panel-body text-center">
+                                            <h4>
+                                                <a href="#" class="pro-title">
+                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                </a>
+                                            </h4>
+                                            <div class="form-group">
+                                                <div class="col-md-offset-2 col-md-10">
+                                                    <input type="submit" id="btn-@{@item.displayId}" value="View" class="btn btn-default" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </section>
+                                </div>
+
+
+                                <div class="modal fade" id="my-@{@item.displayId}" role="dialog">
+                                    <div class="modal-dialog">
+
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title">@{@item.Name} </h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>@{@item.ServiceDescription} </p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <script>
+
+
+                                        $(document).ready(function () {
+                                            $("#btn-@item.displayId").click(function () {
+                                                $("#my-@item.displayId").modal();
+                                                });
+                                            });
+
+                                </script>
+
+                            }
+                        }
+                    </div>
+                </div>
+
+
+                @*Cleaning Section*@
+                <div id="Cleaning" class="col-md-9  pull-right">
+
+                    <div class="row product-list">
+                        <h1 class="text-center">Cleaning</h1>
+                        <hr />
+                        @foreach (var item in Model)
+                        {
+
+
+                            if (@Html.DisplayFor(modelItem => item.Category).ToString() == "Cleaning")
+                            {
+                                <div class="col-md-4">
+                                    <section class="panel">
+                                        <div class="pro-img-box">
+                                            <img src="https://via.placeholder.com/250x220/ADD8E6/000000" alt="" />
+                                            <a href="#" class="adtocart">
+                                                <i class="fa fa-home"></i>
+                                            </a>
+                                        </div>
+
+                                        <div class="panel-body text-center">
+                                            <h4>
+                                                <a href="#" class="pro-title">
+                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                </a>
+                                            </h4>
+                                            <div class="col-md-offset-2 col-md-10">
+                                                <input type="submit" id="btn-@{@item.displayId}" value="View" class="btn btn-default" />
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+
+
+                                <div class="modal fade" id="my-@{@item.displayId}" role="dialog">
+                                    <div class="modal-dialog">
+
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title">@{@item.Name}</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>@{@item.ServiceDescription} </p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <script>
+
+
 
                                     $(document).ready(function () {
-                                        $("#btn-@item.Name").click(function () {
-                                            $("#my-@item.Name").modal();
+                                        $("#btn-@item.displayId").click(function () {
+                                            $("#my-@item.displayId").modal();
                                             });
                                         });
 
-                                    </script>
+                                </script>
 
-                                }
                             }
-                        </div>
+                        }
                     </div>
+                </div>
 
 
-                    @*Gardening*@
-                    <div id="Gardening" class="col-md-9  pull-right">
+                @*Gardening*@
+                <div id="Gardening" class="col-md-9  pull-right">
 
-                        <div class="row product-list">
-                            <h1 class="text-center">Gardening</h1>
-                            <hr />
-                            @foreach (var item in Model)
+                    <div class="row product-list">
+                        <h1 class="text-center">Gardening</h1>
+                        <hr />
+                        @foreach (var item in Model)
+                        {
+
+
+                            if (@Html.DisplayFor(modelItem => item.Category).ToString() == "Gardening")
                             {
-
-
-                                if (@Html.DisplayFor(modelItem => item.Category).ToString() == "Gardening")
-                                {
-                                    <div class="col-md-4">
-                                        <section class="panel">
-                                            <div class="pro-img-box">
-                                                <img src="https://via.placeholder.com/250x220/ADD8E6/000000" alt="" />
-                                                <a href="#" class="adtocart">
-                                                    <i class="fa fa-home"></i>
-                                                </a>
-                                            </div>
-
-                                            <div class="panel-body text-center">
-                                                <h4>
-                                                    <a href="#" class="pro-title">
-                                                        @Html.DisplayFor(modelItem => item.Name)
-                                                    </a>
-                                                </h4>
-                                                <div class="col-md-offset-2 col-md-10">
-                                                    <input type="submit" id="btn-@{@item.Name}" value="View" class="btn btn-default" />
-                                                </div>
-                                            </div>
-                                        </section>
-                                    </div>
-
-                                    <div class="modal fade" id="my-@{@item.Name}" role="dialog">
-                                        <div class="modal-dialog">
-
-                                            <!-- Modal content-->
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                    <h4 class="modal-title">Modal Header</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p>my@{@item.Name} </p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                </div>
-                                            </div>
-
+                                <div class="col-md-4">
+                                    <section class="panel">
+                                        <div class="pro-img-box">
+                                            <img src="https://via.placeholder.com/250x220/ADD8E6/000000" alt="" />
+                                            <a href="#" class="adtocart">
+                                                <i class="fa fa-home"></i>
+                                            </a>
                                         </div>
+
+                                        <div class="panel-body text-center">
+                                            <h4>
+                                                <a href="#" class="pro-title">
+                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                </a>
+                                            </h4>
+                                            <div class="col-md-offset-2 col-md-10">
+                                                <input type="submit" id="btn-@{@item.displayId}" value="View" class="btn btn-default" />
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+
+                                <div class="modal fade" id="my-@{@item.displayId}" role="dialog">
+                                    <div class="modal-dialog">
+
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title">@{@item.Name}</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>@{@item.ServiceDescription} </p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+
                                     </div>
+                                </div>
 
-                                    <script>
+                                <script>
 
-                                            
+
 
                                             $(document).ready(function () {
-                                                $("#btn-@item.Name").click(function () {
-                                                    $("#my-@item.Name").modal();
+                                                $("#btn-@item.displayId").click(function () {
+                                                    $("#my-@item.displayId").modal();
                                                     });
                                                 });
 
-                                    </script>
+                                </script>
 
-                                }
                             }
-                        </div>
-                    </div>
-
-
-                    @*Mechanics*@
-                    <div id="Mechanics" class="col-md-9  pull-right">
-
-                        <div class="row product-list">
-                            <h1 class="text-center">Machanics</h1>
-                            <hr />
-                            @foreach (var item in Model)
-                            {
-
-
-                                if (@Html.DisplayFor(modelItem => item.Category).ToString() == "Mechanics")
-                                {
-                                    <div class="col-md-4">
-                                        <section class="panel">
-                                            <div class="pro-img-box">
-                                                <img src="https://via.placeholder.com/250x220/ADD8E6/000000" alt="" />
-                                                <a href="#" class="adtocart">
-                                                    <i class="fa fa-home"></i>
-                                                </a>
-                                            </div>
-
-                                            <div class="panel-body text-center">
-                                                <h4>
-                                                    <a href="#" class="pro-title">
-                                                        @Html.DisplayFor(modelItem => item.Name)
-                                                    </a>
-                                                </h4>
-                                                <div class="col-md-offset-2 col-md-10">
-                                                    <input type="submit" id="btn-@{@item.Name}" value="View" class="btn btn-default" />
-                                                </div>
-                                            </div>
-                                        </section>
-                                    </div>
-
-                                    <div class="modal fade" id="my-@{@item.Name}" role="dialog">
-                                        <div class="modal-dialog">
-
-                                            <!-- Modal content-->
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                    <h4 class="modal-title">Modal Header</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p>my@{@item.Name} </p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                    <script>
-
-                                        
-
-                                        $(document).ready(function () {
-                                            $( "#btn-@item.Name").click(function () {
-                                                $("m#y-@item.Name").modal();
-                                                });
-                                            });
-
-                                    </script>
-
-                                }
-                            }
-                        </div>
+                        }
                     </div>
                 </div>
-                @*End Paging Section*@
 
+
+                @*Mechanics*@
+                <div id="Mechanics" class="col-md-9  pull-right">
+
+                    <div class="row product-list">
+                        <h1 class="text-center">Machanics</h1>
+                        <hr />
+                        @foreach (var item in Model)
+                        {
+
+
+                            if (@Html.DisplayFor(modelItem => item.Category).ToString() == "Mechanics")
+                            {
+                                <div class="col-md-4">
+                                    <section class="panel">
+                                        <div class="pro-img-box">
+                                            <img src="https://via.placeholder.com/250x220/ADD8E6/000000" alt="" />
+                                            <a href="#" class="adtocart">
+                                                <i class="fa fa-home"></i>
+                                            </a>
+                                        </div>
+
+                                        <div class="panel-body text-center">
+                                            <h4>
+                                                <a href="#" class="pro-title">
+                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                </a>
+                                            </h4>
+                                            <div class="col-md-offset-2 col-md-10">
+                                                <input type="submit" id="btn-@{@item.displayId}" value="View" class="btn btn-default" />
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+
+                                <div class="modal fade" id="my-@{@item.displayId}" role="dialog">
+                                    <div class="modal-dialog">
+
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title">@{@item.Name}</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>@{@item.ServiceDescription} </p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <script>
+
+
+
+                                        $(document).ready(function () {
+                                            $( "#btn-@item.displayId").click(function () {
+                                                $("#my-@item.displayId").modal();
+                                            });
+                                        });
+
+                                </script>
+
+                            }
+                        }
+                    </div>
+                </div>
             </div>
+                @****************End Paging Section*******************@
+
+           
         </div>
     </div>
 

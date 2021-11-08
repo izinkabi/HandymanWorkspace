@@ -476,10 +476,47 @@
                                         @Html.DisplayFor(modelItem => item.Name)
                                     </a>
                                 </h4>
-                                <p class="price">Johannesburg</p>
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <input type="submit" id="btn-@{@item.displayId}" value="View" class="btn btn-default" />
+                                    </div>
+
+
+                                </div>
                             </div>
                         </section>
                     </div>
+
+                    @*Modal*@
+                    <div class="modal fade" id="my-@{@item.displayId}" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">@{@item.Name} </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>@{@item.ServiceDescription} </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <script>
+
+                           $(document).ready(function () {
+                               $( "#btn-@item.displayId").click(function () {
+                                   $("#my-@item.displayId").modal();
+                                   });
+                                });
+
+                    </script>
                 }
             </div>
         </div>
