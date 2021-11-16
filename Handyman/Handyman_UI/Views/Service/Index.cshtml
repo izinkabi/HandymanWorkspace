@@ -463,14 +463,16 @@
                 {
                     <div class="col-md-4">
                         <section class="panel">
+
                             <div class="pro-img-box">
+                                @*<img src="@{@item.ImageUrl}"  />*@
                                 <img src="https://via.placeholder.com/250x220/ADD8E6/000000" alt="" />
                                 <a href="#" class="adtocart">
                                     <i class="fa fa-home"></i>
                                 </a>
                             </div>
-
                             <div class="panel-body text-center">
+
                                 <h4>
                                     <a href="#" class="pro-title">
                                         @Html.DisplayFor(modelItem => item.Name)
@@ -498,6 +500,14 @@
                                     <h4 class="modal-title">@{@item.Name} </h4>
                                 </div>
                                 <div class="modal-body">
+                                    <div class="pro-img-box">
+                                        <img src="@{@item.ImageUrl}" alt="" />
+                                        <br />
+                                        <br />
+                                        <br />
+                                        <br />
+
+                                    </div>
                                     <p>@{@item.ServiceDescription} </p>
                                 </div>
                                 <div class="modal-footer">

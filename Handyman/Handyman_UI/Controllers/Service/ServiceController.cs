@@ -11,9 +11,11 @@ namespace Handyman_UI.Controllers
     public class ServiceController : Controller
     {
         private IServicesLoader _serviceLoader;
+   
         public ServiceController(IServicesLoader servicesLoader)
         {
             _serviceLoader = servicesLoader;
+          
         }
 
 
@@ -40,7 +42,7 @@ namespace Handyman_UI.Controllers
 
         public async Task<ActionResult> DisplayServiceCategory()
         {
-
+            
             IEnumerable<ServiceDisplayModel> displayCategories = await _serviceLoader.getDisplayServices();
             return View(displayCategories);
         }

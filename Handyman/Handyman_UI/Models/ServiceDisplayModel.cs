@@ -11,6 +11,6 @@ namespace Handyman_UI.Models
         public string Category { get; set; }
         public string displayId { get; set; }
         public string ServiceDescription { get; set; }
-
+        public string ImageUrl { get; set; }
     }
 }

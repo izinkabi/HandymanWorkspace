@@ -10,7 +10,7 @@ namespace HandymanDataLibrary.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public int ServiceCategoryId { get; set; }
-
+        public string ImageUrl { get; set; }
         public int Id { get; set; }
 
     }

@@ -43,6 +43,7 @@ namespace Handyman_UI.Controllers
                      tempService.Id = tempServices.ElementAt(i).Id;
                     tempService.Name = tempServices.ElementAt(i).Name;
                     tempService.Description = tempServices.ElementAt(i).Description;
+                    tempService.ImageUrl = tempServices.ElementAt(i).ImageUrl;
                     tempService.ServiceCategoryId = tempServices.ElementAt(i).ServiceCategoryId;
                     
                     Services.Add(tempService);//Add to the sevices list
@@ -105,6 +106,7 @@ namespace Handyman_UI.Controllers
                             tempServCat.displayId = String.Concat(sv.Name.Where(c => !Char.IsWhiteSpace(c)));//this is for the id value in views 
                             tempServCat.ServiceDescription = sv.Description;
                             tempServCat.Name = sv.Name;
+                            tempServCat.ImageUrl = sv.ImageUrl;
                             tempServCat.Category = Categories.ElementAt(i).Name;
                             displayCategories.Add(tempServCat);
                         }
