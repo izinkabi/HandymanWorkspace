@@ -45,7 +45,6 @@ namespace Handyman_UI.Controllers
         public  async Task<ActionResult> Index()
         {
           
-          
             return View();
         }
 

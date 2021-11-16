@@ -510,8 +510,10 @@
                                     </div>
                                     <p>@{@item.ServiceDescription} </p>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Request</button>
+                                <div class="modal-footer ">
+                                    
+                                    <div class="pull-left"> @Html.ActionLink("View Details", "Details", new { id=item.Id}, new { @class = "btn" })</div>
+                                    <div class="pull-right"><button type="button" class="btn btn-default" data-dismiss="modal">Request</button></div>
                                 </div>
                             </div>
 
