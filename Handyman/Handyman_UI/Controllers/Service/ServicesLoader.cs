@@ -86,7 +86,7 @@ namespace Handyman_UI.Controllers
             return Categories;
         }
 
-        //Merging the Services and Categories list
+        //Merging the Services and Categories into 1 list
         public async Task<List<ServiceDisplayModel>> getDisplayServices()
         {
             try
@@ -108,6 +108,7 @@ namespace Handyman_UI.Controllers
                             tempServCat.ServiceDescription = sv.Description;
                             tempServCat.Name = sv.Name;
                             tempServCat.Id = sv.Id;
+                            tempServCat.CategoryId = Categories.ElementAt(i).Id;
                             tempServCat.ImageUrl = sv.ImageUrl;
                             tempServCat.Category = Categories.ElementAt(i).Name;
                             displayCategories.Add(tempServCat);

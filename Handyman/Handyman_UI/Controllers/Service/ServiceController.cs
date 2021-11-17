@@ -39,6 +39,31 @@ namespace Handyman_UI.Controllers
            
         }
 
+
+        //A filter/search method for a service
+        public async Task<ActionResult> Search(string serviceSearchString)
+        {
+
+            if (services == null)
+            {
+
+                services = await _serviceLoader.getDisplayServices();
+                
+            }
+            var tempServices = new List<ServiceDisplayModel>();
+                foreach (var service in services)
+                {
+                    if ((service.Name.Contains(serviceSearchString)) || (service.Category.Contains(serviceSearchString)))
+                    {
+                        tempServices.Add(service);
+
+                    }
+                }
+           
+            return View(tempServices);
+           
+        }
+
         // GET: Service/GetServices
         public async Task<ActionResult>  GetServices()
         {
