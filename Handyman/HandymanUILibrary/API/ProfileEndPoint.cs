@@ -24,8 +24,18 @@ namespace HandymanUILibrary.API
         //a Profile Post endpoint
         public async Task<ProfileModel> PostProfile(ProfileModel profile)
         {
-            using (HttpResponseMessage responseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync("/api/Profiles", profile))
-            {
+           // var data = new FormUrlEncodedContent(new[]
+           //{
+
+           //      new KeyValuePair<string, string>("Name", profile.Name),
+           //      new KeyValuePair<string, string>("Surname", profile.Surname),
+           //      new KeyValuePair<string, string>("Home", profile.Name),
+           //      new KeyValuePair<string, string>("Name", profile.Name),
+
+           //});
+
+            HttpResponseMessage responseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync("/api/Profiles", profile);
+            
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     var result = await responseMessage.Content.ReadAsAsync<ProfileModel>();
@@ -35,9 +45,27 @@ namespace HandymanUILibrary.API
                 {
                     throw new Exception(responseMessage.ReasonPhrase);
                 }
-            }
+            
 
         }
+
+        // this method saves the Address record in the database
+
+        //public async Task<ProfileModel.AddressModel> PostAddress(ProfileModel.AddressModel address)
+        //{
+        //    using (HttpResponseMessage responseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync("/api/Profile", address))
+        //    {
+        //        if (responseMessage.IsSuccessStatusCode)
+        //        {
+        //            var result = await responseMessage.Content.ReadAsAsync<ProfileModel.AddressModel>();
+        //            return result;
+        //        }
+        //        else
+        //        {
+        //            throw new Exception(responseMessage.ReasonPhrase);
+        //        }
+        //    }
+        //}
 
         //Getting a profile endpoint
         //This might use a different model called getProfileModel
@@ -59,7 +87,7 @@ namespace HandymanUILibrary.API
                     profileModel.Type = "user";
                     profileModel.Surname = result.Surname;
                     profileModel.DateofBirth = result.DateofBirth;
-                    profileModel.HomeAddress = result.HomeAddress;
+                    profileModel.Address = result.Address;
                     profileModel.PhoneNumber = result.PhoneNumber;
 
                     return profileModel;

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace HandymanDataLibray.DataAccess.Internal
 {
-    public class SQLDataAccess
+    public class SQLDataAccess: IDisposable
     {
 
         public string GetConnectionString(string name)
@@ -39,6 +39,66 @@ namespace HandymanDataLibray.DataAccess.Internal
                 return affectedrows;
             }
 
+        }
+
+
+        private IDbConnection _connection;
+        private IDbTransaction _transaction;
+
+        public void StartTransaction(string connectionStringName)
+        {
+            string connectionString = GetConnectionString(connectionStringName);
+            _connection = new SqlConnection(connectionString);
+            _connection.Open();
+            _transaction = _connection.BeginTransaction();
+            IsClosed = false;
+        }
+
+        public void SaveDataTransaction<T>(string storedProcedure, T parameters)
+        {
+            _connection.Execute(storedProcedure, parameters, commandType: CommandType.StoredProcedure, transaction: _transaction);
+        }
+
+        public List<T> LoadDataTransaction<T, U>(string storedProcedure, U parameters)
+        {
+            List<T> rows = _connection.Query<T>(storedProcedure, parameters,
+                    commandType: CommandType.StoredProcedure, transaction: _transaction).ToList();
+            return rows;
+        }
+
+        private bool IsClosed = false;
+        public void CommitTransation()
+        {
+            _transaction?.Commit();
+            _connection?.Close();
+            IsClosed = true;
+        }
+
+        public void RollBackTransaction()
+        {
+            _transaction.Rollback();
+            _connection?.Close();
+            IsClosed = true;
+
+        }
+
+        public void Dispose()
+        {
+            if (IsClosed == false)
+            {
+                try
+                {
+                    CommitTransation();
+                }
+                catch
+                {
+
+                    //TODO Log issue 
+                }
+            }
+
+            _transaction = null;
+            _connection = null;
         }
     }
 }

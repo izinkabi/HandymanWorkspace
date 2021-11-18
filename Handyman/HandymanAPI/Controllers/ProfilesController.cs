@@ -14,14 +14,11 @@ namespace HandymanAPI.Controllers
     {
 
 
-        [Authorize]
-
         public void PostProfile(ProfileModel profile)
         {
             ProfileData data = new ProfileData();
             data.PostProfile(profile);
         }
-
 
         
         // GET: Profiles

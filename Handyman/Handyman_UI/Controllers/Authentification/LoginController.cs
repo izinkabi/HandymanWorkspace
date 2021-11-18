@@ -15,10 +15,7 @@ namespace Handyman_UI.Controllers
          private string Username;
          private string Password;
          private IAPIHelper _apiHepler;
-        // private IloggedInUserModel _loggedInUserModel;
-
-        static private string DisplayUserName;
-
+        
         public LoginController(IAPIHelper aPIHelper)
         {
             _apiHepler = aPIHelper;
@@ -30,21 +27,19 @@ namespace Handyman_UI.Controllers
             
             Username = model.Username;
             Password = model.Password;
-
+            
             if (ModelState.IsValid)
             {
-
+                
                 try
                 {
                     var results = await _apiHepler.AuthenticateUser(Username, Password);
-                    //Token = results.Access_Token;
-
-                    //DisplayUserName = _loggedInUserModel.Username;
+                   
                     await _apiHepler.GetLoggedInUserInfor(results.Access_Token);
-                    DisplayUserName = results.UserName;
+                   
                     Session["log"] = results.Access_Token;
-                    ViewBag.Email = DisplayUserName;
-                    //Session["profilename"] = DisplayUserName;
+                    ViewData["username"] = results.UserName;
+                    
 
                     return RedirectToAction("Index", "Service");
                 }

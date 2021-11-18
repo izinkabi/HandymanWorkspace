@@ -69,7 +69,7 @@ namespace HandymanUILibrary.API
             }   
 
         }
-        public async Task GetLoggedInUserInfor(string Token)
+        public async Task<IloggedInUserModel> GetLoggedInUserInfor(string Token)
         {
             _apiClient.DefaultRequestHeaders.Clear();
             _apiClient.DefaultRequestHeaders.Accept.Clear();
@@ -82,13 +82,15 @@ namespace HandymanUILibrary.API
                 {
                    
                     var result = await httpResponseMessage.Content.ReadAsAsync<loggedInUserModel>();
-                    _loggedInUserModel.Token = Token;
+                    _loggedInUserModel.Token = result.Token;
                     _loggedInUserModel.Id = result.Id;
                     _loggedInUserModel.Username = result.Username;
                     _loggedInUserModel.Email = result.Email;
                     _loggedInUserModel.CreateDate = result.CreateDate;
-                //    _loggedInUserModel.FirstName = result.FirstName;
-                //    _loggedInUserModel.LastName = result.LastName;
+                    _loggedInUserModel.FirstName = result.FirstName;
+                    _loggedInUserModel.LastName = result.LastName;
+
+                    return _loggedInUserModel;
                 }
                 else
                 {
