@@ -1,11 +1,10 @@
 ﻿/*Profile Look Up*/
 CREATE PROCEDURE [dbo].[spProfileLookUp]
-	@Id nvarchar(128)
+	@UserId nvarchar(128)
 AS
-begin
-
-	set nocount on;
-	SELECT *
-	from dbo.Profile
-	where Id = @Id;
+BEGIN
+/*Alias of Address and Profile tables to form a profile model */
+	SELECT p.UserId, p.Id, p.Name,p.Surname,p.DateOfBirth, p.PhoneNumber, p.HomeAddressId, a.Id, a.StreetName, a.PostalCode, a.City, a.Surburb, a.HouseNumber
+	FROM Profile AS p, Address AS a
+	WHERE p.UserId=@UserId AND p.HomeAddressId=a.Id;
 End

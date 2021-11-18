@@ -20,7 +20,7 @@ namespace Handyman_UI.Controllers
         private HandymanUILibrary.Models.ProfileModel profileModel;
         private HandymanUILibrary.Models.ProfileModel.AddressModel address;
         private IloggedInUserModel _loggedInUserModel;
-
+        
 
         private IRegisterEndPoint _registerEndPoint;
         private HandymanUILibrary.Models.NewUserModel user;
@@ -132,6 +132,28 @@ namespace Handyman_UI.Controllers
 
                 
 
+            }
+
+            return View();
+        }
+
+
+        public async Task<ActionResult> ProfileDetails(string userId)
+        {
+            try
+            {
+                
+               //Getting a profile with its Address
+               var results =  await _profileEndPoint.GetProfile(userId);
+
+                Session["log"] = results.UserId;
+                ViewData["username"] = Username;
+                profileModel = results;
+                return View(profileModel);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMsg = ex.Message;
             }
 
             return View();

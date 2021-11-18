@@ -6,6 +6,6 @@
 	@HouseNumber INT
 AS
 BEGIN
-	INSERT INTO Address ([Postal Code],[Street Name],[Surburb],[City],[House Number])
+	INSERT INTO Address (PostalCode, StreetName , Surburb , City , HouseNumber)
 	VALUES(@PostalCode,@StreetName,@Surburb,@City,@HouseNumber)
 END

@@ -15,7 +15,8 @@ namespace HandymanDataLibray.Models
 
         public string PhoneNumber { get; set; }
         public string DateofBirth { get; set; }
-        public string Type { get; set; }
+
+      
         public int AddressId { get; set; }
         public AddressModel Address { get; set; }
 
