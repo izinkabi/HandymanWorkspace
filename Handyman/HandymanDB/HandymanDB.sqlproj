@@ -91,6 +91,8 @@
     <Build Include="Tables\Address.sql" />
     <Build Include="Tables\ServiceCategory.sql" />
     <Build Include="Stored Procedures\spServiceCategoriesLookUp.sql" />
+    <Build Include="Stored Procedures\spAddressInsert.sql" />
+    <Build Include="Stored Procedures\spAddressLookUp.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Stored Procedures\spProfileInsert.sql" />

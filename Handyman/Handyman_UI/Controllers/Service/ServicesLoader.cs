@@ -43,6 +43,7 @@ namespace Handyman_UI.Controllers
                      tempService.Id = tempServices.ElementAt(i).Id;
                     tempService.Name = tempServices.ElementAt(i).Name;
                     tempService.Description = tempServices.ElementAt(i).Description;
+                   
                     tempService.ImageUrl = tempServices.ElementAt(i).ImageUrl;
                     tempService.ServiceCategoryId = tempServices.ElementAt(i).ServiceCategoryId;
                     
@@ -85,7 +86,7 @@ namespace Handyman_UI.Controllers
             return Categories;
         }
 
-        //Merging the Services and Categories list
+        //Merging the Services and Categories into 1 list
         public async Task<List<ServiceDisplayModel>> getDisplayServices()
         {
             try
@@ -106,6 +107,8 @@ namespace Handyman_UI.Controllers
                             tempServCat.displayId = String.Concat(sv.Name.Where(c => !Char.IsWhiteSpace(c)));//this is for the id value in views 
                             tempServCat.ServiceDescription = sv.Description;
                             tempServCat.Name = sv.Name;
+                            tempServCat.Id = sv.Id;
+                            tempServCat.CategoryId = Categories.ElementAt(i).Id;
                             tempServCat.ImageUrl = sv.ImageUrl;
                             tempServCat.Category = Categories.ElementAt(i).Name;
                             displayCategories.Add(tempServCat);

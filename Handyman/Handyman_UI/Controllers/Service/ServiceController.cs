@@ -11,20 +11,57 @@ namespace Handyman_UI.Controllers
     public class ServiceController : Controller
     {
         private IServicesLoader _serviceLoader;
-   
+        private List<ServiceDisplayModel> services;
+
+       
+
         public ServiceController(IServicesLoader servicesLoader)
         {
             _serviceLoader = servicesLoader;
-          
+           
         }
 
 
         // GET: Service
         public async Task<ActionResult> Index()
         {
-            /*Display Services of all categories*/
-            IEnumerable<ServiceDisplayModel> displayCategories = await _serviceLoader.getDisplayServices();
-            return View(displayCategories);
+            /*Display all Services*/
+            if (services==null)
+            {
+               
+                services = await _serviceLoader.getDisplayServices();
+                return View(services);
+            }
+            else
+            {
+                return View(services);
+            }
+           
+        }
+
+
+        //A filter/search method for a service
+        public async Task<ActionResult> Search(string serviceSearchString)
+        {
+
+            if (services == null)
+            {
+
+                services = await _serviceLoader.getDisplayServices();
+                
+            }
+            var tempServices = new List<ServiceDisplayModel>();
+                foreach (var service in services)
+                {
+                    if ((service.Name.Contains(serviceSearchString)) || (service.Category.Contains(serviceSearchString)))
+                    {
+                        tempServices.Add(service);
+
+                    }
+                }
+           
+            return View(tempServices);
+           
         }
 
         // GET: Service/GetServices
@@ -35,8 +72,16 @@ namespace Handyman_UI.Controllers
             return View();
         }
         // GET: Service/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
+            IEnumerable<ServiceDisplayModel> displayServices = await _serviceLoader.getDisplayServices();
+            foreach (var service in displayServices) 
+            {
+                if (service.Id ==id)
+                {
+                    return View(service);
+                }
+            }
             return View();
         }
 

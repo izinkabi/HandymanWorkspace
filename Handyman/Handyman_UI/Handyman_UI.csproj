@@ -257,7 +257,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\CustomerHome\About.cshtml" />
     <Content Include="Views\CustomerHome\Contact.cshtml" />
-    <Content Include="Views\CustomerHome\CreateProfile.cshtml" />
     <Content Include="Views\CustomerHome\GetOTP.cshtml" />
     <Content Include="Views\ServiceProviderHome\RegisterServiceProvider.cshtml" />
     <Content Include="Views\CustomerHome\UserDashBoard.cshtml" />
@@ -269,13 +268,17 @@
     <Content Include="Views\ServiceProviderHome\Services.cshtml" />
     <Content Include="Views\ServiceProviderHome\Profile.cshtml" />
     <Content Include="Views\ServiceProviderHome\ActiveRequests.cshtml" />
-    <Content Include="Views\Profile\CreateAProfile.cshtml" />
     <Content Include="Views\ServiceProviderHome\ServiceDisplay.cshtml" />
-    <Content Include="Views\CustomerHome\Register.cshtml" />
+    <Content Include="Views\Profile\Register.cshtml" />
     <Content Include="Views\Login\SignIn.cshtml" />
     <Content Include="Views\Service\Test.cshtml" />
     <Content Include="Views\Service\Index.cshtml" />
     <Content Include="Views\Service\DisplayServiceCategory.cshtml" />
+    <Content Include="Views\Service\ServiceDetails.cshtml" />
+    <Content Include="Views\Service\Details.cshtml" />
+    <Content Include="Views\Service\Search.cshtml" />
+    <Content Include="Views\Profile\CreateAProfile.cshtml" />
+    <Content Include="Views\Profile\CreateAddress.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

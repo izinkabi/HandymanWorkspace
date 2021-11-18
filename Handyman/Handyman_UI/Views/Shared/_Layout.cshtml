@@ -1,6 +1,8 @@
 ﻿
+@{
+    ViewBag.Title = "Menu Bar";
 
-@{ ViewBag.Title = "Menu Bar";}
+}
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +12,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 
-    <link href="~/Content/CustomCSS/user_navbarStyling.css" rel="stylesheet" />
+
 
     <title>@ViewBag.Title - Handyman Tech </title>
 
@@ -45,7 +47,7 @@
                     @if (Session["log"] == null)
                     {
 
-                        <li><a href="https://localhost:44365/CustomerHome/Register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                        <li><a href="https://localhost:44365/Profile/Register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
                         <li><a href="https://localhost:44365/Login/SignIn"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
 
                     }
@@ -55,12 +57,12 @@
                         //Drop down menu for User Profile and settings
                         //Works well in an anchor and a link
                         <li class="dropdown ">
-                            <a class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
+                            <a class="btn btn-default dropdown-toggle" id="menu1" data-toggle="dropdown">
                                 <span class="glyphicon glyphicon-user"></span>
                             </a>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
                                 <li role="presentation" class="divider"></li>
-                                <li role="presentation"><a href="#">@ViewBag.Email</a></li>
+                                <li role="presentation"><a href="#"><p>@ViewData["username"]</p></a></li>
                                 <li role="presentation" class="divider"></li>
                                 <li class="dropdown-header">Profile</li>
                                 <li role="presentation"><a href="#">CSS</a></li>
@@ -130,12 +132,12 @@
                 </footer>
             </div>
         </div>
-        
-           
+
+
     </div>
 
-    
- 
+
+
 
     <!-- Footer -->
     <!-- End -->

@@ -355,11 +355,19 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
     <div class="container bootdey">
         <div class="col-md-3">
-            <section class="panel">
-                <div class="panel-body">
-                    <input type="text" placeholder="Keyword Search" class="form-control" />
-                </div>
-            </section>
+          
+                <section class="panel">
+                    <div class="panel-body">
+                        @*A search section*@
+                        @using (Html.BeginForm("Search", "Service", FormMethod.Get))
+                        {
+                            <input type="text" placeholder="Keyword Search" name="serviceSearchString" class="form-control" />
+                            <button type="submit" class="form-control"> Search</button>
+                        }
+                        </div>
+                    
+                </section>
+            
             <section class="panel">
                 <header class="panel-heading">
                     Services Category
@@ -510,8 +518,10 @@
                                     </div>
                                     <p>@{@item.ServiceDescription} </p>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Request</button>
+                                <div class="modal-footer ">
+                                    
+                                    <div class="pull-left"> @Html.ActionLink("View Details", "Details", new { id=item.Id}, new { @class = "btn" })</div>
+                                    <div class="pull-right"><button type="button" class="btn btn-default" data-dismiss="modal">Request</button></div>
                                 </div>
                             </div>
 
