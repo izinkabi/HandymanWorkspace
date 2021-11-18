@@ -279,6 +279,7 @@
     <Content Include="Views\Service\Search.cshtml" />
     <Content Include="Views\Profile\CreateAProfile.cshtml" />
     <Content Include="Views\Profile\CreateAddress.cshtml" />
+    <Content Include="Views\Profile\ProfileDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -5,7 +5,7 @@ namespace HandymanUILibrary.API
 {
     public interface IProfileEndPoint
     {
-          Task<ProfileModel> GetProfile();
+          Task<ProfileModel> GetProfile(string userId);
           Task<ProfileModel> PostProfile(ProfileModel profile);
 
     }

@@ -22,10 +22,13 @@ namespace HandymanAPI.Controllers
 
         
         // GET: Profiles
-        public ProfileModel GetProfileById(int Id)
+        public ProfileModel GetProfileById(string userId)
         {
             ProfileData data = new ProfileData();
-            return data.GetProfileById(Id);
+            var dbProfile = data.GetProfileByUserId(userId);
+            var tempProfile = new ProfileModel();
+
+            return dbProfile;
         }
 
         //POST: Profile

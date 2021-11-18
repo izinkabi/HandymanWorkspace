@@ -68,29 +68,17 @@ namespace HandymanUILibrary.API
         //}
 
         //Getting a profile endpoint
-        //This might use a different model called getProfileModel
-        public async Task<ProfileModel> GetProfile()
+        public async Task<ProfileModel> GetProfile(string userId)
         {
-           
+          
+            _aPIHelper.ApiClient.DefaultRequestHeaders.Add("UserId", $"{userId}");//pass the userId
             using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync("/api/Profiles"))
             {
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
-                 
-                    
-                    profileModel = new ProfileModel();
 
                     var result = await httpResponseMessage.Content.ReadAsAsync<ProfileModel>();
-                    
-                    profileModel.UserId = _loggedInUserModel.Id;
-                    profileModel.Name = result.Name;
-                    profileModel.Type = "user";
-                    profileModel.Surname = result.Surname;
-                    profileModel.DateofBirth = result.DateofBirth;
-                    profileModel.Address = result.Address;
-                    profileModel.PhoneNumber = result.PhoneNumber;
-
-                    return profileModel;
+                    return result;
                 }
                 else
                 {

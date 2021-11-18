@@ -73,6 +73,7 @@
     <Compile Include="DataAccess\ServiceData.cs" />
     <Compile Include="DataAccess\ServiceProviderData.cs" />
     <Compile Include="DataAccess\UserData.cs" />
+    <Compile Include="Models\aliasProfileModel.cs" />
     <Compile Include="Models\AuthenticatedUserModel.cs" />
     <Compile Include="Models\NewUserModel.cs" />
     <Compile Include="Models\ProfileModel.cs" />

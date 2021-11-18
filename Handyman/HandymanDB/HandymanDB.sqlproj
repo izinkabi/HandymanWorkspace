@@ -92,14 +92,12 @@
     <Build Include="Tables\ServiceCategory.sql" />
     <Build Include="Stored Procedures\spServiceCategoriesLookUp.sql" />
     <Build Include="Stored Procedures\spAddressInsert.sql" />
-    <Build Include="Stored Procedures\spAddressLookUp.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Stored Procedures\spProfileInsert.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish\HandymanDB.publish.xml" />
-    <None Include="HandymanDB.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="HandymanDB.refactorlog" />
