@@ -78,6 +78,7 @@ namespace Handyman_UI.Controllers
         {
             
             ViewBag.Message = "Your contact page.";
+            
             return View();
         }
         
@@ -105,7 +106,7 @@ namespace Handyman_UI.Controllers
         public ActionResult Logout()
         {
             //clear the instances in the container
-            Session["providername"] = null;
+            Session["Username"] = null;
             Session["profilename"] = null;
             _loggedInUserModel = null;
            

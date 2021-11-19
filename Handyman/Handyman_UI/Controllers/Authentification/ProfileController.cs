@@ -31,7 +31,6 @@ namespace Handyman_UI.Controllers
             _profileEndPoint = profile;
             _registerEndPoint = registerEndPoint;
           
-
         }
         public PartialViewResult CreateAddress()
         {
@@ -39,7 +38,7 @@ namespace Handyman_UI.Controllers
             return PartialView();
         }
 
-
+       
         public async Task<ActionResult> Register(CreateUserModel newUser)
         {
 
@@ -68,7 +67,8 @@ namespace Handyman_UI.Controllers
 
                     DisplayUserName = result.FirstName;
                    
-                    Session["profilename"] = result.Email;
+                    
+                    ViewBag.Username= result.Email;
 
                     return RedirectToAction("CreateAProfile", "Profile");
 
@@ -85,12 +85,12 @@ namespace Handyman_UI.Controllers
     
 
         //Login action function
-        public async Task<ActionResult> SignIn(UserLoginModel model)
+    public async Task<ActionResult> SignIn(UserLoginModel model)
         {
 
             Username = model.Username;
             Password = model.Password;
-
+       
             if (ModelState.IsValid)
             {
 
@@ -102,7 +102,8 @@ namespace Handyman_UI.Controllers
 
                     Session["log"] = results.Access_Token;
                     Token = results.Access_Token;
-                    ViewBag.Username = results.UserName;
+                    TempData["welcome"] = "Welcome " + Username;
+                    Session["Username"]=Username;
 
 
                     return RedirectToAction("Index", "Service");
@@ -115,7 +116,7 @@ namespace Handyman_UI.Controllers
 
             }
 
-
+           
             return View();
 
         }
