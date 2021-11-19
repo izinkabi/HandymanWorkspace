@@ -62,9 +62,11 @@ namespace HandymanDataLibrary.Internal
         /*Posting a new Profile and a new Address Using a Transaction*/
         public void PostProfile(ProfileModel val)
         {
-              
+            
+
             using (SQLDataAccess sql = new SQLDataAccess())
-            {
+            { 
+       
                 try
                 {
                     //Save the Address model
@@ -82,6 +84,7 @@ namespace HandymanDataLibrary.Internal
                 }
                 catch
                 {
+                    //Roll back the transaction if anything goes wrong
                     sql.RollBackTransaction();
                     throw;
                 }
