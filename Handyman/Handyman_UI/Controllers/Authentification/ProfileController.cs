@@ -15,23 +15,22 @@ namespace Handyman_UI.Controllers
 
         private IAPIHelper _apiHepler;
         static private string Username,Password;
+        static private string Token;
         
-        private IProfileEndPoint _profileEndPoint;
-        private HandymanUILibrary.Models.ProfileModel profileModel;
-        private HandymanUILibrary.Models.ProfileModel.AddressModel address;
-        private IloggedInUserModel _loggedInUserModel;
-        
+        private HandymanUILibrary.Models.ProfileModel profileModel;      
+        private NewUserModel user;
 
+        private IProfileEndPoint _profileEndPoint;
         private IRegisterEndPoint _registerEndPoint;
-        private HandymanUILibrary.Models.NewUserModel user;
+       
         static private string DisplayUserName;
        
-        public ProfileController(IAPIHelper aPIHelper,IProfileEndPoint profile,IloggedInUserModel loggedInUserModel,IRegisterEndPoint registerEndPoint)
+        public ProfileController(IAPIHelper aPIHelper,IProfileEndPoint profile,IRegisterEndPoint registerEndPoint)
         {
             _apiHepler = aPIHelper;
             _profileEndPoint = profile;
             _registerEndPoint = registerEndPoint;
-            _loggedInUserModel = loggedInUserModel;
+          
 
         }
         public PartialViewResult CreateAddress()
@@ -68,7 +67,7 @@ namespace Handyman_UI.Controllers
                     var results = await _registerEndPoint.SaveNewUser(user);
 
                     DisplayUserName = result.FirstName;
-                    Session["log"] = result.Email;
+                   
                     Session["profilename"] = result.Email;
 
                     return RedirectToAction("CreateAProfile", "Profile");
@@ -83,7 +82,46 @@ namespace Handyman_UI.Controllers
             return View();
         }
 
-        public async Task<ActionResult> CreateAProfile(Models.ProfileModel profile, Models.ProfileModel.AddressModel address )
+    
+
+        //Login action function
+        public async Task<ActionResult> SignIn(UserLoginModel model)
+        {
+
+            Username = model.Username;
+            Password = model.Password;
+
+            if (ModelState.IsValid)
+            {
+
+                try
+                {
+                    var results = await _apiHepler.AuthenticateUser(Username, Password);
+
+                    await _apiHepler.GetLoggedInUserInfor(results.Access_Token);
+
+                    Session["log"] = results.Access_Token;
+                    Token = results.Access_Token;
+                    ViewBag.Username = results.UserName;
+
+
+                    return RedirectToAction("Index", "Service");
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.ErrorMsg = ex.Message;
+                }
+
+
+            }
+
+
+            return View();
+
+        }
+    
+
+    public async Task<ActionResult> CreateAProfile(Models.ProfileModel profile, Models.ProfileModel.AddressModel address )
         {
 
             if (ModelState.IsValid)
@@ -95,7 +133,7 @@ namespace Handyman_UI.Controllers
                 profileModel.Name = profile.Name;
                 profileModel.Surname = profile.Surname;
                 profileModel.PhoneNumber = profile.PhoneNumber;
-                profileModel.DateofBirth = profile.DateTimeOfBirth;
+                profileModel.DateOfBirth = profile.DateOfBirth;
                
                 profileModel.Address.StreetName = address.StreetName;
                 profileModel.Address.Surburb = address.Surburb;
@@ -121,7 +159,7 @@ namespace Handyman_UI.Controllers
 
                     await _profileEndPoint.PostProfile(profileModel);//waited results of posted user profile
                     Session["profilename"] = loggeuser.Username;
-                    Session["log"] = loggeuser.Username;
+                    Session["log"] = loggeuser.Id;
                     return RedirectToAction("Index","Service");
 
                 }
@@ -137,19 +175,43 @@ namespace Handyman_UI.Controllers
             return View();
         }
 
-
-        public async Task<ActionResult> ProfileDetails(string userId)
+        public ActionResult AddressDetails()
+        {
+            return PartialView();
+        }
+        public async Task<ActionResult> ProfileDetails()
         {
             try
             {
-                
-               //Getting a profile with its Address
-               var results =  await _profileEndPoint.GetProfile(userId);
 
-                Session["log"] = results.UserId;
-                ViewData["username"] = Username;
+                var loggeduser = await _apiHepler.GetLoggedInUserInfor(Token);
+                var user = new UserModel();
+                user.Id = loggeduser.Id;
+                //Getting a profile with its Address
+                var results =  await _profileEndPoint.GetProfile(user);
+
+                var tempProfile = new Models.ProfileModel();
+                tempProfile.AddressM = new Models.ProfileModel.AddressModel();
+
+                tempProfile.Id = results.Id;
+                tempProfile.Name = results.Name;
+                tempProfile.Surname = results.Surname;
+                tempProfile.PhoneNumber = results.PhoneNumber;
+                tempProfile.UserId = results.UserId;
+                tempProfile.DateOfBirth = results.DateOfBirth;
+                
+                /*Address population*/
+                tempProfile.AddressM.Id = results.Address.Id;
+                tempProfile.AddressM.StreetName = results.Address.StreetName;
+                tempProfile.AddressM.HouseNumber = results.Address.HouseNumber;
+                tempProfile.AddressM.Surburb = results.Address.Surburb;
+                tempProfile.AddressM.PostalCode = results.Address.PostalCode;
+                tempProfile.AddressM.City = results.Address.City;
+
+
+
                 profileModel = results;
-                return View(profileModel);
+                return View(tempProfile);
             }
             catch (Exception ex)
             {

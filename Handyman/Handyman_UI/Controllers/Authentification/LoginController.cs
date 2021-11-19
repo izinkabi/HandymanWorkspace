@@ -22,38 +22,38 @@ namespace Handyman_UI.Controllers
         }
 
         //Login action function
-        public async Task<ActionResult> SignIn(UserLoginModel model)
-        {
+        //public async Task<ActionResult> SignIn(UserLoginModel model)
+        //{
             
-            Username = model.Username;
-            Password = model.Password;
+        //    Username = model.Username;
+        //    Password = model.Password;
             
-            if (ModelState.IsValid)
-            {
+        //    if (ModelState.IsValid)
+        //    {
                 
-                try
-                {
-                    var results = await _apiHepler.AuthenticateUser(Username, Password);
+        //        try
+        //        {
+        //            var results = await _apiHepler.AuthenticateUser(Username, Password);
                    
-                    await _apiHepler.GetLoggedInUserInfor(results.Access_Token);
+        //            await _apiHepler.GetLoggedInUserInfor(results.Access_Token);
                    
-                    Session["log"] = results.Access_Token;
-                    ViewData["username"] = results.UserName;
+        //            Session["log"] = results.Access_Token;
+        //            ViewData["username"] = results.UserName;
                     
 
-                    return RedirectToAction("Index", "Service");
-                }
-                catch (Exception ex)
-                {
-                    ViewBag.ErrorMsg = ex.Message;
-                }
+        //            return RedirectToAction("Index", "Service");
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            ViewBag.ErrorMsg = ex.Message;
+        //        }
 
                 
-            }
+        //    }
 
            
-            return View();
+        //    return View();
 
-        }
+        //}
     }
 }

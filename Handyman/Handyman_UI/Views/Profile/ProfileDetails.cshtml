@@ -1,7 +1,7 @@
-﻿@model HandymanUILibrary.Models.ProfileModel
+﻿@model Handyman_UI.Models.ProfileModel
 
 <div>
-    <h4>ProfileModel</h4>
+    <h2>Profile</h2>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -12,13 +12,13 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.UserId)
-        </dt>
+        @*<dt>
+                @Html.DisplayNameFor(model => model.UserId)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.UserId)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.UserId)
+            </dd>*@
 
         <dt>
             @Html.DisplayNameFor(model => model.Surname)
@@ -37,22 +37,15 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.DateofBirth)
+            @Html.DisplayNameFor(model => model.DateOfBirth)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.DateofBirth)
+            @Html.DisplayFor(model => model.DateOfBirth)
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Type)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Type)
-        </dd>
-
     </dl>
+   
+    @Html.Partial("AddressDetails", Model.AddressM)
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |

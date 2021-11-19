@@ -42,13 +42,13 @@
                     <li>@Html.ActionLink("Service Category", "DisplayServiceCategory", "Service")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "CustomerHome")</li>
                 </ul>
-
+               
                 <ul class="nav navbar-nav navbar-right">
                     @if (Session["log"] == null)
                     {
 
                         <li><a href="https://localhost:44365/Profile/Register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                        <li><a href="https://localhost:44365/Login/SignIn"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                        <li><a href="https://localhost:44365/Profile/SignIn"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
 
                     }
                     else
@@ -58,11 +58,12 @@
                         //Works well in an anchor and a link
                         <li class="dropdown ">
                             <a class="btn btn-default dropdown-toggle" id="menu1" data-toggle="dropdown">
+                                
                                 <span class="glyphicon glyphicon-user"></span>
                             </a>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
                                 <li role="presentation" class="divider"></li>
-                                <li role="presentation"><a href="#"><p>@ViewData["username"]</p></a></li>
+                                <li role="presentation"><a>@Html.ActionLink("Profile", "ProfileDetails", "Profile")</a></li>
                                 <li role="presentation" class="divider"></li>
                                 <li class="dropdown-header">Profile</li>
                                 <li role="presentation"><a href="#">CSS</a></li>

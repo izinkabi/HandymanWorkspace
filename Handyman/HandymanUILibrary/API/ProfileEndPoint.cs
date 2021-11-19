@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -67,12 +69,21 @@ namespace HandymanUILibrary.API
         //    }
         //}
 
+
+        
+
         //Getting a profile endpoint
-        public async Task<ProfileModel> GetProfile(string userId)
+        public async Task<ProfileModel> GetProfile(UserModel user)
         {
-          
-            _aPIHelper.ApiClient.DefaultRequestHeaders.Add("UserId", $"{userId}");//pass the userId
-            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync("/api/Profiles"))
+
+                    //var uri = new FormUrlEncodedContent(new Dictionary<string, string>
+                    //{
+                    //    { "userId", $"{user.Id}" }                     
+                    //});
+
+           
+
+            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync($"/api/Profiles?userId={user.Id}"))
             {
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
