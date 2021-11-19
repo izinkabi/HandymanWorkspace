@@ -158,9 +158,9 @@ namespace Handyman_UI.Controllers
                     profileModel.UserId = loggeuser.Id;//pass user ID
 
                     await _profileEndPoint.PostProfile(profileModel);//waited results of posted user profile
-                    Session["profilename"] = loggeuser.Username;
-                    Session["log"] = loggeuser.Id;
-                    return RedirectToAction("Index","Service");
+                    //Session["profilename"] = loggeuser.Username;
+                    //Session["log"] = loggeuser.Id;
+                    return RedirectToAction("SignIn","Profile");
 
                 }
                 catch (Exception ex)
