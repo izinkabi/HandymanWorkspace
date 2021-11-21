@@ -29,16 +29,17 @@ namespace Handyman_UI.Controllers
         {
             _apiHepler = aPIHelper;
             _profileEndPoint = profile;
-            _registerEndPoint = registerEndPoint;
-          
+            _registerEndPoint = registerEndPoint;         
         }
+
+        //Action method for 
         public PartialViewResult CreateAddress()
         {
             
             return PartialView();
         }
 
-       
+       //Register action method
         public async Task<ActionResult> Register(CreateUserModel newUser)
         {
 
@@ -68,7 +69,7 @@ namespace Handyman_UI.Controllers
                     DisplayUserName = result.FirstName;
                    
                     
-                    ViewBag.Username= result.Email;
+                    ViewBag.Username = result.Email; 
 
                     return RedirectToAction("CreateAProfile", "Profile");
 
