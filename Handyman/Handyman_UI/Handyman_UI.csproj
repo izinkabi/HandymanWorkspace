@@ -183,12 +183,12 @@
     <Compile Include="Models\CreateUserModel.cs" />
     <Compile Include="Models\IServiceModel.cs" />
     <Compile Include="Models\OTPModel.cs" />
-    <Compile Include="Models\ProfileModel.cs" />
+    <Compile Include="Models\ProfileDisplayModel.cs" />
     <Compile Include="Models\RequestModel.cs" />
     <Compile Include="Models\ServiceCategoryModel.cs" />
     <Compile Include="Models\ServiceDisplayModel.cs" />
     <Compile Include="Models\ServiceModel.cs" />
-    <Compile Include="Models\ServiceProviderModel.cs" />
+    <Compile Include="Models\ServiceProviderDisplayModel.cs" />
     <Compile Include="Models\UserLoginModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

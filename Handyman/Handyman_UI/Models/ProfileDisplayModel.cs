@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Handyman_UI.Models
 {
-    public class ProfileModel
+    public class ProfileDisplayModel
     {
         public int Id { get; set; }
         public string UserId { get; set; }

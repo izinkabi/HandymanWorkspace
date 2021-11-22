@@ -6,7 +6,6 @@ CREATE PROCEDURE [dbo].[spServiceProviderInsert]
 	@CompanyName VARCHAR (50)='',
 	@ProviderType VARCHAR(50) =''
 	
-	
 
 AS
 Begin

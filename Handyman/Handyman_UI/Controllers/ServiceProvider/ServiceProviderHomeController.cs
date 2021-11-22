@@ -1,4 +1,6 @@
-﻿using HandymanUILibrary.API;
+﻿using Handyman_UI.Models;
+using HandymanUILibrary.API;
+using HandymanUILibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,108 +12,28 @@ namespace Handyman_UI.Controllers.ServiceProvider
 {
     public class ServiceProviderHomeController : Controller
     {
+        //interfaces for classes
         private IRegisterProviderEndPoint _registerProvider;
         private IAPIHelper _apiHepler;
-        static private string Username, Password;
+        private IProfileEndPoint _profileEndPoint;
 
-        public ServiceProviderHomeController(IAPIHelper aPIHelper,IRegisterProviderEndPoint registerProvider)
+        static private string Username, Password;
+        public static string sessionToken;
+        private ServiceProviderModel serviceProvider;
+        private ProfileModel profile;
+
+
+        public ServiceProviderHomeController(IAPIHelper aPIHelper,IRegisterProviderEndPoint registerProvider, IProfileEndPoint profileEndPoint)
         {
             _apiHepler = aPIHelper;
             _registerProvider = registerProvider;
+            _profileEndPoint = profileEndPoint;
         }
         public ActionResult Home()
         {
             return View();
         }
 
-        public async Task<ActionResult> RegisterServiceProvider(Models.ServiceProviderModel serviceProviderModel)
-        {
-
-            HandymanUILibrary.Models.ServiceProviderModel sp = new HandymanUILibrary.Models.ServiceProviderModel();
-            HandymanUILibrary.Models.ProvidersServiceModel ps = new HandymanUILibrary.Models.ProvidersServiceModel();
-            string singleservice = "";
-
-            #region ViewData
-            // Services = new List<SelectListItem>();
-
-
-            List<SelectListItem> Services = new List<SelectListItem>() {
-
-                        new SelectListItem {
-                            Text = "Electronic", Value = "1"
-                        },
-                        new SelectListItem {
-                            Text = "Furniture", Value = "2"
-                        },
-                        new SelectListItem {
-                            Text = "Plumbing", Value = "3"
-                        },
-                        new SelectListItem {
-                            Text = "Interrior Design", Value = "4"
-                        },
-                        new SelectListItem {
-                            Text = "Mechanics", Value = "5"
-                        },
-                        new SelectListItem {
-                            Text = "Furniture", Value = "6"
-                        },
-                        new SelectListItem {
-                            Text = "Garderning", Value = "7"
-                        }
-                     };
-
-            serviceProviderModel.Services = Services;
-            var selectedItem = Services.Find(p => p.Value == serviceProviderModel.ServiceId.ToString());
-
-            if (selectedItem != null)
-            {
-                sp.Name = serviceProviderModel.Name;
-                sp.Surname = serviceProviderModel.Surname;
-                sp.HomeAddress = serviceProviderModel.HomeAddress;
-                sp.PhoneNumber = serviceProviderModel.PhoneNumber;
-                sp.DateOfBirth = serviceProviderModel.DateOfBirth;
-
-
-                selectedItem.Selected = true;
-                ViewBag.MessageService = "Service: " + selectedItem.Text;
-                ps.ServiceId = Int32.Parse(selectedItem.Value);
-
-                var results = await _apiHepler.AuthenticateUser(Username, Password);//auth awaited task
-                //Token = results.Access_Token;//Token
-                 await _apiHepler.GetLoggedInUserInfor(results.Access_Token);// awaited loggedUser
-                //UserId = loggedInUserModel.Id;//pass user ID
-                //sp.UserId = results.;
-
-                HandymanUILibrary.Models.ServiceProviderModel sprov = new HandymanUILibrary.Models.ServiceProviderModel();
-                try
-                {
-
-
-                    await _registerProvider.PostServiceProvider(sp);
-                    sprov = await _registerProvider.GetServiceProviders(sp);
-
-                    //ps.ServiceProviderId = sprov.Id;
-                    await _registerProvider.PostProvidersService(ps);
-                    Session["providername"] = sprov.Id;
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(ex.Message);
-                }
-                return RedirectToAction("Profile","spHome");
-            }
-
-
-
-            if (ModelState.IsValid)
-            {
-                ViewBag.Providername = sp.Name + " " + sp.Surname;
-
-            }
-
-            return View(serviceProviderModel);
-            #endregion
-        }
         public ActionResult Requests()
         {
             return View();
@@ -135,6 +57,64 @@ namespace Handyman_UI.Controllers.ServiceProvider
         public ActionResult Test()
         {
             return View();
+        }
+
+
+        public async Task<ActionResult> RegisterServiceProvider(ServiceProviderDisplayModel serviceProviderDisplay)
+        {
+
+            if (ModelState.IsValid)
+            {
+
+                try
+                {
+                    profile = new ProfileModel();
+                    profile.Address = new ProfileModel.AddressModel();
+                    serviceProvider = new ServiceProviderModel();
+
+                    var _token = Session["Token"].ToString();
+
+                    var loggeduser = await _apiHepler.GetLoggedInUserInfor(_token);
+                    var user = new UserModel();
+                    user.Id = loggeduser.Id;
+                    //Getting a profile with its Address
+                    var results = await _profileEndPoint.GetProfile(user);
+
+                    List<SelectListItem> serviceProviderTypeslist = new List<SelectListItem>()
+            {
+              new SelectListItem {Text = "Individual", Value = "1"},
+              new SelectListItem {Text = "Small Business", Value = "2"},
+              new SelectListItem {Text = "Organzation", Value = "3"},
+              new SelectListItem {Text = "Enterprise/Private Group", Value = "4"}
+
+            };
+
+                    serviceProviderDisplay.serviceProviderTypes = serviceProviderTypeslist;
+                    var selectedItem = serviceProviderTypeslist.Find(p => p.Value == serviceProviderDisplay.ServiceProviderTypesId.ToString());
+
+                    if (selectedItem != null)
+                    {
+                        selectedItem.Selected = true;
+                        serviceProvider.ProviderType = selectedItem.Text.ToString();
+                    }
+
+                    serviceProvider.ProfileId = results.Id;
+                    serviceProvider.CompanyName = serviceProviderDisplay.CompanyName;
+
+
+                    var response = await _registerProvider.PostServiceProvider(serviceProvider);
+
+                    return RedirectToAction("Home", "ServiceProviderHome");
+                }
+                catch (Exception ex)
+                {
+
+                    throw new Exception(ex.Message);
+                }
+            }
+            return View();
+            
+
         }
     }
 }

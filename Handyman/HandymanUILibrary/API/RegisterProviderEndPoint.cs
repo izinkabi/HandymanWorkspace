@@ -92,7 +92,7 @@ namespace HandymanUILibrary.API
 
                         foreach (ServiceProviderModel sp in result)
                         {
-                            if (sp.UserId == serviceProvider.UserId)
+                            if (sp.ProfileId == serviceProvider.ProfileId)
                             {
                                 providerModel = sp;
                             }
@@ -142,10 +142,7 @@ namespace HandymanUILibrary.API
                 {
                     if (httpResponseMessage.IsSuccessStatusCode)
                     {
-
-
                         ps = await httpResponseMessage.Content.ReadAsAsync<ProvidersServiceModel>();
-                        
                     }
                     else
                     {

@@ -104,7 +104,10 @@ namespace Handyman_UI.Controllers
                     Session["log"] = results.Access_Token;
                     Token = results.Access_Token;
                     TempData["welcome"] = "Welcome " + Username;
-                    Session["Username"]=Username;
+                    Session["Username"] = Username;
+                    Session["Token"]=results.Access_Token;
+
+                    
 
 
                     return RedirectToAction("Index", "Service");
@@ -123,7 +126,7 @@ namespace Handyman_UI.Controllers
         }
     
 
-    public async Task<ActionResult> CreateAProfile(Models.ProfileModel profile, Models.ProfileModel.AddressModel address )
+    public async Task<ActionResult> CreateAProfile(Models.ProfileDisplayModel profile, Models.ProfileDisplayModel.AddressModel address )
         {
 
             if (ModelState.IsValid)
@@ -185,15 +188,15 @@ namespace Handyman_UI.Controllers
         {
             try
             {
-
+                
                 var loggeduser = await _apiHepler.GetLoggedInUserInfor(Token);
                 var user = new UserModel();
                 user.Id = loggeduser.Id;
                 //Getting a profile with its Address
                 var results =  await _profileEndPoint.GetProfile(user);
 
-                var tempProfile = new Models.ProfileModel();
-                tempProfile.AddressM = new Models.ProfileModel.AddressModel();
+                var tempProfile = new Models.ProfileDisplayModel();
+                tempProfile.AddressM = new Models.ProfileDisplayModel.AddressModel();
 
                 tempProfile.Id = results.Id;
                 tempProfile.Name = results.Name;
@@ -211,8 +214,6 @@ namespace Handyman_UI.Controllers
                 tempProfile.AddressM.City = results.Address.City;
 
 
-
-                profileModel = results;
                 return View(tempProfile);
             }
             catch (Exception ex)
