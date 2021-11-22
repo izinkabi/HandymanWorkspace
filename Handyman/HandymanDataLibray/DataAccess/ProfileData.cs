@@ -65,14 +65,14 @@ namespace HandymanDataLibrary.Internal
             
 
             using (SQLDataAccess sql = new SQLDataAccess())
-            { 
-       
+            {
+                //Save the Address model
+                sql.StartTransaction("HandymanDB");
+                sql.SaveDataTransaction("dbo.spAddressInsert", new { StreetName = val.Address.StreetName, City = val.Address.City, PostalCode = val.Address.PostalCode, HouseNumber = val.Address.HouseNumber, Surburb = val.Address.Surburb });
+                //
+
                 try
                 {
-                    //Save the Address model
-                    sql.StartTransaction("HandymanDB");
-                    sql.SaveDataTransaction("dbo.spAddressInsert", new { StreetName = val.Address.StreetName, City = val.Address.City, PostalCode = val.Address.PostalCode, HouseNumber = val.Address.HouseNumber,Surburb=val.Address.Surburb });
-                    //
                     
                     //Lookup for a AddressId
                     var HomeAddressId = sql.LoadDataTransaction<int, dynamic>("dbo.spAddressLookUp", new { HouseNumber=val.Address.HouseNumber,StreetName=val.Address.StreetName }).FirstOrDefault();

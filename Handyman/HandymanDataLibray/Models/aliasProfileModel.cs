@@ -20,7 +20,7 @@ namespace HandymanDataLibray.Models
             public int AddressId { get; set; }
            
             public string StreetName { get; set; }
-            public string HouseNumber { get; set; }
+            public int HouseNumber { get; set; }
             public string Surburb { get; set; }
             public string City { get; set; }
             public int PostalCode { get; set;}

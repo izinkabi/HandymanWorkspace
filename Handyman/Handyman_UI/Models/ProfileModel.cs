@@ -52,16 +52,14 @@ namespace Handyman_UI.Models
             
             [Key]
             public int Id { get; set; }
+            public int HouseNumber { get; set; }
 
             [DataType(DataType.Text)]
             [Display(Name = "Street name")]
             [Required(ErrorMessage = "Please enter your the name of your street")]            
             public string StreetName { get; set; }
 
-            
-            [Display(Name = "House number")]
-            [Required(ErrorMessage = "Please enter your house number")]
-            public string HouseNumber { get; set; }
+
             [DataType(DataType.Text)]
             [Display(Name = "Surburb")]
             [Required(ErrorMessage = "Please enter your house number")]
