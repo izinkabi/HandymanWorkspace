@@ -8,7 +8,7 @@ namespace HandymanDataLibrary.Models
 {
     public class ServiceProviderModel
     {
-        public int Id { get; set; }
+
         public int ProfileId { get; set; }
         public string CompanyName{ get; set; }
         public string ProviderType { get; set; }

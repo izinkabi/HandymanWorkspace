@@ -16,11 +16,6 @@ namespace Handyman_UI.Models
         [Required(ErrorMessage = "Please your company name")]
         public string CompanyName { get; set; }
 
-        [DataType(DataType.Text)]
-        [Display(Name = "Provider Type")]
-        [Required(ErrorMessage = "Please enter your Surname")]
-        public string ProviderType { get; set; }
-
         
         [Display(Name = "Service Provider Types")]
         //[Required(ErrorMessage = "Select a service")]

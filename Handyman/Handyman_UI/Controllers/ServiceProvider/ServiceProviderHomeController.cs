@@ -67,9 +67,8 @@ namespace Handyman_UI.Controllers.ServiceProvider
             serviceProvider = new ServiceProviderModel();
             var tempProvider = new ServiceProviderDisplayModel();
             //this is cheating but it works for now
-            tempProvider.CompanyName = "Company name";
+            tempProvider.CompanyName = "";
             tempProvider.ServiceProviderTypesId = 0;
-            tempProvider.ProviderType = "ProviderType";
            
 
             try
