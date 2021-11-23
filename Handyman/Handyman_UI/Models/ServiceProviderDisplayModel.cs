@@ -23,11 +23,11 @@ namespace Handyman_UI.Models
 
         
         [Display(Name = "Service Provider Types")]
-        [Required(ErrorMessage = "Select a service provid")]
+        //[Required(ErrorMessage = "Select a service")]
    
-        public List<SelectListItem> serviceProviderTypes { get; set; }
+        public IEnumerable<SelectListItem> serviceProviderTypes { get; set; }
         public int? ServiceProviderTypesId { get; set; }
-        public string ServiceProviderTypesName { get; set; }
+      
 
 
 

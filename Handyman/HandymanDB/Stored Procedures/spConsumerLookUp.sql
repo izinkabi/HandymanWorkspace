@@ -5,7 +5,7 @@ CREATE PROCEDURE [dbo].[spConsumerLookUp]
 AS
 Begin
 set nocount on;
-	SELECT ConsumerId,ProfileId
+	SELECT Id,ProfileId
 	FROM dbo.Consumer
-	WHERE ConsumerId = @Id
+	WHERE Id = @Id
 End

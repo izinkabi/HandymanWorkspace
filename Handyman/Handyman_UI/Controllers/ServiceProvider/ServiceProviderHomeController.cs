@@ -23,7 +23,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
         private ProfileModel profile;
 
 
-        public ServiceProviderHomeController(IAPIHelper aPIHelper,IRegisterProviderEndPoint registerProvider, IProfileEndPoint profileEndPoint)
+        public ServiceProviderHomeController(IAPIHelper aPIHelper, IRegisterProviderEndPoint registerProvider, IProfileEndPoint profileEndPoint)
         {
             _apiHepler = aPIHelper;
             _registerProvider = registerProvider;
@@ -59,19 +59,45 @@ namespace Handyman_UI.Controllers.ServiceProvider
             return View();
         }
 
-
+        //[HttpPost]
         public async Task<ActionResult> RegisterServiceProvider(ServiceProviderDisplayModel serviceProviderDisplay)
         {
+            profile = new ProfileModel();
+            profile.Address = new ProfileModel.AddressModel();
+            serviceProvider = new ServiceProviderModel();
+            var tempProvider = new ServiceProviderDisplayModel();
+            //this is cheating but it works for now
+            tempProvider.CompanyName = "Company name";
+            tempProvider.ServiceProviderTypesId = 0;
+            tempProvider.ProviderType = "ProviderType";
+           
 
-            if (ModelState.IsValid)
+
+            try
             {
 
-                try
-                {
-                    profile = new ProfileModel();
-                    profile.Address = new ProfileModel.AddressModel();
-                    serviceProvider = new ServiceProviderModel();
 
+                List<SelectListItem> serviceProviderTypeslist = new List<SelectListItem>()
+                    {
+                      new SelectListItem {Text = "Individual", Value = "1"},
+                      new SelectListItem {Text = "Small Business", Value = "2"},
+                      new SelectListItem {Text = "Organzation", Value = "3"},
+                      new SelectListItem {Text = "Enterprise/Private Group", Value = "4"}
+
+                    };
+
+                tempProvider.serviceProviderTypes = serviceProviderTypeslist;
+                serviceProviderDisplay.serviceProviderTypes = serviceProviderTypeslist;
+
+                var selectedItem = serviceProviderTypeslist.Find(p => p.Value == serviceProviderDisplay.ServiceProviderTypesId.ToString());
+
+                if (selectedItem != null)
+                {
+                    selectedItem.Selected = true;
+                    serviceProvider.ProviderType = selectedItem.Text;
+                }
+                if (ModelState.IsValid)
+                {
                     var _token = Session["Token"].ToString();
 
                     var loggeduser = await _apiHepler.GetLoggedInUserInfor(_token);
@@ -80,41 +106,30 @@ namespace Handyman_UI.Controllers.ServiceProvider
                     //Getting a profile with its Address
                     var results = await _profileEndPoint.GetProfile(user);
 
-                    List<SelectListItem> serviceProviderTypeslist = new List<SelectListItem>()
-            {
-              new SelectListItem {Text = "Individual", Value = "1"},
-              new SelectListItem {Text = "Small Business", Value = "2"},
-              new SelectListItem {Text = "Organzation", Value = "3"},
-              new SelectListItem {Text = "Enterprise/Private Group", Value = "4"}
-
-            };
-
-                    serviceProviderDisplay.serviceProviderTypes = serviceProviderTypeslist;
-                    var selectedItem = serviceProviderTypeslist.Find(p => p.Value == serviceProviderDisplay.ServiceProviderTypesId.ToString());
-
-                    if (selectedItem != null)
-                    {
-                        selectedItem.Selected = true;
-                        serviceProvider.ProviderType = selectedItem.Text.ToString();
-                    }
-
-                    serviceProvider.ProfileId = results.Id;
                     serviceProvider.CompanyName = serviceProviderDisplay.CompanyName;
+                    serviceProvider.ProfileId = results.Id;
+
+
 
 
                     var response = await _registerProvider.PostServiceProvider(serviceProvider);
-
+                    ViewBag.MessageService = selectedItem.Text;
                     return RedirectToAction("Home", "ServiceProviderHome");
                 }
-                catch (Exception ex)
-                {
+                
 
-                    throw new Exception(ex.Message);
-                }
+            return View(tempProvider);
+        }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
             }
-            return View();
-            
+
 
         }
+            
+
+        
     }
 }

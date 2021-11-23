@@ -10,6 +10,6 @@ CREATE TABLE [dbo].[Profile]
     [UserId] NVARCHAR(128) NOT NULL, 
     
     CONSTRAINT [FK_Profile_User] FOREIGN KEY (userId) REFERENCES [User]([Id]),
-    CONSTRAINT [FK_Profile_Address] FOREIGN KEY ([HomeAddressId]) REFERENCES [Address]([Id]) 
+    CONSTRAINT [FK_Profile_Address] FOREIGN KEY ([HomeAddressId]) REFERENCES [Address]([AddressId]) 
    
 )

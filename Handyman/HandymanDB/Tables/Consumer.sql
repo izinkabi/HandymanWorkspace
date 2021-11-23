@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Consumer]
 (
-	[ConsumerId] INT IDENTITY(1,1) NOT NULL PRIMARY KEY, 
+	[Id] INT IDENTITY(1,1) NOT NULL PRIMARY KEY, 
     [ProfileId] INT NOT NULL, 
     CONSTRAINT [FK_Consumer_Profile] FOREIGN KEY ([ProfileId]) REFERENCES [Profile]([Id])
 )

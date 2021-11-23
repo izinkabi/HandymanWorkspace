@@ -16,9 +16,10 @@ namespace Handyman_UI.Controllers
 
         private IAPIHelper _apiHepler;
         private IloggedInUserModel _loggedInUserModel;
-        private IRegisterEndPoint _registerEndPoint;
+
         private HandymanUILibrary.Models.NewUserModel user;
         private HandymanUILibrary.Models.ProfileModel profileModel;
+
         static private string DisplayUserName;
         static private string Username;
         static private string Password;
@@ -31,12 +32,11 @@ namespace Handyman_UI.Controllers
         
 
         //The use of constructor allows for the Imterfaces to be rendered
-        public CustomerHomeController(IAPIHelper aPIHelper,IProfileEndPoint profileEndpoint,IloggedInUserModel loggedInUser,IRegisterEndPoint register)
+        public CustomerHomeController(IAPIHelper aPIHelper,IProfileEndPoint profileEndpoint,IloggedInUserModel loggedInUser)
         {
             _apiHepler = aPIHelper;
             _profileEndPoint = profileEndpoint;
-            _loggedInUserModel = loggedInUser;
-            _registerEndPoint = register;
+            _loggedInUserModel = loggedInUser;          
         }
 
         
