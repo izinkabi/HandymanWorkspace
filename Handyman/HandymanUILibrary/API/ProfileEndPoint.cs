@@ -26,15 +26,7 @@ namespace HandymanUILibrary.API
         //a Profile Post endpoint
         public async Task<ProfileModel> PostProfile(ProfileModel profile)
         {
-           // var data = new FormUrlEncodedContent(new[]
-           //{
-
-           //      new KeyValuePair<string, string>("Name", profile.Name),
-           //      new KeyValuePair<string, string>("Surname", profile.Surname),
-           //      new KeyValuePair<string, string>("Home", profile.Name),
-           //      new KeyValuePair<string, string>("Name", profile.Name),
-
-           //});
+          
 
             HttpResponseMessage responseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync("/api/Profiles", profile);
             
@@ -51,24 +43,7 @@ namespace HandymanUILibrary.API
 
         }
 
-        // this method saves the Address record in the database
-
-        //public async Task<ProfileModel.AddressModel> PostAddress(ProfileModel.AddressModel address)
-        //{
-        //    using (HttpResponseMessage responseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync("/api/Profile", address))
-        //    {
-        //        if (responseMessage.IsSuccessStatusCode)
-        //        {
-        //            var result = await responseMessage.Content.ReadAsAsync<ProfileModel.AddressModel>();
-        //            return result;
-        //        }
-        //        else
-        //        {
-        //            throw new Exception(responseMessage.ReasonPhrase);
-        //        }
-        //    }
-        //}
-
+      
 
         
 
@@ -76,12 +51,6 @@ namespace HandymanUILibrary.API
         public async Task<ProfileModel> GetProfile(UserModel user)
         {
 
-                    //var uri = new FormUrlEncodedContent(new Dictionary<string, string>
-                    //{
-                    //    { "userId", $"{user.Id}" }                     
-                    //});
-
-           
 
             using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync($"/api/Profiles?userId={user.Id}"))
             {

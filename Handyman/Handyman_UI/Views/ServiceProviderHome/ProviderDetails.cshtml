@@ -1,0 +1,43 @@
+﻿@model Handyman_UI.Models.ServiceProviderDisplayModel
+
+@{
+    ViewBag.Title = "ProviderDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ProviderDetails</h2>
+
+<div>
+    <h4>ServiceProviderDisplayModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CompanyName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompanyName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProviderType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProviderType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ServiceProviderTypesId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ServiceProviderTypesId)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

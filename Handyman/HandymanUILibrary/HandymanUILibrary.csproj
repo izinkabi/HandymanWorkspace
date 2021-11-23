@@ -55,12 +55,12 @@
     <Compile Include="API\IAPIHelper.cs" />
     <Compile Include="API\IProfileEndPoint.cs" />
     <Compile Include="API\IRegisterEndPoint.cs" />
-    <Compile Include="API\IRegisterProviderEndPoint.cs" />
+    <Compile Include="API\IServiceProviderEndPoint.cs" />
     <Compile Include="API\IServiceEndPoint.cs" />
     <Compile Include="API\OTPGenerator.cs" />
     <Compile Include="API\ProfileEndPoint.cs" />
     <Compile Include="API\RegisterEndPoint.cs" />
-    <Compile Include="API\RegisterProviderEndPoint.cs" />
+    <Compile Include="API\ServiceProviderEndPoint.cs" />
     <Compile Include="API\ServiceEndPoint.cs" />
     <Compile Include="Models\AuthenticatedUserModel.cs" />
     <Compile Include="Models\IloggedInUserModel.cs" />

@@ -14,11 +14,11 @@ namespace HandymanDataLibray.DataAccess
     {
 
         //Getting the service provider by Id
-        public ServiceProviderModel GetProviderById(string UserId)
+        public ServiceProviderModel GetProviderByProfileId(int profileId)
         {
             SQLDataAccess sql = new SQLDataAccess();
 
-            var p = new { UserId = UserId };
+            var p = new { ProfileId = profileId };
 
             var output = sql.LoadData<ServiceProviderModel, dynamic>("dbo.spServiceProviderLookUp", p, "HandymanDB").FirstOrDefault();
 

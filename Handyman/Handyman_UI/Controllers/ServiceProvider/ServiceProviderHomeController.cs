@@ -13,7 +13,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
     public class ServiceProviderHomeController : Controller
     {
         //interfaces for classes
-        private IRegisterProviderEndPoint _registerProvider;
+        private IServiceProviderEndPoint _serviceProvider;
         private IAPIHelper _apiHepler;
         private IProfileEndPoint _profileEndPoint;
 
@@ -23,10 +23,10 @@ namespace Handyman_UI.Controllers.ServiceProvider
         private ProfileModel profile;
 
 
-        public ServiceProviderHomeController(IAPIHelper aPIHelper, IRegisterProviderEndPoint registerProvider, IProfileEndPoint profileEndPoint)
+        public ServiceProviderHomeController(IAPIHelper aPIHelper, IServiceProviderEndPoint registerProvider, IProfileEndPoint profileEndPoint)
         {
             _apiHepler = aPIHelper;
-            _registerProvider = registerProvider;
+            _serviceProvider = registerProvider;
             _profileEndPoint = profileEndPoint;
         }
         public ActionResult Home()
@@ -72,10 +72,8 @@ namespace Handyman_UI.Controllers.ServiceProvider
             tempProvider.ProviderType = "ProviderType";
            
 
-
             try
             {
-
 
                 List<SelectListItem> serviceProviderTypeslist = new List<SelectListItem>()
                     {
@@ -112,7 +110,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
 
 
 
-                    var response = await _registerProvider.PostServiceProvider(serviceProvider);
+                    var response = await _serviceProvider.PostServiceProvider(serviceProvider);
                     ViewBag.MessageService = selectedItem.Text;
                     return RedirectToAction("Home", "ServiceProviderHome");
                 }
@@ -130,6 +128,35 @@ namespace Handyman_UI.Controllers.ServiceProvider
         }
             
 
-        
+        public async Task<ActionResult> ProviderDetails()
+        {
+
+            var providerModel = new ServiceProviderDisplayModel();
+            if (ModelState.IsValid)
+            {
+                try
+                {
+
+
+                    var _token = Session["Token"].ToString();
+
+                    var loggeduser = await _apiHepler.GetLoggedInUserInfor(_token);
+                    var user = new UserModel();
+                    user.Id = loggeduser.Id;
+                    //Getting a profile with its Address
+                    var results = await _profileEndPoint.GetProfile(user);
+                    var response = await _serviceProvider.GetProviderByProfileId(results.Id);
+
+                    providerModel.CompanyName = response.CompanyName;
+                    providerModel.ProviderType = response.ProviderType;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+                
+            }
+            return View(providerModel);
+        }
     }
 }

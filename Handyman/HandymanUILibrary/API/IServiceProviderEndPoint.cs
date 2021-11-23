@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 
 namespace HandymanUILibrary.API
 {
-    public interface IRegisterProviderEndPoint
+    public interface IServiceProviderEndPoint
     {
 
         Task<ServiceProviderModel> PostServiceProvider(ServiceProviderModel serviceProviderModel);
-        Task<ServiceProviderModel> GetProviderByUserId(ServiceProviderModel sp);
+        Task<ServiceProviderModel> GetProviderByProfileId(int profileId);
         Task<ServiceProviderModel> GetServiceProviders(ServiceProviderModel serviceProvider);
         Task<List<ProvidersServiceModel>> GetProvidersServices();
         Task<ProvidersServiceModel> PostProvidersService(ProvidersServiceModel providersService);

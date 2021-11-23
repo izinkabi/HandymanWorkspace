@@ -25,11 +25,11 @@ namespace HandymanAPI.Controllers
         }
 
         // GET: api/ServiceProviders/5
-        [Route("api/GetServiceProviderById")]
-        public ServiceProviderModel GetServiceProviderById(string userId)
+        [Route("api/GetServiceProviderByProfileId")]
+        public ServiceProviderModel GetServiceProviderByProfileId(int ProfileId)
         {
             providerData = new ServiceProviderData();
-            return providerData.GetProviderById(userId);
+            return providerData.GetProviderByProfileId(ProfileId);
         }
 
         // POST: api/ServiceProviders
@@ -47,13 +47,7 @@ namespace HandymanAPI.Controllers
             return list;
         }
 
-        //Get: api/GetProvidersService/Id
-        //public ProvidersServiceModel GetProvidersService(int Id)
-        //{
-        //    providerData = new ServiceProviderData();
-        //    return providerData.GetProvidersServicesById(Id);
-        //}
-        // PUT: api/ServiceProviders/5
+      
         [Route("api/PutProvidersService")]
         public void PutProvidersService(ProvidersServiceModel providersServiceModel)
         {

@@ -290,6 +290,7 @@
     <Content Include="Views\Profile\ProfileDetails.cshtml" />
     <Content Include="Views\Profile\AddressDetails.cshtml" />
     <Content Include="Views\Profile\Contact.cshtml" />
+    <Content Include="Views\ServiceProviderHome\ProviderDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace HandymanUILibrary.API
 {
-    public class RegisterProviderEndPoint: IRegisterProviderEndPoint
+    public class ServiceProviderEndPoint: IServiceProviderEndPoint
     {
 
         private IAPIHelper _aPIHelper;
         private ServiceProviderModel providerModel;
         //Initializing
-        public RegisterProviderEndPoint(IAPIHelper aPIHelper)
+        public ServiceProviderEndPoint(IAPIHelper aPIHelper)
         {
             _aPIHelper = aPIHelper;
         }
@@ -38,29 +38,23 @@ namespace HandymanUILibrary.API
 
         }
 
-        //Getting a provider endpoint
-        public async Task<ServiceProviderModel> GetProviderByUserId(ServiceProviderModel sp)
+        //Getting a provider by profileId
+        public async Task<ServiceProviderModel> GetProviderByProfileId(int profileId)
         {
-            //ServiceProviderModel serviceProvider = new ServiceProviderModel();
+          
          
-            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync("/api/GetServiceProviderById"))
+            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync($"/api/GetServiceProviderByProfileId?ProfileId={profileId}"))//passing the profileId to return the ServiceProvider
             {
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
 
-
                     providerModel = new ServiceProviderModel();
 
                     var result = await httpResponseMessage.Content.ReadAsAsync<ServiceProviderModel>();
-
-                    //providerModel.UserId = result.UserId;
-                    //providerModel.Name = result.Name;
-
-                    //providerModel.Surname = result.Surname;
-                    //providerModel.DateOfBirth = result.DateOfBirth;
-                    //providerModel.HomeAddress = result.HomeAddress;
-                    //providerModel.PhoneNumber = result.PhoneNumber;
-
+                    providerModel.ProviderType = result.ProviderType;
+                    providerModel.ProfileId = result.ProfileId;
+                    providerModel.Id = result.Id;
+                    providerModel.CompanyName = result.CompanyName;
                     return providerModel;
                 }
                 else

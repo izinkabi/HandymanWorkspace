@@ -32,7 +32,7 @@ namespace Handyman_UI
             container.RegisterType<IRegisterEndPoint, RegisterEndPoint>();
             container.RegisterType<IServicesLoader,ServicesLoader>();
             container.RegisterType<IServiceEndPoint, ServiceEndPoint>();
-            container.RegisterType<IRegisterProviderEndPoint, RegisterProviderEndPoint>();
+            container.RegisterType<IServiceProviderEndPoint, ServiceProviderEndPoint>();
       
 
             return container;
