@@ -41,27 +41,30 @@ namespace HandymanUILibrary.API
         //Getting a provider by profileId
         public async Task<ServiceProviderModel> GetProviderByProfileId(int profileId)
         {
-          
-         
+            providerModel = new ServiceProviderModel();
+
             using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync($"/api/GetServiceProviderByProfileId?ProfileId={profileId}"))//passing the profileId to return the ServiceProvider
             {
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
+                    try
+                    {
 
-                    providerModel = new ServiceProviderModel();
-
-                    var result = await httpResponseMessage.Content.ReadAsAsync<ServiceProviderModel>();
-                    providerModel.ProviderType = result.ProviderType;
-                    providerModel.ProfileId = result.ProfileId;
-                    providerModel.Id = result.Id;
-                    providerModel.CompanyName = result.CompanyName;
-                    return providerModel;
+                        var result = await httpResponseMessage.Content.ReadAsAsync<ServiceProviderModel>();
+                        providerModel.ProviderType = result.ProviderType;
+                        providerModel.ProfileId = result.ProfileId;
+                        providerModel.Id = result.Id;
+                        providerModel.CompanyName = result.CompanyName;
+                        return providerModel;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception(ex.Message);
+                    }
                 }
-                else
-                {
-                    throw new Exception(httpResponseMessage.ReasonPhrase);
-                }
+               
             }
+            return providerModel;
 
         }
 
