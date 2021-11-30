@@ -37,6 +37,8 @@ namespace HandymanDataLibray.DataAccess
         }
 
         /*Posting a new Service Provider*/
+        /*The following method will eventually be converted to a transaction as it should post the service provider
+         followed by the provider's service(s)*/
         public void PostProvider(ServiceProviderModel val)
         {
             SQLDataAccess sql = new SQLDataAccess();

@@ -4,8 +4,7 @@ AS
 begin
 --stored procedure for getting user information
 	set nocount on;
-	SELECT [Id], username, [password],email,create_time
-	from [dbo].[User]
+	SELECT [Id],EmailConfirmed,TwoFactorEnabled,[email]
+	from [dbo].[Users]
 	where Id = @Id;
 end
-

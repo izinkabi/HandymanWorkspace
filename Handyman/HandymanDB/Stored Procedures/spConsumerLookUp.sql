@@ -1,11 +1,11 @@
 ﻿/*Consumer Look up SP */
 CREATE PROCEDURE [dbo].[spConsumerLookUp]
-	@Id int = 0
+	@ProfileId int = 0
 	
 AS
 Begin
 set nocount on;
-	SELECT Id,ProfileId
+	SELECT *
 	FROM dbo.Consumer
-	WHERE Id = @Id
+	WHERE ProfileId = @ProfileId
 End
