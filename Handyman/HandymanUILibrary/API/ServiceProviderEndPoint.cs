@@ -108,7 +108,7 @@ namespace HandymanUILibrary.API
         }
 
 
-        public async Task<List<ProvidersServiceModel>> GetProvidersServices()
+        public async Task<ProvidersServiceModel> GetProvidersServiceByProviderId(int providerId)
         {
             using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync("/api/ProvidersServices"))
             {
@@ -117,7 +117,7 @@ namespace HandymanUILibrary.API
 
                     providerModel = new ServiceProviderModel();
 
-                    var result = await httpResponseMessage.Content.ReadAsAsync<List<ProvidersServiceModel>>();
+                    var result = await httpResponseMessage.Content.ReadAsAsync<ProvidersServiceModel>();
 
                     return result;
                 }

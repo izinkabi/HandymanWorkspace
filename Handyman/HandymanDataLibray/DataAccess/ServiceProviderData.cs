@@ -41,17 +41,18 @@ namespace HandymanDataLibray.DataAccess
          followed by the provider's service(s)*/
         public void PostProvider(ServiceProviderModel val)
         {
+            var provider = new {ProfileId = val.ProfileId,CompanyName = val.CompanyName,ProviderType = val.ProviderType };
             SQLDataAccess sql = new SQLDataAccess();
-            sql.SaveData<ServiceProviderModel>("dbo.spServiceProviderInsert", val, "HandymanDB");
+            sql.SaveData("dbo.spServiceProviderInsert", provider, "HandymanDB");
         }
 
         //Get provider's services by provider's ID
-        public ProvidersServiceModel GetProvidersServicesById(int Id)
-        {
-            SQLDataAccess sql = new SQLDataAccess();
-            var output = sql.LoadData<ProvidersServiceModel, dynamic>("dbo.spProvidersServiceLookUp", new { Id = Id}, "HandymanDB").First();
-            return output;
-        }
+        //public ProvidersServiceModel GetProvidersServicesById(int Id)
+        //{
+        //    SQLDataAccess sql = new SQLDataAccess();
+        //    var output = sql.LoadData<ProvidersServiceModel, dynamic>("dbo.spProvidersServiceLookUp", new { Id = Id}, "HandymanDB").First();
+        //    return output;
+        //}
 
         //Put the ProvidersService
         public void PutProvidersService(ProvidersServiceModel providersServiceModel)
@@ -60,10 +61,10 @@ namespace HandymanDataLibray.DataAccess
             var output = sql.SaveData<ProvidersServiceModel>("dbo.spProvidersServiceInsert", providersServiceModel, "HandymanDB");
         }
         //Getting Providers Services
-        public List<ProvidersServiceModel> GetProvidersServices()
+        public ProvidersServiceModel GetProvidersServiceByProviderId(int providerId)
         {
             SQLDataAccess sql = new SQLDataAccess();
-            var output = sql.LoadData<ProvidersServiceModel, dynamic>("dbo.spProvidersServiceLookUp",new { }, "HandymanDB");
+            var output = sql.LoadData<ProvidersServiceModel, dynamic>("dbo.spProvidersServiceLookUp",new { ServiceProviderId = providerId}, "HandymanDB").First();
             return output;
         }
 

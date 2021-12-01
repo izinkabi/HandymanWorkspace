@@ -14,6 +14,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
     {
         //interfaces for classes
         private IServiceProviderEndPoint _serviceProvider;
+        private IServicesLoader _serviceLoader;
         private IAPIHelper _apiHepler;
         private IProfileEndPoint _profileEndPoint;
 
@@ -23,11 +24,12 @@ namespace Handyman_UI.Controllers.ServiceProvider
         private ProfileModel profile;
 
 
-        public ServiceProviderHomeController(IAPIHelper aPIHelper, IServiceProviderEndPoint registerProvider, IProfileEndPoint profileEndPoint)
+        public ServiceProviderHomeController(IAPIHelper aPIHelper, IServiceProviderEndPoint registerProvider, IProfileEndPoint profileEndPoint,IServicesLoader servicesLoader)
         {
             _apiHepler = aPIHelper;
             _serviceProvider = registerProvider;
             _profileEndPoint = profileEndPoint;
+            _serviceLoader = servicesLoader;
         }
         public ActionResult Home()
         {
@@ -62,17 +64,19 @@ namespace Handyman_UI.Controllers.ServiceProvider
         //[HttpPost]
         public async Task<ActionResult> RegisterServiceProvider(ServiceProviderDisplayModel serviceProviderDisplay)
         {
+
+            /********Provider Type Dropdown list**********/
             profile = new ProfileModel();
             profile.Address = new ProfileModel.AddressModel();
             serviceProvider = new ServiceProviderModel();
             var tempProvider = new ServiceProviderDisplayModel();
             //this is cheating but it works for now
-            tempProvider.CompanyName = "";
+            tempProvider.CompanyName = "Name";
             tempProvider.ServiceProviderTypesId = 0;
+            tempProvider.SelectedServiceId = 0; 
            
 
-            try
-            {
+            
 
                 List<SelectListItem> serviceProviderTypeslist = new List<SelectListItem>()
                     {
@@ -93,26 +97,64 @@ namespace Handyman_UI.Controllers.ServiceProvider
                     selectedItem.Selected = true;
                     serviceProvider.ProviderType = selectedItem.Text;
                 }
-                if (ModelState.IsValid)
-                {
-                    var _token = Session["Token"].ToString();
-
-                    var loggeduser = await _apiHepler.GetLoggedInUserInfor(_token);
-                    var user = new UserModel();
-                    user.Id = loggeduser.Id;
-                    //Getting a profile with its Address
-                    var results = await _profileEndPoint.GetProfile(user);
-
-                    serviceProvider.CompanyName = serviceProviderDisplay.CompanyName;
-                    serviceProvider.ProfileId = results.Id;
+                /*************************END PROVIDER TYPE************************************/
 
 
 
+                /**********************************Services DropdownList*****************************************/
 
-                    var response = await _serviceProvider.PostServiceProvider(serviceProvider);
-                    ViewBag.MessageService = selectedItem.Text;
-                    return RedirectToAction("Home", "ServiceProviderHome");
-                }
+                List<SelectListItem> services = new List<SelectListItem>();
+
+
+                var providersServiceDisplayModel = new ProvidersServiceDisplayModel();
+                var providersService = new ProvidersServiceModel();
+            try
+            {
+                    List<ServiceDisplayModel> dbServices = await _serviceLoader.getDisplayServices();
+                    List<SelectListItem> servicesSelectList = new List<SelectListItem>();
+                    for (int i = 0; i < dbServices.Count; i++)
+                    {
+                        //Populating services from db into a dropdownlist
+                        servicesSelectList.Add(new SelectListItem { Text = dbServices.ElementAt(i).Name, Value = $"{dbServices.ElementAt(i).Id}" });
+                    }
+
+                    tempProvider.ServicesList = servicesSelectList;
+                   
+                    
+                    var selectedProviderItem = servicesSelectList.Find(p => p.Value == serviceProviderDisplay.SelectedServiceId.ToString());
+
+                    if (selectedProviderItem != null)
+                    {
+                        selectedProviderItem.Selected = true;
+                        providersService.ServiceId = Int32.Parse(selectedProviderItem.Value);//convert string into int
+
+                    }
+
+                    /*****************************END SERVICES DROPDOWN LIST********************************/
+                    if (ModelState.IsValid)
+                    {
+                            var _token = Session["Token"].ToString();
+
+                            var loggeduser = await _apiHepler.GetLoggedInUserInfor(_token);
+                            var user = new UserModel();
+                            user.Id = loggeduser.Id;
+                            //Getting a profile with its Address
+                            var results = await _profileEndPoint.GetProfile(user);
+
+                            serviceProvider.CompanyName = serviceProviderDisplay.CompanyName;
+                            serviceProvider.ProfileId = results.Id;
+
+
+                            var response = await _serviceProvider.PostServiceProvider(serviceProvider);
+                            ViewBag.MessageService = selectedItem.Text;
+
+                            //store the providers service
+                            var providerResult = await _serviceProvider.GetProviderByProfileId(results.Id);
+                            providersService.ServiceProviderId = providerResult.Id;
+                            var result = await _serviceProvider.PostProvidersService(providersService);
+
+                        return RedirectToAction("Home", "ServiceProviderHome");
+                    }
                 
 
             return View(tempProvider);
@@ -125,8 +167,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
 
 
         }
-            
-
+           
         public async Task<ActionResult> ProviderDetails()
         {
 
