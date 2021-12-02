@@ -16,13 +16,15 @@ namespace HandymanAPI.Controllers
         public void PostUser(UserModel userModel)
         {
             UserData data = new UserData();
-            //if (!Roles.RoleExists("Administrators"))
-            //    // Create the role
-               
-            //Roles.CreateRole("Administrators");
-            //Roles.AddUserToRole(userModel.Email, "Administrators");
+            //if (!Roles.RoleExists("Customer"))
+            //{
+            //    //Create the role
 
-                data.RegisterUser(userModel);
+            //    Roles.CreateRole("Customer");
+            //    Roles.AddUserToRole(userModel.Id, "Customer");
+            //}
+
+            data.RegisterUser(userModel);
         }
 
 
@@ -32,6 +34,7 @@ namespace HandymanAPI.Controllers
         public UserModel GetById()
         {
             string userId = RequestContext.Principal.Identity.GetUserId();
+            //bool isRole = RequestContext.Principal.IsInRole("Customer");
             var userModel = new UserModel();
             userModel.Id = userId;
             UserData data = new UserData();
