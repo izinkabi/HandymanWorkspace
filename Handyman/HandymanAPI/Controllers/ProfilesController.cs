@@ -13,7 +13,7 @@ namespace HandymanAPI.Controllers
     [Authorize]
     public class ProfilesController : ApiController
     {
-        [Authorize(Roles = "Customer,ServiceProvider,Admin")]
+       // [Authorize(Roles = "Customer,ServiceProvider,Admin")]
         public void PostProfile(ProfileModel profile)
         {
             ProfileData data = new ProfileData();
@@ -22,7 +22,7 @@ namespace HandymanAPI.Controllers
 
 
         // GET: Profiles
-        [Authorize(Roles = "Customer,ServiceProvider,Admin")]
+       // [Authorize(Roles = "Customer,ServiceProvider,Admin")]
         public ProfileModel GetProfileById(string userId)
         {
             
