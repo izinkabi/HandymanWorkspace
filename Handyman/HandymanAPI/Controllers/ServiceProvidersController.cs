@@ -41,11 +41,12 @@ namespace HandymanAPI.Controllers
         }
 
         //GET: api/GetProvidersServices
-        public List<ProvidersServiceModel> GetProvidersServices()
+        [Route("api/GetProvidersServiceByProviderId")]
+        public ProvidersServiceModel GetProvidersServicesByProviderId(int providerId)
         {
             providerData = new ServiceProviderData();
-            var list = providerData.GetProvidersServices();
-            return list;
+            var providerService = providerData.GetProvidersServiceByProviderId(providerId);
+            return providerService;
         }
 
       

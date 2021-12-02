@@ -32,7 +32,15 @@
             @ViewBag.MessageService
         </div>
     </div>
-  
+    <div class="form-group">
+        @Html.LabelFor(model => model.ServicesList, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.SelectedServiceId, Model.ServicesList, new { @class = "text-danger" })
+            @Html.ValidationMessageFor(model => model.ServicesList, "", new { @class = "text-danger" })
+            @ViewBag.MessageService
+        </div>
+    </div>
+
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="Be handyman" class="btn btn-default" />

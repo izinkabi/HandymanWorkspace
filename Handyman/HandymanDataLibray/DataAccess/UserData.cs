@@ -17,7 +17,7 @@ namespace HandymanDataLibrary.Internal
 
             var p = new { Id = userModel.Id };
 
-            var output = sql.LoadData<UserModel, dynamic>("dbo.spUserLookUp", p, "DefaultConnection");//Using the 
+            var output = sql.LoadData<UserModel, dynamic>("dbo.spUserLookUp", p, "DefaultConnection");
 
             return output.First();
 

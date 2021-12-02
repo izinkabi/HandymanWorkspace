@@ -20,10 +20,15 @@ namespace Handyman_UI.Models
         [Display(Name = "Service Provider Types")]
         //[Required(ErrorMessage = "Select a service")]
         public IEnumerable<SelectListItem> serviceProviderTypes { get; set; }
+
+        
         public int? ServiceProviderTypesId { get; set; }
 
         public string ProviderType { get; set; }
 
 
+
+        public IEnumerable<SelectListItem> ServicesList { get; set; }
+        public int? SelectedServiceId { get; set; }
     }
 }

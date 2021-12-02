@@ -184,6 +184,7 @@
     <Compile Include="Models\IServiceModel.cs" />
     <Compile Include="Models\OTPModel.cs" />
     <Compile Include="Models\ProfileDisplayModel.cs" />
+    <Compile Include="Models\ProvidersServiceDisplayModel.cs" />
     <Compile Include="Models\RequestModel.cs" />
     <Compile Include="Models\ServiceCategoryModel.cs" />
     <Compile Include="Models\ServiceDisplayModel.cs" />

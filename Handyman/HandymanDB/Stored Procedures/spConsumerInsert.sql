@@ -1,6 +1,7 @@
 ﻿/*Consumer Insert SP*/
 CREATE PROCEDURE [dbo].[spConsumerInsert]
-	@ProfileId int = 0
+
+	@ProfileId int 
 AS
 Begin
 

@@ -61,7 +61,6 @@
     <Folder Include="Publish\" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Stored Procedures\spUserLookUp.sql" />
     <Build Include="Stored Procedures\spProfileLookUp.sql" />
     <Build Include="Stored Procedures\spActivationInsert.sql" />
     <Build Include="Stored Procedures\spActivationLookUp.sql" />
@@ -92,6 +91,9 @@
     <Build Include="Tables\ServiceCategory.sql" />
     <Build Include="Stored Procedures\spServiceCategoriesLookUp.sql" />
     <Build Include="Stored Procedures\spAddressInsert.sql" />
+    <Build Include="Stored Procedures\spUserLookUp.sql" />
+    <Build Include="Stored Procedures\spRequestLookUp.sql" />
+    <Build Include="Stored Procedures\spRequestInsert.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Stored Procedures\spProfileInsert.sql" />
