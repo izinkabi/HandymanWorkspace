@@ -21,7 +21,7 @@ namespace HandymanAPI.Controllers
         [Authorize(Roles = "ServiceProvider")]
         public string Get(int id)
         {
-            return "Service Provider Role" + id; ;
+            return "Service Provider Role " + id; ;
         }
 
         // POST api/values
