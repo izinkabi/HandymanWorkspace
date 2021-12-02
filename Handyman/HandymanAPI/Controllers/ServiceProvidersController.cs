@@ -10,7 +10,7 @@ using System.Web.Http;
 
 namespace HandymanAPI.Controllers
 {
-    [Authorize]
+  
     public class ServiceProvidersController : ApiController
     {
 
@@ -34,6 +34,7 @@ namespace HandymanAPI.Controllers
         }
 
         // POST: api/ServiceProviders
+       // [Authorize(Roles = "ServiceProvider")]
         public void PostProvider(ServiceProviderModel serviceProviderModel)
         {
             providerData = new ServiceProviderData();
