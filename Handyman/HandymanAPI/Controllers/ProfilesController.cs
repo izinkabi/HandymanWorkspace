@@ -10,19 +10,19 @@ using System.Web.Http.Cors;
 
 namespace HandymanAPI.Controllers
 {
-   
+    [Authorize]
     public class ProfilesController : ApiController
     {
-
+        [Authorize(Roles = "Customer,ServiceProvider,Admin")]
         public void PostProfile(ProfileModel profile)
         {
             ProfileData data = new ProfileData();
             data.PostProfile(profile);
         }
 
-        
+
         // GET: Profiles
-        
+        [Authorize(Roles = "Customer,ServiceProvider,Admin")]
         public ProfileModel GetProfileById(string userId)
         {
             

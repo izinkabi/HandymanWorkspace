@@ -10,6 +10,7 @@ using System.Web.Http;
 
 namespace HandymanAPI.Controllers
 {
+    [Authorize]
     public class ServiceProvidersController : ApiController
     {
 

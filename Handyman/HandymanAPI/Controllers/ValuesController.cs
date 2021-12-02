@@ -11,18 +11,21 @@ namespace HandymanAPI.Controllers
     public class ValuesController : ApiController
     {
         // GET api/values
+        [Authorize(Roles = "Customer")]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
         }
 
         // GET api/values/5
+        [Authorize(Roles = "ServiceProvider")]
         public string Get(int id)
         {
-            return "value";
+            return "Service Provider Role" + id; ;
         }
 
         // POST api/values
+        [Authorize(Roles = "Customer,ServiceProvider")]
         public void Post([FromBody]string value)
         {
         }
