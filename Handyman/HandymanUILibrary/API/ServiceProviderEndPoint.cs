@@ -110,7 +110,7 @@ namespace HandymanUILibrary.API
 
         public async Task<ProvidersServiceModel> GetProvidersServiceByProviderId(int providerId)
         {
-            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync("/api/ProvidersServices"))
+            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync($"/api/GetProvidersServiceByProviderId?ProviderId={providerId}"))
             {
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {

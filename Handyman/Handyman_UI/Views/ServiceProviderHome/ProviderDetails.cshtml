@@ -5,10 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>ProviderDetails</h2>
+<h2>Provider's Details</h2>
 
 <div>
-    <h4>ServiceProviderDisplayModel</h4>
+    
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -28,11 +28,92 @@
         </dd>
 
       
-        
-
+       
     </dl>
 </div>
+
+@******************Service Section*@
+<div>
+    <hr />
+    <h2>Provided Services</h2>
+    <br />
+    <table class="table">
+        <tr>
+            <th>
+                <strong>Name</strong>
+            </th>
+            <th>
+                <strong>Category</strong>
+            </th>
+
+            <th>
+                <strong>Desciption</strong>
+            </th>
+            <th>
+                <strong>Image</strong>
+            </th>
+            <th></th>
+        </tr>
+
+
+
+        @foreach (var item in Model.providerServices)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.ServiceDescription)
+                </td>
+                <td>
+                    <img src="@{@item.ImageUrl} " />
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+
+    </table>
+    
+    <div class="form-group">
+        @Html.LabelFor(model => model.ServicesList, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+
+            @Html.DropDownListFor(m => m.SelectedServiceId, Model.ServicesList, new { @class = "text-danger" })
+            @Html.ValidationMessageFor(model => model.ServicesList, "", new { @class = "text-danger" })
+            @foreach (var item in Model.ServicesList)
+            {
+
+                if (item.Selected)
+                {
+
+                    // @Html.ActionLink("Add Service", "AddNewProviderService", new { Id = item.Value }, new { @class = "btn" });
+                }
+                else
+                {
+                    @Html.ActionLink("Add Service", "AddNewProviderService", new { Id = item.Value }, new { @class = "btn" });
+                }
+            }
+        </div>
+
+
+    </div>
+
+
+
+    @*End Service Section*******************************@
+</div>
 <p>
+    
+    
     @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

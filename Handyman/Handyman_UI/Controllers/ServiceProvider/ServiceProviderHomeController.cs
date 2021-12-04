@@ -58,6 +58,9 @@ namespace Handyman_UI.Controllers.ServiceProvider
         }
         public ActionResult Test()
         {
+
+
+
             return View();
         }
 
@@ -65,15 +68,16 @@ namespace Handyman_UI.Controllers.ServiceProvider
         public async Task<ActionResult> RegisterServiceProvider(ServiceProviderDisplayModel serviceProviderDisplay)
         {
 
-            /********Provider Type Dropdown list**********/
+            /********Provider Type Dropdown list*/
             profile = new ProfileModel();
             profile.Address = new ProfileModel.AddressModel();
             serviceProvider = new ServiceProviderModel();
             var tempProvider = new ServiceProviderDisplayModel();
-            //this is cheating but it works for now
+            //the cheat
             tempProvider.CompanyName = "Name";
             tempProvider.ServiceProviderTypesId = 0;
-            tempProvider.SelectedServiceId = 0; 
+            tempProvider.SelectedServiceId = 0;
+            tempProvider.providerServices = new List<ServiceDisplayModel>();
            
 
             
@@ -97,11 +101,11 @@ namespace Handyman_UI.Controllers.ServiceProvider
                     selectedItem.Selected = true;
                     serviceProvider.ProviderType = selectedItem.Text;
                 }
-                /*************************END PROVIDER TYPE************************************/
+                /*END PROVIDER TYPE************************************/
 
 
 
-                /**********************************Services DropdownList*****************************************/
+                /**********************************Services DropdownList*/
 
                 List<SelectListItem> services = new List<SelectListItem>();
 
@@ -130,7 +134,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
 
                     }
 
-                    /*****************************END SERVICES DROPDOWN LIST********************************/
+                    /*END SERVICES DROPDOWN LIST********************************/
                     if (ModelState.IsValid)
                     {
                             var _token = Session["Token"].ToString();
@@ -148,12 +152,12 @@ namespace Handyman_UI.Controllers.ServiceProvider
                             var response = await _serviceProvider.PostServiceProvider(serviceProvider);
                             ViewBag.MessageService = selectedItem.Text;
 
-                            //store the providers service
+                            //store the provider's service
                             var providerResult = await _serviceProvider.GetProviderByProfileId(results.Id);
                             providersService.ServiceProviderId = providerResult.Id;
                             var result = await _serviceProvider.PostProvidersService(providersService);
 
-                        return RedirectToAction("Home", "ServiceProviderHome");
+                   
                     }
                 
 
@@ -167,7 +171,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
 
 
         }
-           
+           //The details of the service provider method
         public async Task<ActionResult> ProviderDetails()
         {
 
@@ -186,9 +190,28 @@ namespace Handyman_UI.Controllers.ServiceProvider
                     //Getting a profile with its Address
                     var results = await _profileEndPoint.GetProfile(user);
                     var response = await _serviceProvider.GetProviderByProfileId(results.Id);
-
+                    var dbProviderService = await _serviceProvider.GetProvidersServiceByProviderId(response.Id);
+                    var dbServices = await _serviceLoader.getDisplayServices();
+                    providerModel.providerServices = new List<ServiceDisplayModel>();
+                    foreach (ServiceDisplayModel service in dbServices)
+                    {
+                        if (service.Id == dbProviderService.ServiceId)
+                        {
+                            providerModel.providerServices.Add(new ServiceDisplayModel { Id = service.Id, ImageUrl = service.ImageUrl, Name = service.Name, ServiceDescription = service.ServiceDescription, Category = service.Category });
+                        }
+                    }
                     providerModel.CompanyName = response.CompanyName;
                     providerModel.ProviderType = response.ProviderType;
+                    List<SelectListItem> serviceSelectList = new List<SelectListItem>();
+                    for (int i = 0; i < dbServices.Count; i++)
+                    {
+                        //Populating services from db into a dropdownlist
+                        serviceSelectList.Add(new SelectListItem { Text = dbServices.ElementAt(i).Name, Value = $"{dbServices.ElementAt(i).Id}" });
+                    }
+                
+                    providerModel.ServicesList = serviceSelectList;
+
+                
                 }
                 catch (Exception ex)
                 {
@@ -197,6 +220,60 @@ namespace Handyman_UI.Controllers.ServiceProvider
                 
             }
             return View(providerModel);
+        }
+
+        //Register a new provider's service
+        public async Task<ActionResult> AddNewProviderService(string Id)
+        {
+            var _token = Session["Token"].ToString();
+            var providerModel = new ServiceProviderDisplayModel();
+            var providersService = new ProvidersServiceModel();
+            //providerModel.providerServices = new List<ServiceDisplayModel>();
+            try
+            {
+                
+                var loggeduser = await _apiHepler.GetLoggedInUserInfor(_token);
+                var user = new UserModel();
+                user.Id = loggeduser.Id;
+                //Getting a profile with its Address
+                var results = await _profileEndPoint.GetProfile(user);
+                var providerResponse = await _serviceProvider.GetProviderByProfileId(results.Id);
+                var dbProviderService = await _serviceProvider.GetProvidersServiceByProviderId(providerResponse.Id);
+                var dbServices = await _serviceLoader.getDisplayServices();
+
+                List<SelectListItem> serviceSelectList = new List<SelectListItem>();
+                for (int i = 0; i < dbServices.Count; i++)
+                {
+                    //Populating services from db into a dropdownlist
+                    serviceSelectList.Add(new SelectListItem { Text = dbServices.ElementAt(i).Name, Value = $"{dbServices.ElementAt(i).Id}" });
+                }
+
+
+                providerModel.ServicesList = serviceSelectList;
+                if (Id != null)
+                {                 
+                    providersService.ServiceId = Int32.Parse(Id);
+                }
+
+                if (ModelState.IsValid)
+                {
+
+                    //store the provider's service
+                       
+                    providersService.ServiceProviderId = providerResponse.Id;
+
+                    var result = await _serviceProvider.PostProvidersService(providersService);
+                    RedirectToAction("ProviderDetails", providerModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return View("ProviderDetails",providerModel);
+
+           
         }
     }
 }

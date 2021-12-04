@@ -292,6 +292,8 @@
     <Content Include="Views\Profile\AddressDetails.cshtml" />
     <Content Include="Views\Profile\Contact.cshtml" />
     <Content Include="Views\ServiceProviderHome\ProviderDetails.cshtml" />
+    <Content Include="Views\ServiceProviderHome\Test.cshtml" />
+    <Content Include="Views\ServiceProviderHome\AddNewProviderService.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
