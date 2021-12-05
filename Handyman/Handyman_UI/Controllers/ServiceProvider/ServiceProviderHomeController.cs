@@ -22,6 +22,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
         public static string sessionToken;
         private ServiceProviderModel serviceProvider;
         private ProfileModel profile;
+        private List<ServiceDisplayModel> localServices;
 
 
         public ServiceProviderHomeController(IAPIHelper aPIHelper, IServiceProviderEndPoint registerProvider, IProfileEndPoint profileEndPoint,IServicesLoader servicesLoader)
@@ -59,9 +60,34 @@ namespace Handyman_UI.Controllers.ServiceProvider
         public ActionResult Test()
         {
 
-
-
             return View();
+        }
+
+        public async Task<ActionResult> Search(string serviceSearchString)
+        {
+            localServices = new List<ServiceDisplayModel>();
+            try
+            {
+
+                var dbeServices = await _serviceLoader.getDisplayServices();
+
+           
+            var tempServices = new List<ServiceDisplayModel>();
+            foreach (var service in dbeServices)
+            {
+                if ((service.Name.Contains(serviceSearchString)) || (service.Category.Contains(serviceSearchString)))
+                {
+                    localServices.Add(service);
+
+                }
+            }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return View(localServices);
+
         }
 
         //[HttpPost]

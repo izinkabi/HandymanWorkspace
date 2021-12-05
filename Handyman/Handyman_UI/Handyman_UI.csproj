@@ -294,6 +294,7 @@
     <Content Include="Views\ServiceProviderHome\ProviderDetails.cshtml" />
     <Content Include="Views\ServiceProviderHome\Test.cshtml" />
     <Content Include="Views\ServiceProviderHome\AddNewProviderService.cshtml" />
+    <Content Include="Views\ServiceProviderHome\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
