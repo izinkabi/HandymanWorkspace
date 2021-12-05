@@ -122,7 +122,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
                         servicesSelectList.Add(new SelectListItem { Text = dbServices.ElementAt(i).Name, Value = $"{dbServices.ElementAt(i).Id}" });
                     }
 
-                    tempProvider.ServicesList = servicesSelectList;
+                    tempProvider.ServicesSelectList = servicesSelectList;
                    
                     
                     var selectedProviderItem = servicesSelectList.Find(p => p.Value == serviceProviderDisplay.SelectedServiceId.ToString());
@@ -190,18 +190,24 @@ namespace Handyman_UI.Controllers.ServiceProvider
                     //Getting a profile with its Address
                     var results = await _profileEndPoint.GetProfile(user);
                     var response = await _serviceProvider.GetProviderByProfileId(results.Id);
-                    var dbProviderService = await _serviceProvider.GetProvidersServiceByProviderId(response.Id);
+                    var dbProviderServices = await _serviceProvider.GetProvidersServiceByProviderId(response.Id);
                     var dbServices = await _serviceLoader.getDisplayServices();
                     providerModel.providerServices = new List<ServiceDisplayModel>();
                     foreach (ServiceDisplayModel service in dbServices)
                     {
-                        if (service.Id == dbProviderService.ServiceId)
+                        foreach (var pservices in dbProviderServices)
                         {
-                            providerModel.providerServices.Add(new ServiceDisplayModel { Id = service.Id, ImageUrl = service.ImageUrl, Name = service.Name, ServiceDescription = service.ServiceDescription, Category = service.Category });
+
+
+                            if (service.Id == pservices.ServiceId)
+                            {
+                                providerModel.providerServices.Add(new ServiceDisplayModel { Id = service.Id, ImageUrl = service.ImageUrl, Name = service.Name, ServiceDescription = service.ServiceDescription, Category = service.Category });
+                            }
                         }
                     }
                     providerModel.CompanyName = response.CompanyName;
                     providerModel.ProviderType = response.ProviderType;
+                    providerModel.services = dbServices;
                     List<SelectListItem> serviceSelectList = new List<SelectListItem>();
                     for (int i = 0; i < dbServices.Count; i++)
                     {
@@ -209,7 +215,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
                         serviceSelectList.Add(new SelectListItem { Text = dbServices.ElementAt(i).Name, Value = $"{dbServices.ElementAt(i).Id}" });
                     }
                 
-                    providerModel.ServicesList = serviceSelectList;
+                    providerModel.ServicesSelectList = serviceSelectList;
 
                 
                 }
@@ -223,7 +229,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
         }
 
         //Register a new provider's service
-        public async Task<ActionResult> AddNewProviderService(string Id)
+        public async Task<ActionResult> AddNewProviderService(int id)
         {
             var _token = Session["Token"].ToString();
             var providerModel = new ServiceProviderDisplayModel();
@@ -241,25 +247,20 @@ namespace Handyman_UI.Controllers.ServiceProvider
                 var dbProviderService = await _serviceProvider.GetProvidersServiceByProviderId(providerResponse.Id);
                 var dbServices = await _serviceLoader.getDisplayServices();
 
-                List<SelectListItem> serviceSelectList = new List<SelectListItem>();
-                for (int i = 0; i < dbServices.Count; i++)
-                {
-                    //Populating services from db into a dropdownlist
-                    serviceSelectList.Add(new SelectListItem { Text = dbServices.ElementAt(i).Name, Value = $"{dbServices.ElementAt(i).Id}" });
-                }
-
-
-                providerModel.ServicesList = serviceSelectList;
-                if (Id != null)
-                {                 
-                    providersService.ServiceId = Int32.Parse(Id);
-                }
+               
+               
+                    if (id!=null)
+                    {
+                        providersService.ServiceId =id;
+                    }
+                
 
                 if (ModelState.IsValid)
                 {
 
+
                     //store the provider's service
-                       
+
                     providersService.ServiceProviderId = providerResponse.Id;
 
                     var result = await _serviceProvider.PostProvidersService(providersService);
@@ -271,7 +272,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
                 throw new Exception(ex.Message);
             }
 
-            return View("ProviderDetails",providerModel);
+            return View();
 
            
         }

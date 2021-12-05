@@ -26,10 +26,10 @@ namespace Handyman_UI.Models
 
         public string ProviderType { get; set; }
 
-        public IEnumerable<SelectListItem> ServicesList { get; set; }
+        public IEnumerable<SelectListItem> ServicesSelectList { get; set; }
         public int? SelectedServiceId { get; set; }
 
-
+        public List<ServiceDisplayModel> services { get; set; }
         public List<ServiceDisplayModel> providerServices { get; set; }
     }
 }

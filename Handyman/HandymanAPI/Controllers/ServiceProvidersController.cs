@@ -25,7 +25,7 @@ namespace HandymanAPI.Controllers
             return providerData.GetServiceProviders();
         }
 
-        // GET: api/ServiceProviders/5
+        // GET: api/GetServiceProviderByProfileId/5
         [Route("api/GetServiceProviderByProfileId")]
         public ServiceProviderModel GetServiceProviderByProfileId(int ProfileId)
         {
@@ -43,7 +43,7 @@ namespace HandymanAPI.Controllers
 
         //GET: api/GetProvidersServices
         [Route("api/GetProvidersServiceByProviderId")]
-        public ProvidersServiceModel GetProvidersServicesByProviderId(int providerId)
+        public List<ProvidersServiceModel> GetProvidersServicesByProviderId(int providerId)
         {
             providerData = new ServiceProviderData();
             var providerService = providerData.GetProvidersServiceByProviderId(providerId);

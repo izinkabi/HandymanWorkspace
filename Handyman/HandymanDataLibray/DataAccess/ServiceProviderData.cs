@@ -61,10 +61,10 @@ namespace HandymanDataLibray.DataAccess
             var output = sql.SaveData<ProvidersServiceModel>("dbo.spProvidersServiceInsert", providersServiceModel, "HandymanDB");
         }
         //Getting Providers Services
-        public ProvidersServiceModel GetProvidersServiceByProviderId(int providerId)
+        public List<ProvidersServiceModel> GetProvidersServiceByProviderId(int providerId)
         {
             SQLDataAccess sql = new SQLDataAccess();
-            var output = sql.LoadData<ProvidersServiceModel, dynamic>("dbo.spProvidersServiceLookUp",new { ServiceProviderId = providerId}, "HandymanDB").First();
+            var output = sql.LoadData<ProvidersServiceModel, dynamic>("dbo.spProvidersServiceLookUp",new { ServiceProviderId = providerId}, "HandymanDB");
             return output;
         }
 

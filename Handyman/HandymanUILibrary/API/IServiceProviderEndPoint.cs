@@ -10,7 +10,7 @@ namespace HandymanUILibrary.API
         Task<ServiceProviderModel> PostServiceProvider(ServiceProviderModel serviceProviderModel);
         Task<ServiceProviderModel> GetProviderByProfileId(int profileId);
         Task<ServiceProviderModel> GetServiceProviders(ServiceProviderModel serviceProvider);
-        Task<ProvidersServiceModel> GetProvidersServiceByProviderId(int providerId);
+        Task<List<ProvidersServiceModel>> GetProvidersServiceByProviderId(int providerId);
         Task<ProvidersServiceModel> PostProvidersService(ProvidersServiceModel providersService);
     }
 }
