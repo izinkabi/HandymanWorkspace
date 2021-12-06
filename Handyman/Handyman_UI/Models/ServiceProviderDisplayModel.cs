@@ -31,5 +31,7 @@ namespace Handyman_UI.Models
 
         public List<ServiceDisplayModel> services { get; set; }
         public List<ServiceDisplayModel> providerServices { get; set; }
+
+        public ProfileDisplayModel Profile { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Handyman_UI.Models.ServiceDisplayModel>
+﻿@model Handyman_UI.Models.ServiceProviderDisplayModel
 @{
 
     Layout = "~/Views/Shared/DashBLayout.cshtml";
@@ -32,6 +32,34 @@
 
 
 
+    <div class="form-group">
+
+        <div class="col-md-12">
+            <h2 class="text-center">Available Services</h2>
+            <hr />
+            <div>
+                @*A search section*@
+                @using (Html.BeginForm("Search", "ServiceProviderHome", FormMethod.Get))
+                {
+                    <div class="container-fluid row p-1 m-1" style="text-align: center; display: block">
+                        <div class="col-md-4">
+                            <input type="text" placeholder="Keyword Search" name="serviceSearchString" class="form-control text-center" />
+                        </div>
+
+                        <div class="col-md-2  ">
+                            <button type="submit" class="form-control"> Search</button>
+                        </div>
+
+
+                    </div>
+                }
+            </div>
+            @Html.Partial("Test", Model.services);
+
+        </div>
+
+
+    </div>
 
     <footer>
         <p>&copy; @DateTime.Now.Year - Izinkabi property</p>

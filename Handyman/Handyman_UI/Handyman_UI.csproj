@@ -288,8 +288,8 @@
     <Content Include="Views\Service\Search.cshtml" />
     <Content Include="Views\Profile\CreateAProfile.cshtml" />
     <Content Include="Views\Profile\CreateAddress.cshtml" />
-    <Content Include="Views\Profile\ProfileDetails.cshtml" />
-    <Content Include="Views\Profile\AddressDetails.cshtml" />
+    <Content Include="Views\Shared\ProfileDetails.cshtml" />
+    <Content Include="Views\Shared\AddressDetails.cshtml" />
     <Content Include="Views\Profile\Contact.cshtml" />
     <Content Include="Views\ServiceProviderHome\ProviderDetails.cshtml" />
     <Content Include="Views\ServiceProviderHome\Test.cshtml" />

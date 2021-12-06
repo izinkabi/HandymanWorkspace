@@ -21,8 +21,9 @@ namespace Handyman_UI.Controllers.ServiceProvider
         static private string Username, Password;
         public static string sessionToken;
         private ServiceProviderModel serviceProvider;
-        private ProfileModel profile;
+        private ProfileDisplayModel profile;
         private List<ServiceDisplayModel> localServices;
+       
 
 
         public ServiceProviderHomeController(IAPIHelper aPIHelper, IServiceProviderEndPoint registerProvider, IProfileEndPoint profileEndPoint,IServicesLoader servicesLoader)
@@ -32,9 +33,22 @@ namespace Handyman_UI.Controllers.ServiceProvider
             _profileEndPoint = profileEndPoint;
             _serviceLoader = servicesLoader;
         }
-        public ActionResult Home()
+        public async Task<ActionResult> Home()
         {
-            return View();
+
+            try
+            {
+                ServiceProviderDisplayModel serviceProviderModel = new ServiceProviderDisplayModel();
+                serviceProviderModel.services = new List<ServiceDisplayModel>();
+                serviceProviderModel.services = await _serviceLoader.getDisplayServices();
+
+                return PartialView(serviceProviderModel);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return View(serviceProvider);
         }
 
         public ActionResult Requests()
@@ -95,7 +109,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
         {
 
             /********Provider Type Dropdown list*/
-            profile = new ProfileModel();
+            var profile = new ProfileModel();
             profile.Address = new ProfileModel.AddressModel();
             serviceProvider = new ServiceProviderModel();
             var tempProvider = new ServiceProviderDisplayModel();
@@ -202,6 +216,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
         {
 
             var providerModel = new ServiceProviderDisplayModel();
+            providerModel.Profile = new ProfileDisplayModel();
             if (ModelState.IsValid)
             {
                 try
@@ -214,7 +229,22 @@ namespace Handyman_UI.Controllers.ServiceProvider
                     var user = new UserModel();
                     user.Id = loggeduser.Id;
                     //Getting a profile with its Address
+                   
                     var results = await _profileEndPoint.GetProfile(user);
+                    providerModel.Profile.Name = results.Name;
+                    providerModel.Profile.PhoneNumber = results.PhoneNumber;
+                    providerModel.Profile.Surname = results.Surname;
+                    providerModel.Profile.DateOfBirth = results.DateOfBirth;
+                    
+
+                    providerModel.Profile.AddressM = new ProfileDisplayModel.AddressModel();
+                    providerModel.Profile.AddressM.City = results.Address.City;
+                    providerModel.Profile.AddressM.HouseNumber = results.Address.HouseNumber;
+                    providerModel.Profile.AddressM.Id = results.Address.Id;
+                    providerModel.Profile.AddressM.PostalCode = results.Address.PostalCode;
+                    providerModel.Profile.AddressM.StreetName = results.Address.StreetName;
+                    providerModel.Profile.AddressM.Surburb = results.Address.Surburb;
+
                     var response = await _serviceProvider.GetProviderByProfileId(results.Id);
                     var dbProviderServices = await _serviceProvider.GetProvidersServiceByProviderId(response.Id);
                     var dbServices = await _serviceLoader.getDisplayServices();
