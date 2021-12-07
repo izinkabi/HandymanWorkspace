@@ -15,10 +15,11 @@ namespace HandymanUILibrary.Models
         public DateTime CreateDate { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string UserRole { get; set; }
 
         public void ResetUserModel()
         {
-
+            UserRole = "";
             Token = "";
             Id = "";
             Username = "";

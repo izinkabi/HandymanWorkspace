@@ -19,6 +19,7 @@ namespace HandymanDataLibrary.Internal
 
             var output = sql.LoadData<UserModel, dynamic>("dbo.spUserLookUp", p, "DefaultConnection");
 
+
             return output.First();
 
         }
@@ -37,8 +38,9 @@ namespace HandymanDataLibrary.Internal
         /*Posting a new user*/
         public void PostUser(UserModel val)
         {
+          
             SQLDataAccess sql = new SQLDataAccess();
-            sql.SaveData<UserModel>("dbo.spUserInsert", val, "HandymanDB");
+            sql.SaveData("dbo.spUserInsert", new { Email = val.Email, Username = val.Username, Id = val.Id }, "HandymanDB");
         }
 
 
@@ -54,7 +56,7 @@ namespace HandymanDataLibrary.Internal
 
                     //var user = new {UserName = output.Username, Id = output.Id, Email = output.Email };
 
-                    int rowsaffected =  sql.SaveData<UserModel>("dbo.spUserInsert", output, "HandymanDB");
+                    int rowsaffected =  sql.SaveData("dbo.spUserInsert", new { Id=output.Id,Email = output.Email,Username= output.Username }, "HandymanDB");
                 
             
         }

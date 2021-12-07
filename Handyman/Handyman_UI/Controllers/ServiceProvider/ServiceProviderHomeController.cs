@@ -48,7 +48,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
             {
                 throw new Exception(ex.Message);
             }
-            return View(serviceProvider);
+            //return View(serviceProvider);
         }
 
         public ActionResult Requests()
@@ -120,8 +120,6 @@ namespace Handyman_UI.Controllers.ServiceProvider
             tempProvider.providerServices = new List<ServiceDisplayModel>();
            
 
-            
-
                 List<SelectListItem> serviceProviderTypeslist = new List<SelectListItem>()
                     {
                       new SelectListItem {Text = "Individual", Value = "1"},
@@ -148,10 +146,9 @@ namespace Handyman_UI.Controllers.ServiceProvider
                 /**********************************Services DropdownList*/
 
                 List<SelectListItem> services = new List<SelectListItem>();
-
-
                 var providersServiceDisplayModel = new ProvidersServiceDisplayModel();
                 var providersService = new ProvidersServiceModel();
+
             try
             {
                     List<ServiceDisplayModel> dbServices = await _serviceLoader.getDisplayServices();

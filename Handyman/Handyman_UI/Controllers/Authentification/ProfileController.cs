@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace Handyman_UI.Controllers
 {
@@ -24,7 +25,7 @@ namespace Handyman_UI.Controllers
         private IRegisterEndPoint _registerEndPoint;
        
         static private string DisplayUserName;
-       
+        static private IloggedInUserModel _IloggedInUserModel;
         public ProfileController(IAPIHelper aPIHelper,IProfileEndPoint profile,IRegisterEndPoint registerEndPoint)
         {
             _apiHepler = aPIHelper;
@@ -38,17 +39,36 @@ namespace Handyman_UI.Controllers
             
             return PartialView();
         }
+        //--this requires auth 
+        //private void createCustomerRole(string username, string password)
+        //{
+        //    MembershipCreateStatus createStatus;
+        //    MembershipUser newUser = Membership.CreateUser(username, password);
+        //    if (newUser.IsApproved)
+        //    {
 
-       //Register action method
-        public async Task<ActionResult> Register(CreateUserModel newUser)
-        {
+        //        if (!Roles.RoleExists("Customer"))
+        //        {
+        //            //Create the role
+
+        //            Roles.CreateRole("Customer");
+        //            Roles.AddUserToRole(newUser.UserName, "Customer");
+        //        }
+        //    }
+
+        //}
+        //
+            
+            //Register action method
+            public async Task<ActionResult> Register(CreateUserModel newUser)
+            {
 
             if (ModelState.IsValid)
             {
                 try
                 {
 
-
+                   
                     user = new HandymanUILibrary.Models.NewUserModel();
 
                     //Username and password are given a value once here and once in sign in
@@ -67,8 +87,8 @@ namespace Handyman_UI.Controllers
                     var results = await _registerEndPoint.SaveNewUser(user);
 
                     DisplayUserName = result.FirstName;
+
                    
-                    
                     ViewBag.Username = result.Email; 
 
                     return RedirectToAction("CreateAProfile", "Profile");
@@ -86,6 +106,7 @@ namespace Handyman_UI.Controllers
     
 
         //Login action function
+        
     public async Task<ActionResult> SignIn(UserLoginModel model)
         {
 
@@ -99,7 +120,7 @@ namespace Handyman_UI.Controllers
                 {
                     var results = await _apiHepler.AuthenticateUser(Username, Password);
 
-                    await _apiHepler.GetLoggedInUserInfor(results.Access_Token);
+                    _IloggedInUserModel = await _apiHepler.GetLoggedInUserInfor(results.Access_Token);
 
                     Session["log"] = results.Access_Token;
                     Token = results.Access_Token;
@@ -107,10 +128,19 @@ namespace Handyman_UI.Controllers
                     Session["Username"] = Username;
                     Session["Token"]=results.Access_Token;
 
-                    
+                    //////this will brake my code--(! Illegal assignment of user-roles from aspnetdb, less secured...  )
+                    if (_IloggedInUserModel.UserRole.Equals("Customer"))
+
+                    {
+                        return RedirectToAction("Index", "Service");
+
+                    }
+                    else if (_IloggedInUserModel.UserRole.Equals("ServiceProvider"))
+                    {
+                        return RedirectToAction("Home", "ServiceProviderHome");
+                    }
 
 
-                    return RedirectToAction("Index", "Service");
                 }
                 catch (Exception ex)
                 {

@@ -89,7 +89,8 @@ namespace HandymanUILibrary.API
                     _loggedInUserModel.CreateDate = result.CreateDate;
                     _loggedInUserModel.FirstName = result.FirstName;
                     _loggedInUserModel.LastName = result.LastName;
-
+                    //acquiring roles from a model(not recommended, but HEy it wOrKs!)
+                    _loggedInUserModel.UserRole = result.UserRole;
                     return _loggedInUserModel;
                 }
                 else
