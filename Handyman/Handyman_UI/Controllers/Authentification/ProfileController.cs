@@ -17,6 +17,7 @@ namespace Handyman_UI.Controllers
         private IAPIHelper _apiHepler;
         static private string Username,Password;
         static private string Token;
+        static private string UserRole;
         
         private HandymanUILibrary.Models.ProfileModel profileModel;      
         private NewUserModel user;
@@ -80,10 +81,10 @@ namespace Handyman_UI.Controllers
                     Username = newUser.Username;
                     Password = newUser.Password;
                     user.UserRole = "Customer";//User role assignment to customer
-                    //Store the Token in a session
+                    UserRole = "Customer";
 
                     var loggedInUser = await _registerEndPoint.RegisterUser(user);
-                    Session["Token"] = loggedInUser.Access_Token;
+                   
 
                     return RedirectToAction("CreateAProfile", "Profile");
 
@@ -117,10 +118,9 @@ namespace Handyman_UI.Controllers
                     Username = newUser.Username;
                     Password = newUser.Password;
                     user.UserRole = "ServiceProvider";//User role assignment
-                    //Store the Token in a session
-
-                    var loggedInUser = await _registerEndPoint.RegisterUser(user);
-                    Session["Token"] = loggedInUser.Access_Token;
+                    UserRole = "ServiceProvider";
+                   var loggedInUser = await _registerEndPoint.RegisterUser(user);
+                   
 
 
                     return RedirectToAction("CreateAProfile", "Profile");
@@ -210,7 +210,7 @@ namespace Handyman_UI.Controllers
                 profileModel.Address.City = address.City;
 
                 ViewBag.profilename = profile.Name + profile.Surname;
-                Token = Session["Token"].ToString(); 
+               
 
                 try
                 {
@@ -221,15 +221,24 @@ namespace Handyman_UI.Controllers
 
 
                     var results = await _apiHepler.AuthenticateUser(Username, Password);//auth awaited task
-                    var token = Session["Token"].ToString(); 
+                    Token = results.Access_Token;
+                    Session["Token"] = results.Access_Token;
                     var loggeuser = await _apiHepler.GetLoggedInUserInfor(results.Access_Token);// awaited loggedUser
 
                     profileModel.UserId = loggeuser.Id;//pass user ID
 
                     await _profileEndPoint.PostProfile(profileModel);//waited results of posted user profile
-                    //Session["profilename"] = loggeuser.Username;
-                    //Session["log"] = loggeuser.Id;
-                    return RedirectToAction("SignIn","Profile");
+
+                    if (UserRole=="Customer")
+                    {
+                        return RedirectToAction("SignIn", "Profile");
+                    }
+                    else if (UserRole=="ServiceProvider" )
+                    {
+                        return RedirectToAction("RegisterServiceProvider", "ServiceProviderHome");
+                    }
+
+                    
 
                 }
                 catch (Exception ex)

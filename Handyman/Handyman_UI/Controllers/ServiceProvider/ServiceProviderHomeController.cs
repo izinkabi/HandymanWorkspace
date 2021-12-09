@@ -195,8 +195,8 @@ namespace Handyman_UI.Controllers.ServiceProvider
                             providersService.ServiceProviderId = providerResult.Id;
                             var result = await _serviceProvider.PostProvidersService(providersService);
 
-                   
-                    }
+                    return RedirectToAction("SignIn", "Profile");
+                }
                 
 
             return View(tempProvider);
