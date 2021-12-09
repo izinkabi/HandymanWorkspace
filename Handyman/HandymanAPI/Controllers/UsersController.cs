@@ -16,7 +16,7 @@ namespace HandymanAPI.Controllers
         //this only register the user in our HandymanDB users
         public void PostUser(UserModel userModel)
         {
-            UserData data = new UserData();  
+              UserData data = new UserData();  
               data.RegisterUser(userModel);
         }
 

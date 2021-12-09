@@ -6,9 +6,8 @@ namespace HandymanUILibrary.API
     public interface IRegisterEndPoint
     {
 
-
-         Task<IloggedInUserModel> RegisterUser(NewUserModel newUser);
-         Task<IloggedInUserModel> SaveNewUser(NewUserModel userModel);
+         Task<AuthenticatedUserModel> RegisterUser(NewUserModel newUser);
+         //Task<IloggedInUserModel> SaveNewUser(NewUserModel userModel);
 
     }
 }

@@ -181,6 +181,7 @@
     </Compile>
     <Compile Include="Models\ActivationModel.cs" />
     <Compile Include="Models\CreateUserModel.cs" />
+    <Compile Include="Models\CustomerModel.cs" />
     <Compile Include="Models\IServiceModel.cs" />
     <Compile Include="Models\OTPModel.cs" />
     <Compile Include="Models\ProfileDisplayModel.cs" />
@@ -286,8 +287,7 @@
     <Content Include="Views\Service\ServiceDetails.cshtml" />
     <Content Include="Views\Service\Details.cshtml" />
     <Content Include="Views\Service\Search.cshtml" />
-    <Content Include="Views\Profile\CreateAProfile.cshtml" />
-    <Content Include="Views\Profile\CreateAddress.cshtml" />
+    <Content Include="Views\Shared\CreateAddress.cshtml" />
     <Content Include="Views\Shared\ProfileDetails.cshtml" />
     <Content Include="Views\Shared\AddressDetails.cshtml" />
     <Content Include="Views\Profile\Contact.cshtml" />
@@ -295,6 +295,8 @@
     <Content Include="Views\ServiceProviderHome\Test.cshtml" />
     <Content Include="Views\ServiceProviderHome\AddNewProviderService.cshtml" />
     <Content Include="Views\ServiceProviderHome\Search.cshtml" />
+    <Content Include="Views\Shared\CreateAProfile.cshtml" />
+    <Content Include="Views\Profile\RegisterProvider.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

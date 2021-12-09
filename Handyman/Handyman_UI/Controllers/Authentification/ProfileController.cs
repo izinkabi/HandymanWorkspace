@@ -25,7 +25,7 @@ namespace Handyman_UI.Controllers
         private IRegisterEndPoint _registerEndPoint;
        
         static private string DisplayUserName;
-        static private IloggedInUserModel _IloggedInUserModel;
+        static private loggedInUserModel loggedInUserModel;
         public ProfileController(IAPIHelper aPIHelper,IProfileEndPoint profile,IRegisterEndPoint registerEndPoint)
         {
             _apiHepler = aPIHelper;
@@ -60,7 +60,7 @@ namespace Handyman_UI.Controllers
         //
             
             //Register action method
-            public async Task<ActionResult> Register(CreateUserModel newUser)
+    public async Task<ActionResult> Register(CreateUserModel newUser)
             {
 
             if (ModelState.IsValid)
@@ -72,24 +72,18 @@ namespace Handyman_UI.Controllers
                     user = new HandymanUILibrary.Models.NewUserModel();
 
                     //Username and password are given a value once here and once in sign in
-                    //that might need a credentials interface and its class
-
+            
                     user.Email = newUser.Username;
                     user.Password = newUser.Password;
                     user.ConfirmPassword = newUser.ConfirmPassword;
 
                     Username = newUser.Username;
                     Password = newUser.Password;
+                    user.UserRole = "Customer";//User role assignment to customer
+                    //Store the Token in a session
 
-                    var result = await _registerEndPoint.RegisterUser(user);
-
-                    //save the data to the localdb of backup
-                    var results = await _registerEndPoint.SaveNewUser(user);
-
-                    DisplayUserName = result.FirstName;
-
-                   
-                    ViewBag.Username = result.Email; 
+                    var loggedInUser = await _registerEndPoint.RegisterUser(user);
+                    Session["Token"] = loggedInUser.Access_Token;
 
                     return RedirectToAction("CreateAProfile", "Profile");
 
@@ -103,12 +97,48 @@ namespace Handyman_UI.Controllers
             return View();
         }
 
-    
+    public async Task<ActionResult> RegisterProvider(CreateUserModel newUser)
+    {
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+
+
+                    user = new HandymanUILibrary.Models.NewUserModel();
+
+                    //Username and password are given a value once here and once in sign in
+
+                    user.Email = newUser.Username;
+                    user.Password = newUser.Password;
+                    user.ConfirmPassword = newUser.ConfirmPassword;
+
+                    Username = newUser.Username;
+                    Password = newUser.Password;
+                    user.UserRole = "ServiceProvider";//User role assignment
+                    //Store the Token in a session
+
+                    var loggedInUser = await _registerEndPoint.RegisterUser(user);
+                    Session["Token"] = loggedInUser.Access_Token;
+
+
+                    return RedirectToAction("CreateAProfile", "Profile");
+
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.RegisterErrorMsg = ex.Message;
+                }
+
+            }
+            return View();
+    }
 
         //Login action function
         
     public async Task<ActionResult> SignIn(UserLoginModel model)
-        {
+    {
 
             Username = model.Username;
             Password = model.Password;
@@ -119,8 +149,11 @@ namespace Handyman_UI.Controllers
                 try
                 {
                     var results = await _apiHepler.AuthenticateUser(Username, Password);
-
-                    _IloggedInUserModel = await _apiHepler.GetLoggedInUserInfor(results.Access_Token);
+                    loggedInUserModel = new loggedInUserModel();
+                    var result = await _apiHepler.GetLoggedInUserInfor(results.Access_Token);
+                    loggedInUserModel.Token = result.Token;
+                    loggedInUserModel.Id = result.Id;
+                    loggedInUserModel.UserRole = result.UserRole;
 
                     Session["log"] = results.Access_Token;
                     Token = results.Access_Token;
@@ -129,13 +162,13 @@ namespace Handyman_UI.Controllers
                     Session["Token"]=results.Access_Token;
 
                     //////this will brake my code--(! Illegal assignment of user-roles from aspnetdb, less secured...  )
-                    if (_IloggedInUserModel.UserRole.Equals("Customer"))
+                    if (loggedInUserModel.UserRole.Equals("Customer"))
 
                     {
                         return RedirectToAction("Index", "Service");
 
                     }
-                    else if (_IloggedInUserModel.UserRole.Equals("ServiceProvider"))
+                    else if (loggedInUserModel.UserRole.Equals("ServiceProvider"))
                     {
                         return RedirectToAction("Home", "ServiceProviderHome");
                     }
@@ -153,7 +186,7 @@ namespace Handyman_UI.Controllers
            
             return View();
 
-        }
+    }
     
 
     public async Task<ActionResult> CreateAProfile(Models.ProfileDisplayModel profile, Models.ProfileDisplayModel.AddressModel address )
@@ -177,6 +210,7 @@ namespace Handyman_UI.Controllers
                 profileModel.Address.City = address.City;
 
                 ViewBag.profilename = profile.Name + profile.Surname;
+                Token = Session["Token"].ToString(); 
 
                 try
                 {
@@ -187,7 +221,7 @@ namespace Handyman_UI.Controllers
 
 
                     var results = await _apiHepler.AuthenticateUser(Username, Password);//auth awaited task
-                    
+                    var token = Session["Token"].ToString(); 
                     var loggeuser = await _apiHepler.GetLoggedInUserInfor(results.Access_Token);// awaited loggedUser
 
                     profileModel.UserId = loggeuser.Id;//pass user ID

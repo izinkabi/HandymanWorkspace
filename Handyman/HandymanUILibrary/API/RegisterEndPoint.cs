@@ -8,27 +8,27 @@ using System.Threading.Tasks;
 
 namespace HandymanUILibrary.API
 {
-    public class RegisterEndPoint: IRegisterEndPoint
+    public class RegisterEndPoint : IRegisterEndPoint
     {
         private IAPIHelper _apiHelper;
         static private string email;
-        static private IloggedInUserModel _loggedInUserModel;
-        public RegisterEndPoint(IAPIHelper aPIHelper,IloggedInUserModel loggedInUserModel)
+        static private loggedInUserModel loggedInUserModel;
+        public RegisterEndPoint(IAPIHelper aPIHelper)
         {
             _apiHelper = aPIHelper;
-            _loggedInUserModel = loggedInUserModel;
+
         }
 
 
-        public async Task<IloggedInUserModel> RegisterUser(NewUserModel newUser)
+        public async Task<AuthenticatedUserModel> RegisterUser(NewUserModel newUser)
         {
 
             var user = new FormUrlEncodedContent(new[]
-          {
+            {
 
                  new KeyValuePair<string, string>("email", newUser.Email),
                  new KeyValuePair<string, string>("password", newUser.Password),
-                 new KeyValuePair<string, string>("confirmPassword", newUser.ConfirmPassword),
+                 new KeyValuePair<string, string>("confirmPassword", newUser.ConfirmPassword)
 
            });
 
@@ -37,7 +37,10 @@ namespace HandymanUILibrary.API
                 if (httpResponse.IsSuccessStatusCode)
                 {
                     var result = await httpResponse.Content.ReadAsAsync<NewUserModel>();
-                    return _loggedInUserModel;
+                    var loggedInUser = await _apiHelper.AuthenticateUser(newUser.Email, newUser.Password);
+                    await SaveNewUser(newUser.Email,newUser.UserRole);
+
+                    return loggedInUser;
                 }
                 else
                 {
@@ -49,30 +52,33 @@ namespace HandymanUILibrary.API
 
         }
 
-        public async Task<IloggedInUserModel> SaveNewUser(NewUserModel userModel)
-        {
-            var data = new FormUrlEncodedContent(new[]
-           {
+            async Task SaveNewUser(string email,string userrole)
+            {
+                var data = new FormUrlEncodedContent(new[]
+               {
 
-                 new KeyValuePair<string, string>("email", userModel.Email),
+                     new KeyValuePair<string, string>("email", email),
+                     new KeyValuePair<string, string>("userrole",userrole)
 
-           });
-           
+               });
 
+                
 
-            HttpResponseMessage httpResponse = await _apiHelper.ApiClient.PostAsync("/api/Users", data);
-            
+             HttpResponseMessage httpResponse = await _apiHelper.ApiClient.PostAsync("/api/Users", data);
+
                 if (httpResponse.IsSuccessStatusCode)
                 {
+                    var loggedInUserModel = new loggedInUserModel();
                     var result = await httpResponse.Content.ReadAsAsync<NewUserModel>();
-                return _loggedInUserModel;
+                
                 }
-                else
-                {
-                    throw new Exception(httpResponse.ReasonPhrase);
-                }
+                    else
+                    {
+                        throw new Exception(httpResponse.ReasonPhrase);
+                    }
 
-        }
+            }
 
     }
 }
+

@@ -114,10 +114,11 @@ namespace Handyman_UI.Controllers.ServiceProvider
             serviceProvider = new ServiceProviderModel();
             var tempProvider = new ServiceProviderDisplayModel();
             //the cheat
-            tempProvider.CompanyName = "Name";
-            tempProvider.ServiceProviderTypesId = 0;
-            tempProvider.SelectedServiceId = 0;
+            tempProvider.CompanyName = "";
+            
             tempProvider.providerServices = new List<ServiceDisplayModel>();
+            tempProvider.Profile = new ProfileDisplayModel();
+            tempProvider.Profile.AddressM = new ProfileDisplayModel.AddressModel();
            
 
                 List<SelectListItem> serviceProviderTypeslist = new List<SelectListItem>()
@@ -241,6 +242,8 @@ namespace Handyman_UI.Controllers.ServiceProvider
                     providerModel.Profile.AddressM.PostalCode = results.Address.PostalCode;
                     providerModel.Profile.AddressM.StreetName = results.Address.StreetName;
                     providerModel.Profile.AddressM.Surburb = results.Address.Surburb;
+
+
 
                     var response = await _serviceProvider.GetProviderByProfileId(results.Id);
                     var dbProviderServices = await _serviceProvider.GetProvidersServiceByProviderId(response.Id);

@@ -79,14 +79,17 @@
     <Compile Include="Models\AuthenticatedUserModel.cs" />
     <Compile Include="Models\ConsumerModel.cs" />
     <Compile Include="Models\CustomerModel.cs" />
+    <Compile Include="Models\IUserRoleModel.cs" />
     <Compile Include="Models\NewUserModel.cs" />
     <Compile Include="Models\ProfileModel.cs" />
     <Compile Include="Models\ProvidersServiceModel.cs" />
     <Compile Include="Models\RequestModel.cs" />
+    <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\ServiceCategoryModel.cs" />
     <Compile Include="Models\ServiceModel.cs" />
     <Compile Include="Models\ServiceProviderModel.cs" />
     <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Models\UserRoleModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

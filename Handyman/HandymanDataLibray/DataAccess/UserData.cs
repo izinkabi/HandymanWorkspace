@@ -1,6 +1,7 @@
 ﻿
 using HandymanDataLibrary.Models;
 using HandymanDataLibray.DataAccess.Internal;
+using HandymanDataLibray.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,14 +50,45 @@ namespace HandymanDataLibrary.Internal
 
                     SQLDataAccess sql = new SQLDataAccess();
             
-                
+               
                     //var p = new { Email = email };
                     UserModel output = new UserModel();
-                    output = sql.LoadData<UserModel, dynamic>("dbo.spASPUserLookUp", new{ email = userModel.Email}, "DefaultConnection").First();
+            sql.StartTransaction("DefaultConnection");
+            output = sql.LoadData<UserModel, dynamic>("dbo.spASPUserLookUp", new { email = userModel.Email }, "DefaultConnection").First();
+            //
 
-                    //var user = new {UserName = output.Username, Id = output.Id, Email = output.Email };
+            try
+            {
 
-                    int rowsaffected =  sql.SaveData("dbo.spUserInsert", new { Id=output.Id,Email = output.Email,Username= output.Username }, "HandymanDB");
+                if (userModel.UserRole == "Customer")//Customer user-role creation
+                {
+
+                    var userrole = sql.LoadData<RoleModel, dynamic>("dbo.spAspNetRolesLookUp", new { RoleName = userModel.UserRole }, "DefaultConnection").First();
+
+                    int rowaffected = sql.SaveData("dbo.spAspNetUserRolesInsert", new { UserId = output.Id, RoleId = userrole.Id }, "DefaultConnection");
+
+                }
+                else if (userModel.UserRole == "ServiceProvider") //Provider user-role creation
+                {
+                    var userrole = sql.LoadData<RoleModel, dynamic>("dbo.spAspNetRolesLookUp", new { RoleName = userModel.UserRole }, "DefaultConnection").First();
+
+                    int rowaffected = sql.SaveData("dbo.spAspNetUserRolesInsert", new { UserId = output.Id, RoleId = userrole.Id }, "DefaultConnection");
+                }
+                //Commit the transaction
+                sql.CommitTransation();
+            }
+            catch(Exception ex)
+            {
+                //Roll back the transaction if anything goes wrong
+                sql.RollBackTransaction();
+                throw new Exception(ex.Message);
+            }
+
+
+            //var user = new {UserName = output.Username, Id = output.Id, Email = output.Email };
+
+            int rowsaffected =  sql.SaveData("dbo.spUserInsert", new { Id=output.Id,Email = output.Email,Username= output.Username }, "HandymanDB");
+                    
                 
             
         }

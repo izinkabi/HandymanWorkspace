@@ -4,7 +4,7 @@
     ViewBag.Title = "Registering Service Provider";
 }
 
-<h2>RegisterServiceProvider</h2>
+<h2 class="text-center">Service Provider Registration</h2>
 
 
 @using (Html.BeginForm("RegisterServiceProvider", "ServiceProviderHome", FormMethod.Post))
@@ -33,13 +33,20 @@
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(model => model.ServicesList, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.ServicesSelectList, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DropDownListFor(m => m.SelectedServiceId, Model.ServicesList, new { @class = "text-danger" })
-            @Html.ValidationMessageFor(model => model.ServicesList, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(m => m.SelectedServiceId, Model.ServicesSelectList, new { @class = "text-danger" })
+            @Html.ValidationMessageFor(model => model.ServicesSelectList, "", new { @class = "text-danger" })
             @ViewBag.MessageService
         </div>
     </div>
+       <hr/>
+
+    @*<div>
+
+        @Html.Partial("CreateAProfile",Model.Profile)
+
+    </div>*@
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
@@ -49,9 +56,7 @@
 </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

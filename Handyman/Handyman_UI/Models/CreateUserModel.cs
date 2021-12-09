@@ -22,6 +22,8 @@ namespace Handyman_UI.Models
         [Display(Name = "Confirm Password")]
         [Required(ErrorMessage = "Please confirm your Password")]
         public string ConfirmPassword { get; set; }
+
+        public string UserRole { get; set; }
     }
 }
     
