@@ -231,10 +231,13 @@ namespace Handyman_UI.Controllers
 
                     if (UserRole=="Customer")
                     {
+                        TempData["newuser"] = "Customer";
                         return RedirectToAction("SignIn", "Profile");
+
                     }
                     else if (UserRole=="ServiceProvider" )
                     {
+                        
                         return RedirectToAction("RegisterServiceProvider", "ServiceProviderHome");
                     }
 

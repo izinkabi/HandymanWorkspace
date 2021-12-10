@@ -9,17 +9,17 @@
 
 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>*@
 
 
 
     <!-- Scrollbar Custom CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">-->
 
     <!-- Font Awesome JS -->
-    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
-    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+    <!--<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>-->
 </head>
 
 <body>
@@ -103,9 +103,9 @@
                         <li class="nav-item">
                             <button type="button" id="sidebarCollapse" class="btn btn-light">
                                 <i class="fas fa-align-left"></i>
-                                <span>T</span>
+                                <span></span>
                             </button>
-                            </a>
+
                         </li>
                         <li class="nav-item">
                             <a href="#" class="navbar-brand">
@@ -123,11 +123,11 @@
 
                     <div id="navbarSupportedContent" class="collapse navbar-collapse">
                         @*<ul class="navbar-nav ml-auto">
-                                <li class="nav-item active"><a href="#" class="nav-link">Home <span class="sr-only">(current)</span></a></li>
-                                <li class="nav-item"><a href="#" class="nav-link">About</a></li>
-                                <li class="nav-item"><a href="#" class="nav-link">Services</a></li>
-                                <li class="nav-item"><a href="#" class="nav-link">Contact</a></li>
-                            </ul>*@
+                        <li class="nav-item active"><a href="#" class="nav-link">Home <span class="sr-only">(current)</span></a></li>
+                        <li class="nav-item"><a href="#" class="nav-link">About</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link">Services</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link">Contact</a></li>
+                    </ul>*@
                         <ul class="nav navbar-nav navbar-right ml-auto">
                             @if (Session["log"] == null)
                             {
@@ -146,25 +146,25 @@
 
                                 <li>@Session["Username"]</li>
                                 @*<li class="dropdown ">
-                                        <a class="btn btn-default dropdown-toggle" id="menu1" data-toggle="dropdown">
+                                <a class="btn btn-default dropdown-toggle" id="menu1" data-toggle="dropdown">
 
-                                            <span class="glyphicon glyphicon-user"></span>
+                                    <span class="glyphicon glyphicon-user"></span>
 
-                                        </a>
-                                        <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                                            <li role="presentation" class="divider"></li>
-                                            <li role="presentation"><a href="https://localhost:44365/Profile/ProfileDetails"> @Session["Username"]</a></li>
-                                            <li role="presentation" class="divider"></li>
-                                            <li class="dropdown-header"><a href="https://localhost:44365/ServiceProviderHome/RegisterServiceProvider"><strong>Be a provider</strong></a></li>
-                                            <li role="presentation" class="divider"></li>
-                                            <li role="presentation"><a href="#"><strong>Reqest History</strong></a></li>
-                                            <li role="presentation" class="divider"></li>
-                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">JavaScript</a></li>
-                                            <li role="presentation" class="divider"></li>
-                                            <li class="dropdown-header">Settings</li>
-                                            <li role="presentation"> @Html.ActionLink("Sign Out", "Logout", "CustomerHome")</li>
-                                        </ul>
-                                    </li>*@
+                                </a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                                    <li role="presentation" class="divider"></li>
+                                    <li role="presentation"><a href="https://localhost:44365/Profile/ProfileDetails"> @Session["Username"]</a></li>
+                                    <li role="presentation" class="divider"></li>
+                                    <li class="dropdown-header"><a href="https://localhost:44365/ServiceProviderHome/RegisterServiceProvider"><strong>Be a provider</strong></a></li>
+                                    <li role="presentation" class="divider"></li>
+                                    <li role="presentation"><a href="#"><strong>Reqest History</strong></a></li>
+                                    <li role="presentation" class="divider"></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">JavaScript</a></li>
+                                    <li role="presentation" class="divider"></li>
+                                    <li class="dropdown-header">Settings</li>
+                                    <li role="presentation"> @Html.ActionLink("Sign Out", "Logout", "CustomerHome")</li>
+                                </ul>
+                            </li>*@
                             }
 
                         </ul>
@@ -173,14 +173,19 @@
                 </div>
             </nav>
 
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="container-fluid">
+            @*<nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
 
 
+            </div>
+
+        </nav>*@
+            @if (@TempData["newuser"] != null)
+            {
+                <div class="alert alert-success">
+                    <strong>@TempData["newuser"].ToString()!</strong> Indicates a successful in registration.
                 </div>
-
-            </nav>
-
+            }
 
             @RenderBody()
         </div>
