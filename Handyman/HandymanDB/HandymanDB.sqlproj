@@ -59,10 +59,10 @@
     <Folder Include="Stored Procedures" />
     <Folder Include="Tables" />
     <Folder Include="Publish\" />
+    <Folder Include="Stored Procedures\Customer" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Stored Procedures\spProfileLookUp.sql" />
-    <Build Include="Stored Procedures\spActivationInsert.sql" />
     <Build Include="Stored Procedures\spActivationLookUp.sql" />
     <Build Include="Stored Procedures\spConsumerLookUp.sql" />
     <Build Include="Stored Procedures\spConsumerInsert.sql" />
@@ -94,6 +94,7 @@
     <Build Include="Stored Procedures\spUserLookUp.sql" />
     <Build Include="Stored Procedures\spRequestLookUp.sql" />
     <Build Include="Stored Procedures\spRequestInsert.sql" />
+    <Build Include="Stored Procedures\Customer\spActivationInsert.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Stored Procedures\spProfileInsert.sql" />
