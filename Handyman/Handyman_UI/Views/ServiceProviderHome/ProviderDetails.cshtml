@@ -1,103 +1,124 @@
 ﻿@model Handyman_UI.Models.ServiceProviderDisplayModel
-
 @{
-    ViewBag.Title = "ProviderDetails";
+
     Layout = "~/Views/Shared/DashBLayout.cshtml";
 }
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
+<!DOCTYPE html>
+<html>
 
-<h2>Provider's Details</h2>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<div>
+    <title>Handyman Details</title>
+
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+
+    <!-- Our Custom CSS -->
+    <link href="~/Content/CustomCSS/navbarStyling.css" rel="stylesheet" />
+
+    <!-- Scrollbar Custom CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <h2>Provider's Details</h2>
+
+    <div>
 
 
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.CompanyName)
-        </dt>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.CompanyName)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.CompanyName)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.CompanyName)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ProviderType)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.ProviderType)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ProviderType)
-        </dd>
-
-
-
-    </dl>
-    <hr />
-
-    @Html.Partial("ProfileDetails", Model.Profile)
-</div>
-
-@******************Service Section*@
-<div>
-    <hr />
-    <h2 class="text-center">Provided Services</h2>
-    <br />
-    <table class="table">
-        <tr>
-            <th>
-                <strong>Name</strong>
-            </th>
-            <th>
-                <strong>Category</strong>
-            </th>
-
-            <th>
-                <strong>Desciption</strong>
-            </th>
-            <th>
-                <strong>Image</strong>
-            </th>
-            <th></th>
-        </tr>
+            <dd>
+                @Html.DisplayFor(model => model.ProviderType)
+            </dd>
 
 
 
-        @foreach (var item in Model.providerServices)
-        {
+        </dl>
+        <hr />
+
+        @Html.Partial("ProfileDetails", Model.Profile)
+    </div>
+
+    @******************Service Section*@
+    <div>
+        <hr />
+        <h2 class="text-center">Provided Services</h2>
+        <br />
+        <table class="table">
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Category)
-                </td>
+                <th>
+                    <strong>Name</strong>
+                </th>
+                <th>
+                    <strong>Category</strong>
+                </th>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.ServiceDescription)
-                </td>
-                <td>
-                    <img src="@{@item.ImageUrl} " style="width: 150px; height: 90px;" />
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                </td>
+                <th>
+                    <strong>Desciption</strong>
+                </th>
+                <th>
+                    <strong>Image</strong>
+                </th>
+                <th></th>
             </tr>
-        }
-
-    </table>
-
-    <br />
-
-   
 
 
 
-    @*End Service Section*******************************@
-</div>
-<p>
+            @foreach (var item in Model.providerServices)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ServiceDescription)
+                    </td>
+                    <td>
+                        <img src="@{@item.ImageUrl} " style="width: 150px; height: 90px;" />
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+        <br />
 
 
 
-</p>
+
+
+        @*End Service Section*******************************@
+    </div>
+</body>
+
+</html>
