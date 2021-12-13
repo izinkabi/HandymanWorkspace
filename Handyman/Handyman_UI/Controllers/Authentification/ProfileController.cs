@@ -40,25 +40,6 @@ namespace Handyman_UI.Controllers
             
             return PartialView();
         }
-        //--this requires auth 
-        //private void createCustomerRole(string username, string password)
-        //{
-        //    MembershipCreateStatus createStatus;
-        //    MembershipUser newUser = Membership.CreateUser(username, password);
-        //    if (newUser.IsApproved)
-        //    {
-
-        //        if (!Roles.RoleExists("Customer"))
-        //        {
-        //            //Create the role
-
-        //            Roles.CreateRole("Customer");
-        //            Roles.AddUserToRole(newUser.UserName, "Customer");
-        //        }
-        //    }
-
-        //}
-        //
             
             //Register action method
     public async Task<ActionResult> Register(CreateUserModel newUser)

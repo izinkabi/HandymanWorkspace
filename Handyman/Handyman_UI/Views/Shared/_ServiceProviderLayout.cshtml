@@ -42,11 +42,7 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <!-- Brand Logo -->
-                    <a href="index3.html" class="brand-link">
-                        <img src="~/BackEndTemp/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                        <span class="brand-text font-weight-center">HandyMan</span>
-                    </a>
+                   
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="#" class="nav-link">Home</a>
@@ -173,15 +169,44 @@
                         <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-                        <i class="fas fa-expand-arrows-alt"></i>
+
+                <!--User Profile with Dropdown Menu-->
+                <li class="nav-item dropdown user-menu">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                        <img src="~/BackEndTemp/dist/img/user2-160x160.jpg" class="user-image img-circle elevation-2" alt="User Image">
+                       
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-                        <i class="fas fa-th-large"></i>
-                    </a>
+                    <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <!-- User image -->
+                        <li class="user-header bg-primary">
+                            <img src="~/BackEndTemp/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+
+                            <p>
+                                @Session["Username"] - Handyman
+                                <small>Member since Nov. 2012</small>
+                            </p>
+                        </li>
+                        <!-- Menu Body -->
+                        <li class="user-body">
+                            <div class="row">
+                                <div class="col-4 text-center">
+                                    <a href="#">Password</a>
+                                </div>
+                                <div class="col-4 text-center">
+                                    <a href="#">Company</a>
+                                </div>
+                                <div class="col-4 text-center">
+                                    <a href="#">Settings</a>
+                                </div>
+                            </div>
+                            <!-- /.row -->
+                        </li>
+                        <!-- Menu Footer-->
+                        <li class="user-footer">
+                            <div class="btn btn-default btn-flat"><a href="https://localhost:44365/Profile/ProfileDetails">Profile</div>
+                            <div class="btn btn-default btn-flat float-right">@Html.ActionLink("Sign Out", "Logout", "Login")</div>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </nav>
@@ -192,23 +217,13 @@
 
             <!-- Sidebar -->
             <div class="sidebar">
-                <!-- Sidebar user panel (optional) -->
-                @if (Session["log"] == null)
-                {
-                 
 
-                }
-                else
-                {
-                    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                        <div class="image">
-                            <img src="~/BackEndTemp/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-                        </div>
-                        <div class="info">
-                            <a href="#" class="d-block">@Session["Username"]</a>
-                        </div>
-                    </div>
-                }
+                <!-- Brand Logo -->
+                <a href="index3.html" class="brand-link">
+                    <img src="~/BackEndTemp/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                    <span class="brand-text font-weight-center">HandyMan</span>
+                </a>
+
                 <!-- SidebarSearch Form -->
                 <div class="form-inline">
                     <div class="input-group" data-widget="sidebar-search">
@@ -257,7 +272,7 @@
                         </li>
                         <li class="nav-item menu">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa--alt"></i>
+                                <i class="nav-icon fas fa-cloud-upload-alt"></i>
                                 <p>
                                     Requestes
                                     <i class="right fas fa-angle-left"></i>
@@ -288,7 +303,7 @@
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-money-bill-alt"></i>
                                 <p>
-                                    Payments 
+                                    Payments
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
@@ -374,20 +389,6 @@
                             </a>
 
                         </li>
-
-                        <li class="nav-header">Company Details </li>
-                        <li class="nav-item">
-                            <a href="iframe.html" class="nav-link">
-                                <i class="nav-icon fas fa-ellipsis-h"></i>
-                                <p>Update Info</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="https://adminlte.io/docs/3.1/" class="nav-link">
-                                <i class="nav-icon fas fa-file"></i>
-                                <p>Update Services</p>
-                            </a>
-                        </li>
                         <li class="nav-header">Q's and A's</li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
@@ -453,23 +454,37 @@
                                 <p>Level 1</p>
                             </a>
                         </li>
-                        <li class="nav-header">LABELS</li>
+                        <li class="nav-header">Company Details </li>
+                        <li class="nav-item">
+                            <a href="iframe.html" class="nav-link">
+                                <i class="nav-icon fas fa-ellipsis-h"></i>
+                                <p>Update Info</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="https://adminlte.io/docs/3.1/" class="nav-link">
+                                <i class="nav-icon fas fa-file"></i>
+                                <p>Update Services</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-header">Account</li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon far fa-circle text-danger"></i>
-                                <p class="text">Important</p>
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Password</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon far fa-circle text-warning"></i>
-                                <p>Warning</p>
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Profile Picture</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon far fa-circle text-info"></i>
-                                <p>Informational</p>
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Log Off</p>
                             </a>
                         </li>
                     </ul>
