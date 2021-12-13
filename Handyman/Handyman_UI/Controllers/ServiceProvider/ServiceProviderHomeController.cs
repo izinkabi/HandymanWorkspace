@@ -61,6 +61,11 @@ namespace Handyman_UI.Controllers.ServiceProvider
         {
             return View();
         }
+
+        public ActionResult AddressDetails()
+        {
+            return PartialView();
+        }
         public ActionResult ServiceDisplay()
         {
             return View();
@@ -217,6 +222,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
 
             var providerModel = new ServiceProviderDisplayModel();
             providerModel.Profile = new ProfileDisplayModel();
+            providerModel.Profile.AddressM = new ProfileDisplayModel.AddressModel();
             if (ModelState.IsValid)
             {
                 try
@@ -237,7 +243,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
                     providerModel.Profile.DateOfBirth = results.DateOfBirth;
                     
 
-                    providerModel.Profile.AddressM = new ProfileDisplayModel.AddressModel();
+                    
                     providerModel.Profile.AddressM.City = results.Address.City;
                     providerModel.Profile.AddressM.HouseNumber = results.Address.HouseNumber;
                     providerModel.Profile.AddressM.Id = results.Address.Id;
@@ -291,35 +297,41 @@ namespace Handyman_UI.Controllers.ServiceProvider
             var providerModel = new ServiceProviderDisplayModel();
             if (ModelState.IsValid)
             {
-                
-                providerModel.Profile = new ProfileDisplayModel();
+                try
+                {
+                    providerModel.Profile = new ProfileDisplayModel();
 
-                var _token = Session["Token"].ToString();
+                    var _token = Session["Token"].ToString();
 
-                var loggeduser = await _apiHepler.GetLoggedInUserInfor(_token);
-                var user = new UserModel();
-                user.Id = loggeduser.Id;
-                //Getting a profile with its Address
+                    var loggeduser = await _apiHepler.GetLoggedInUserInfor(_token);
+                    var user = new UserModel();
+                    user.Id = loggeduser.Id;
+                    //Getting a profile with its Address
 
-                var results = await _profileEndPoint.GetProfile(user);
+                    var results = await _profileEndPoint.GetProfile(user);
 
-                providerModel.Profile.Name = results.Name;
-                providerModel.Profile.PhoneNumber = results.PhoneNumber;
-                providerModel.Profile.Surname = results.Surname;
-                providerModel.Profile.DateOfBirth = results.DateOfBirth;
-
-
-                providerModel.Profile.AddressM = new ProfileDisplayModel.AddressModel();
-                providerModel.Profile.AddressM.City = results.Address.City;
-                providerModel.Profile.AddressM.HouseNumber = results.Address.HouseNumber;
-                providerModel.Profile.AddressM.Id = results.Address.Id;
-                providerModel.Profile.AddressM.PostalCode = results.Address.PostalCode;
-                providerModel.Profile.AddressM.StreetName = results.Address.StreetName;
-                providerModel.Profile.AddressM.Surburb = results.Address.Surburb;
+                    providerModel.Profile.Name = results.Name;
+                    providerModel.Profile.PhoneNumber = results.PhoneNumber;
+                    providerModel.Profile.Surname = results.Surname;
+                    providerModel.Profile.DateOfBirth = results.DateOfBirth;
 
 
-                var providerResponse = await _serviceProvider.GetProviderByProfileId(results.Id);
-                var dbProviderServices = await _serviceProvider.GetProvidersServiceByProviderId(providerResponse.Id);
+                    providerModel.Profile.AddressM = new ProfileDisplayModel.AddressModel();
+                    providerModel.Profile.AddressM.City = results.Address.City;
+                    providerModel.Profile.AddressM.HouseNumber = results.Address.HouseNumber;
+                    providerModel.Profile.AddressM.Id = results.Address.Id;
+                    providerModel.Profile.AddressM.PostalCode = results.Address.PostalCode;
+                    providerModel.Profile.AddressM.StreetName = results.Address.StreetName;
+                    providerModel.Profile.AddressM.Surburb = results.Address.Surburb;
+                    var providerResponse = await _serviceProvider.GetProviderByProfileId(results.Id);
+                    var dbProviderServices = await _serviceProvider.GetProvidersServiceByProviderId(providerResponse.Id);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+
+              
 
             }
 

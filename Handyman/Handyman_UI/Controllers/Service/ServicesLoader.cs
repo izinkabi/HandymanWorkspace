@@ -13,7 +13,7 @@ namespace Handyman_UI.Controllers
         
         private IServiceEndPoint _serviceEndPoint;
         private List<ServiceCategoryModel> Categories;
-        private List<ServiceModel> Services;
+        static private List<ServiceModel> Services;
         private string errorMsg;
         private List<ServiceDisplayModel> displayCategories;
         public string _errorMsg { 
