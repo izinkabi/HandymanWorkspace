@@ -97,5 +97,34 @@ namespace HandymanDataLibrary.Internal
                 }
             }
         }
+
+        //Profile Update
+        public void UpdateProfile(ProfileModel profile)
+        {
+            using (SQLDataAccess sql = new SQLDataAccess())
+            {
+                //Start transaction
+                sql.StartTransaction("HandymanDB");
+                //Update address
+                sql.SaveDataTransaction("dbo.spAddressUpdate", new {PostalCode = profile.Address.PostalCode, HouseNumber = profile.Address.HouseNumber, StreetName = profile.Address.StreetName, City = profile.Address.City,Surburb = profile.Address.Surburb, Id = profile.Address.Id });
+                
+                try
+                {
+
+                    //Update Profile
+                    sql.SaveDataTransaction("dbo.spProfileUpdate", new { Name = profile.Name, Surname = profile.Surname, PhoneNumber = profile.PhoneNumber, DateOfBirth = profile.DateofBirth, UserId = profile.UserId });
+                    //Commit the transaction
+                    sql.CommitTransation();
+                }
+                catch
+                {
+                    //Roll back the transaction if anything goes wrong
+                    sql.RollBackTransaction();
+                    throw;
+                }
+            }
+        }
+
+
     }
 }

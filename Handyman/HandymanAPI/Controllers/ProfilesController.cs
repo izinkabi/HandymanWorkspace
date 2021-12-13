@@ -33,7 +33,13 @@ namespace HandymanAPI.Controllers
             return dbProfile;
         }
 
-        //POST: Profile
+        //Update
+        [Route("api/UpdateProfile")]
+        public void UpdateProfile(ProfileModel profile)
+        {
+            ProfileData profileData = new ProfileData();
+            profileData.UpdateProfile(profile);
+        }
 
         
     }

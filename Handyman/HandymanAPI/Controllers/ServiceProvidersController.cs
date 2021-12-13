@@ -58,9 +58,20 @@ namespace HandymanAPI.Controllers
             providerData.PutProvidersService(providersServiceModel);
         }
 
-        // DELETE: api/ServiceProviders/5
-        public void Delete(int id)
+        [Route("api/UpdateServiceProvider")]
+        //Update the Service Provider
+        public void UpdateServiceProvider(ServiceProviderModel provider)
         {
+            providerData = new ServiceProviderData();
+            providerData.UpdateServiceProvider(provider);
+        }
+
+        [Route("api/DeleteProvidersService")]
+        // DELETE: api/ProvidersService/5
+        public void DeleteProvidersService(int id)
+        {
+            providerData = new ServiceProviderData();
+            providerData.DeleteProvidersService(id);
         }
     }
 }

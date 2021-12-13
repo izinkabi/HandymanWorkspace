@@ -69,5 +69,20 @@ namespace HandymanUILibrary.API
         }
 
 
+        public async Task<ProfileModel> UpdateProfile(ProfileModel profile)
+        {
+            HttpResponseMessage responseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync("api/UpdateProfile", profile);
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                var result = await responseMessage.Content.ReadAsAsync<ProfileModel>();
+                return result;
+            }
+            else
+            {
+                throw new Exception(responseMessage.ReasonPhrase);
+            }
+        }
+
     }
 }

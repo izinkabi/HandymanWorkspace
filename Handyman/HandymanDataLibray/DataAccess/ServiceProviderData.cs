@@ -46,13 +46,7 @@ namespace HandymanDataLibray.DataAccess
             sql.SaveData("dbo.spServiceProviderInsert", provider, "HandymanDB");
         }
 
-        //Get provider's services by provider's ID
-        //public ProvidersServiceModel GetProvidersServicesById(int Id)
-        //{
-        //    SQLDataAccess sql = new SQLDataAccess();
-        //    var output = sql.LoadData<ProvidersServiceModel, dynamic>("dbo.spProvidersServiceLookUp", new { Id = Id}, "HandymanDB").First();
-        //    return output;
-        //}
+        
 
         //Put the ProvidersService
         public void PutProvidersService(ProvidersServiceModel providersServiceModel)
@@ -66,6 +60,18 @@ namespace HandymanDataLibray.DataAccess
             SQLDataAccess sql = new SQLDataAccess();
             var output = sql.LoadData<ProvidersServiceModel, dynamic>("dbo.spProvidersServiceLookUp",new { ServiceProviderId = providerId}, "HandymanDB");
             return output;
+        }
+
+        public void UpdateServiceProvider(ServiceProviderModel provider)
+        {
+            SQLDataAccess sql = new SQLDataAccess();
+            var output = sql.SaveData("dbo.spServiceProviderUpdate", new { CompanyName = provider.CompanyName,Id = provider.Id, ProviderType = provider.ProviderType}, "HandymanDB");
+        }
+
+        public void DeleteProvidersService(int Id)
+        {
+            SQLDataAccess sql = new SQLDataAccess();
+            var output = sql.SaveData("dbo.spProvidersServiceDelete", new { Id = Id}, "HandymanDB");
         }
 
     }

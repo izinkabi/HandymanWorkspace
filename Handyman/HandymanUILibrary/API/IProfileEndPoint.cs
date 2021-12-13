@@ -7,6 +7,6 @@ namespace HandymanUILibrary.API
     {
           Task<ProfileModel> GetProfile(UserModel user);
           Task<ProfileModel> PostProfile(ProfileModel profile);
-
+          Task<ProfileModel> UpdateProfile(ProfileModel profile);
     }
 }

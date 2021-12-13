@@ -1,4 +1,6 @@
-﻿using Handyman_UI.Models;
+﻿using Caliburn.Micro;
+using FluentNHibernate.Conventions.Inspections;
+using Handyman_UI.Models;
 using HandymanUILibrary.API;
 using HandymanUILibrary.Models;
 using System;
@@ -284,6 +286,66 @@ namespace Handyman_UI.Controllers.ServiceProvider
             return View(providerModel);
         }
 
+        public async Task<ActionResult> Edit(int? id)
+        {
+            var providerModel = new ServiceProviderDisplayModel();
+            if (ModelState.IsValid)
+            {
+                
+                providerModel.Profile = new ProfileDisplayModel();
+
+                var _token = Session["Token"].ToString();
+
+                var loggeduser = await _apiHepler.GetLoggedInUserInfor(_token);
+                var user = new UserModel();
+                user.Id = loggeduser.Id;
+                //Getting a profile with its Address
+
+                var results = await _profileEndPoint.GetProfile(user);
+
+                providerModel.Profile.Name = results.Name;
+                providerModel.Profile.PhoneNumber = results.PhoneNumber;
+                providerModel.Profile.Surname = results.Surname;
+                providerModel.Profile.DateOfBirth = results.DateOfBirth;
+
+
+                providerModel.Profile.AddressM = new ProfileDisplayModel.AddressModel();
+                providerModel.Profile.AddressM.City = results.Address.City;
+                providerModel.Profile.AddressM.HouseNumber = results.Address.HouseNumber;
+                providerModel.Profile.AddressM.Id = results.Address.Id;
+                providerModel.Profile.AddressM.PostalCode = results.Address.PostalCode;
+                providerModel.Profile.AddressM.StreetName = results.Address.StreetName;
+                providerModel.Profile.AddressM.Surburb = results.Address.Surburb;
+
+
+                var providerResponse = await _serviceProvider.GetProviderByProfileId(results.Id);
+                var dbProviderServices = await _serviceProvider.GetProvidersServiceByProviderId(providerResponse.Id);
+
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        //public async Task<ActionResult> Edit([Bind(Include="Id,CampanyName,ProviderType")] ProfileDisplayModel profileDisplay)
+        //{
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            await _serviceProvider.UpdateServiceProvider(profileDisplay);
+
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            throw new Exception(ex.Message);
+        //        }
+
+        //    }
+        //    return View(profileDisplay);
+        //}
         //Register a new provider's service
         public async Task<ActionResult> AddNewProviderService(int id)
         {

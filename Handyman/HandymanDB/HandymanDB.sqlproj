@@ -95,6 +95,10 @@
     <Build Include="Stored Procedures\spRequestLookUp.sql" />
     <Build Include="Stored Procedures\spRequestInsert.sql" />
     <Build Include="Stored Procedures\Customer\spActivationInsert.sql" />
+    <Build Include="Stored Procedures\spProfileUpDate.sql" />
+    <Build Include="Stored Procedures\spServiceProviderUpdate.sql" />
+    <Build Include="Stored Procedures\spProvidersServiceDelete.sql" />
+    <Build Include="Stored Procedures\spAddressUpdate.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Stored Procedures\spProfileInsert.sql" />

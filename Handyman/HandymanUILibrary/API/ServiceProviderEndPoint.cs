@@ -150,5 +150,39 @@ namespace HandymanUILibrary.API
             return ps;
         }
 
+
+
+        public async Task<ServiceProviderModel> UpdateServiceProvider(ServiceProviderModel serviceProvider)
+        {
+            using (HttpResponseMessage responseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync("/api/UpdateServiceProvider", serviceProvider))
+            {
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var result = await responseMessage.Content.ReadAsAsync<ServiceProviderModel>();
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(responseMessage.ReasonPhrase);
+                }
+            }
+        }
+
+
+        //Delete a provider's service
+        public async Task DeleteProvidersService(int Id)
+        {
+            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.DeleteAsync($"/api/DeleteProvidersService?Id={Id}"))//Deleting the service of the provider under the given provider's profile id and service id at hand 
+            {
+                if (httpResponseMessage.IsSuccessStatusCode)
+                {
+                   var  result = await httpResponseMessage.Content.ReadAsAsync<ProvidersServiceModel>();
+                }
+                else
+                {
+                    throw new Exception(httpResponseMessage.ReasonPhrase);
+                }
+            }
+        }
     }
 }
