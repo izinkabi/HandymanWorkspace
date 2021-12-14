@@ -9,8 +9,8 @@ namespace Handyman_UI.Models
 {
     public class ServiceProviderDisplayModel
     {
-        
 
+       
         [DataType(DataType.Text)]
         [Display(Name = "Company Name")]
         [Required(ErrorMessage = "Please your company name")]

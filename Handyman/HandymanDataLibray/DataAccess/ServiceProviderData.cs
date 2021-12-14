@@ -65,7 +65,7 @@ namespace HandymanDataLibray.DataAccess
         public void UpdateServiceProvider(ServiceProviderModel provider)
         {
             SQLDataAccess sql = new SQLDataAccess();
-            var output = sql.SaveData("dbo.spServiceProviderUpdate", new { CompanyName = provider.CompanyName,Id = provider.Id, ProviderType = provider.ProviderType}, "HandymanDB");
+            var output = sql.SaveData("dbo.spServiceProviderUpdate", new { CompanyName = provider.CompanyName,ProfileId = provider.ProfileId, ProviderType = provider.ProviderType}, "HandymanDB");
         }
 
         public void DeleteProvidersService(int Id)

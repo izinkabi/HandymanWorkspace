@@ -61,5 +61,27 @@ namespace HandymanUILibrary.API
 
         }
 
+        //Get a service by id- api
+        public async Task<ServiceModel> GetServiceById(int id)
+        {
+
+
+            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync($"/api/GetServiceById?Id={id}"))
+            {
+                if (httpResponseMessage.IsSuccessStatusCode)
+                {
+
+                    var result = await httpResponseMessage.Content.ReadAsAsync<ServiceModel>();
+
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(httpResponseMessage.ReasonPhrase);
+                }
+            }
+
+        }
+
     }
 }

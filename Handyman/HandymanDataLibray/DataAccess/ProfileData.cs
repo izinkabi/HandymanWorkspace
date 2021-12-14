@@ -112,7 +112,7 @@ namespace HandymanDataLibrary.Internal
                 {
 
                     //Update Profile
-                    sql.SaveDataTransaction("dbo.spProfileUpdate", new { Name = profile.Name, Surname = profile.Surname, PhoneNumber = profile.PhoneNumber, DateOfBirth = profile.DateofBirth, UserId = profile.UserId });
+                    sql.SaveDataTransaction("dbo.spProfileUpdate", new { Name = profile.Name, Surname = profile.Surname, PhoneNumber = profile.PhoneNumber, DateOfBirth = profile.DateofBirth, Id = profile.Id });
                     //Commit the transaction
                     sql.CommitTransation();
                 }

@@ -8,7 +8,8 @@ namespace Handyman_UI.Models
 {
     public class ProfileDisplayModel
     {
-        public int Id { get; set; }
+        [DataType(DataType.Text)]
+        public int ProfileId { get; set; }
         public string UserId { get; set; }
         private AddressModel Address;
         //public string Type { get; }

@@ -28,10 +28,11 @@ namespace HandymanAPI.Controllers
         }
 
         // GET: api/Services/5
-        public ServiceModel Get(int id)
+        [Route("api/GetServiceById")]
+        public ServiceModel GetServiceById(int Id)
         {
             serviceData = new ServiceData();
-            return serviceData.GetServiceById(id);
+            return serviceData.GetServiceById(Id);
         }
 
         // POST: api/Services

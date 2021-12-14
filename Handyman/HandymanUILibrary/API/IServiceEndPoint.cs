@@ -9,5 +9,6 @@ namespace HandymanUILibrary.API
         Task<List<ServiceModel>> GetServices();
         Task<List<ServiceCategoryModel>> GetServiceCategories();
 
+        Task<ServiceModel> GetServiceById(int id);
     }
 }

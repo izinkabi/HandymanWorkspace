@@ -237,6 +237,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
                     //Getting a profile with its Address
                    
                     var results = await _profileEndPoint.GetProfile(user);
+                    providerModel.Profile.ProfileId = results.Id;
                     providerModel.Profile.Name = results.Name;
                     providerModel.Profile.PhoneNumber = results.PhoneNumber;
                     providerModel.Profile.Surname = results.Surname;
@@ -314,8 +315,33 @@ namespace Handyman_UI.Controllers.ServiceProvider
                     providerModel.Profile.PhoneNumber = results.PhoneNumber;
                     providerModel.Profile.Surname = results.Surname;
                     providerModel.Profile.DateOfBirth = results.DateOfBirth;
+                    providerModel.Profile.ProfileId = results.Id;
+                    
+
+                    var providerResponse = await _serviceProvider.GetProviderByProfileId(results.Id);
+                    List<SelectListItem> serviceProviderTypeslist = new List<SelectListItem>()
+                    {
+                      new SelectListItem {Text = "Individual", Value = "1"},
+                      new SelectListItem {Text = "Small Business", Value = "2"},
+                      new SelectListItem {Text = "Organzation", Value = "3"},
+                      new SelectListItem {Text = "Enterprise/Private Group", Value = "4"}
+
+                    };
+
+                    providerModel.serviceProviderTypes = serviceProviderTypeslist;
 
 
+                    //var selectedItem = serviceProviderTypeslist.Find(p => p.Value == providerModel.ServiceProviderTypesId.ToString());
+
+                    //if (selectedItem != null)
+                    //{
+                    //    selectedItem.Selected = true;
+                    //    providerModel.ProviderType = selectedItem.Text;
+
+                    //    providerModel.ProviderType = providerResponse.ProviderType;
+                    //    //var dbProviderServices = await _serviceProvider.GetProvidersServiceByProviderId(providerResponse.Id);
+
+                    //}
                     providerModel.Profile.AddressM = new ProfileDisplayModel.AddressModel();
                     providerModel.Profile.AddressM.City = results.Address.City;
                     providerModel.Profile.AddressM.HouseNumber = results.Address.HouseNumber;
@@ -323,8 +349,8 @@ namespace Handyman_UI.Controllers.ServiceProvider
                     providerModel.Profile.AddressM.PostalCode = results.Address.PostalCode;
                     providerModel.Profile.AddressM.StreetName = results.Address.StreetName;
                     providerModel.Profile.AddressM.Surburb = results.Address.Surburb;
-                    var providerResponse = await _serviceProvider.GetProviderByProfileId(results.Id);
-                    var dbProviderServices = await _serviceProvider.GetProvidersServiceByProviderId(providerResponse.Id);
+                    providerModel.CompanyName = providerResponse.CompanyName;
+                    return View("Edit",providerModel);
                 }
                 catch (Exception ex)
                 {
@@ -340,24 +366,81 @@ namespace Handyman_UI.Controllers.ServiceProvider
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public async Task<ActionResult> Edit([Bind(Include="Id,CampanyName,ProviderType")] ProfileDisplayModel profileDisplay)
-        //{
+        public async Task<ActionResult> Edit(ServiceProviderDisplayModel providerDisplay)
+        {
+            var providerUpdate = new ServiceProviderModel();
+           
+          
+            var profileUpdate = new ProfileModel();
+            List<SelectListItem> serviceProviderTypeslist = new List<SelectListItem>()
+                    {
+                      new SelectListItem {Text = "Individual", Value = "1"},
+                      new SelectListItem {Text = "Small Business", Value = "2"},
+                      new SelectListItem {Text = "Organzation", Value = "3"},
+                      new SelectListItem {Text = "Enterprise/Private Group", Value = "4"}
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            await _serviceProvider.UpdateServiceProvider(profileDisplay);
+                    };
+            providerDisplay.serviceProviderTypes = serviceProviderTypeslist;
 
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception(ex.Message);
-        //        }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    profileUpdate.Address = new ProfileModel.AddressModel();
+                    profileUpdate.Id = providerDisplay.Profile.ProfileId;
+                    profileUpdate.Address.City = providerDisplay.Profile.AddressM.City;
+                    profileUpdate.Address.StreetName = providerDisplay.Profile.AddressM.StreetName;
+                    profileUpdate.Address.Surburb = providerDisplay.Profile.AddressM.Surburb;
+                    profileUpdate.Address.PostalCode = providerDisplay.Profile.AddressM.PostalCode;
+                    profileUpdate.Address.HouseNumber = providerDisplay.Profile.AddressM.HouseNumber;
+                    profileUpdate.Address.Id = providerDisplay.Profile.AddressM.Id;
 
-        //    }
-        //    return View(profileDisplay);
-        //}
+                    profileUpdate.Name = providerDisplay.Profile.Name;
+                    profileUpdate.PhoneNumber = providerDisplay.Profile.PhoneNumber;
+                    profileUpdate.Surname = providerDisplay.Profile.Surname;
+                    profileUpdate.DateOfBirth = providerDisplay.Profile.DateOfBirth;
+                    providerUpdate.ProfileId = providerDisplay.Profile.ProfileId;
+                    //first update the profile
+                    await _profileEndPoint.UpdateProfile(profileUpdate);
+
+
+                    providerUpdate.CompanyName = providerDisplay.CompanyName;
+                  
+
+                    //Update the service provider
+
+                   // var providerResponse = await _serviceProvider.GetProviderByProfileId(providerDisplay.Profile.ProfileId);
+                   
+
+                    
+
+
+                    var selectedItem = serviceProviderTypeslist.Find(p => p.Value == providerDisplay.ServiceProviderTypesId.ToString());
+
+                    if (selectedItem != null)
+                    {
+                        selectedItem.Selected = true;
+                        providerUpdate.ProviderType = selectedItem.Text;
+
+                        //providerUpdate.ProviderType = providerResponse.ProviderType;
+                        //var dbProviderServices = await _serviceProvider.GetProvidersServiceByProviderId(providerResponse.Id);
+                      
+                    }
+
+                    await _serviceProvider.UpdateServiceProvider(providerUpdate);
+
+
+                    return RedirectToAction("ProviderDetails");
+
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+
+            }
+            return View();
+        }
         //Register a new provider's service
         public async Task<ActionResult> AddNewProviderService(int id)
         {

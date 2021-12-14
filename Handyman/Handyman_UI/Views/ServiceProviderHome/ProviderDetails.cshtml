@@ -27,7 +27,7 @@
         <dd>
             @Html.DisplayFor(model => model.ProviderType)
         </dd>
-
+        @Html.ActionLink("Edit", "Edit", new {  id = Model.Profile.ProfileId}, new { @class = "btn" })
 
 
     </dl>
@@ -78,7 +78,7 @@
                     <img src="@{@item.ImageUrl} " style="width: 150px; height: 90px;" />
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                   
                     @Html.ActionLink("Details", "Details", new { id = item.Id }) |
                     @Html.ActionLink("Delete", "Delete", new { id = item.Id })
                 </td>

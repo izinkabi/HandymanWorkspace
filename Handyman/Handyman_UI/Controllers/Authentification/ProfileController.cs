@@ -255,7 +255,7 @@ namespace Handyman_UI.Controllers
                 var tempProfile = new Models.ProfileDisplayModel();
                 tempProfile.AddressM = new Models.ProfileDisplayModel.AddressModel();
 
-                tempProfile.Id = results.Id;
+                tempProfile.ProfileId = results.Id;
                 tempProfile.Name = results.Name;
                 tempProfile.Surname = results.Surname;
                 tempProfile.PhoneNumber = results.PhoneNumber;

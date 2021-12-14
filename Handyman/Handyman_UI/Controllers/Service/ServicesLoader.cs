@@ -125,6 +125,23 @@ namespace Handyman_UI.Controllers
             return displayCategories;
         }
 
+        public async Task<ServiceDisplayModel> getServiceById(int id)
+        {
+            var service = new ServiceDisplayModel();
+           
 
+
+            var dbService = await _serviceEndPoint.GetServiceById(id);
+            service.Id = dbService.Id;
+            service.ImageUrl = dbService.ImageUrl;
+            service.Name = dbService.Name;
+            service.ServiceDescription = dbService.Description;
+            service.displayId = dbService.Name;
+            service.CategoryId = dbService.ServiceCategoryId;
+
+            return service;
+
+
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[spProfileUpDate]
 --Updating the profile store procedure
-	@UserId NVARCHAR(128)='',
+	@Id int=0,
 	@name VARCHAR (50)='',
 	@surname VARCHAR(50) ='',
 	@PhoneNumber NVARCHAR (50)='',
@@ -9,5 +9,5 @@ AS
 BEGIN
 	UPDATE [dbo].[Profile]
 	SET Name = @name,Surname=@surname,DateOfBirth=@dateofbirth,Phonenumber=@phonenumber
-	WHERE UserId=@UserId
+	WHERE Id=@Id
 END

@@ -2457,6 +2457,7 @@
     <Content Include="Views\Shared\TestLayout.cshtml" />
     <Content Include="Views\Shared\_ServiceProviderLayout.cshtml" />
     <Content Include="Views\Login\SignIn.cshtml" />
+    <Content Include="Views\ServiceProviderHome\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

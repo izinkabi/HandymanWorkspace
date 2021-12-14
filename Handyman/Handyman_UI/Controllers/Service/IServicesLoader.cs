@@ -9,6 +9,7 @@ namespace Handyman_UI.Controllers
         Task<List<ServiceModel>> LoadServices();
         Task<List<ServiceDisplayModel>> getDisplayServices();
         Task<List<ServiceCategoryModel>> LoadServiceCategories();
+        Task<ServiceDisplayModel> getServiceById(int id);
     }
       
 }
