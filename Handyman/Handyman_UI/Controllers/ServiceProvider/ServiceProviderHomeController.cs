@@ -6,6 +6,7 @@ using HandymanUILibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -253,17 +254,16 @@ namespace Handyman_UI.Controllers.ServiceProvider
                     providerModel.Profile.AddressM.Surburb = results.Address.Surburb;
 
 
-
+                    //get the provider and its services
                     var response = await _serviceProvider.GetProviderByProfileId(results.Id);
                     var dbProviderServices = await _serviceProvider.GetProvidersServiceByProviderId(response.Id);
                     var dbServices = await _serviceLoader.getDisplayServices();
+
                     providerModel.providerServices = new List<ServiceDisplayModel>();
                     foreach (ServiceDisplayModel service in dbServices)
                     {
                         foreach (var pservices in dbProviderServices)
                         {
-
-
                             if (service.Id == pservices.ServiceId)
                             {
                                 providerModel.providerServices.Add(new ServiceDisplayModel { Id = service.Id, ImageUrl = service.ImageUrl, Name = service.Name, ServiceDescription = service.ServiceDescription, Category = service.Category });
@@ -293,6 +293,57 @@ namespace Handyman_UI.Controllers.ServiceProvider
             return View(providerModel);
         }
 
+        //The two following methods delete the provider's service
+        public async Task<ActionResult> Delete(int? id)
+        {
+            if (id != null)
+            {
+
+                var service = await _serviceLoader.getServiceById(id.Value);
+
+                return View(service);
+            }
+            return View();
+        }
+
+        // POST: /Movies/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteConfirmed(int id)
+        {
+
+
+            var token = Session["Token"].ToString();
+
+            UserModel user = new UserModel();
+            var loggedUseResult = await _apiHepler.GetLoggedInUserInfor(token);
+            user.Id = loggedUseResult.Id;
+
+            var results = await _profileEndPoint.GetProfile(user);
+            var response = await _serviceProvider.GetProviderByProfileId(results.Id);
+            var dbProviderServices = await _serviceProvider.GetProvidersServiceByProviderId(response.Id);
+
+
+            if (dbProviderServices == null)
+            {
+                return HttpNotFound();
+            }
+
+            //get the service id of the provider's service from the list of provider's services and delete it
+            foreach (var provservice in dbProviderServices)
+            {
+                if (provservice.ServiceId == id)
+                {                  
+                    await _serviceProvider.DeleteProvidersService(provservice.Id);
+                }
+            }
+
+
+           
+
+            return RedirectToAction("ProviderDetails");
+           
+        }
         public async Task<ActionResult> Edit(int? id)
         {
             var providerModel = new ServiceProviderDisplayModel();

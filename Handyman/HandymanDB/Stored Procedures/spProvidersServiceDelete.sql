@@ -1,8 +1,8 @@
 ﻿CREATE PROCEDURE [dbo].[spProvidersServiceDelete]
-	@ServiceId int = 0
+	@Id int = 0
 	
 AS
 BEGIN
 	DELETE FROM [dbo].[ProvidersService] 
-	WHERE ServiceId=@ServiceId
+	WHERE Id=@Id
 END	

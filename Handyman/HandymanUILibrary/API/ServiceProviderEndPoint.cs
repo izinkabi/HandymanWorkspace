@@ -107,7 +107,7 @@ namespace HandymanUILibrary.API
 
         }
 
-
+        //Get a list of service for the given service provider's id
         public async Task<List<ProvidersServiceModel>> GetProvidersServiceByProviderId(int providerId)
         {
             using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync($"/api/GetProvidersServiceByProviderId?ProviderId={providerId}"))
