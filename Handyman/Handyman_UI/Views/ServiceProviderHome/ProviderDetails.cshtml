@@ -3,7 +3,20 @@
 
     Layout = "~/Views/Shared/_ServiceProviderLayout.cshtml";
 }
-
+@if (@TempData["servicedeleted"] != null)
+{
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <div class="alert alert-success">
+        <strong>@TempData["servicedeleted"].ToString()!</strong> Indicates success in deleting a service.
+    </div>
+}
+@if (@TempData["serviceadded"] != null)
+{
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <div class="alert alert-success">
+        <strong>@TempData["serviceadded"].ToString()!</strong> Indicates success in adding a new service.
+    </div>
+}
 
 <h2>Provider's Details</h2>
 
@@ -27,7 +40,7 @@
         <dd>
             @Html.DisplayFor(model => model.ProviderType)
         </dd>
-        @Html.ActionLink("Edit", "Edit", new {  id = Model.Profile.ProfileId}, new { @class = "btn" })
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Profile.ProfileId }, new { @class = "btn" })
 
 
     </dl>
@@ -78,7 +91,7 @@
                     <img src="@{@item.ImageUrl} " style="width: 150px; height: 90px;" />
                 </td>
                 <td>
-                   
+
                     @Html.ActionLink("Details", "Details", new { id = item.Id }) |
                     @Html.ActionLink("Delete", "Delete", new { id = item.Id })
                 </td>

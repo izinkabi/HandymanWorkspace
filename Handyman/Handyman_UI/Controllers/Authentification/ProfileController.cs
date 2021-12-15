@@ -219,7 +219,7 @@ namespace Handyman_UI.Controllers
                     }
                     else if (UserRole=="ServiceProvider" )
                     {
-                        
+                        TempData["newuser"] = "Service Provider";
                         return RedirectToAction("RegisterServiceProvider", "ServiceProviderHome");
                     }
 
@@ -348,7 +348,7 @@ namespace Handyman_UI.Controllers
                 profileUpdate.PhoneNumber = profile.PhoneNumber;
                 profileUpdate.Surname = profile.Surname;
                 profileUpdate.DateOfBirth = profile.DateOfBirth;
-               
+                TempData["updatedprofile"] = profile.Name + " you edited your Profile";
                 //first update the profile
                 await _profileEndPoint.UpdateProfile(profileUpdate);
                 return RedirectToAction("ProfileDetails");

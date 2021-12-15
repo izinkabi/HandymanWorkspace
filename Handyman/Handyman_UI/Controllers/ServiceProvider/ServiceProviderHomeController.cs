@@ -79,10 +79,11 @@ namespace Handyman_UI.Controllers.ServiceProvider
         {
             return View();
         }
-        public ActionResult Test()
+        public async Task<ActionResult> Test()
         {
-
-            return View();
+            localServices = new List<ServiceDisplayModel>();
+            localServices = await _serviceLoader.getDisplayServices();
+            return View(localServices);
         }
 
         public async Task<ActionResult> Search(string serviceSearchString)
@@ -300,7 +301,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
             {
 
                 var service = await _serviceLoader.getServiceById(id.Value);
-
+                TempData["servicedeleted"] = "You deleted " + service.Name;
                 return View(service);
             }
             return View();
@@ -335,12 +336,15 @@ namespace Handyman_UI.Controllers.ServiceProvider
                 if (provservice.ServiceId == id)
                 {                  
                     await _serviceProvider.DeleteProvidersService(provservice.Id);
+                    var service = await _serviceLoader.getServiceById(provservice.ServiceId);
+                    TempData["servicedeleted"] = "You deleted " + service.Name;
+
                 }
             }
 
 
-           
 
+           
             return RedirectToAction("ProviderDetails");
            
         }
@@ -509,7 +513,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
                 var results = await _profileEndPoint.GetProfile(user);
                 var providerResponse = await _serviceProvider.GetProviderByProfileId(results.Id);
                 var dbProviderService = await _serviceProvider.GetProvidersServiceByProviderId(providerResponse.Id);
-                var dbServices = await _serviceLoader.getDisplayServices();
+                
 
                
                
@@ -528,7 +532,9 @@ namespace Handyman_UI.Controllers.ServiceProvider
                     providersService.ServiceProviderId = providerResponse.Id;
 
                     var result = await _serviceProvider.PostProvidersService(providersService);
-                    RedirectToAction("ProviderDetails", providerModel);
+                    var service = await _serviceLoader.getServiceById(providersService.ServiceId);
+                    TempData["serviceadded"] = "You Added " + service.Name;
+                    return RedirectToAction("ProviderDetails");
                 }
             }
             catch (Exception ex)
