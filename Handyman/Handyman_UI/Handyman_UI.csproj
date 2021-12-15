@@ -2459,6 +2459,7 @@
     <Content Include="Views\Login\SignIn.cshtml" />
     <Content Include="Views\ServiceProviderHome\Edit.cshtml" />
     <Content Include="Views\ServiceProviderHome\Delete.cshtml" />
+    <Content Include="Views\Profile\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
