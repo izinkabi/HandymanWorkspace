@@ -1,9 +1,10 @@
-﻿CREATE PROCEDURE [dbo].[spRequestLookUp]
+﻿CREATE PROCEDURE [dbo].[spRequestLookUp] 
+--Looking for a request using a consumer's id
 	@Id int = 0
 	
 AS
 BEGIN
 	SELECT * 
 	FROM [dbo].[Request]
-	WHERE Id=@Id
+	WHERE ConsumerId=@Id
 END

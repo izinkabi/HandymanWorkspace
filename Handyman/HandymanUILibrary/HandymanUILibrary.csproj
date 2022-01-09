@@ -31,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -52,11 +52,13 @@
     <Compile Include="API\IAPIHelper.cs" />
     <Compile Include="API\IProfileEndPoint.cs" />
     <Compile Include="API\IRegisterEndPoint.cs" />
+    <Compile Include="API\IRequestEndPoint.cs" />
     <Compile Include="API\IServiceProviderEndPoint.cs" />
     <Compile Include="API\IServiceEndPoint.cs" />
     <Compile Include="API\OTPGenerator.cs" />
     <Compile Include="API\ProfileEndPoint.cs" />
     <Compile Include="API\RegisterEndPoint.cs" />
+    <Compile Include="API\RequestEndPoint.cs" />
     <Compile Include="API\ServiceProviderEndPoint.cs" />
     <Compile Include="API\ServiceEndPoint.cs" />
     <Compile Include="Models\AuthenticatedUserModel.cs" />
@@ -67,6 +69,7 @@
     <Compile Include="Models\OTPResult.cs" />
     <Compile Include="Models\ProfileModel.cs" />
     <Compile Include="Models\ProvidersServiceModel.cs" />
+    <Compile Include="Models\RequestModel.cs" />
     <Compile Include="Models\ServiceCategoryModel.cs" />
     <Compile Include="Models\ServiceModel.cs" />
     <Compile Include="Models\ServiceProviderModel.cs" />
@@ -77,6 +80,7 @@
     <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

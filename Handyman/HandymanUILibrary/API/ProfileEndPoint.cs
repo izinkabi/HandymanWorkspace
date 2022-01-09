@@ -14,7 +14,7 @@ namespace HandymanUILibrary.API
     {
 
         private IAPIHelper _aPIHelper;
-        private  ProfileModel profileModel;
+       
         private IloggedInUserModel _loggedInUserModel;
         //Initializing
         public ProfileEndPoint(IAPIHelper aPIHelper, IloggedInUserModel loggedInUserModel)
@@ -39,14 +39,9 @@ namespace HandymanUILibrary.API
                 {
                     throw new Exception(responseMessage.ReasonPhrase);
                 }
-            
-
         }
 
       
-
-        
-
         //Getting a profile endpoint
         public async Task<ProfileModel> GetProfile(UserModel user)
         {

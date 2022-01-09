@@ -16,17 +16,37 @@ namespace HandymanAPI.Controllers
 
         //GET 
         //api/Request/@ConsumerId
-        public RequestModel GetRequestByConsumerId(int customerId)
+        [Route("api/GetRequestsByConsumerId")]
+        public List<RequestModel> GetRequestsByConsumerId(int customerId)
         {          
             requestData = new RequestData();
-            return requestData.GetRequestByConsumerId(customerId);
+            return requestData.GetRequestsByConsumerId(customerId);
         }
 
         //POST
-        public void PostRequest(RequestModel request)
+        [Route("api/Request/Post")]
+        public void Post(RequestModel request)
         {
             requestData = new RequestData();
             requestData.PostRequest(request);
+        }
+
+        //UPDATE
+        //api/Requests/Update
+        [Route("api/Request/Update")]
+        public void Put(RequestModel requestUpdate)
+        {
+            requestData = new RequestData();
+            requestData.UpdateRequest(requestUpdate);
+        }
+
+
+        //DELETE
+        //api/Requests/delete/5
+        public void Delete(int Id)
+        {
+            requestData = new RequestData();
+            requestData.DeleteRequest(Id);
         }
     }
 }

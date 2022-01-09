@@ -1,0 +1,1 @@
+<Presets><Preset Name="HandymanApp Build" FormatVersion="1"><Configuration Name="Debug|Any CPU"><Project Name="HandymanAPI" RelativePath="HandymanAPI\HandymanAPI.csproj" MSBuildName="Api\HandymanAPI"/><Project Name="Handyman_UI" RelativePath="Handyman_UI\Handyman_UI.csproj" MSBuildName="UI\Handyman_UI"/></Configuration></Preset></Presets>

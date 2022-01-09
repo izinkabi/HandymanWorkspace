@@ -99,6 +99,8 @@
     <Build Include="Stored Procedures\spServiceProviderUpdate.sql" />
     <Build Include="Stored Procedures\spProvidersServiceDelete.sql" />
     <Build Include="Stored Procedures\spAddressUpdate.sql" />
+    <Build Include="Stored Procedures\spRequestUpdate.sql" />
+    <Build Include="Stored Procedures\spRequestDelete.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Stored Procedures\spProfileInsert.sql" />

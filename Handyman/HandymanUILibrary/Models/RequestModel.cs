@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HandymanDataLibray.Models
+namespace HandymanUILibrary.Models
 {
     public class RequestModel
     {
