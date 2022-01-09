@@ -60,18 +60,16 @@
     <Folder Include="Tables" />
     <Folder Include="Publish\" />
     <Folder Include="Stored Procedures\Customer" />
+    <Folder Include="Stored Procedures\ServiceProvider" />
+    <Folder Include="Stored Procedures\ServiceRequest" />
+    <Folder Include="Stored Procedures\Service" />
+    <Folder Include="Stored Procedures\Profile" />
+    <Folder Include="Stored Procedures\User" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Stored Procedures\spProfileLookUp.sql" />
     <Build Include="Stored Procedures\spActivationLookUp.sql" />
-    <Build Include="Stored Procedures\spConsumerLookUp.sql" />
-    <Build Include="Stored Procedures\spConsumerInsert.sql" />
     <Build Include="Stored Procedures\spTransactionInsert.sql" />
     <Build Include="Stored Procedures\spTransactionLookUp.sql" />
-    <Build Include="Stored Procedures\spServiceInsert.sql" />
-    <Build Include="Stored Procedures\spServiceLookUp.sql" />
-    <Build Include="Stored Procedures\spServiceProviderInsert.sql" />
-    <Build Include="Stored Procedures\spServiceProviderLookUp.sql" />
     <Build Include="Tables\User.sql" />
     <Build Include="Tables\Transaction.sql" />
     <Build Include="Tables\ServiceProvider.sql" />
@@ -80,35 +78,42 @@
     <Build Include="Tables\Profile.sql" />
     <Build Include="Tables\Consumer.sql" />
     <Build Include="Tables\Activation.sql" />
-    <Build Include="Stored Procedures\spUserInsert.sql" />
     <Build Include="Tables\ProvidersService.sql" />
-    <Build Include="Stored Procedures\spProvidersServiceInsert.sql" />
-    <Build Include="Stored Procedures\spProvidersServiceLookUp.sql" />
-    <Build Include="Stored Procedures\spServicesProviderLookUp.sql" />
-    <Build Include="Stored Procedures\spServiceProvidersLookUp.sql" />
-    <Build Include="Stored Procedures\spServicesLookUp.sql" />
     <Build Include="Tables\Address.sql" />
     <Build Include="Tables\ServiceCategory.sql" />
-    <Build Include="Stored Procedures\spServiceCategoriesLookUp.sql" />
-    <Build Include="Stored Procedures\spAddressInsert.sql" />
-    <Build Include="Stored Procedures\spUserLookUp.sql" />
-    <Build Include="Stored Procedures\spRequestLookUp.sql" />
-    <Build Include="Stored Procedures\spRequestInsert.sql" />
-    <Build Include="Stored Procedures\Customer\spActivationInsert.sql" />
-    <Build Include="Stored Procedures\spProfileUpDate.sql" />
-    <Build Include="Stored Procedures\spServiceProviderUpdate.sql" />
-    <Build Include="Stored Procedures\spProvidersServiceDelete.sql" />
-    <Build Include="Stored Procedures\spAddressUpdate.sql" />
-    <Build Include="Stored Procedures\spRequestUpdate.sql" />
-    <Build Include="Stored Procedures\spRequestDelete.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <Build Include="Stored Procedures\spProfileInsert.sql" />
+    <Build Include="Stored Procedures\Customer\spConsumerInsert.sql" />
+    <Build Include="Stored Procedures\Customer\spConsumerLookUp.sql" />
+    <Build Include="Stored Procedures\ServiceProvider\spServiceProviderUpdate.sql" />
+    <Build Include="Stored Procedures\ServiceProvider\spServiceProvidersLookUp.sql" />
+    <Build Include="Stored Procedures\ServiceProvider\spServiceProviderLookUp.sql" />
+    <Build Include="Stored Procedures\ServiceProvider\spServiceProviderInsert.sql" />
+    <Build Include="Stored Procedures\ServiceProvider\spServicesProviderLookUp.sql" />
+    <Build Include="Stored Procedures\ServiceRequest\spRequestDelete.sql" />
+    <Build Include="Stored Procedures\ServiceRequest\spRequestInsert.sql" />
+    <Build Include="Stored Procedures\ServiceRequest\spRequestLookUp.sql" />
+    <Build Include="Stored Procedures\ServiceRequest\spRequestUpdate.sql" />
+    <Build Include="Stored Procedures\Service\spProvidersServiceDelete.sql" />
+    <Build Include="Stored Procedures\Service\spProvidersServiceInsert.sql" />
+    <Build Include="Stored Procedures\Service\spProvidersServiceLookUp.sql" />
+    <Build Include="Stored Procedures\Service\spServiceCategoriesLookUp.sql" />
+    <Build Include="Stored Procedures\Service\spServiceInsert.sql" />
+    <Build Include="Stored Procedures\Service\spServiceLookUp.sql" />
+    <Build Include="Stored Procedures\Service\spServicesLookUp.sql" />
+    <Build Include="Stored Procedures\Profile\spAddressInsert.sql" />
+    <Build Include="Stored Procedures\Profile\spAddressUpdate.sql" />
+    <Build Include="Stored Procedures\Profile\spProfileInsert.sql" />
+    <Build Include="Stored Procedures\Profile\spProfileLookUp.sql" />
+    <Build Include="Stored Procedures\User\spUserInsert.sql" />
+    <Build Include="Stored Procedures\User\spUserLookUp.sql" />
+    <Build Include="Stored Procedures\spActivationInsert.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish\HandymanDB.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="HandymanDB.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Stored Procedures\Profile\spProfileUpDate.sql" />
   </ItemGroup>
 </Project>

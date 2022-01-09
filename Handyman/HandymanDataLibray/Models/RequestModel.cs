@@ -12,7 +12,7 @@ namespace HandymanDataLibray.Models
         public int ConsumerId { get; set; }
         public int ProvidersServiceId { get; set; }
         public string RequestStatus { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime FinishTime { get; set; }
+        public DateTimeOffset StartTime { get; set; }
+        public DateTimeOffset FinishTime { get; set; }
     }
 }

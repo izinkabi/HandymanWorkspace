@@ -25,11 +25,11 @@ namespace HandymanDataLibray.DataAccess
 
         }
 
-        //Post the a consumer
+        //Post a consumer
         public void PostConsumer(ConsumerModel consumer)
         {           
             SQLDataAccess sql = new SQLDataAccess();
-            sql.SaveData("dbo.spConsumerInsert", new { ProfileId=consumer.ProfileId}, "HandymanDB");
+            sql.SaveData("dbo.spConsumerInsert", new { ProfileId=consumer.ProfileId,Activation=consumer.Activation}, "HandymanDB");
         }
 
     }

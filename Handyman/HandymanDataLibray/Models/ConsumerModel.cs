@@ -10,5 +10,7 @@ namespace HandymanDataLibray.Models
     {
         public int Id { get; set; }
         public int ProfileId { get; set; }
+
+        public int Activation { get; set; }
     }
 }
