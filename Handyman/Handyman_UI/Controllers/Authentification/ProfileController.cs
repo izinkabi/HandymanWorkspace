@@ -2,13 +2,10 @@
 using HandymanUILibrary.API;
 using HandymanUILibrary.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
+
 
 namespace Handyman_UI.Controllers
 {
@@ -239,9 +236,9 @@ namespace Handyman_UI.Controllers
         }
 
     public ActionResult AddressDetails()
-        {
-            return PartialView();
-        }
+    {
+        return PartialView();
+    }
     public async Task<ActionResult> ProfileDetails()
         {
             try

@@ -1,9 +1,7 @@
 ﻿using HandymanDataLibrary.Models;
 using HandymanDataLibrary.Internal;
-using System.Linq;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
-using System.Web.Security;
 
 namespace HandymanAPI.Controllers
 {

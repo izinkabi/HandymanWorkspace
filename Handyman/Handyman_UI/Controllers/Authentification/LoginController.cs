@@ -2,10 +2,7 @@
 using HandymanUILibrary.API;
 using HandymanUILibrary.Models;
 using System;
-using System.Linq;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Handyman_UI.Controllers
