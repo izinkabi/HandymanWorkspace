@@ -66,7 +66,7 @@ namespace Handyman_UI.Controllers
                     UserRole = "Customer";
 
                     var loggedInUser = await _registerEndPoint.RegisterUser(user);
-                   
+                    Session["Token"] = loggedInUser.Access_Token;
 
                     return RedirectToAction("CreateAProfile", "Profile");
 
@@ -101,8 +101,8 @@ namespace Handyman_UI.Controllers
                     Password = newUser.Password;
                     user.UserRole = "ServiceProvider";//User role assignment
                     UserRole = "ServiceProvider";
-                   var loggedInUser = await _registerEndPoint.RegisterUser(user);
-                   
+                    var loggedInUser = await _registerEndPoint.RegisterUser(user);
+                    Session["Token"] = loggedInUser.Access_Token;
 
 
                     return RedirectToAction("CreateAProfile", "Profile");
@@ -213,8 +213,8 @@ namespace Handyman_UI.Controllers
 
                     if (UserRole=="Customer")
                     {
-                        TempData["newuser"] = "Customer";
-                        return RedirectToAction("SignIn", "Profile");
+                       
+                        return RedirectToAction("RegisterCustomer", "CustomerHome");
 
                     }
                     else if (UserRole=="ServiceProvider" )

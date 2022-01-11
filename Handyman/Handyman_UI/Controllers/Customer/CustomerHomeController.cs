@@ -25,18 +25,18 @@ namespace Handyman_UI.Controllers
         static private string Password;
 
         private IProfileEndPoint _profileEndPoint;
-
+        private IConsumerEndPoint _consumerEndPoint;
         //private IRegisterProviderEndPoint _registerProviderEndpoint;
        
         private bool loggedIn;
         
 
         //The use of constructor allows for the Imterfaces to be rendered
-        public CustomerHomeController(IAPIHelper aPIHelper,IProfileEndPoint profileEndpoint,IloggedInUserModel loggedInUser)
+        public CustomerHomeController(IAPIHelper aPIHelper,IProfileEndPoint profileEndpoint,IConsumerEndPoint consumerEndpoint)
         {
             _apiHepler = aPIHelper;
             _profileEndPoint = profileEndpoint;
-            _loggedInUserModel = loggedInUser;          
+            _consumerEndPoint = consumerEndpoint;
         }
 
         
@@ -81,15 +81,32 @@ namespace Handyman_UI.Controllers
             
             return View();
         }
-        
-        //Login action function
-       
 
-        //Create a profile action method
-       
-        //RegisterUser helper method
-        //saving a user in our local DB
+        //Here we are trying to register the consumer with having to create a view for it,
+        //and it is referenced inside a string operand from CreateProfile()'s return statement
+        public async Task<RedirectToRouteResult> RegisterCustomer()
+        {
+            try
+            {
+                var token = Session["Token"].ToString();
+                var loggedUser = await _apiHepler.GetLoggedInUserInfor(token);
+                var usermodel = new UserModel();
+                usermodel.Id = loggedUser.Id;
+                usermodel.Email = loggedUser.Email;
+                var profile = await _profileEndPoint.GetProfile(usermodel);
+                var consumerModel = new ConsumerModel();
+                consumerModel.ProfileId = profile.Id;
+                consumerModel.Activation = 1;
+                await _consumerEndPoint.PostConsumer(consumerModel);
+                TempData["newuser"] = "Customer";
 
+                return RedirectToAction("SignIn", "Profile");
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
        
         //Get OTP
         public async Task<ActionResult> GetOTP(OTPModel otmodel)

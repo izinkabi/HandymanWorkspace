@@ -15,6 +15,7 @@ namespace HandymanAPI.Controllers
 
         //GET
         //api/Consumers/ProfileId
+        [Route("api/Consumer/GetConsumerByProfileId")]
         public ConsumerModel GetConsumerByProfileId(int profileId)
         {
             consumerData = new ConsumerData();
@@ -22,6 +23,7 @@ namespace HandymanAPI.Controllers
         }
 
         //Post
+        [Route("api/Consumer/PostConsumer")]
         public void PostConsumer(ConsumerModel consumer)
         {
             consumerData = new ConsumerData();

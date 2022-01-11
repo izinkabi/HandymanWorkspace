@@ -49,7 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\APIHelper.cs" />
+    <Compile Include="API\ConsumerEndPoint.cs" />
     <Compile Include="API\IAPIHelper.cs" />
+    <Compile Include="API\IConsumerEndPoint.cs" />
     <Compile Include="API\IProfileEndPoint.cs" />
     <Compile Include="API\IRegisterEndPoint.cs" />
     <Compile Include="API\IRequestEndPoint.cs" />
@@ -62,6 +64,7 @@
     <Compile Include="API\ServiceProviderEndPoint.cs" />
     <Compile Include="API\ServiceEndPoint.cs" />
     <Compile Include="Models\AuthenticatedUserModel.cs" />
+    <Compile Include="Models\ConsumerModel.cs" />
     <Compile Include="Models\IloggedInUserModel.cs" />
     <Compile Include="Models\loggedInUserModel.cs" />
     <Compile Include="Models\NewUserModel.cs" />
