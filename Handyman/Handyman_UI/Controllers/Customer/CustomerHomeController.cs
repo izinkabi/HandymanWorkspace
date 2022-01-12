@@ -117,18 +117,6 @@ namespace Handyman_UI.Controllers
         }
 
         //Loggin out method
-        public ActionResult Logout()
-        {
-            //clear the instances in the container
-            Session["Username"] = null;
-            Session["profilename"] = null;
-            _loggedInUserModel = null;
-           
-            _apiHepler.LogOutuser();
-            Session["log"] = null;
-            _apiHepler = null;          
-               return RedirectToAction("Index", "Service");
-          
-        }
+      
     }
 }

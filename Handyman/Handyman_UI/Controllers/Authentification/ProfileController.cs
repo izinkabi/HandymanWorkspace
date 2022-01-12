@@ -39,133 +39,10 @@ namespace Handyman_UI.Controllers
             return PartialView();
         }
             
-            //Register action method
-    public async Task<ActionResult> Register(CreateUserModel newUser)
-            {
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-
-                   
-                    user = new HandymanUILibrary.Models.NewUserModel();
-
-                    //Username and password are given a value once here and once in sign in
-            
-                    user.Email = newUser.Username;
-                    user.Password = newUser.Password;
-                    user.ConfirmPassword = newUser.ConfirmPassword;
-
-                    Username = newUser.Username;
-                    Password = newUser.Password;
-                    user.UserRole = "Customer";//User role assignment to customer
-                    UserRole = "Customer";
-
-                    var loggedInUser = await _registerEndPoint.RegisterUser(user);
-                    Session["Token"] = loggedInUser.Access_Token;
-
-                    return RedirectToAction("CreateAProfile", "Profile");
-
-                }
-                catch (Exception ex)
-                {
-                    ViewBag.RegisterErrorMsg = ex.Message;
-                }
-
-            }
-            return View();
-        }
-
-    public async Task<ActionResult> RegisterProvider(CreateUserModel newUser)
-    {
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-
-
-                    user = new HandymanUILibrary.Models.NewUserModel();
-
-                    //Username and password are given a value once here and once in sign in
-
-                    user.Email = newUser.Username;
-                    user.Password = newUser.Password;
-                    user.ConfirmPassword = newUser.ConfirmPassword;
-
-                    Username = newUser.Username;
-                    Password = newUser.Password;
-                    user.UserRole = "ServiceProvider";//User role assignment
-                    UserRole = "ServiceProvider";
-                    var loggedInUser = await _registerEndPoint.RegisterUser(user);
-                    Session["Token"] = loggedInUser.Access_Token;
-
-
-                    return RedirectToAction("CreateAProfile", "Profile");
-
-                }
-                catch (Exception ex)
-                {
-                    ViewBag.RegisterErrorMsg = ex.Message;
-                }
-
-            }
-            return View();
-    }
-
+ 
         //Login action function
         
-    public async Task<ActionResult> SignIn(UserLoginModel model)
-    {
 
-            Username = model.Username;
-            Password = model.Password;
-       
-            if (ModelState.IsValid)
-            {
-
-                try
-                {
-                    var results = await _apiHepler.AuthenticateUser(Username, Password);
-                    loggedInUserModel = new loggedInUserModel();
-                    var result = await _apiHepler.GetLoggedInUserInfor(results.Access_Token);
-                    loggedInUserModel.Token = result.Token;
-                    loggedInUserModel.Id = result.Id;
-                    loggedInUserModel.UserRole = result.UserRole;
-
-                    Session["log"] = results.Access_Token;
-                    Token = results.Access_Token;
-                    TempData["welcome"] = "Welcome " + Username;
-                    Session["Username"] = Username;
-                    Session["Token"]=results.Access_Token;
-
-                    //////this will brake my code--(! Illegal assignment of user-roles from aspnetdb, less secured...  )
-                    if (loggedInUserModel.UserRole.Equals("Customer"))
-
-                    {
-                        return RedirectToAction("Index", "Service");
-
-                    }
-                    else if (loggedInUserModel.UserRole.Equals("ServiceProvider"))
-                    {
-                        return RedirectToAction("Home", "ServiceProviderHome");
-                    }
-
-
-                }
-                catch (Exception ex)
-                {
-                    ViewBag.ErrorMsg = ex.Message;
-                }
-
-
-            }
-
-           
-            return View();
-
-    }
     
 
     public async Task<ActionResult> CreateAProfile(Models.ProfileDisplayModel profile, Models.ProfileDisplayModel.AddressModel address )
@@ -286,8 +163,8 @@ namespace Handyman_UI.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+                return new HttpStatusCodeResult((int)HttpStatusCode.BadRequest);
+            } 
             else
             {
                 var token = Session["Token"].ToString();

@@ -46,7 +46,7 @@ namespace Handyman_UI.Controllers
                 try
                 {
                     var results = await _apiHepler.AuthenticateUser(Username, Password);
-
+                    _loggedInUserModel = new loggedInUserModel();
                     var result = await _apiHepler.GetLoggedInUserInfor(results.Access_Token);
                     _loggedInUserModel.Token = result.Token;
                     _loggedInUserModel.Id = result.Id;
@@ -85,6 +85,82 @@ namespace Handyman_UI.Controllers
 
         }
 
+        //Register action method
+        public async Task<ActionResult> Register(CreateUserModel newUser)
+        {
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+
+
+                    user = new HandymanUILibrary.Models.NewUserModel();
+
+                    //Username and password are given a value once here and once in sign in
+
+                    user.Email = newUser.Username;
+                    user.Password = newUser.Password;
+                    user.ConfirmPassword = newUser.ConfirmPassword;
+
+                    Username = newUser.Username;
+                    Password = newUser.Password;
+                    user.UserRole = "Customer";//User role assignment to customer
+                    UserRole = "Customer";
+
+                    var loggedInUser = await _registerEndPoint.RegisterUser(user);
+                    Session["Token"] = loggedInUser.Access_Token;
+
+                    return RedirectToAction("CreateAProfile", "Profile");
+
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.RegisterErrorMsg = ex.Message;
+                }
+
+            }
+            return View();
+        }
+
+        public async Task<ActionResult> RegisterProvider(CreateUserModel newUser)
+        {
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+
+
+                    user = new HandymanUILibrary.Models.NewUserModel();
+
+                    //Username and password are given a value once here and once in sign in
+
+                    user.Email = newUser.Username;
+                    user.Password = newUser.Password;
+                    user.ConfirmPassword = newUser.ConfirmPassword;
+
+                    Username = newUser.Username;
+                    Password = newUser.Password;
+                    user.UserRole = "ServiceProvider";//User role assignment
+                    UserRole = "ServiceProvider";
+                    var loggedInUser = await _registerEndPoint.RegisterUser(user);
+                    Session["Token"] = loggedInUser.Access_Token;
+
+
+                    return RedirectToAction("CreateAProfile", "Profile");
+
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.RegisterErrorMsg = ex.Message;
+                }
+
+            }
+            return View();
+        }
+
+
         //Log Out Function
         public ActionResult Logout()
         {
@@ -96,8 +172,16 @@ namespace Handyman_UI.Controllers
             _apiHepler.LogOutuser();
             Session["log"] = null;
             _apiHepler = null;
-            return RedirectToAction("Index", "Service");
+            return RedirectToAction("LockScreen", "Login");
 
+        }
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+        public ActionResult LockScreen()
+        {
+            return View();
         }
 
     }
