@@ -5,6 +5,12 @@
     Layout = "~/Views/Shared/_ServiceProviderLayout.cshtml";
 }
 
+<style>
+    #map {
+        height: 100%;
+    }
+</style>
+
 <!-- Content Header (Page header) -->
 <div class="content-header">
     <div class="container-fluid">
@@ -91,26 +97,7 @@
     <!-- Left col -->
     <section class="col-lg-7 connectedSortable">
         <!-- Custom tabs (Charts with tabs)-->
-        <!-- Available Services -->
-        @*A search section*@
-        @using (Html.BeginForm("Search", "ServiceProviderHome", FormMethod.Get))
-        {
-            <div class="container-fluid row card ">
-                <div class="card-header border-0">
-                    <div class="col-lg-4">
-                        <input type="text" placeholder="Keyword Search" name="serviceSearchString" class="form-control text-center" />
-                    </div>
 
-                    <div class="col-lg-4  ">
-                        <button type="submit" class="form-control"> Search</button>
-                    </div>
-
-                    <div class="row">
-                        @Html.Partial("Test", Model.services)
-                    </div>
-                </div>
-            </div>
-        }
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">
@@ -495,7 +482,13 @@
                 <!-- /.card-tools -->
             </div>
             <div class="card-body">
-                <div id="world-map" style="height: 250px; width: 100%;"></div>
+                <div id="map" style="height: 250px; width: 100%;">
+                    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+                    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOVg7-lAsKrCWDOF7n4NHAVCdCmb9Vk08&callback=initMap&v=weekly"
+                            async>
+
+                    </script>
+                </div>
             </div>
             <!-- /.card-body-->
             <div class="card-footer bg-transparent">
@@ -648,3 +641,13 @@
 
 
 </div>
+<script>
+    let map;
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: { lat: -34.397, lng: 150.644 },
+            zoom: 8,
+        });
+    }
+</script>
