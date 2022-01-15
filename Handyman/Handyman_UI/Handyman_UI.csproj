@@ -182,7 +182,7 @@
     <Compile Include="Controllers\Customer\CustomerHomeController.cs" />
     <Compile Include="Controllers\Service\IServicesLoader.cs" />
     <Compile Include="Controllers\Authentification\LoginController.cs" />
-    <Compile Include="Controllers\Authentification\ProfileController.cs" />
+    <Compile Include="Controllers\Profile\ProfileController.cs" />
     <Compile Include="Controllers\Service\ServiceController.cs" />
     <Compile Include="Controllers\ServiceProvider\ServiceProviderHomeController.cs" />
     <Compile Include="Controllers\Service\ServicesLoader.cs" />

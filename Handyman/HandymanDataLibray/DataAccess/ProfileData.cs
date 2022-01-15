@@ -60,6 +60,7 @@ namespace HandymanDataLibrary.Internal
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
+                
             }
 
             return tempProfile;

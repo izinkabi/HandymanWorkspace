@@ -77,28 +77,35 @@ namespace Handyman_UI.Controllers
 
 
                     var results = await _apiHepler.AuthenticateUser(Username, Password);//auth awaited task
-                    Token = results.Access_Token;
-                    Session["Token"] = results.Access_Token;
-                    var loggeuser = await _apiHepler.GetLoggedInUserInfor(results.Access_Token);// awaited loggedUser
-
-                    profileModel.UserId = loggeuser.Id;//pass user ID
-
-                    await _profileEndPoint.PostProfile(profileModel);//waited results of posted user profile
-
-                    if (UserRole=="Customer")
-                    {
-                       
-                        return RedirectToAction("RegisterCustomer", "CustomerHome");
-
-                    }
-                    else if (UserRole=="ServiceProvider" )
-                    {
-                        TempData["newuser"] = "Service Provider";
-                        return RedirectToAction("RegisterServiceProvider", "ServiceProviderHome");
-                    }
 
                     
+                    if (results == null)
+                    {
+                        return RedirectToAction("Login", "Login");
+                    } else
+                        {
+                        Token = results.Access_Token;
+                        Session["Token"] = results.Access_Token;
+                        var loggeuser = await _apiHepler.GetLoggedInUserInfor(results.Access_Token);// awaited loggedUser
 
+                        profileModel.UserId = loggeuser.Id;//pass user ID
+
+                        await _profileEndPoint.PostProfile(profileModel);//waited results of posted user profile
+
+                        if (UserRole == "Customer")
+                        {
+
+                            return RedirectToAction("RegisterCustomer", "CustomerHome");
+
+                        }
+                        else if (UserRole == "ServiceProvider")
+                        {
+                            TempData["newuser"] = "Service Provider";
+                            return RedirectToAction("RegisterServiceProvider", "ServiceProviderHome");
+                        }
+                    }
+                    
+                     
                 }
                 catch (Exception ex)
                 {
