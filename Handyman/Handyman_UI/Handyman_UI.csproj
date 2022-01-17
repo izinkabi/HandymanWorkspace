@@ -180,6 +180,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Controllers\Customer\CustomerHomeController.cs" />
+    <Compile Include="Controllers\Email\EmailController.cs" />
     <Compile Include="Controllers\Service\IServicesLoader.cs" />
     <Compile Include="Controllers\Authentification\LoginController.cs" />
     <Compile Include="Controllers\Profile\ProfileController.cs" />
@@ -2453,6 +2454,9 @@
     <Content Include="Views\Profile\Edit.cshtml" />
     <Content Include="Views\Login\ForgotPassword.cshtml" />
     <Content Include="Views\Login\LockScreen.cshtml" />
+    <Content Include="Views\Email\Inbox.cshtml" />
+    <Content Include="Views\Email\ComposeEmail.cshtml" />
+    <Content Include="Views\Email\Read.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
