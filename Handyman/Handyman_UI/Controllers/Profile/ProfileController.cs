@@ -13,8 +13,8 @@ namespace Handyman_UI.Controllers
     {
 
         private IAPIHelper _apiHepler;
-        static private string Username,Password;
-        static private string Token;
+        
+       
         static private string UserRole;
         
         private HandymanUILibrary.Models.ProfileModel profileModel;      
@@ -25,11 +25,11 @@ namespace Handyman_UI.Controllers
        
         static private string DisplayUserName;
         static private loggedInUserModel loggedInUserModel;
-        public ProfileController(IAPIHelper aPIHelper,IProfileEndPoint profile,IRegisterEndPoint registerEndPoint)
+        public ProfileController(IAPIHelper aPIHelper,IProfileEndPoint profile)
         {
             _apiHepler = aPIHelper;
             _profileEndPoint = profile;
-            _registerEndPoint = registerEndPoint;         
+           
         }
 
         //Action method for 
@@ -66,29 +66,24 @@ namespace Handyman_UI.Controllers
                 profileModel.Address.City = address.City;
 
                 ViewBag.profilename = profile.Name + profile.Surname;
-               
 
+                
                 try
                 {
-                    //We await multiple tasks to create the profile
-                    //First Get the token with auth and get the loggedin user
-                    //Then pass the user ID but keep it to track the user 
-                    //Finally we await the profile post task and if successful redict to the mentioned view/method
-
-
-                    var results = await _apiHepler.AuthenticateUser(Username, Password);//auth awaited task
-
                     
-                    if (results == null)
+                   
+                    
+                    if (Session["Token"] == null)
                     {
-                        return RedirectToAction("Login", "Login");
+                        return RedirectToAction("SignIn", "Login");
                     } else
                         {
-                        Token = results.Access_Token;
-                        Session["Token"] = results.Access_Token;
-                        var loggeuser = await _apiHepler.GetLoggedInUserInfor(results.Access_Token);// awaited loggedUser
+
+                        var token = Session["Token"].ToString();
+                        var loggeuser = await _apiHepler.GetLoggedInUserInfor(token);// awaited loggedUser
 
                         profileModel.UserId = loggeuser.Id;//pass user ID
+                        UserRole = loggeuser.UserRole;
 
                         await _profileEndPoint.PostProfile(profileModel);//waited results of posted user profile
 
@@ -100,7 +95,7 @@ namespace Handyman_UI.Controllers
                         }
                         else if (UserRole == "ServiceProvider")
                         {
-                            TempData["newuser"] = "Service Provider";
+                            
                             return RedirectToAction("RegisterServiceProvider", "ServiceProviderHome");
                         }
                     }

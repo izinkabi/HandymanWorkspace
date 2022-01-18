@@ -183,7 +183,7 @@
 
                             <p>
                                 @Session["Username"] - Handyman
-                                <small>Member since Nov. 2012</small>
+                                @*<small>Member since Nov. 2012</small>*@
                             </p>
                         </li>
                         <!-- Menu Body -->
@@ -504,7 +504,7 @@
                     {
                         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
                         <div class="alert alert-success">
-                            <strong>@TempData["newuser"].ToString()!</strong> Indicates a successful in registration.
+                            <strong>@TempData["newuser"].ToString()!</strong> This indicates success in registration.
                         </div>
                     }
                     @RenderBody()

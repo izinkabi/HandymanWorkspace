@@ -22,7 +22,7 @@ namespace Handyman_UI.Controllers
 
         static private string DisplayUserName;
         static private loggedInUserModel _loggedInUserModel;
-
+        static bool IsRegistered;
 
         public LoginController(IAPIHelper aPIHelper, IProfileEndPoint profile, IRegisterEndPoint registerEndPoint, loggedInUserModel loggedInUserModel)
         {
@@ -52,21 +52,32 @@ namespace Handyman_UI.Controllers
                     _loggedInUserModel.Id = result.Id;
                     _loggedInUserModel.UserRole = result.UserRole;
 
-                    Session["log"] = results.Access_Token;
+                    Session["log"] = "logged";
                     Token = results.Access_Token;
                     TempData["welcome"] = "Welcome " + Username;
                     Session["Username"] = Username;
-                    Session["Token"] = results.Access_Token;
+                    if (Session["Token"] == null)
+                    {
+                        Session["Token"] = results.Access_Token;
+                    }
+                    
 
                     //////this will brake my code--(! Illegal assignment of user-roles from aspnetdb, less secured...  )
                     if (_loggedInUserModel.UserRole.Equals("Customer"))
-
                     {
+                        if (IsRegistered)
+                        {
+                            return RedirectToAction("CreateAProfile", "Profile");
+                        }
                         return RedirectToAction("Index", "Service");
 
                     }
                     else if (_loggedInUserModel.UserRole.Equals("ServiceProvider"))
                     {
+                        if (IsRegistered)
+                        {
+                            return RedirectToAction("CreateAProfile", "Profile");
+                        }
                         return RedirectToAction("Home", "ServiceProviderHome");
                     }
 
@@ -109,14 +120,15 @@ namespace Handyman_UI.Controllers
                     UserRole = "Customer";
 
                     var loggedInUser = await _registerEndPoint.RegisterUser(user);
-                    Session["Token"] = loggedInUser.Access_Token;
-
-                    return RedirectToAction("CreateAProfile", "Profile");
+                    // Session["Token"] = loggedInUser.Access_Token;
+                    IsRegistered = true;
+                    return RedirectToAction("SignIn", "Login");
 
                 }
                 catch (Exception ex)
                 {
                     ViewBag.RegisterErrorMsg = ex.Message;
+                    IsRegistered = false;
                 }
 
             }
@@ -145,15 +157,16 @@ namespace Handyman_UI.Controllers
                     user.UserRole = "ServiceProvider";//User role assignment
                     UserRole = "ServiceProvider";
                     var loggedInUser = await _registerEndPoint.RegisterUser(user);
-                    Session["Token"] = loggedInUser.Access_Token;
+                    //Session["Token"] = loggedInUser.Access_Token;
+                    IsRegistered = true;
 
-
-                    return RedirectToAction("CreateAProfile", "Profile");
+                    return RedirectToAction("SignIn", "Login");
 
                 }
                 catch (Exception ex)
                 {
                     ViewBag.RegisterErrorMsg = ex.Message;
+                    IsRegistered = false;
                 }
 
             }
@@ -168,10 +181,11 @@ namespace Handyman_UI.Controllers
             Session["Username"] = null;
             Session["profilename"] = null;
             _loggedInUserModel = null;
-
+            Session["Token"] = null;
             _apiHepler.LogOutuser();
             Session["log"] = null;
             _apiHepler = null;
+            IsRegistered = false;
             return RedirectToAction("LockScreen", "Login");
 
         }

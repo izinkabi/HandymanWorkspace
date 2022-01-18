@@ -12,20 +12,13 @@ namespace Handyman_UI.Controllers
     {
 
         private IAPIHelper _apiHepler;
-        private IloggedInUserModel _loggedInUserModel;
-
-        private HandymanUILibrary.Models.NewUserModel user;
-        private HandymanUILibrary.Models.ProfileModel profileModel;
-
-        static private string DisplayUserName;
-        static private string Username;
-        static private string Password;
+        
 
         private IProfileEndPoint _profileEndPoint;
         private IConsumerEndPoint _consumerEndPoint;
         //private IRegisterProviderEndPoint _registerProviderEndpoint;
        
-        private bool loggedIn;
+        
         
 
         //The use of constructor allows for the Imterfaces to be rendered
@@ -97,7 +90,7 @@ namespace Handyman_UI.Controllers
                 await _consumerEndPoint.PostConsumer(consumerModel);
                 TempData["newuser"] = "Customer";
 
-                return RedirectToAction("SignIn", "Profile");
+                return RedirectToAction("Index", "Service");
             }
             catch(Exception ex)
             {
