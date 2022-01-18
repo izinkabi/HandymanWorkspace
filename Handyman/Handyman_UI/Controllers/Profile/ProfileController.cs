@@ -95,7 +95,7 @@ namespace Handyman_UI.Controllers
                         }
                         else if (UserRole == "ServiceProvider")
                         {
-                            TempData["newuser"] = "Service Provider";
+                            
                             return RedirectToAction("RegisterServiceProvider", "ServiceProviderHome");
                         }
                     }
