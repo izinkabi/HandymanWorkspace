@@ -48,20 +48,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API\APIHelper.cs" />
-    <Compile Include="API\ConsumerEndPoint.cs" />
-    <Compile Include="API\IAPIHelper.cs" />
-    <Compile Include="API\IConsumerEndPoint.cs" />
-    <Compile Include="API\IProfileEndPoint.cs" />
-    <Compile Include="API\IRegisterEndPoint.cs" />
+    <Compile Include="API\User\APIHelper.cs" />
+    <Compile Include="API\Consumer\ConsumerEndPoint.cs" />
+    <Compile Include="API\User\IAPIHelper.cs" />
+    <Compile Include="API\Consumer\IConsumerEndPoint.cs" />
+    <Compile Include="API\User\IProfileEndPoint.cs" />
+    <Compile Include="API\User\IRegisterEndPoint.cs" />
     <Compile Include="API\IRequestEndPoint.cs" />
-    <Compile Include="API\IServiceProviderEndPoint.cs" />
+    <Compile Include="API\ServiceProvider\IServiceProviderEndPoint.cs" />
     <Compile Include="API\IServiceEndPoint.cs" />
     <Compile Include="API\OTPGenerator.cs" />
-    <Compile Include="API\ProfileEndPoint.cs" />
-    <Compile Include="API\RegisterEndPoint.cs" />
+    <Compile Include="API\User\ProfileEndPoint.cs" />
+    <Compile Include="API\User\RegisterEndPoint.cs" />
     <Compile Include="API\RequestEndPoint.cs" />
-    <Compile Include="API\ServiceProviderEndPoint.cs" />
+    <Compile Include="API\ServiceProvider\ServiceProviderEndPoint.cs" />
     <Compile Include="API\ServiceEndPoint.cs" />
     <Compile Include="Models\AuthenticatedUserModel.cs" />
     <Compile Include="Models\ConsumerModel.cs" />
