@@ -1,4 +1,5 @@
-﻿using Handyman_UI.Models;
+﻿using Handyman_UI.Controllers.Helpers;
+using Handyman_UI.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,13 +11,14 @@ namespace Handyman_UI.Controllers
     {
         private IServicesLoader _serviceLoader;
         private List<ServiceDisplayModel> services;
+        private IExceptionsHelper _exceptionsHelper;
 
        
 
-        public ServiceController(IServicesLoader servicesLoader)
+        public ServiceController(IServicesLoader servicesLoader,IExceptionsHelper exceptionHelper)
         {
             _serviceLoader = servicesLoader;
-           
+            _exceptionsHelper = exceptionHelper;
         }
 
 
@@ -26,29 +28,34 @@ namespace Handyman_UI.Controllers
             /*Display all Services*/
             if (services==null)
             {
-               
-                services = await _serviceLoader.getDisplayServices();
-                return View(services);
+                try
+                {
+                    services = await _serviceLoader.getDisplayServices();
+                    //return View(services);
+                }catch(Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
             }
-            else
-            {
-                return View(services);
-            }
-           
+            
+           return View(services);
         }
 
 
         //A filter/search method for a service
         public async Task<ActionResult> Search(string serviceSearchString)
         {
-
-            if (services == null)
+            var tempServices = new List<ServiceDisplayModel>();
+            try
             {
 
-                services = await _serviceLoader.getDisplayServices();
-                
-            }
-            var tempServices = new List<ServiceDisplayModel>();
+
+                if (services == null)
+                {
+
+                    services = await _serviceLoader.getDisplayServices();
+                }
+               
                 foreach (var service in services)
                 {
                     if ((service.Name.Contains(serviceSearchString)) || (service.Category.Contains(serviceSearchString)))
@@ -57,9 +64,13 @@ namespace Handyman_UI.Controllers
 
                     }
                 }
-           
+
+               
+            }catch(IndexOutOfRangeException ex)
+            {
+                _exceptionsHelper.DisplayEmptyArrayError(ex.Message);
+            }
             return View(tempServices);
-           
         }
 
         // GET: Service/GetServices

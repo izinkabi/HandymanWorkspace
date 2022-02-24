@@ -62,6 +62,28 @@ namespace HandymanUILibrary.API
             }
 
         }
+        
+        //Only invoked by the request 
+        //Get the profile by id
+        public async Task<ProfileModel> GetProfileById(int Id)
+        {
+
+
+            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync($"/api/Profiles?Id={Id}"))
+            {
+                if (httpResponseMessage.IsSuccessStatusCode)
+                {
+
+                    var result = await httpResponseMessage.Content.ReadAsAsync<ProfileModel>();
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(httpResponseMessage.ReasonPhrase);
+                }
+            }
+
+        }
 
 
         public async Task UpdateProfile(ProfileModel profile)

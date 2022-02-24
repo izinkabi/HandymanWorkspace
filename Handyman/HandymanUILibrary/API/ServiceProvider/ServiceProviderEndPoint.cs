@@ -69,13 +69,13 @@ namespace HandymanUILibrary.API
         }
 
         //Get a list of providers
-        public async Task<ServiceProviderModel> GetServiceProviders(ServiceProviderModel serviceProvider)
+        public async Task<List<ServiceProviderModel>> GetServiceProviders()
         {
-
+            List<ServiceProviderModel> providers = new List<ServiceProviderModel>();
             if (_aPIHelper != null)
             {
 
-
+                
                 //_aPIHelper = new APIHelper();
                 using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync("/api/GetServiceProviders"))
                 {
@@ -86,25 +86,17 @@ namespace HandymanUILibrary.API
                         providerModel = new ServiceProviderModel();
 
                         var result = await httpResponseMessage.Content.ReadAsAsync<List<ServiceProviderModel>>();
-
-                        foreach (ServiceProviderModel sp in result)
-                        {
-                            if (sp.ProfileId == serviceProvider.ProfileId)
-                            {
-                                providerModel = sp;
-                            }
-
-                        }
-                       
+                         return result;
                     }
                     else
                     {
                         throw new Exception(httpResponseMessage.ReasonPhrase);
                     }
                 }
+                
             }
-            return providerModel;
 
+            return providers;
         }
 
         //Get a list of service for the given service provider's id

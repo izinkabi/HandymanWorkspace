@@ -169,30 +169,37 @@ namespace Handyman_UI.Controllers
             } 
             else
             {
-                var token = Session["Token"].ToString();
-                var loggedUser = await _apiHepler.GetLoggedInUserInfor(token);
-                UserModel user = new UserModel();
-                user.Id = loggedUser.Id;
-                var profile = await _profileEndPoint.GetProfile(user);
-
                 ProfileDisplayModel profileDisplayModel = new ProfileDisplayModel();
-                profileDisplayModel.UserId = profile.UserId;
-                profileDisplayModel.ProfileId = profile.Id;
-                profileDisplayModel.Name = profile.Name;
-                profileDisplayModel.Surname = profile.Surname;
-                profileDisplayModel.DateOfBirth = profile.DateOfBirth;
-                profileDisplayModel.PhoneNumber = profile.PhoneNumber;
-
-                profileDisplayModel.AddressM = new ProfileDisplayModel.AddressModel();
-                profileDisplayModel.AddressM.Id = profile.Address.Id;
-                profileDisplayModel.AddressM.City = profile.Address.City;
-                profileDisplayModel.AddressM.PostalCode = profile.Address.PostalCode;
-                profileDisplayModel.AddressM.StreetName = profile.Address.StreetName;
-                profileDisplayModel.AddressM.Surburb = profile.Address.Surburb;
-                profileDisplayModel.AddressM.HouseNumber = profile.Address.HouseNumber;
-                if (profile == null)
+                try
                 {
-                    return HttpNotFound();
+                    var token = Session["Token"].ToString();
+                    var loggedUser = await _apiHepler.GetLoggedInUserInfor(token);
+                    UserModel user = new UserModel();
+                    user.Id = loggedUser.Id;
+                    var profile = await _profileEndPoint.GetProfile(user);
+
+                   
+                    profileDisplayModel.UserId = profile.UserId;
+                    profileDisplayModel.ProfileId = profile.Id;
+                    profileDisplayModel.Name = profile.Name;
+                    profileDisplayModel.Surname = profile.Surname;
+                    profileDisplayModel.DateOfBirth = profile.DateOfBirth;
+                    profileDisplayModel.PhoneNumber = profile.PhoneNumber;
+
+                    profileDisplayModel.AddressM = new ProfileDisplayModel.AddressModel();
+                    profileDisplayModel.AddressM.Id = profile.Address.Id;
+                    profileDisplayModel.AddressM.City = profile.Address.City;
+                    profileDisplayModel.AddressM.PostalCode = profile.Address.PostalCode;
+                    profileDisplayModel.AddressM.StreetName = profile.Address.StreetName;
+                    profileDisplayModel.AddressM.Surburb = profile.Address.Surburb;
+                    profileDisplayModel.AddressM.HouseNumber = profile.Address.HouseNumber;
+                    if (profile == null)
+                    {
+                        return HttpNotFound();
+                    }
+                }catch(Exception ex)
+                {
+                    throw new Exception(ex.Message);                   
                 }
                 return View("Edit", profileDisplayModel);
             }
@@ -209,24 +216,30 @@ namespace Handyman_UI.Controllers
             if (ModelState.IsValid)
             {
                 var profileUpdate = new ProfileModel();
+                try
+                {
 
-                profileUpdate.Address = new ProfileModel.AddressModel();
-                profileUpdate.Id = profile.ProfileId;
-                profileUpdate.Address.City = profile.AddressM.City;
-                profileUpdate.Address.StreetName = profile.AddressM.StreetName;
-                profileUpdate.Address.Surburb = profile.AddressM.Surburb;
-                profileUpdate.Address.PostalCode = profile.AddressM.PostalCode;
-                profileUpdate.Address.HouseNumber = profile.AddressM.HouseNumber;
-                profileUpdate.Address.Id = profile.AddressM.Id;
+                    profileUpdate.Address = new ProfileModel.AddressModel();
+                    profileUpdate.Id = profile.ProfileId;
+                    profileUpdate.Address.City = profile.AddressM.City;
+                    profileUpdate.Address.StreetName = profile.AddressM.StreetName;
+                    profileUpdate.Address.Surburb = profile.AddressM.Surburb;
+                    profileUpdate.Address.PostalCode = profile.AddressM.PostalCode;
+                    profileUpdate.Address.HouseNumber = profile.AddressM.HouseNumber;
+                    profileUpdate.Address.Id = profile.AddressM.Id;
 
-                profileUpdate.UserId = profile.UserId;
-                profileUpdate.Name = profile.Name;
-                profileUpdate.PhoneNumber = profile.PhoneNumber;
-                profileUpdate.Surname = profile.Surname;
-                profileUpdate.DateOfBirth = profile.DateOfBirth;
-                TempData["updatedprofile"] = profile.Name + " you edited your Profile";
-                //first update the profile
-                await _profileEndPoint.UpdateProfile(profileUpdate);
+                    profileUpdate.UserId = profile.UserId;
+                    profileUpdate.Name = profile.Name;
+                    profileUpdate.PhoneNumber = profile.PhoneNumber;
+                    profileUpdate.Surname = profile.Surname;
+                    profileUpdate.DateOfBirth = profile.DateOfBirth;
+                    TempData["updatedprofile"] = profile.Name + " you edited your Profile";
+                    //first update the profile
+                    await _profileEndPoint.UpdateProfile(profileUpdate);
+                }catch(Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
                 return RedirectToAction("ProfileDetails");
             }
             return View(profile);

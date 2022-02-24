@@ -178,16 +178,23 @@ namespace Handyman_UI.Controllers
         public ActionResult Logout()
         {
             //clear the instances in the container
-            Session["Username"] = null;
-            Session["profilename"] = null;
-            _loggedInUserModel = null;
-            Session["Token"] = null;
-            _apiHepler.LogOutuser();
-            Session["log"] = null;
-            _apiHepler = null;
-            IsRegistered = false;
-            return RedirectToAction("LockScreen", "Login");
 
+            try
+            {
+                Session["Username"] = null;
+                Session["profilename"] = null;
+                _loggedInUserModel = null;
+                Session["Token"] = null;
+                _apiHepler.LogOutuser();
+                Session["log"] = null;
+                _apiHepler = null;
+                IsRegistered = false;
+                
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return RedirectToAction("LockScreen", "Login");
         }
         public ActionResult ForgotPassword()
         {
