@@ -8,9 +8,9 @@ namespace Handyman_UI.Controllers.Customer.Helpers
 {
     public class CustomerHelper: ICustomerHelper
     {
-         bool _IsLoggedIn;
-         bool _IsRegistered;
-         bool _IsCustomer;
+        static bool _IsLoggedIn;
+        static bool _IsRegistered;
+        static bool _IsCustomer;
          bool _CanRequest;
          bool _CanCancelRequest;
          IServicesLoader _servicesLoader;
@@ -106,7 +106,19 @@ namespace Handyman_UI.Controllers.Customer.Helpers
 
 
 
-        //This will be the only visible action for CustomerHelper
+        public void LogOnVerification()
+        {
+            if (_IsLoggedIn)
+            {
+                return;
+            }
+            else{
+                _IsLoggedIn = true;
+            }
+            
+        }
+
+
         //Make the request with a customer and the a Service
         public void ActionARequest(CustomerModel customer ,ServiceModel service)
         {
@@ -115,6 +127,7 @@ namespace Handyman_UI.Controllers.Customer.Helpers
             {
                 if (_IsCustomer)
                 {
+
 
                 }          
             }

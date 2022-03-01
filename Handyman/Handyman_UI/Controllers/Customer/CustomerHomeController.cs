@@ -1,4 +1,6 @@
-﻿using Handyman_UI.Models;
+﻿using Handyman_UI.Controllers.Customer.Helpers;
+using Handyman_UI.Controllers.Requests.Helpers;
+using Handyman_UI.Models;
 using HandymanUILibrary.API;
 using HandymanUILibrary.Models;
 using System;
@@ -11,66 +13,50 @@ namespace Handyman_UI.Controllers
     public class CustomerHomeController : Controller
     {
 
-        private IAPIHelper _apiHepler;
-        
-
-        private IProfileEndPoint _profileEndPoint;
-        private IConsumerEndPoint _consumerEndPoint;
+         CustomerHelper Helper;
+         RequestHelper RequestHelper;
+         IAPIHelper _apiHepler;
+         IProfileEndPoint _profileEndPoint;
+         IConsumerEndPoint _consumerEndPoint;
+         IRequestEndPoint _requestEndPoint;
+         IServiceProviderEndPoint _serviceProviderEndPoint;
         //private IRegisterProviderEndPoint _registerProviderEndpoint;
        
         
         
 
         //The use of constructor allows for the Imterfaces to be rendered
-        public CustomerHomeController(IAPIHelper aPIHelper,IProfileEndPoint profileEndpoint,IConsumerEndPoint consumerEndpoint)
+        public CustomerHomeController(IAPIHelper aPIHelper,IProfileEndPoint profileEndpoint,
+            IConsumerEndPoint consumerEndpoint,IServicesLoader servicesLoader,IRequestEndPoint requestEndPoint,IServiceProviderEndPoint serviceProviderEndPoint)
         {
             _apiHepler = aPIHelper;
             _profileEndPoint = profileEndpoint;
             _consumerEndPoint = consumerEndpoint;
+            Helper = new CustomerHelper(servicesLoader);
+            Helper.IsLoggedIn = true;
+            _requestEndPoint = requestEndPoint;
+            _serviceProviderEndPoint = serviceProviderEndPoint;
         }
 
         
 
         //Home page Action funtion
-        public  async Task<ActionResult> Index()
-        {
-          
-            return View();
-        }
 
-        public async Task<ActionResult> ElectronicCategory()
-        {
-            return View();
-        }
-
-        public ActionResult About()
-        {
-            
-            ViewBag.Message = "Your application description page.";
-            
-            return View();
-        }
-        public ActionResult Services()
-        {
-
-            ViewBag.Message = "Your application description page.";
-           
-            return View();
-        }
-
-   
         public ActionResult UserDashBoard()
         {
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult RequestAService()
         {
-            
-            ViewBag.Message = "Your contact page.";
-            
-            return View();
+            if (Helper.IsCustomer)
+            {
+
+                RequestHelper = new RequestHelper(_requestEndPoint, _serviceProviderEndPoint, _profileEndPoint);
+            }
+               return View("Details","Requests");
         }
+
 
         //Here we are trying to register the consumer with having to create a view for it,
         //and it is referenced inside a string operand from CreateProfile()'s return statement
@@ -87,7 +73,9 @@ namespace Handyman_UI.Controllers
                 var consumerModel = new ConsumerModel();
                 consumerModel.ProfileId = profile.Id;
                 consumerModel.Activation = 1;
+
                 await _consumerEndPoint.PostConsumer(consumerModel);
+                Helper.IsCustomer = true;
                 TempData["newuser"] = "Customer";
 
                 return RedirectToAction("Index", "Service");

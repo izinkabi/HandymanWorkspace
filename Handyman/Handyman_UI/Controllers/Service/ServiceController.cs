@@ -12,6 +12,7 @@ namespace Handyman_UI.Controllers
         private IServicesLoader _serviceLoader;
         private List<ServiceDisplayModel> services;
         private IExceptionsHelper _exceptionsHelper;
+        string ErrorMsg;
 
        
 
@@ -34,7 +35,8 @@ namespace Handyman_UI.Controllers
                     //return View(services);
                 }catch(Exception ex)
                 {
-                    throw new Exception(ex.Message);
+                    ErrorMsg = ex.Message;
+                    return View("Error");
                 }
             }
             

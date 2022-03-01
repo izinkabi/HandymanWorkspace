@@ -21,26 +21,7 @@ namespace Handyman_UI.Controllers.Requests
         }
 
         // GET: Requests/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Requests/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+       
 
         // GET: Requests/Edit/5
         public ActionResult Edit(int id)

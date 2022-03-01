@@ -24,7 +24,8 @@ namespace Handyman_UI.Controllers
         static private loggedInUserModel _loggedInUserModel;
         static bool IsRegistered;
 
-        public LoginController(IAPIHelper aPIHelper, IProfileEndPoint profile, IRegisterEndPoint registerEndPoint, loggedInUserModel loggedInUserModel)
+        public LoginController(IAPIHelper aPIHelper, IProfileEndPoint profile, IRegisterEndPoint registerEndPoint
+            , loggedInUserModel loggedInUserModel)
         {
             _apiHepler = aPIHelper;
             _profileEndPoint = profile;
@@ -48,6 +49,7 @@ namespace Handyman_UI.Controllers
                     var results = await _apiHepler.AuthenticateUser(Username, Password);
                     _loggedInUserModel = new loggedInUserModel();
                     var result = await _apiHepler.GetLoggedInUserInfor(results.Access_Token);
+                    
                     _loggedInUserModel.Token = result.Token;
                     _loggedInUserModel.Id = result.Id;
                     _loggedInUserModel.UserRole = result.UserRole;
