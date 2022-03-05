@@ -25,7 +25,7 @@ namespace Handyman_UI.Controllers
         static private IloggedInUserModel _loggedInUserModel;
         static bool IsRegistered;
 
-        public LoginController(IAPIHelper aPIHelper, IProfileEndPoint profile, IRegisterEndPoint registerEndPoint
+        protected LoginController(IAPIHelper aPIHelper, IProfileEndPoint profile, IRegisterEndPoint registerEndPoint
             , IloggedInUserModel loggedInUserModel)
         {
             _apiHepler = aPIHelper;

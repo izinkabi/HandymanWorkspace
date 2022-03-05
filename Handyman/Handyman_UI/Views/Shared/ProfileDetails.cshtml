@@ -1,4 +1,4 @@
-﻿@model Handyman_UI.Models.ProfileDisplayModel
+﻿@model HandymanUILibrary.Models.ProfileModel
 
 <div>
     <h2>Profile</h2>
@@ -45,8 +45,8 @@
         </dd>
     </dl>
 
-    @Html.Partial("AddressDetails", Model.AddressM)
+    @Html.Partial("AddressDetails", Model.Address)
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ProfileId}, new { @class = "btn" })
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id}, new { @class = "btn" })
 </p>

@@ -11,15 +11,16 @@ namespace Handyman_UI.Controllers
     {
         private IServicesLoader _serviceLoader;
         private List<ServiceDisplayModel> services;
-        private IExceptionsHelper _exceptionsHelper;
+        private ExceptionsHelper DisplayExceptions; 
+        
         string ErrorMsg;
 
        
 
-        public ServiceController(IServicesLoader servicesLoader,IExceptionsHelper exceptionHelper)
+        public ServiceController(IServicesLoader servicesLoader)
         {
             _serviceLoader = servicesLoader;
-            _exceptionsHelper = exceptionHelper;
+            DisplayExceptions = new ExceptionsHelper();
         }
 
 
@@ -70,7 +71,7 @@ namespace Handyman_UI.Controllers
                
             }catch(IndexOutOfRangeException ex)
             {
-                _exceptionsHelper.DisplayEmptyArrayError(ex.Message);
+                DisplayExceptions.DisplayEmptyArrayError(ex.Message);
             }
             return View(tempServices);
         }

@@ -9,10 +9,10 @@ using System.Web.Mvc;
 
 namespace Handyman_UI.Controllers.ServiceProvider
 {
-    public class ServiceProviderHomeController : Controller
+    public sealed class ServiceProviderHomeController : LoginController 
     {
         //interfaces for classes
-        private IServiceProviderEndPoint _serviceProvider;
+        private IServiceProviderEndPoint _serviceProviderEndPoint;
         private IServicesLoader _serviceLoader;
         private IAPIHelper _apiHepler;
         private IProfileEndPoint _profileEndPoint;
@@ -24,12 +24,14 @@ namespace Handyman_UI.Controllers.ServiceProvider
         private List<ServiceDisplayModel> localServices;
        
 
-
-        public ServiceProviderHomeController(IAPIHelper aPIHelper, IServiceProviderEndPoint registerProvider, IProfileEndPoint profileEndPoint,IServicesLoader servicesLoader)
+        
+        public ServiceProviderHomeController(IAPIHelper aPIHelper, IProfileEndPoint profile, IRegisterEndPoint registerEndPoint
+            , IloggedInUserModel loggedInUserModel,IServiceProviderEndPoint serviceProviderEndPoint, IServicesLoader servicesLoader) : base(aPIHelper,profile,registerEndPoint,loggedInUserModel)
         {
+           
             _apiHepler = aPIHelper;
-            _serviceProvider = registerProvider;
-            _profileEndPoint = profileEndPoint;
+            _serviceProviderEndPoint = serviceProviderEndPoint;
+            _profileEndPoint = profile;
             _serviceLoader = servicesLoader;
         }
         public async Task<ActionResult> Home()
@@ -47,9 +49,10 @@ namespace Handyman_UI.Controllers.ServiceProvider
             {
                 throw new Exception(ex.Message);
             }
+            
             //return View(serviceProvider);
         }
-
+        
         public ActionResult Requests()
         {
             return View();
@@ -182,23 +185,23 @@ namespace Handyman_UI.Controllers.ServiceProvider
                     {
                             var _token = Session["Token"].ToString();
 
-                            var loggeduser = await _apiHepler.GetLoggedInUserInfor(_token);
-                            var user = new UserModel();
-                            user.Id = loggeduser.Id;
+                            //_logge = await _apiHepler.GetLoggedInUserInfor(_token);
+                            //var user = new UserModel();
+                            //user.Id = loggeduser.Id;
                             //Getting a profile with its Address
-                            var results = await _profileEndPoint.GetProfile(user);
+                            //var results = await _profileEndPoint.GetProfile(user);
 
-                            serviceProvider.CompanyName = serviceProviderDisplay.CompanyName;
-                            serviceProvider.ProfileId = results.Id;
+                            //serviceProvider.CompanyName = serviceProviderDisplay.CompanyName;
+                            //serviceProvider.ProfileId = results.Id;
 
 
-                            var response = await _serviceProvider.PostServiceProvider(serviceProvider);
+                            var response = await _serviceProviderEndPoint.PostServiceProvider(serviceProvider);
                             ViewBag.MessageService = selectedItem.Text;
 
                             //store the provider's service
-                            var providerResult = await _serviceProvider.GetProviderByProfileId(results.Id);
+                            var providerResult = await _serviceProviderEndPoint.GetProviderByProfileId(0);/*****/
                             providersService.ServiceProviderId = providerResult.Id;
-                            var result = await _serviceProvider.PostProvidersService(providersService);
+                            var result = await _serviceProviderEndPoint.PostProvidersService(providersService);
                             TempData["newuser"] = "A new Service Provider, Handyman";
                             
                     return RedirectToAction("Home", "ServiceProviderHome");
@@ -235,7 +238,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
                     user.Id = loggeduser.Id;
                     //Getting a profile with its Address
                    
-                    var results = await _profileEndPoint.GetProfile(user);
+                    var results = await _profileEndPoint.GetProfile("");
                     providerModel.Profile.ProfileId = results.Id;
                     providerModel.Profile.Name = results.Name;
                     providerModel.Profile.PhoneNumber = results.PhoneNumber;
@@ -253,8 +256,8 @@ namespace Handyman_UI.Controllers.ServiceProvider
 
 
                     //get the provider and its services
-                    var response = await _serviceProvider.GetProviderByProfileId(results.Id);
-                    var dbProviderServices = await _serviceProvider.GetProvidersServiceByProviderId(response.Id);
+                    var response = await _serviceProviderEndPoint.GetProviderByProfileId(results.Id);
+                    var dbProviderServices = await _serviceProviderEndPoint.GetProvidersServiceByProviderId(response.Id);
                     var dbServices = await _serviceLoader.getDisplayServices();
 
                     providerModel.providerServices = new List<ServiceDisplayModel>();
@@ -317,9 +320,9 @@ namespace Handyman_UI.Controllers.ServiceProvider
             var loggedUseResult = await _apiHepler.GetLoggedInUserInfor(token);
             user.Id = loggedUseResult.Id;
 
-            var results = await _profileEndPoint.GetProfile(user);
-            var response = await _serviceProvider.GetProviderByProfileId(results.Id);
-            var dbProviderServices = await _serviceProvider.GetProvidersServiceByProviderId(response.Id);
+            var results = await _profileEndPoint.GetProfile("");
+            var response = await _serviceProviderEndPoint.GetProviderByProfileId(results.Id);
+            var dbProviderServices = await _serviceProviderEndPoint.GetProvidersServiceByProviderId(response.Id);
 
 
             if (dbProviderServices == null)
@@ -332,7 +335,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
             {
                 if (provservice.ServiceId == id)
                 {                  
-                    await _serviceProvider.DeleteProvidersService(provservice.Id);
+                    await _serviceProviderEndPoint.DeleteProvidersService(provservice.Id);
                     var service = await _serviceLoader.getServiceById(provservice.ServiceId);
                     TempData["servicedeleted"] = "You deleted " + service.Name;
 
@@ -361,7 +364,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
                     user.Id = loggeduser.Id;
                     //Getting a profile with its Address
 
-                    var results = await _profileEndPoint.GetProfile(user);
+                    var results = await _profileEndPoint.GetProfile("");
 
                     providerModel.Profile.Name = results.Name;
                     providerModel.Profile.PhoneNumber = results.PhoneNumber;
@@ -370,7 +373,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
                     providerModel.Profile.ProfileId = results.Id;
                     
 
-                    var providerResponse = await _serviceProvider.GetProviderByProfileId(results.Id);
+                    var providerResponse = await _serviceProviderEndPoint.GetProviderByProfileId(results.Id);
                     List<SelectListItem> serviceProviderTypeslist = new List<SelectListItem>()
                     {
                       new SelectListItem {Text = "Individual", Value = "1"},
@@ -479,7 +482,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
                       
                     }
 
-                    await _serviceProvider.UpdateServiceProvider(providerUpdate);
+                    await _serviceProviderEndPoint.UpdateServiceProvider(providerUpdate);
 
 
                     return RedirectToAction("ProviderDetails");
@@ -507,9 +510,9 @@ namespace Handyman_UI.Controllers.ServiceProvider
                 var user = new UserModel();
                 user.Id = loggeduser.Id;
                 //Getting a profile with its Address
-                var results = await _profileEndPoint.GetProfile(user);
-                var providerResponse = await _serviceProvider.GetProviderByProfileId(results.Id);
-                var dbProviderService = await _serviceProvider.GetProvidersServiceByProviderId(providerResponse.Id);
+                var results = await _profileEndPoint.GetProfile("");
+                var providerResponse = await _serviceProviderEndPoint.GetProviderByProfileId(results.Id);
+                var dbProviderService = await _serviceProviderEndPoint.GetProvidersServiceByProviderId(providerResponse.Id);
                 
 
                
@@ -528,7 +531,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
 
                     providersService.ServiceProviderId = providerResponse.Id;
 
-                    var result = await _serviceProvider.PostProvidersService(providersService);
+                    var result = await _serviceProviderEndPoint.PostProvidersService(providersService);
                     var service = await _serviceLoader.getServiceById(providersService.ServiceId);
                     TempData["serviceadded"] = "You Added " + service.Name;
                     return RedirectToAction("ProviderDetails");
