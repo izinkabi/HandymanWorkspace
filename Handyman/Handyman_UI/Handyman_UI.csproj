@@ -219,6 +219,7 @@
     <Compile Include="Models\ServiceDisplayModel.cs" />
     <Compile Include="Models\ServiceModel.cs" />
     <Compile Include="Models\ServiceProviderDisplayModel.cs" />
+    <Compile Include="Models\TestUserModel.cs" />
     <Compile Include="Models\UserLoginModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -2479,6 +2480,8 @@
     <Content Include="Views\RequestModels\Details.cshtml" />
     <Content Include="Views\RequestModels\Edit.cshtml" />
     <Content Include="Views\RequestModels\Index.cshtml" />
+    <Content Include="Views\Shared\_frontEndLayout.cshtml" />
+    <Content Include="Views\Test\View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2487,6 +2490,8 @@
     <Folder Include="Areas\loadingArea\Views\Shared\" />
     <Folder Include="BackEndTemp\Test\" />
     <Folder Include="Data\" />
+    <Folder Include="Views\Error\" />
+    <Folder Include="Views\Exceptions\" />
     <Folder Include="Views\Requests\" />
   </ItemGroup>
   <ItemGroup>

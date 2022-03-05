@@ -9,17 +9,22 @@ using Unity.Mvc3;
 
 namespace Handyman_UI
 {
-    public static class Bootstrapper
+    public static class Bootstrapper 
     {
 
-        
+        /// <summary>
+        /// 
+        /// </summary>
         public static void Initialise()
         {
           var  container = BuildUnityContainer();
            
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         private static IUnityContainer BuildUnityContainer()
         {
             var container = new UnityContainer();
