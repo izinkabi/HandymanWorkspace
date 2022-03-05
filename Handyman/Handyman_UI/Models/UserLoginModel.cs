@@ -16,7 +16,7 @@ namespace Handyman_UI.Models
         
         [DataType(DataType.Password)]
         [Display(Name ="Password")]
-        [Required(ErrorMessage = "Please enter your username/email")]
+        [Required(ErrorMessage = "Please enter your password")]
         public string Password { get; set; }
     }
 }

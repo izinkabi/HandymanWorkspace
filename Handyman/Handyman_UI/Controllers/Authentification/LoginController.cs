@@ -16,12 +16,13 @@ namespace Handyman_UI.Controllers
 
         private HandymanUILibrary.Models.ProfileModel profileModel;
         private NewUserModel user;
+        private TestUserModel testuserModel;
 
         private IProfileEndPoint _profileEndPoint;
         private IRegisterEndPoint _registerEndPoint;
 
         static private string DisplayUserName;
-        static private loggedInUserModel _loggedInUserModel;
+        static private IloggedInUserModel _loggedInUserModel;
         static bool IsRegistered;
 
         public LoginController(IAPIHelper aPIHelper, IProfileEndPoint profile, IRegisterEndPoint registerEndPoint
@@ -35,11 +36,11 @@ namespace Handyman_UI.Controllers
 
         //Login action function
 
-        public async Task<ActionResult> SignIn(UserLoginModel model)
+        public async Task<ActionResult> SignIn(UserLoginModel loginmodel)
         {
 
-            Username = model.Username;
-            Password = model.Password;
+            Username = loginmodel.Username;
+            Password = loginmodel.Password;
 
             if (ModelState.IsValid)
             {
@@ -47,23 +48,14 @@ namespace Handyman_UI.Controllers
                 try
                 {
                     var results = await _apiHepler.AuthenticateUser(Username, Password);
-                    _loggedInUserModel = new loggedInUserModel();
-                    var result = await _apiHepler.GetLoggedInUserInfor(results.Access_Token);
-                    
-                    _loggedInUserModel.Token = result.Token;
-                    _loggedInUserModel.Id = result.Id;
-                    _loggedInUserModel.UserRole = result.UserRole;
 
-                    Session["log"] = "logged";
-                    Token = results.Access_Token;
-                    TempData["welcome"] = "Welcome " + Username;
-                    Session["Username"] = Username;
-                    if (Session["Token"] == null)
-                    {
-                        Session["Token"] = results.Access_Token;
-                    }
-                    
+                    _loggedInUserModel = await _apiHepler.GetLoggedInUserInfor(results.Access_Token);
 
+                    //session
+                    Session["loggedinUser"] = _loggedInUserModel;
+                   
+                    
+                    _loggedInUserModel = (IloggedInUserModel)Session["loggedinuser"];
                     //////this will brake my code--(! Illegal assignment of user-roles from aspnetdb, less secured...  )
                     if (_loggedInUserModel.UserRole.Equals("Customer"))
                     {
@@ -183,7 +175,7 @@ namespace Handyman_UI.Controllers
 
             try
             {
-                Session["Username"] = null;
+               
                 Session["profilename"] = null;
                 _loggedInUserModel = null;
                 Session["Token"] = null;
@@ -191,12 +183,15 @@ namespace Handyman_UI.Controllers
                 Session["log"] = null;
                 _apiHepler = null;
                 IsRegistered = false;
+                Session.Clear();
+                this.Dispose();
+               
                 
             }catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            return RedirectToAction("LockScreen", "Login");
+            return RedirectToAction("Index", "Service");
         }
         public ActionResult ForgotPassword()
         {
