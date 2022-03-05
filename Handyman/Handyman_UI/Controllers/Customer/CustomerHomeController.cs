@@ -10,13 +10,11 @@ using System.Web.Mvc;
 
 namespace Handyman_UI.Controllers
 {
-    public class CustomerHomeController : Controller
+    public sealed class CustomerHomeController : LoginController
     {
 
          CustomerHelper Helper;
-         RequestHelper RequestHelper;
-         IAPIHelper _apiHepler;
-         IProfileEndPoint _profileEndPoint;
+         RequestHelper RequestHelper;   
          IConsumerEndPoint _consumerEndPoint;
          IRequestEndPoint _requestEndPoint;
          IServiceProviderEndPoint _serviceProviderEndPoint;
@@ -27,13 +25,14 @@ namespace Handyman_UI.Controllers
 
         //The use of constructor allows for the Imterfaces to be rendered
         public CustomerHomeController(IAPIHelper aPIHelper,IProfileEndPoint profileEndpoint,
-            IConsumerEndPoint consumerEndpoint,IServicesLoader servicesLoader,IRequestEndPoint requestEndPoint,IServiceProviderEndPoint serviceProviderEndPoint)
+            IConsumerEndPoint consumerEndpoint,IRegisterEndPoint registerEndPoint,IloggedInUserModel LoggedInUserModel,IServicesLoader servicesLoader,IRequestEndPoint
+            requestEndPoint,IServiceProviderEndPoint serviceProviderEndPoint)
+            :base(aPIHelper,profileEndpoint,registerEndPoint,LoggedInUserModel)
         {
-            _apiHepler = aPIHelper;
-            _profileEndPoint = profileEndpoint;
+            
             _consumerEndPoint = consumerEndpoint;
             Helper = new CustomerHelper(servicesLoader);
-            Helper.IsLoggedIn = true;
+           
             _requestEndPoint = requestEndPoint;
             _serviceProviderEndPoint = serviceProviderEndPoint;
         }
@@ -57,19 +56,25 @@ namespace Handyman_UI.Controllers
                return View("Details","Requests");
         }
 
-
+        //Starting the process
+        public ActionResult Login()
+        {
+            
+            return RedirectToAction("SignIn", "Login");
+        }
         //Here we are trying to register the consumer with having to create a view for it,
         //and it is referenced inside a string operand from CreateProfile()'s return statement
         public async Task<RedirectToRouteResult> RegisterCustomer()
         {
             try
             {
-                var token = Session["Token"].ToString();
-                var loggedUser = await _apiHepler.GetLoggedInUserInfor(token);
-                var usermodel = new UserModel();
-                usermodel.Id = loggedUser.Id;
-                usermodel.Email = loggedUser.Email;
-                var profile = await _profileEndPoint.GetProfile(usermodel);
+                //var token = Session["Token"].ToString();
+                //var loggedUser = await _apiHepler.GetLoggedInUserInfor(token);
+                //var usermodel = new UserModel();
+                //usermodel.Id = loggedUser.Id;
+                //usermodel.Email = loggedUser.Email;
+
+                var profile = await _profileEndPoint.GetProfile("");
                 var consumerModel = new ConsumerModel();
                 consumerModel.ProfileId = profile.Id;
                 consumerModel.Activation = 1;

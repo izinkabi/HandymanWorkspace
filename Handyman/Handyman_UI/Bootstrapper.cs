@@ -1,4 +1,5 @@
 using System.Web.Mvc;
+using Caliburn.Micro;
 using Handyman_UI.Controllers;
 using Handyman_UI.Controllers.Customer.Helpers;
 using Handyman_UI.Controllers.Helpers;
@@ -9,7 +10,7 @@ using Unity.Mvc3;
 
 namespace Handyman_UI
 {
-    public static class Bootstrapper 
+    public class Bootstrapper :BootstrapperBase
     {
 
         /// <summary>
@@ -39,6 +40,8 @@ namespace Handyman_UI
             container.RegisterType<IServiceEndPoint, ServiceEndPoint>();
             container.RegisterType<IServiceProviderEndPoint, ServiceProviderEndPoint>();
             container.RegisterType<IConsumerEndPoint, ConsumerEndPoint>();
+            container.RegisterType<IRequestEndPoint, RequestEndPoint>();
+           
             
             
 
