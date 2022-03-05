@@ -59,6 +59,8 @@
                         //Works well in an anchor and a link
 
 
+                       HandymanUILibrary.Models.IloggedInUserModel loggedinuser = (HandymanUILibrary.Models.IloggedInUserModel)Session["loggedinuser"];
+
                         <li><a>@TempData["welcome"]</a></li>
                         <li class="dropdown ">
                             <a class="btn btn-default dropdown-toggle" id="menu1" data-toggle="dropdown">
@@ -68,20 +70,20 @@
                             </a>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
                                 <li role="presentation" class="divider"></li>
-                                <li role="presentation"><a href="https://localhost:44365/Profile/ProfileDetails"> @Session["Username"]</a></li>
+                                <li role="presentation"><a href="https://localhost:44365/Profile/ProfileDetails"> @loggedinuser.Username</a></li>
                                 <li role="presentation" class="divider"></li>
                                 <li class="dropdown-header"><a href="https://localhost:44365/ServiceProviderHome/RegisterServiceProvider"><strong>Be a provider</strong></a></li>
                                 <li role="presentation" class="divider"></li>
                                 <li role="presentation"><a href="#"><strong>Reqest History</strong></a></li>
                                 @*<li role="presentation" class="divider"></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="https://localhost:44365/ServiceProviderHome/Home"><strong>Service Provider Homer</strong></a></li>*@
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="https://localhost:44365/ServiceProviderHome/Home"><strong>Service Provider Homer</strong></a></li>*@
                                 <li role="presentation" class="divider"></li>
                                 <li class="dropdown-header">Settings</li>
                                 <li role="presentation"> @Html.ActionLink("Sign Out", "Logout", "Login")</li>
                             </ul>
                         </li>
                     }
-             
+
                 </ul>
 
 

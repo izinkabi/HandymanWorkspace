@@ -21,15 +21,15 @@ namespace Handyman_UI.Controllers
         private NewUserModel user;
 
         private IProfileEndPoint _profileEndPoint;
-        private IRegisterEndPoint _registerEndPoint;
+        //private IRegisterEndPoint _registerEndPoint;
        
-        static private string DisplayUserName;
-        static private loggedInUserModel loggedInUserModel;
-        public ProfileController(IAPIHelper aPIHelper,IProfileEndPoint profile)
+        //static private string DisplayUserName;
+        static private IloggedInUserModel _loggedInUserModel;
+        public ProfileController(IAPIHelper aPIHelper,IProfileEndPoint profile,IloggedInUserModel LoggedInUserModel)
         {
             _apiHepler = aPIHelper;
             _profileEndPoint = profile;
-           
+            _loggedInUserModel = LoggedInUserModel;
         }
 
         //Action method for 
@@ -120,41 +120,47 @@ namespace Handyman_UI.Controllers
     }
     public async Task<ActionResult> ProfileDetails()
         {
-            try
+
+            if (ModelState.IsValid)
             {
-                var token = Session["Token"].ToString();
-                var loggeduser = await _apiHepler.GetLoggedInUserInfor(token);
-                var user = new UserModel();
-                user.Id = loggeduser.Id;
-                //Getting a profile with its Address
-                var results =  await _profileEndPoint.GetProfile(user);
-
-                var tempProfile = new Models.ProfileDisplayModel();
-                tempProfile.AddressM = new Models.ProfileDisplayModel.AddressModel();
-
-                tempProfile.ProfileId = results.Id;
-                tempProfile.Name = results.Name;
-                tempProfile.Surname = results.Surname;
-                tempProfile.PhoneNumber = results.PhoneNumber;
-                tempProfile.UserId = results.UserId;
-                tempProfile.DateOfBirth = results.DateOfBirth;
-                
-                /*Address population*/
-                tempProfile.AddressM.Id = results.Address.Id;
-                tempProfile.AddressM.StreetName = results.Address.StreetName;
-                tempProfile.AddressM.HouseNumber = results.Address.HouseNumber;
-                tempProfile.AddressM.Surburb = results.Address.Surburb;
-                tempProfile.AddressM.PostalCode = results.Address.PostalCode;
-                tempProfile.AddressM.City = results.Address.City;
 
 
-                return View(tempProfile);
+                try
+                {
+                    var token = Session["Token"].ToString();
+                     _loggedInUserModel = await _apiHepler.GetLoggedInUserInfor(token);
+                    var user = new UserModel();
+                    user.Id = _loggedInUserModel.Id;
+                    //Getting a profile with its Address
+                    var results = await _profileEndPoint.GetProfile(user);
+
+                    var tempProfile = new Models.ProfileDisplayModel();
+                    tempProfile.AddressM = new Models.ProfileDisplayModel.AddressModel();
+
+                    tempProfile.ProfileId = results.Id;
+                    tempProfile.Name = results.Name;
+                    tempProfile.Surname = results.Surname;
+                    tempProfile.PhoneNumber = results.PhoneNumber;
+                    tempProfile.UserId = results.UserId;
+                    tempProfile.DateOfBirth = results.DateOfBirth;
+
+                    /*Address population*/
+                    tempProfile.AddressM.Id = results.Address.Id;
+                    tempProfile.AddressM.StreetName = results.Address.StreetName;
+                    tempProfile.AddressM.HouseNumber = results.Address.HouseNumber;
+                    tempProfile.AddressM.Surburb = results.Address.Surburb;
+                    tempProfile.AddressM.PostalCode = results.Address.PostalCode;
+                    tempProfile.AddressM.City = results.Address.City;
+
+
+                    return View(tempProfile);
+                }
+
+                catch (Exception ex)
+                {
+                    ViewBag.ErrorMsg = ex.Message;
+                }
             }
-            catch (Exception ex)
-            {
-                ViewBag.ErrorMsg = ex.Message;
-            }
-
             return View();
         }
 

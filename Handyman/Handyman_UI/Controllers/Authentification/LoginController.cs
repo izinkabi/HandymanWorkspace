@@ -4,6 +4,7 @@ using HandymanUILibrary.Models;
 using System;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace Handyman_UI.Controllers
 {
@@ -21,11 +22,11 @@ namespace Handyman_UI.Controllers
         private IRegisterEndPoint _registerEndPoint;
 
         static private string DisplayUserName;
-        static private loggedInUserModel _loggedInUserModel;
+        static private IloggedInUserModel _loggedInUserModel;
         static bool IsRegistered;
 
         public LoginController(IAPIHelper aPIHelper, IProfileEndPoint profile, IRegisterEndPoint registerEndPoint
-            , loggedInUserModel loggedInUserModel)
+            , IloggedInUserModel loggedInUserModel)
         {
             _apiHepler = aPIHelper;
             _profileEndPoint = profile;
@@ -47,17 +48,18 @@ namespace Handyman_UI.Controllers
                 try
                 {
                     var results = await _apiHepler.AuthenticateUser(Username, Password);
-                    _loggedInUserModel = new loggedInUserModel();
-                    var result = await _apiHepler.GetLoggedInUserInfor(results.Access_Token);
-                    
-                    _loggedInUserModel.Token = result.Token;
-                    _loggedInUserModel.Id = result.Id;
-                    _loggedInUserModel.UserRole = result.UserRole;
+                    // _loggedInUserModel = new loggedInUserModel();
+                    _loggedInUserModel = await _apiHepler.GetLoggedInUserInfor(results.Access_Token);
 
+                    //_loggedInUserModel = ;
+                    //_loggedInUserModel.Token = result.Token;
+                    //_loggedInUserModel.Id = result.Id;
+                    //_loggedInUserModel.UserRole = result.UserRole;
+                   
                     Session["log"] = "logged";
-                    Token = results.Access_Token;
+                    Token = _loggedInUserModel.Token;
                     TempData["welcome"] = "Welcome " + Username;
-                    Session["Username"] = Username;
+                    Session["loggedinuser"] = _loggedInUserModel;
                     if (Session["Token"] == null)
                     {
                         Session["Token"] = results.Access_Token;
