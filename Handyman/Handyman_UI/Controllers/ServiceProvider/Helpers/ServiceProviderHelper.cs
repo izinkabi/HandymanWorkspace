@@ -11,16 +11,15 @@ namespace Handyman_UI.Controllers.ServiceProvider.Helpers
     public class ServiceProviderHelper
     {
         IServiceProviderEndPoint _serviceProviderEndPoint;
-        IRequestEndPoint _requestEndPoint;
-        List<RequestModel> RequestModels;
         string ErrorMsg;
+
         static bool _IsServiceProvider,_IsLoggedIn,_CanProvideService, _IsAvailable,_CanCloseRequest;
 
 
-        public ServiceProviderHelper(IServiceProviderEndPoint serviceProviderEndPoint, IRequestEndPoint requestEndPoint)
+        public ServiceProviderHelper(IServiceProviderEndPoint serviceProviderEndPoint)
         {
             _serviceProviderEndPoint = serviceProviderEndPoint;
-            _requestEndPoint = requestEndPoint;
+           
 
         }
 
@@ -31,7 +30,11 @@ namespace Handyman_UI.Controllers.ServiceProvider.Helpers
             get
             {
                 return _IsAvailable;
-            } 
+            }
+            set
+            {
+                _IsAvailable = value;
+            }
         }
         public bool IsServiceProvider 
         {
@@ -78,25 +81,26 @@ namespace Handyman_UI.Controllers.ServiceProvider.Helpers
            
         }
 
-        //Update the request in the database
-        public async Task UpdateRequestStatus(RequestModel request)
-        {          
-            try
-            {
+        ////Update the request in the database
+        //public async Task UpdateRequestStatus(Service providerService)
+        //{          
+        //    try
+        //    {
 
-                await _requestEndPoint.UpdateRequest(request);
+        //        
 
-            }catch(Exception ex)
-            {
-                ErrorMsg = ex.Message;
-            }
-        }
+        //    }catch(Exception ex)
+        //    {
+        //        ErrorMsg = ex.Message;
+        //    }
+        //}
 
-        //Start the service
-        //Update
+
+       
         void StartService()
         {
-
+            /**Start the service*/
+            /**Update**/
             if (IsServiceProvider)
             {
                 if (IsAvailable)
@@ -115,7 +119,7 @@ namespace Handyman_UI.Controllers.ServiceProvider.Helpers
         }
 
 
-        async Task AcceptServiceRequest()
+        async Task AcceptServiceRequest()//Accept or decline the request
         {
 
         }

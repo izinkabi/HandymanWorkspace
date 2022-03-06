@@ -14,16 +14,15 @@ namespace Handyman_UI.Controllers
         protected private string Username, Password;
         protected private string UserRole;
         string ErrorMsg;
-        protected bool isLoggedIn;
-       
+        protected bool isLoggedIn;       
         protected NewUserModel NewUser;
+        protected ProfileModel profileModel;
 
         private IAPIHelper _apiHepler;
         protected IProfileEndPoint _profileEndPoint;
-        private IRegisterEndPoint _registerEndPoint;
-        protected ProfileModel profileModel;
-        
+        private IRegisterEndPoint _registerEndPoint;              
         static protected IloggedInUserModel _loggedInUserModel;
+
         protected static bool IsRegistered;
 
         public LoginController(IAPIHelper aPIHelper, IProfileEndPoint profile, IRegisterEndPoint registerEndPoint
@@ -57,40 +56,45 @@ namespace Handyman_UI.Controllers
 
                         isLoggedIn = true;
                         Session["log"] = "logged";
-                        //Token = _loggedInUserModel.Token;
                         TempData["welcome"] = "Welcome " + Username;
                         Session["loggedinuser"] = _loggedInUserModel;//Session of the loggedinuser
                         profileModel = await _profileEndPoint.GetProfile(_loggedInUserModel.Id);
+
                         if (profileModel != null)
                         {
-                            Session["loggedprofile"] = profileModel;
+                            Session["loggedinprofile"] = profileModel;//profile session starts this can be removed after customer implementation
+
+                            //(! Illegal assignment of user-roles from aspnetdb, less secured in api level...  )
+                            if (_loggedInUserModel.UserRole.Equals("Customer"))
+                            {
+                                if (IsRegistered)
+                                {
+                                    return RedirectToAction("CreateAProfile", "Profile");
+                                }
+                                
+                                return RedirectToAction("Home", "CustomerHome");
+
+                            }
+                            else if (_loggedInUserModel.UserRole.Equals("ServiceProvider"))
+                            {
+                                if (IsRegistered)
+                                {
+                                    return RedirectToAction("CreateAProfile", "Profile");
+                                }
+                               
+                                return RedirectToAction("Home", "ServiceProviderHome");
+                            }
                         }
                     }
-
-                    if (Session["loggedinuser"] == null)
+                    else
                     {
                         return View();
                     }
+
+                   
                     
 
-                    //////this will brake my code--(! Illegal assignment of user-roles from aspnetdb, less secured...  )
-                    if (_loggedInUserModel.UserRole.Equals("Customer"))
-                    {
-                        if (IsRegistered)
-                        {
-                            return RedirectToAction("CreateAProfile", "Profile");
-                        }
-                        return RedirectToAction("Index", "Service");
-
-                    }
-                    else if (_loggedInUserModel.UserRole.Equals("ServiceProvider"))
-                    {
-                        if (IsRegistered)
-                        {
-                            return RedirectToAction("CreateAProfile", "Profile");
-                        }
-                        return RedirectToAction("Home", "ServiceProviderHome");
-                    }
+                    
 
 
                 }
@@ -169,7 +173,7 @@ namespace Handyman_UI.Controllers
 
 
         //Log Out Function
-        protected ActionResult Logout()
+        public ActionResult Logout()
         {
             //clear the instances in the container
 

@@ -18,10 +18,12 @@ namespace Handyman_UI.Controllers
          IConsumerEndPoint _consumerEndPoint;
          IRequestEndPoint _requestEndPoint;
          IServiceProviderEndPoint _serviceProviderEndPoint;
-        //private IRegisterProviderEndPoint _registerProviderEndpoint;
-       
+         ConsumerModel customer;
+         string ErrorMsg;
         
-        
+
+
+
 
         //The use of constructor allows for the Imterfaces to be rendered
         public CustomerHomeController(IAPIHelper aPIHelper,IProfileEndPoint profileEndpoint,
@@ -37,10 +39,38 @@ namespace Handyman_UI.Controllers
             _serviceProviderEndPoint = serviceProviderEndPoint;
         }
 
+
+        public async Task<ActionResult> Home()
+        {
+            profileModel = (ProfileModel)Session["loggedinprofile"];//Get the logged in profile
+            if (profileModel != null)
+            {
+                Helper.IsLoggedIn = true;
+                try
+                {
+                    customer = await _consumerEndPoint.GetConsumerByProfileId(profileModel.Id);//getting the customer. This can start a customer session
+                    if (customer != null)
+                    {
+                        Helper.IsCustomer = true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    //abort the final stage of login
+                    customer = null;
+                    ErrorMsg = ex.Message;
+                    return RedirectToAction("SignIn", "LogIn");
+                }
+                return RedirectToAction("Index", "Service");
+            }
+            else
+            {
+                return RedirectToAction("SignIn", "LogIn");
+            }
+
+        }
+            //Home page Action funtion
         
-
-        //Home page Action funtion
-
         public ActionResult UserDashBoard()
         {
             return View();

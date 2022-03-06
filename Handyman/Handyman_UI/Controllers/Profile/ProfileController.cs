@@ -17,12 +17,13 @@ namespace Handyman_UI.Controllers
        
         static private string UserRole;
         
-        private HandymanUILibrary.Models.ProfileModel profileModel;      
+        private ProfileModel profileModel;      
         private NewUserModel user;
 
         private IProfileEndPoint _profileEndPoint;
+        string ErrorMsg;
         //private IRegisterEndPoint _registerEndPoint;
-       
+
         //static private string DisplayUserName;
         static private IloggedInUserModel _loggedInUserModel;
         public ProfileController(IAPIHelper aPIHelper,IProfileEndPoint profile,IloggedInUserModel LoggedInUserModel)
@@ -118,7 +119,7 @@ namespace Handyman_UI.Controllers
     {
         return PartialView();
     }
-    public async Task<ActionResult> ProfileDetails()
+    public  ActionResult ProfileDetails()
         {
 
             if (ModelState.IsValid)
@@ -127,18 +128,16 @@ namespace Handyman_UI.Controllers
 
                 try
                 {
-                    var token = Session["Token"].ToString();
-                     _loggedInUserModel = await _apiHepler.GetLoggedInUserInfor(token);
-                    
-                    //Getting a profile with its Address
-                    ProfileModel profile = await _profileEndPoint.GetProfile(_loggedInUserModel.ToString());
-
-                    return View(profile);
+                   profileModel = (ProfileModel)Session["loggedinprofile"];
+                    if (profileModel != null)
+                    {
+                        return View(profileModel);
+                    }
                 }
 
                 catch (Exception ex)
                 {
-                    ViewBag.ErrorMsg = ex.Message;
+                    ErrorMsg = ex.Message;
                 }
             }
             return View();

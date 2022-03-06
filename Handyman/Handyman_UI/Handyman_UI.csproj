@@ -193,7 +193,6 @@
     <Compile Include="Controllers\Helpers\ExceptionsHelper.cs" />
     <Compile Include="Controllers\Requests\Helpers\RequestHelper.cs" />
     <Compile Include="Controllers\Requests\RequestsController.cs" />
-    <Compile Include="Controllers\ServiceProvider\Helpers\IServiceProviderHelper.cs" />
     <Compile Include="Controllers\ServiceProvider\Helpers\ServiceProviderHelper.cs" />
     <Compile Include="Controllers\Service\IServicesLoader.cs" />
     <Compile Include="Controllers\Authentification\LoginController.cs" />

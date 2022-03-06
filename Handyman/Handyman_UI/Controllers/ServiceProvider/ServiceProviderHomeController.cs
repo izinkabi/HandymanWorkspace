@@ -22,6 +22,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
         private ServiceProviderModel serviceProvider;
         private ProfileModel profile;
         private List<ServiceDisplayModel> localServices;
+        private Helpers.ServiceProviderHelper providersHelper;
         private string ErrorMsg;
 
         
@@ -33,6 +34,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
             _serviceProviderEndPoint = serviceProviderEndPoint;
             _profileEndPoint = profile;
             _serviceLoader = servicesLoader;
+            providersHelper = new Helpers.ServiceProviderHelper(serviceProviderEndPoint);
         }
 
 
@@ -42,48 +44,64 @@ namespace Handyman_UI.Controllers.ServiceProvider
         }
         public async Task<ActionResult> Home()
         {
+            profile = (ProfileModel)Session["loggedinprofile"];
 
-            try
+            if (profile!=null)
             {
-                ServiceProviderDisplayModel serviceProviderModel = new ServiceProviderDisplayModel();
-                serviceProviderModel.services = new List<ServiceDisplayModel>();
-                serviceProviderModel.services = await _serviceLoader.getDisplayServices();
 
-                return PartialView(serviceProviderModel);
+                
+                try
+                {
+                    serviceProvider = await _serviceProviderEndPoint.GetProviderByProfileId(profile.Id);//we can store this in a session so that when a provider logs in it starts a session
+                    ServiceProviderDisplayModel serviceProviderModel = new ServiceProviderDisplayModel();
+                    serviceProviderModel.services = new List<ServiceDisplayModel>();
+                    if (serviceProvider != null)
+                    {
+                        providersHelper.IsServiceProvider = true;//it is a service provider
+
+                        serviceProviderModel.services = await _serviceLoader.getDisplayServices();
+                        
+                    }
+                    return PartialView(serviceProviderModel);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                throw new Exception(ex.Message);
+                return RedirectToAction("SignIn", "Login");
             }
-            
+          
             //return View(serviceProvider);
         }
         
-        public ActionResult Requests()
-        {
-            return View();
-        }
-        public ActionResult Services()
-        {
-            return View();
-        }
+        //public ActionResult Requests()
+        //{
+        //    return View();
+        //}
+        //public ActionResult Services()
+        //{
+        //    return View();
+        //}
 
-        public ActionResult AddressDetails()
-        {
-            return PartialView();
-        }
-        public ActionResult ServiceDisplay()
-        {
-            return View();
-        }
-        public ActionResult Profile()
-        {
-            return View();
-        }
-        public ActionResult ActiveRequests()
-        {
-            return View();
-        }
+        //public ActionResult AddressDetails()
+        //{
+        //    return PartialView();
+        //}
+        //public ActionResult ServiceDisplay()
+        //{
+        //    return View();
+        //}
+        //public ActionResult Profile()
+        //{
+        //    return View();
+        //}
+        //public ActionResult ActiveRequests()
+        //{
+        //    return View();
+        //}
         public async Task<ActionResult> Test()
         {
             localServices = new List<ServiceDisplayModel>();
