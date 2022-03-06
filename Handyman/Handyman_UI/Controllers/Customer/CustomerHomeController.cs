@@ -57,9 +57,8 @@ namespace Handyman_UI.Controllers
         }
 
         //Starting the process
-        public ActionResult Login()
-        {
-            
+        public ActionResult CustomerLogin()
+        {            
             return RedirectToAction("SignIn", "Login");
         }
         //Here we are trying to register the consumer with having to create a view for it,

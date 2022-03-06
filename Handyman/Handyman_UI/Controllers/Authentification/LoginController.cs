@@ -10,20 +10,20 @@ namespace Handyman_UI.Controllers
 {
     public class LoginController : Controller
     {
-        private IAPIHelper _apiHepler;
+        
         protected private string Username, Password;
-        protected private string Token;
         protected private string UserRole;
         string ErrorMsg;
         protected bool isLoggedIn;
        
         protected NewUserModel NewUser;
 
+        private IAPIHelper _apiHepler;
         protected IProfileEndPoint _profileEndPoint;
         private IRegisterEndPoint _registerEndPoint;
-
+        protected ProfileModel profileModel;
         
-        static private IloggedInUserModel _loggedInUserModel;
+        static protected IloggedInUserModel _loggedInUserModel;
         protected static bool IsRegistered;
 
         public LoginController(IAPIHelper aPIHelper, IProfileEndPoint profile, IRegisterEndPoint registerEndPoint
@@ -48,8 +48,7 @@ namespace Handyman_UI.Controllers
 
                 try
                 {
-                    var results = await _apiHepler.AuthenticateUser(Username, Password);
-                    
+                    var results = await _apiHepler.AuthenticateUser(Username, Password); 
                     _loggedInUserModel = await _apiHepler.GetLoggedInUserInfor(results.Access_Token);
 
                     //check if the logged user is not empty
@@ -58,9 +57,14 @@ namespace Handyman_UI.Controllers
 
                         isLoggedIn = true;
                         Session["log"] = "logged";
-                        Token = _loggedInUserModel.Token;
+                        //Token = _loggedInUserModel.Token;
                         TempData["welcome"] = "Welcome " + Username;
-                        Session["loggedinuser"] = _loggedInUserModel;
+                        Session["loggedinuser"] = _loggedInUserModel;//Session of the loggedinuser
+                        profileModel = await _profileEndPoint.GetProfile(_loggedInUserModel.Id);
+                        if (profileModel != null)
+                        {
+                            Session["loggedprofile"] = profileModel;
+                        }
                     }
 
                     if (Session["loggedinuser"] == null)
@@ -93,6 +97,7 @@ namespace Handyman_UI.Controllers
                 catch (Exception ex)
                 {
                     ViewBag.ErrorMsg = ex.Message;
+                    Session.Clear();//clear session 
                 }
 
 
