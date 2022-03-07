@@ -39,7 +39,6 @@ namespace Handyman_UI
             container.RegisterType<IServiceEndPoint, ServiceEndPoint>();
             container.RegisterType<IServiceProviderEndPoint, ServiceProviderEndPoint>();
             container.RegisterType<IConsumerEndPoint, ConsumerEndPoint>();
-            container.RegisterType<IExceptionsHelper, ExceptionsHelper>();
             
 
             return container;

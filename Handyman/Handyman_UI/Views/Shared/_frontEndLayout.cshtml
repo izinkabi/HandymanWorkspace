@@ -85,6 +85,8 @@
                                             </ul>
                                         </li>
                                         <!-- End Level three -->
+
+
                                     </ul>
                                 </li>
                                 <!-- End Level two -->
@@ -208,11 +210,24 @@
                             <!-- User image -->
                             <li class="user-header bg-primary">
                                 <img src="~/BackEndTemp/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                                @{
 
-                                <p>
-                                    @Session["Username"] - Handyman
-                                    <small>Member since Nov. 2012</small>
-                                </p>
+                                    if (Session["LoggedinUser"]==null)
+                                    {
+                                        //need to come back
+                                    }
+                                    else
+                                    {
+
+                                        HandymanUILibrary.Models.IloggedInUserModel loggedinuser = (HandymanUILibrary.Models.IloggedInUserModel)Session["LoggedinUser"];
+
+                                        <p>
+
+                                            @(loggedinuser.Email)  - Job Title
+
+                                        </p>
+                                    }
+                                }
                             </li>
                             <!-- Menu Body -->
                             <li class="user-body">

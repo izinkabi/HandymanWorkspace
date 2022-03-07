@@ -55,35 +55,31 @@ namespace Handyman_UI.Controllers
                     //_loggedInUserModel.Token = result.Token;
                     //_loggedInUserModel.Id = result.Id;
                     //_loggedInUserModel.UserRole = result.UserRole;
-                   
-                    Session["log"] = "logged";
-                    Token = _loggedInUserModel.Token;
-                    TempData["welcome"] = "Welcome " + Username;
-                    Session["loggedinuser"] = _loggedInUserModel;
-                    if (Session["Token"] == null)
-                    {
-                        Session["Token"] = results.Access_Token;
-                    }
-                    
 
-                    //////this will brake my code--(! Illegal assignment of user-roles from aspnetdb, less secured...  )
-                    if (_loggedInUserModel.UserRole.Equals("Customer"))
-                    {
-                        if (IsRegistered)
-                        {
-                            return RedirectToAction("CreateAProfile", "Profile");
-                        }
-                        return RedirectToAction("Index", "Service");
+                    Session["LoggedinUser"] = _loggedInUserModel;
+                    Session["Token"] = results.Access_Token;
 
-                    }
-                    else if (_loggedInUserModel.UserRole.Equals("ServiceProvider"))
+                        if (Session["LoggedinUser"] == null)
                     {
-                        if (IsRegistered)
-                        {
-                            return RedirectToAction("CreateAProfile", "Profile");
-                        }
-                        return RedirectToAction("Home", "ServiceProviderHome");
+                        RedirectToAction("SignIn", "Login");
                     }
+                    else
+                    {
+                        //////this will brake my code--(! Illegal assignment of user-roles from aspnetdb, less secured...  )
+                        if (_loggedInUserModel.UserRole.Equals("Customer"))
+                        {
+                            return RedirectToAction("Index", "Services");
+
+                        }else if(_loggedInUserModel.UserRole.Equals("ServiceProvider")){
+                            return RedirectToAction("Home", "ServiceProviderHome");
+                        }
+                        else
+                        {
+                            return View("ExceptionsHelper", "PageNotFound");
+                        }
+                    }
+
+
 
 
                 }

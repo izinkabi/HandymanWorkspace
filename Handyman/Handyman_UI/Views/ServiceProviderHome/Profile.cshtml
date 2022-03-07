@@ -1,7 +1,21 @@
-﻿
+﻿@model Handyman_UI.Models.ServiceProviderDisplayModel
 @{
     ViewBag.Title = "Profile";
     Layout = "~/Views/Shared/_ServiceProviderLayout.cshtml";
+}
+@if (@TempData["servicedeleted"] != null)
+{
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <div class="alert alert-success">
+        <strong>@TempData["servicedeleted"].ToString()!</strong> Indicates success in deleting a service.
+    </div>
+}
+@if (@TempData["serviceadded"] != null)
+{
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <div class="alert alert-success">
+        <strong>@TempData["serviceadded"].ToString()!</strong> Indicates success in adding a new service.
+    </div>
 }
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -31,11 +45,17 @@
                     <div class="card-body box-profile">
                         <div class="text-center">
                             <img class="profile-user-img img-fluid img-circle"
-                                 src="~/BackEndTemp/dist/img/user4-128x128.jpg"
-                                 alt="User profile picture">
+                                    src="~/BackEndTemp/dist/img/user4-128x128.jpg"
+                                    alt="User profile picture">
                         </div>
+                        @{
+                            HandymanUILibrary.Models.IloggedInUserModel loggedinuser = (HandymanUILibrary.Models.IloggedInUserModel)Session["LoggedinUser"];
+                            <h3 class="profile-username text-center">
+                                @(loggedinuser.Email)
 
-                        <h3 class="profile-username text-center"> @Session["Username"]</h3>
+                            </h3>
+                        }
+
 
                         <p class="text-muted text-center">Technician</p>
 
@@ -57,7 +77,6 @@
                 </div>
                 <!-- /.card -->
                 <!-- About Me Box -->
-              
                 <!-- /.card -->
             </div>
             <!-- /.col -->
@@ -83,7 +102,7 @@
 
                                     <hr>
                                     <strong><i class="fas fa-book mr-1"></i> Education</strong>
-
+                                    @Html.Partial("ProfileDetails", Model.Profile)
                                     <p class="text-muted">
                                         B.S. in Computer Science from the University of Tennessee at Knoxville
                                     </p>
