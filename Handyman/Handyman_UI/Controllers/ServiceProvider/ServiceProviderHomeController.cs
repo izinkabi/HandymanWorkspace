@@ -9,28 +9,36 @@ using System.Web.Mvc;
 
 namespace Handyman_UI.Controllers.ServiceProvider
 {
-    public class ServiceProviderHomeController : Controller
+    public sealed class ServiceProviderHomeController : LoginController 
     {
         //interfaces for classes
-        private IServiceProviderEndPoint _serviceProvider;
+        private IServiceProviderEndPoint _serviceProviderEndPoint;
         private IServicesLoader _serviceLoader;
-        private IAPIHelper _apiHepler;
-        private IProfileEndPoint _profileEndPoint;
-
-        static private string Username, Password;
+       
+        
+        
+      
         public static string sessionToken;
         private ServiceProviderModel serviceProvider;
-        private ProfileDisplayModel profile;
+        private ProfileModel profile;
         private List<ServiceDisplayModel> localServices;
-       
+        private string ErrorMsg;
 
-
-        public ServiceProviderHomeController(IAPIHelper aPIHelper, IServiceProviderEndPoint registerProvider, IProfileEndPoint profileEndPoint,IServicesLoader servicesLoader)
+        
+        public ServiceProviderHomeController(IAPIHelper aPIHelper, IProfileEndPoint profile, IRegisterEndPoint registerEndPoint
+            , IloggedInUserModel loggedInUserModel,IServiceProviderEndPoint serviceProviderEndPoint, 
+            IServicesLoader servicesLoader) : base(aPIHelper,profile,registerEndPoint,loggedInUserModel)
         {
-            _apiHepler = aPIHelper;
-            _serviceProvider = registerProvider;
-            _profileEndPoint = profileEndPoint;
+           
+            _serviceProviderEndPoint = serviceProviderEndPoint;
+            _profileEndPoint = profile;
             _serviceLoader = servicesLoader;
+        }
+
+
+        public ActionResult ServiceProviderLogin()
+        {
+            return RedirectToAction("SignIn", "Login");
         }
         public async Task<ActionResult> Home()
         {
@@ -47,9 +55,10 @@ namespace Handyman_UI.Controllers.ServiceProvider
             {
                 throw new Exception(ex.Message);
             }
+            
             //return View(serviceProvider);
         }
-
+        
         public ActionResult Requests()
         {
             return View();
@@ -182,23 +191,23 @@ namespace Handyman_UI.Controllers.ServiceProvider
                     {
                             var _token = Session["Token"].ToString();
 
-                            var loggeduser = await _apiHepler.GetLoggedInUserInfor(_token);
-                            var user = new UserModel();
-                            user.Id = loggeduser.Id;
+                            //_logge = await _apiHepler.GetLoggedInUserInfor(_token);
+                            //var user = new UserModel();
+                            //user.Id = loggeduser.Id;
                             //Getting a profile with its Address
-                            var results = await _profileEndPoint.GetProfile(user);
+                            //var results = await _profileEndPoint.GetProfile(user);
 
-                            serviceProvider.CompanyName = serviceProviderDisplay.CompanyName;
-                            serviceProvider.ProfileId = results.Id;
+                            //serviceProvider.CompanyName = serviceProviderDisplay.CompanyName;
+                            //serviceProvider.ProfileId = results.Id;
 
 
-                            var response = await _serviceProvider.PostServiceProvider(serviceProvider);
+                            var response = await _serviceProviderEndPoint.PostServiceProvider(serviceProvider);
                             ViewBag.MessageService = selectedItem.Text;
 
                             //store the provider's service
-                            var providerResult = await _serviceProvider.GetProviderByProfileId(results.Id);
+                            var providerResult = await _serviceProviderEndPoint.GetProviderByProfileId(0);/*****/
                             providersService.ServiceProviderId = providerResult.Id;
-                            var result = await _serviceProvider.PostProvidersService(providersService);
+                            var result = await _serviceProviderEndPoint.PostProvidersService(providersService);
                             TempData["newuser"] = "A new Service Provider, Handyman";
                             
                     return RedirectToAction("Home", "ServiceProviderHome");
@@ -229,58 +238,62 @@ namespace Handyman_UI.Controllers.ServiceProvider
 
 
                     var _token = Session["Token"].ToString();
-
-                    var loggeduser = await _apiHepler.GetLoggedInUserInfor(_token);
-                    var user = new UserModel();
-                    user.Id = loggeduser.Id;
+                    _loggedInUserModel = (IloggedInUserModel)Session["loggedinuser"];
+                    profile = (ProfileModel)Session["loggedprofile"];
+                    //var loggeduser = await _apiHepler.GetLoggedInUserInfor(_token);
+                    //var user = new UserModel();
+                    //user.Id = loggeduser.Id;
                     //Getting a profile with its Address
                    
-                    var results = await _profileEndPoint.GetProfile(user);
-                    providerModel.Profile.ProfileId = results.Id;
-                    providerModel.Profile.Name = results.Name;
-                    providerModel.Profile.PhoneNumber = results.PhoneNumber;
-                    providerModel.Profile.Surname = results.Surname;
-                    providerModel.Profile.DateOfBirth = results.DateOfBirth;
-                    
+                    //profile = await _profileEndPoint.GetProfile("");
+                    //providerModel.Profile.ProfileId = results.Id;
+                    //providerModel.Profile.Name = results.Name;
+                    //providerModel.Profile.PhoneNumber = results.PhoneNumber;
+                    //providerModel.Profile.Surname = results.Surname;
+                    //providerModel.Profile.DateOfBirth = results.DateOfBirth;
 
-                    
-                    providerModel.Profile.AddressM.City = results.Address.City;
-                    providerModel.Profile.AddressM.HouseNumber = results.Address.HouseNumber;
-                    providerModel.Profile.AddressM.Id = results.Address.Id;
-                    providerModel.Profile.AddressM.PostalCode = results.Address.PostalCode;
-                    providerModel.Profile.AddressM.StreetName = results.Address.StreetName;
-                    providerModel.Profile.AddressM.Surburb = results.Address.Surburb;
+
+
+                    //providerModel.Profile.AddressM.City = results.Address.City;
+                    //providerModel.Profile.AddressM.HouseNumber = results.Address.HouseNumber;
+                    //providerModel.Profile.AddressM.Id = results.Address.Id;
+                    //providerModel.Profile.AddressM.PostalCode = results.Address.PostalCode;
+                    //providerModel.Profile.AddressM.StreetName = results.Address.StreetName;
+                    //providerModel.Profile.AddressM.Surburb = results.Address.Surburb;
 
 
                     //get the provider and its services
-                    var response = await _serviceProvider.GetProviderByProfileId(results.Id);
-                    var dbProviderServices = await _serviceProvider.GetProvidersServiceByProviderId(response.Id);
-                    var dbServices = await _serviceLoader.getDisplayServices();
-
-                    providerModel.providerServices = new List<ServiceDisplayModel>();
-                    foreach (ServiceDisplayModel service in dbServices)
+                    if (profile != null)
                     {
-                        foreach (var pservices in dbProviderServices)
+
+                        serviceProvider = await _serviceProviderEndPoint.GetProviderByProfileId(profile.Id);
+                        var dbProviderServices = await _serviceProviderEndPoint.GetProvidersServiceByProviderId(serviceProvider.Id);
+                        var dbServices = await _serviceLoader.getDisplayServices();
+
+                        providerModel.providerServices = new List<ServiceDisplayModel>();
+                        foreach (ServiceDisplayModel service in dbServices)
                         {
-                            if (service.Id == pservices.ServiceId)
+                            foreach (var pservices in dbProviderServices)
                             {
-                                providerModel.providerServices.Add(new ServiceDisplayModel { Id = service.Id, ImageUrl = service.ImageUrl, Name = service.Name, ServiceDescription = service.ServiceDescription, Category = service.Category });
+                                if (service.Id == pservices.ServiceId)
+                                {
+                                    providerModel.providerServices.Add(new ServiceDisplayModel { Id = service.Id, ImageUrl = service.ImageUrl, Name = service.Name, ServiceDescription = service.ServiceDescription, Category = service.Category });
+                                }
                             }
                         }
-                    }
-                    providerModel.CompanyName = response.CompanyName;
-                    providerModel.ProviderType = response.ProviderType;
-                    providerModel.services = dbServices;
-                    List<SelectListItem> serviceSelectList = new List<SelectListItem>();
-                    for (int i = 0; i < dbServices.Count; i++)
-                    {
-                        //Populating services from db into a dropdownlist
-                        serviceSelectList.Add(new SelectListItem { Text = dbServices.ElementAt(i).Name, Value = $"{dbServices.ElementAt(i).Id}" });
-                    }
-                
-                    providerModel.ServicesSelectList = serviceSelectList;
+                        providerModel.CompanyName = serviceProvider.CompanyName;
+                        providerModel.ProviderType = serviceProvider.ProviderType;
+                        providerModel.services = dbServices;
+                        List<SelectListItem> serviceSelectList = new List<SelectListItem>();
+                        for (int i = 0; i < dbServices.Count; i++)
+                        {
+                            //Populating services from db into a dropdownlist
+                            serviceSelectList.Add(new SelectListItem { Text = dbServices.ElementAt(i).Name, Value = $"{dbServices.ElementAt(i).Id}" });
+                        }
 
-                
+                        providerModel.ServicesSelectList = serviceSelectList;
+
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -292,7 +305,8 @@ namespace Handyman_UI.Controllers.ServiceProvider
         }
 
         //The two following methods delete the provider's service
-        public async Task<ActionResult> Delete(int? id)
+        [ActionName("Delete")]
+        public async Task<ActionResult> DeleteService(int? id)
         {
             if (id != null)
             {
@@ -311,15 +325,17 @@ namespace Handyman_UI.Controllers.ServiceProvider
         {
 
 
-            var token = Session["Token"].ToString();
+            //var token = Session["Token"].ToString();
 
-            UserModel user = new UserModel();
-            var loggedUseResult = await _apiHepler.GetLoggedInUserInfor(token);
-            user.Id = loggedUseResult.Id;
+            //UserModel user = new UserModel();
+            //var loggedUseResult = await _apiHepler.GetLoggedInUserInfor(token);
+            //user.Id = loggedUseResult.Id;
 
-            var results = await _profileEndPoint.GetProfile(user);
-            var response = await _serviceProvider.GetProviderByProfileId(results.Id);
-            var dbProviderServices = await _serviceProvider.GetProvidersServiceByProviderId(response.Id);
+            //var results = await _profileEndPoint.GetProfile("");
+            //var response = await _serviceProviderEndPoint.GetProviderByProfileId(results.Id);
+            profile = (ProfileModel)Session["loggedprofile"];
+            serviceProvider = await _serviceProviderEndPoint.GetProviderByProfileId(profile.Id);
+            var dbProviderServices = await _serviceProviderEndPoint.GetProvidersServiceByProviderId(serviceProvider.Id);
 
 
             if (dbProviderServices == null)
@@ -332,7 +348,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
             {
                 if (provservice.ServiceId == id)
                 {                  
-                    await _serviceProvider.DeleteProvidersService(provservice.Id);
+                    await _serviceProviderEndPoint.DeleteProvidersService(provservice.Id);
                     var service = await _serviceLoader.getServiceById(provservice.ServiceId);
                     TempData["servicedeleted"] = "You deleted " + service.Name;
 
@@ -354,23 +370,25 @@ namespace Handyman_UI.Controllers.ServiceProvider
                 {
                     providerModel.Profile = new ProfileDisplayModel();
 
-                    var _token = Session["Token"].ToString();
+                    //var _token = Session["Token"].ToString();
 
-                    var loggeduser = await _apiHepler.GetLoggedInUserInfor(_token);
-                    var user = new UserModel();
-                    user.Id = loggeduser.Id;
+                    //var loggeduser = await _apiHepler.GetLoggedInUserInfor(_token);
+                    //var user = new UserModel();
+                    //user.Id = loggeduser.Id;
+                    //_loggedInUserModel = (IloggedInUserModel)Session["loggedinuser"];
                     //Getting a profile with its Address
 
-                    var results = await _profileEndPoint.GetProfile(user);
+                    //var results = await _profileEndPoint.GetProfile("");
+                     profile = (ProfileModel)Session["loggedprofile"];
 
-                    providerModel.Profile.Name = results.Name;
-                    providerModel.Profile.PhoneNumber = results.PhoneNumber;
-                    providerModel.Profile.Surname = results.Surname;
-                    providerModel.Profile.DateOfBirth = results.DateOfBirth;
-                    providerModel.Profile.ProfileId = results.Id;
+                    providerModel.Profile.Name = profile.Name;
+                    providerModel.Profile.PhoneNumber = profile.PhoneNumber;
+                    providerModel.Profile.Surname = profile.Surname;
+                    providerModel.Profile.DateOfBirth = profile.DateOfBirth;
+                    providerModel.Profile.ProfileId = profile.Id;
                     
 
-                    var providerResponse = await _serviceProvider.GetProviderByProfileId(results.Id);
+                    var providerResponse = await _serviceProviderEndPoint.GetProviderByProfileId(profile.Id);
                     List<SelectListItem> serviceProviderTypeslist = new List<SelectListItem>()
                     {
                       new SelectListItem {Text = "Individual", Value = "1"},
@@ -395,12 +413,12 @@ namespace Handyman_UI.Controllers.ServiceProvider
 
                     //}
                     providerModel.Profile.AddressM = new ProfileDisplayModel.AddressModel();
-                    providerModel.Profile.AddressM.City = results.Address.City;
-                    providerModel.Profile.AddressM.HouseNumber = results.Address.HouseNumber;
-                    providerModel.Profile.AddressM.Id = results.Address.Id;
-                    providerModel.Profile.AddressM.PostalCode = results.Address.PostalCode;
-                    providerModel.Profile.AddressM.StreetName = results.Address.StreetName;
-                    providerModel.Profile.AddressM.Surburb = results.Address.Surburb;
+                    providerModel.Profile.AddressM.City = profile.Address.City;
+                    providerModel.Profile.AddressM.HouseNumber = profile.Address.HouseNumber;
+                    providerModel.Profile.AddressM.Id = profile.Address.Id;
+                    providerModel.Profile.AddressM.PostalCode = profile.Address.PostalCode;
+                    providerModel.Profile.AddressM.StreetName = profile.Address.StreetName;
+                    providerModel.Profile.AddressM.Surburb = profile.Address.Surburb;
                     providerModel.CompanyName = providerResponse.CompanyName;
                     return View("Edit",providerModel);
                 }
@@ -479,7 +497,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
                       
                     }
 
-                    await _serviceProvider.UpdateServiceProvider(providerUpdate);
+                    await _serviceProviderEndPoint.UpdateServiceProvider(providerUpdate);
 
 
                     return RedirectToAction("ProviderDetails");
@@ -487,7 +505,8 @@ namespace Handyman_UI.Controllers.ServiceProvider
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(ex.Message);
+                    ErrorMsg = (ex.Message);
+                    RedirectToAction("ServiceProviderLogin");
                 }
 
             }
@@ -502,41 +521,39 @@ namespace Handyman_UI.Controllers.ServiceProvider
             //providerModel.providerServices = new List<ServiceDisplayModel>();
             try
             {
-                
-                var loggeduser = await _apiHepler.GetLoggedInUserInfor(_token);
-                var user = new UserModel();
-                user.Id = loggeduser.Id;
+
+                //var loggeduser = await _apiHepler.GetLoggedInUserInfor(_token);
+                //var user = new UserModel();
+                //user.Id = loggeduser.Id;
                 //Getting a profile with its Address
-                var results = await _profileEndPoint.GetProfile(user);
-                var providerResponse = await _serviceProvider.GetProviderByProfileId(results.Id);
-                var dbProviderService = await _serviceProvider.GetProvidersServiceByProviderId(providerResponse.Id);
-                
-
-               
-               
-                    if (id!=null)
-                    {
-                        providersService.ServiceId =id;
-                    }
-                
-
-                if (ModelState.IsValid)
+                //var results = await _profileEndPoint.GetProfile("");
+                profile = (ProfileModel)Session["loggedprofile"];
+                if (profile != null)
                 {
+                    var providerResponse = await _serviceProviderEndPoint.GetProviderByProfileId(profile.Id);
+                    var dbProviderService = await _serviceProviderEndPoint.GetProvidersServiceByProviderId(providerResponse.Id);
 
 
-                    //store the provider's service
 
-                    providersService.ServiceProviderId = providerResponse.Id;
 
-                    var result = await _serviceProvider.PostProvidersService(providersService);
-                    var service = await _serviceLoader.getServiceById(providersService.ServiceId);
-                    TempData["serviceadded"] = "You Added " + service.Name;
-                    return RedirectToAction("ProviderDetails");
+                    if (ModelState.IsValid)
+                    {
+
+
+                        //store the provider's service
+
+                        providersService.ServiceProviderId = providerResponse.Id;
+
+                        var result = await _serviceProviderEndPoint.PostProvidersService(providersService);
+                        var service = await _serviceLoader.getServiceById(providersService.ServiceId);
+                        TempData["serviceadded"] = "You Added " + service.Name;
+                        return RedirectToAction("ProviderDetails");
+                    }
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorMsg = (ex.Message);
             }
 
             return View();

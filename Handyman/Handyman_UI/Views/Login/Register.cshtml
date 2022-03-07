@@ -1,4 +1,4 @@
-﻿@model Handyman_UI.Models.CreateUserModel
+﻿@model HandymanUILibrary.Models.NewUserModel
 
 @{
     ViewBag.Title = "Register";
@@ -36,7 +36,7 @@
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     <form action="../../index3.html" method="post">
                         <div class="input-group mb-3">
-                            @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", @placeholder = "Username" } })
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Username" } })
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-envelope"></span>

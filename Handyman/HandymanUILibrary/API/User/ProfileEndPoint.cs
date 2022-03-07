@@ -43,11 +43,11 @@ namespace HandymanUILibrary.API
 
       
         //Getting a profile endpoint
-        public async Task<ProfileModel> GetProfile(UserModel user)
+        public async Task<ProfileModel> GetProfile(string id)
         {
 
 
-            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync($"/api/Profiles?userId={user.Id}"))
+            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync($"/api/Profiles?userId={id}"))
             {
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {

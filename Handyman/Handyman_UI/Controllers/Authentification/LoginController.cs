@@ -10,20 +10,21 @@ namespace Handyman_UI.Controllers
 {
     public class LoginController : Controller
     {
+        
+        protected private string Username, Password;
+        protected private string UserRole;
+        string ErrorMsg;
+        protected bool isLoggedIn;
+       
+        protected NewUserModel NewUser;
+
         private IAPIHelper _apiHepler;
-        static private string Username, Password;
-        static private string Token;
-        static private string UserRole;
-
-        private HandymanUILibrary.Models.ProfileModel profileModel;
-        private NewUserModel user;
-
-        private IProfileEndPoint _profileEndPoint;
+        protected IProfileEndPoint _profileEndPoint;
         private IRegisterEndPoint _registerEndPoint;
-
-        static private string DisplayUserName;
-        static private IloggedInUserModel _loggedInUserModel;
-        static bool IsRegistered;
+        protected ProfileModel profileModel;
+        
+        static protected IloggedInUserModel _loggedInUserModel;
+        protected static bool IsRegistered;
 
         public LoginController(IAPIHelper aPIHelper, IProfileEndPoint profile, IRegisterEndPoint registerEndPoint
             , IloggedInUserModel loggedInUserModel)
@@ -47,10 +48,10 @@ namespace Handyman_UI.Controllers
 
                 try
                 {
-                    var results = await _apiHepler.AuthenticateUser(Username, Password);
-                    // _loggedInUserModel = new loggedInUserModel();
+                    var results = await _apiHepler.AuthenticateUser(Username, Password); 
                     _loggedInUserModel = await _apiHepler.GetLoggedInUserInfor(results.Access_Token);
 
+<<<<<<< HEAD
                     //_loggedInUserModel = ;
                     //_loggedInUserModel.Token = result.Token;
                     //_loggedInUserModel.Id = result.Id;
@@ -62,6 +63,27 @@ namespace Handyman_UI.Controllers
                         if (Session["LoggedinUser"] == null)
                     {
                         RedirectToAction("SignIn", "Login");
+=======
+                    //check if the logged user is not empty
+                    if (_loggedInUserModel != null)
+                    {
+
+                        isLoggedIn = true;
+                        Session["log"] = "logged";
+                        //Token = _loggedInUserModel.Token;
+                        TempData["welcome"] = "Welcome " + Username;
+                        Session["loggedinuser"] = _loggedInUserModel;//Session of the loggedinuser
+                        profileModel = await _profileEndPoint.GetProfile(_loggedInUserModel.Id);
+                        if (profileModel != null)
+                        {
+                            Session["loggedprofile"] = profileModel;
+                        }
+                    }
+
+                    if (Session["loggedinuser"] == null)
+                    {
+                        return View();
+>>>>>>> 2a2a685f4645639256f75ad2965922ee1458c077
                     }
                     else
                     {
@@ -86,6 +108,7 @@ namespace Handyman_UI.Controllers
                 catch (Exception ex)
                 {
                     ViewBag.ErrorMsg = ex.Message;
+                    Session.Clear();//clear session 
                 }
 
 
@@ -96,8 +119,8 @@ namespace Handyman_UI.Controllers
 
         }
 
-        //Register action method
-        public async Task<ActionResult> Register(CreateUserModel newUser)
+        //Register action methods
+        public async Task<ActionResult> Register(NewUserModel newUser)
         {
 
             if (ModelState.IsValid)
@@ -105,25 +128,16 @@ namespace Handyman_UI.Controllers
                 try
                 {
 
+                    newUser.UserRole = "Customer";
+                    NewUser = newUser;
 
-                    user = new HandymanUILibrary.Models.NewUserModel();
-
-                    //Username and password are given a value once here and once in sign in
-
-                    user.Email = newUser.Username;
-                    user.Password = newUser.Password;
-                    user.ConfirmPassword = newUser.ConfirmPassword;
-
-                    Username = newUser.Username;
-                    Password = newUser.Password;
-                    user.UserRole = "Customer";//User role assignment to customer
-                    UserRole = "Customer";
-
-                    var loggedInUser = await _registerEndPoint.RegisterUser(user);
+                    var authenticatedUser = await _registerEndPoint.RegisterUser(newUser);
                     // Session["Token"] = loggedInUser.Access_Token;
-                    IsRegistered = true;
-                    return RedirectToAction("SignIn", "Login");
-
+                    if (authenticatedUser != null)
+                    {
+                        IsRegistered = true;
+                        return RedirectToAction("SignIn", "Login");
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -135,7 +149,7 @@ namespace Handyman_UI.Controllers
             return View();
         }
 
-        public async Task<ActionResult> RegisterProvider(CreateUserModel newUser)
+        public async Task<ActionResult> RegisterProvider(NewUserModel newUser)
         {
 
             if (ModelState.IsValid)
@@ -144,19 +158,10 @@ namespace Handyman_UI.Controllers
                 {
 
 
-                    user = new HandymanUILibrary.Models.NewUserModel();
-
-                    //Username and password are given a value once here and once in sign in
-
-                    user.Email = newUser.Username;
-                    user.Password = newUser.Password;
-                    user.ConfirmPassword = newUser.ConfirmPassword;
-
-                    Username = newUser.Username;
-                    Password = newUser.Password;
-                    user.UserRole = "ServiceProvider";//User role assignment
-                    UserRole = "ServiceProvider";
-                    var loggedInUser = await _registerEndPoint.RegisterUser(user);
+                   
+                    newUser.UserRole = "ServiceProvider";//User role assignment
+                    NewUser = newUser;
+                    var loggedInUser = await _registerEndPoint.RegisterUser(newUser);
                     //Session["Token"] = loggedInUser.Access_Token;
                     IsRegistered = true;
 
@@ -175,24 +180,22 @@ namespace Handyman_UI.Controllers
 
 
         //Log Out Function
-        public ActionResult Logout()
+        protected ActionResult Logout()
         {
             //clear the instances in the container
 
             try
             {
-                Session["Username"] = null;
-                Session["profilename"] = null;
-                _loggedInUserModel = null;
-                Session["Token"] = null;
-                _apiHepler.LogOutuser();
-                Session["log"] = null;
+                Session.Clear();
+                isLoggedIn = false;
+                _apiHepler.LogOutuser();               
                 _apiHepler = null;
                 IsRegistered = false;
+
                 
             }catch(Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorMsg = ex.Message;
             }
             return RedirectToAction("LockScreen", "Login");
         }

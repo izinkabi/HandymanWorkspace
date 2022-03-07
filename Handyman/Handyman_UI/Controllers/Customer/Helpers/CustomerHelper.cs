@@ -3,10 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace Handyman_UI.Controllers.Customer.Helpers
 {
-    public class CustomerHelper: ICustomerHelper
+    public class CustomerHelper: Controller
     {
         static bool _IsLoggedIn;
         static bool _IsRegistered;
@@ -29,9 +30,9 @@ namespace Handyman_UI.Controllers.Customer.Helpers
         { 
             get 
             {
-                if(!_IsLoggedIn)
+                while(Session["loggedinuser"]!=null)
                 {
-                    _CanRequest = false;
+                    _IsLoggedIn = true;
                 }
                 return _IsLoggedIn;
             }
@@ -46,10 +47,10 @@ namespace Handyman_UI.Controllers.Customer.Helpers
         {
             get
             {
-                if(!_IsRegistered)
+                if(!_IsLoggedIn)
                 {
-                    _IsLoggedIn = false;
-                    _IsCustomer = false;
+                    _IsRegistered = true;
+                   
                 }
                 return _IsRegistered;
             }
@@ -64,9 +65,10 @@ namespace Handyman_UI.Controllers.Customer.Helpers
         {
             get
             {
-                if(!_IsCustomer)
+                if(_IsLoggedIn)
                 {
-                    _CanRequest = false;
+                    
+                    //this will be easy when a logged in customer is in a session with its user details and profile details.
                 }
                 return _IsCustomer;
             }
@@ -94,6 +96,10 @@ namespace Handyman_UI.Controllers.Customer.Helpers
         {
             get 
             {
+                if (_IsLoggedIn && _IsCustomer)
+                {
+                    _CanRequest = true;
+                }
                 return _CanRequest;
             }
             set 
