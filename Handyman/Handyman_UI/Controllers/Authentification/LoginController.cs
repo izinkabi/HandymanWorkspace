@@ -21,7 +21,7 @@ namespace Handyman_UI.Controllers
         private IAPIHelper _apiHepler;
         protected IProfileEndPoint _profileEndPoint;
         private IRegisterEndPoint _registerEndPoint;              
-        static protected IloggedInUserModel _loggedInUserModel;
+        protected static IloggedInUserModel _loggedInUserModel;
 
         protected static bool IsRegistered;
 
@@ -90,11 +90,6 @@ namespace Handyman_UI.Controllers
                     {
                         return View();
                     }
-
-                   
-                    
-
-                    
 
 
                 }

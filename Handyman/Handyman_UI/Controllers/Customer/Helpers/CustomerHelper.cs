@@ -15,7 +15,7 @@ namespace Handyman_UI.Controllers.Customer.Helpers
          bool _CanRequest;
          bool _CanCancelRequest;
          IServicesLoader _servicesLoader;
-         List<ServiceModel> RequestedServices;
+         
 
 
         public CustomerHelper(IServicesLoader servicesLoader)
@@ -47,7 +47,7 @@ namespace Handyman_UI.Controllers.Customer.Helpers
         {
             get
             {
-                if(!_IsLoggedIn)
+                if(_IsLoggedIn)
                 {
                     _IsRegistered = true;
                    
@@ -119,7 +119,7 @@ namespace Handyman_UI.Controllers.Customer.Helpers
                 return;
             }
             else{
-                _IsLoggedIn = true;
+                
             }
             
         }

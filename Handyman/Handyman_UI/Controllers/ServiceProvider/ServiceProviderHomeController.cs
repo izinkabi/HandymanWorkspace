@@ -14,10 +14,11 @@ namespace Handyman_UI.Controllers.ServiceProvider
         //interfaces for classes
         private IServiceProviderEndPoint _serviceProviderEndPoint;
         private IServicesLoader _serviceLoader;
-       
-        
-        
-      
+       // IServiceProviderEndPoint _serviceProviderEndPoint;
+
+
+
+
         public static string sessionToken;
         private ServiceProviderModel serviceProvider;
         private ProfileModel profile;
@@ -34,6 +35,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
             _serviceProviderEndPoint = serviceProviderEndPoint;
             _profileEndPoint = profile;
             _serviceLoader = servicesLoader;
+            _serviceProviderEndPoint = serviceProviderEndPoint;
             providersHelper = new Helpers.ServiceProviderHelper(serviceProviderEndPoint);
         }
 
@@ -149,8 +151,8 @@ namespace Handyman_UI.Controllers.ServiceProvider
             tempProvider.CompanyName = "";
             
             tempProvider.providerServices = new List<ServiceDisplayModel>();
-            tempProvider.Profile = new ProfileDisplayModel();
-            tempProvider.Profile.AddressM = new ProfileDisplayModel.AddressModel();
+            tempProvider.Profile = new ProfileModel();
+            tempProvider.Profile.Address = new ProfileModel.AddressModel();
            
 
                 List<SelectListItem> serviceProviderTypeslist = new List<SelectListItem>()
@@ -247,38 +249,16 @@ namespace Handyman_UI.Controllers.ServiceProvider
         {
 
             var providerModel = new ServiceProviderDisplayModel();
-            providerModel.Profile = new ProfileDisplayModel();
-            providerModel.Profile.AddressM = new ProfileDisplayModel.AddressModel();
+            providerModel.Profile = new ProfileModel();
+            providerModel.Profile.Address = new ProfileModel.AddressModel();
             if (ModelState.IsValid)
             {
                 try
                 {
 
-
-                    var _token = Session["Token"].ToString();
                     _loggedInUserModel = (IloggedInUserModel)Session["loggedinuser"];
-                    profile = (ProfileModel)Session["loggedprofile"];
-                    //var loggeduser = await _apiHepler.GetLoggedInUserInfor(_token);
-                    //var user = new UserModel();
-                    //user.Id = loggeduser.Id;
-                    //Getting a profile with its Address
+                    profile = (ProfileModel)Session["loggedinprofile"];
                    
-                    //profile = await _profileEndPoint.GetProfile("");
-                    //providerModel.Profile.ProfileId = results.Id;
-                    //providerModel.Profile.Name = results.Name;
-                    //providerModel.Profile.PhoneNumber = results.PhoneNumber;
-                    //providerModel.Profile.Surname = results.Surname;
-                    //providerModel.Profile.DateOfBirth = results.DateOfBirth;
-
-
-
-                    //providerModel.Profile.AddressM.City = results.Address.City;
-                    //providerModel.Profile.AddressM.HouseNumber = results.Address.HouseNumber;
-                    //providerModel.Profile.AddressM.Id = results.Address.Id;
-                    //providerModel.Profile.AddressM.PostalCode = results.Address.PostalCode;
-                    //providerModel.Profile.AddressM.StreetName = results.Address.StreetName;
-                    //providerModel.Profile.AddressM.Surburb = results.Address.Surburb;
-
 
                     //get the provider and its services
                     if (profile != null)
@@ -301,6 +281,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
                         }
                         providerModel.CompanyName = serviceProvider.CompanyName;
                         providerModel.ProviderType = serviceProvider.ProviderType;
+                        providerModel.Profile = profile;
                         providerModel.services = dbServices;
                         List<SelectListItem> serviceSelectList = new List<SelectListItem>();
                         for (int i = 0; i < dbServices.Count; i++)
@@ -386,27 +367,24 @@ namespace Handyman_UI.Controllers.ServiceProvider
             {
                 try
                 {
-                    providerModel.Profile = new ProfileDisplayModel();
-
-                    //var _token = Session["Token"].ToString();
-
-                    //var loggeduser = await _apiHepler.GetLoggedInUserInfor(_token);
-                    //var user = new UserModel();
-                    //user.Id = loggeduser.Id;
-                    //_loggedInUserModel = (IloggedInUserModel)Session["loggedinuser"];
                     //Getting a profile with its Address
-
-                    //var results = await _profileEndPoint.GetProfile("");
-                     profile = (ProfileModel)Session["loggedprofile"];
-
-                    providerModel.Profile.Name = profile.Name;
-                    providerModel.Profile.PhoneNumber = profile.PhoneNumber;
-                    providerModel.Profile.Surname = profile.Surname;
-                    providerModel.Profile.DateOfBirth = profile.DateOfBirth;
-                    providerModel.Profile.ProfileId = profile.Id;
-                    
+                    profile = (ProfileModel)Session["loggedinprofile"];
+                    providerModel.Profile = profile;
 
                     var providerResponse = await _serviceProviderEndPoint.GetProviderByProfileId(profile.Id);
+                    List<ProvidersServiceModel> providerServices  = await _serviceProviderEndPoint.GetProvidersServiceByProviderId(providerResponse.Id);
+                    List<ServiceDisplayModel> services = await _serviceLoader.getDisplayServices();
+                    providerModel.providerServices = new List<ServiceDisplayModel>();
+                    foreach (ProvidersServiceModel psm in providerServices)
+                    {
+                        for(int i = 0; i < services.Count; i++)
+                        {
+                            if (psm.ServiceId == services[i].Id)
+                            {
+                                providerModel.providerServices.Add(services[i]);
+                            }
+                        }
+                    }
                     List<SelectListItem> serviceProviderTypeslist = new List<SelectListItem>()
                     {
                       new SelectListItem {Text = "Individual", Value = "1"},
@@ -415,38 +393,21 @@ namespace Handyman_UI.Controllers.ServiceProvider
                       new SelectListItem {Text = "Enterprise/Private Group", Value = "4"}
 
                     };
+                    providerModel.serviceProviderTypes = 
+                        serviceProviderTypeslist;
+                    if (profile.Address!=null && profile.Address is ProfileModel.AddressModel)
+                        //providerModel.Profile.Address = profile.Address;
+                        //providerModel.ProviderType = providerResponse.ProviderType;
+                        providerModel.CompanyName = providerResponse.CompanyName;
+                        providerModel.ProviderType = providerResponse.ProviderType;
+                        providerModel.Id = providerResponse.Id;
 
-                    providerModel.serviceProviderTypes = serviceProviderTypeslist;
-
-
-                    //var selectedItem = serviceProviderTypeslist.Find(p => p.Value == providerModel.ServiceProviderTypesId.ToString());
-
-                    //if (selectedItem != null)
-                    //{
-                    //    selectedItem.Selected = true;
-                    //    providerModel.ProviderType = selectedItem.Text;
-
-                    //    providerModel.ProviderType = providerResponse.ProviderType;
-                    //    //var dbProviderServices = await _serviceProvider.GetProvidersServiceByProviderId(providerResponse.Id);
-
-                    //}
-                    providerModel.Profile.AddressM = new ProfileDisplayModel.AddressModel();
-                    providerModel.Profile.AddressM.City = profile.Address.City;
-                    providerModel.Profile.AddressM.HouseNumber = profile.Address.HouseNumber;
-                    providerModel.Profile.AddressM.Id = profile.Address.Id;
-                    providerModel.Profile.AddressM.PostalCode = profile.Address.PostalCode;
-                    providerModel.Profile.AddressM.StreetName = profile.Address.StreetName;
-                    providerModel.Profile.AddressM.Surburb = profile.Address.Surburb;
-                    providerModel.CompanyName = providerResponse.CompanyName;
-                    return View("Edit",providerModel);
+                    return View("Edit", providerModel);
                 }
                 catch (Exception ex)
                 {
                     throw new Exception(ex.Message);
                 }
-
-              
-
             }
 
             return View();
@@ -459,8 +420,19 @@ namespace Handyman_UI.Controllers.ServiceProvider
             var providerUpdate = new ServiceProviderModel();
            
           
-            var profileUpdate = new ProfileModel();
-            List<SelectListItem> serviceProviderTypeslist = new List<SelectListItem>()
+            //var profileUpdate = new ProfileModel();
+           
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+
+                    //providerDisplay.serviceProviderTypes = serviceProviderTypeslist;
+
+
+
+                    List<SelectListItem> serviceProviderTypeslist = new List<SelectListItem>()
                     {
                       new SelectListItem {Text = "Individual", Value = "1"},
                       new SelectListItem {Text = "Small Business", Value = "2"},
@@ -468,54 +440,46 @@ namespace Handyman_UI.Controllers.ServiceProvider
                       new SelectListItem {Text = "Enterprise/Private Group", Value = "4"}
 
                     };
-            providerDisplay.serviceProviderTypes = serviceProviderTypeslist;
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    profileUpdate.Address = new ProfileModel.AddressModel();
-                    profileUpdate.Id = providerDisplay.Profile.ProfileId;
-                    profileUpdate.Address.City = providerDisplay.Profile.AddressM.City;
-                    profileUpdate.Address.StreetName = providerDisplay.Profile.AddressM.StreetName;
-                    profileUpdate.Address.Surburb = providerDisplay.Profile.AddressM.Surburb;
-                    profileUpdate.Address.PostalCode = providerDisplay.Profile.AddressM.PostalCode;
-                    profileUpdate.Address.HouseNumber = providerDisplay.Profile.AddressM.HouseNumber;
-                    profileUpdate.Address.Id = providerDisplay.Profile.AddressM.Id;
-
-                    profileUpdate.Name = providerDisplay.Profile.Name;
-                    profileUpdate.PhoneNumber = providerDisplay.Profile.PhoneNumber;
-                    profileUpdate.Surname = providerDisplay.Profile.Surname;
-                    profileUpdate.DateOfBirth = providerDisplay.Profile.DateOfBirth;
-                    providerUpdate.ProfileId = providerDisplay.Profile.ProfileId;
-                    //first update the profile
-                    await _profileEndPoint.UpdateProfile(profileUpdate);
-
-
-                    providerUpdate.CompanyName = providerDisplay.CompanyName;
-                  
-
-                    //Update the service provider
-
-                   // var providerResponse = await _serviceProvider.GetProviderByProfileId(providerDisplay.Profile.ProfileId);
-                   
-
-                    
-
-
+                    providerDisplay.serviceProviderTypes = serviceProviderTypeslist;
                     var selectedItem = serviceProviderTypeslist.Find(p => p.Value == providerDisplay.ServiceProviderTypesId.ToString());
 
                     if (selectedItem != null)
                     {
                         selectedItem.Selected = true;
-                        providerUpdate.ProviderType = selectedItem.Text;
-
-                        //providerUpdate.ProviderType = providerResponse.ProviderType;
-                        //var dbProviderServices = await _serviceProvider.GetProvidersServiceByProviderId(providerResponse.Id);
-                      
+                        providerDisplay.ProviderType = selectedItem.Text;
                     }
 
-                    await _serviceProviderEndPoint.UpdateServiceProvider(providerUpdate);
+                    if (providerDisplay.Profile !=null && providerDisplay is ServiceProviderDisplayModel)
+                    {
+                        providerUpdate.ProfileId = providerDisplay.Profile.Id;
+                        providerUpdate.ProviderType = providerDisplay.ProviderType;
+                        providerUpdate.CompanyName = providerDisplay.CompanyName;
+                        providerUpdate.Id = providerDisplay.Id;
+                        
+                        await _profileEndPoint.UpdateProfile(providerDisplay.Profile);
+                        await _serviceProviderEndPoint.UpdateServiceProvider(providerUpdate);
+                    }
+
+                    //providerUpdate.CompanyName = providerDisplay.CompanyName;
+                  
+
+                    //Update the service provider
+
+                    //var providerResponse = await _serviceProviderEndPoint.GetProviderByProfileId(providerDisplay.Profile.Id);//should be in a session
+                   
+                    //var selectedItem = serviceProviderTypeslist.Find(p => p.Value == providerDisplay.ServiceProviderTypesId.ToString());
+
+                    //if (selectedItem != null)
+                    //{
+                    //    selectedItem.Selected = true;
+                    //    providerDisplay.ProviderType = selectedItem.Text;
+
+                    //    //providerUpdate.ProviderType = providerResponse.ProviderType;
+                    //    //var dbProviderServices = await _serviceProvider.GetProvidersServiceByProviderId(providerResponse.Id);
+                      
+                    //}
+
+                   
 
 
                     return RedirectToAction("ProviderDetails");

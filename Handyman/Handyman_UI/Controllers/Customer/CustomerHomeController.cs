@@ -1,6 +1,6 @@
 ﻿using Handyman_UI.Controllers.Customer.Helpers;
 using Handyman_UI.Controllers.Requests.Helpers;
-using Handyman_UI.Models;
+
 using HandymanUILibrary.API;
 using HandymanUILibrary.Models;
 using System;
@@ -22,12 +22,10 @@ namespace Handyman_UI.Controllers
          string ErrorMsg;
         
 
-
-
-
         //The use of constructor allows for the Imterfaces to be rendered
         public CustomerHomeController(IAPIHelper aPIHelper,IProfileEndPoint profileEndpoint,
-            IConsumerEndPoint consumerEndpoint,IRegisterEndPoint registerEndPoint,IloggedInUserModel LoggedInUserModel,IServicesLoader servicesLoader,IRequestEndPoint
+            IConsumerEndPoint consumerEndpoint,IRegisterEndPoint registerEndPoint,
+            IloggedInUserModel LoggedInUserModel,IServicesLoader servicesLoader,IRequestEndPoint
             requestEndPoint,IServiceProviderEndPoint serviceProviderEndPoint)
             :base(aPIHelper,profileEndpoint,registerEndPoint,LoggedInUserModel)
         {
@@ -42,17 +40,15 @@ namespace Handyman_UI.Controllers
 
         public async Task<ActionResult> Home()
         {
-            profileModel = (ProfileModel)Session["loggedinprofile"];//Get the logged in profile
-            if (profileModel != null)
-            {
-                Helper.IsLoggedIn = true;
                 try
                 {
+                    profileModel = (ProfileModel)Session["loggedinprofile"];//Get the logged in profile
+                    if (profileModel is ProfileModel)
+                        Helper.IsLoggedIn = true;
                     customer = await _consumerEndPoint.GetConsumerByProfileId(profileModel.Id);//getting the customer. This can start a customer session
-                    if (customer != null)
-                    {
+                    if (customer is ConsumerModel)
                         Helper.IsCustomer = true;
-                    }
+                        return RedirectToAction("Index", "Service");
                 }
                 catch (Exception ex)
                 {
@@ -61,13 +57,6 @@ namespace Handyman_UI.Controllers
                     ErrorMsg = ex.Message;
                     return RedirectToAction("SignIn", "LogIn");
                 }
-                return RedirectToAction("Index", "Service");
-            }
-            else
-            {
-                return RedirectToAction("SignIn", "LogIn");
-            }
-
         }
             //Home page Action funtion
         
@@ -76,39 +65,50 @@ namespace Handyman_UI.Controllers
             return View();
         }
 
-        public ActionResult RequestAService()
+        //this method invokes a request 
+        public ActionResult CustomerServiceRequest(ConsumerModel consumer,ServiceModel service)
         {
             if (Helper.IsCustomer)
             {
-
-                RequestHelper = new RequestHelper(_requestEndPoint, _serviceProviderEndPoint, _profileEndPoint);
+                RequestHelper = new RequestHelper(_requestEndPoint, _serviceProviderEndPoint, _profileEndPoint);//A customer has a request relationship
             }
-               return View("Details","Requests");
+            else if(consumer is ConsumerModel && consumer != null)
+            {
+                Helper.IsCustomer = true;
+                
+                CustomerServiceRequest(consumer, service);
+            }
+            return View("Details","Requests");
         }
 
         //Starting the process
-        public ActionResult CustomerLogin()
-        {            
-            return RedirectToAction("SignIn", "Login");
+        private ActionResult SignIn()
+        {
+            if (Session.IsCookieless)
+            {
+                return RedirectToAction("SignIn", "Login");
+            }
+            else
+            {
+                //this is where we use the cookie of the session
+                //to keep the customer logged in
+                return View();
+            }
         }
-        //Here we are trying to register the consumer with having to create a view for it,
-        //and it is referenced inside a string operand from CreateProfile()'s return statement
+
+        //Register a new customer
         public async Task<RedirectToRouteResult> RegisterCustomer()
         {
             try
             {
-                //var token = Session["Token"].ToString();
-                //var loggedUser = await _apiHepler.GetLoggedInUserInfor(token);
-                //var usermodel = new UserModel();
-                //usermodel.Id = loggedUser.Id;
-                //usermodel.Email = loggedUser.Email;
 
-                var profile = await _profileEndPoint.GetProfile("");
-                var consumerModel = new ConsumerModel();
-                consumerModel.ProfileId = profile.Id;
-                consumerModel.Activation = 1;
+                profileModel = (ProfileModel)Session["loggedinprofile"];
 
-                await _consumerEndPoint.PostConsumer(consumerModel);
+                customer = new ConsumerModel();
+                customer.Activation = 1;
+                customer.ProfileId = profileModel.Id;
+
+                await _consumerEndPoint.PostConsumer(customer);
                 Helper.IsCustomer = true;
                 TempData["newuser"] = "Customer";
 
@@ -120,18 +120,7 @@ namespace Handyman_UI.Controllers
             }
         }
        
-        //Get OTP
-        public async Task<ActionResult> GetOTP(OTPModel otmodel)
-        {
-            if (ModelState.IsValid)
-            {
-               
-            }
-
-            return View();
-        }
-
-        //Loggin out method
+        
       
     }
 }

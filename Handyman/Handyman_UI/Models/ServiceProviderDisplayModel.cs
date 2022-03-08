@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HandymanUILibrary.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -19,19 +20,19 @@ namespace Handyman_UI.Models
         
         [Display(Name = "Service Provider Types")]
         //[Required(ErrorMessage = "Select a service")]
-        public IEnumerable<SelectListItem> serviceProviderTypes { get; set; }
+        public List<SelectListItem> serviceProviderTypes { get; set; }
 
         
         public int? ServiceProviderTypesId { get; set; }
 
         public string ProviderType { get; set; }
 
-        public IEnumerable<SelectListItem> ServicesSelectList { get; set; }
+        public List<SelectListItem> ServicesSelectList { get; set; }
         public int? SelectedServiceId { get; set; }
 
         public List<ServiceDisplayModel> services { get; set; }
         public List<ServiceDisplayModel> providerServices { get; set; }
 
-        public ProfileDisplayModel Profile { get; set; }
+        public ProfileModel Profile { get; set; }
     }
 }

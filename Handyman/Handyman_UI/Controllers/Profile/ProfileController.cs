@@ -16,15 +16,10 @@ namespace Handyman_UI.Controllers
         
        
         static private string UserRole;
-        
-        private ProfileModel profileModel;      
-        private NewUserModel user;
-
+        private ProfileModel profileModel; 
         private IProfileEndPoint _profileEndPoint;
         string ErrorMsg;
-        //private IRegisterEndPoint _registerEndPoint;
-
-        //static private string DisplayUserName;
+       
         static private IloggedInUserModel _loggedInUserModel;
         public ProfileController(IAPIHelper aPIHelper,IProfileEndPoint profile,IloggedInUserModel LoggedInUserModel)
         {
@@ -33,20 +28,15 @@ namespace Handyman_UI.Controllers
             _loggedInUserModel = LoggedInUserModel;
         }
 
-        //Action method for 
+        //Address partial view
         public PartialViewResult CreateAddress()
         {
             
             return PartialView();
         }
-            
- 
-        //Login action function
         
-
-    
-
-    public async Task<ActionResult> CreateAProfile(Models.ProfileDisplayModel profile, Models.ProfileDisplayModel.AddressModel address )
+        //Creating a new profile
+        public async Task<ActionResult> CreateAProfile(Models.ProfileDisplayModel profile, Models.ProfileDisplayModel.AddressModel address )
         {
 
             if (ModelState.IsValid)
@@ -115,11 +105,13 @@ namespace Handyman_UI.Controllers
             return View();
         }
 
-    public ActionResult AddressDetails()
-    {
-        return PartialView();
-    }
-    public  ActionResult ProfileDetails()
+        public ActionResult AddressDetails()
+        {
+            return PartialView();
+        }
+        
+        //Display the profile details
+        public  ActionResult ProfileDetails()
         {
 
             if (ModelState.IsValid)
@@ -142,7 +134,6 @@ namespace Handyman_UI.Controllers
             }
             return View();
         }
-
 
         //The two following methods edit the customer's profile
         // GET: /Profile/Edit/5
