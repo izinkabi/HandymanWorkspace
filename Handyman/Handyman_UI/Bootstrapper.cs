@@ -40,12 +40,11 @@ namespace Handyman_UI
             container.RegisterType<IServiceEndPoint, ServiceEndPoint>();
             container.RegisterType<IServiceProviderEndPoint, ServiceProviderEndPoint>();
             container.RegisterType<IConsumerEndPoint, ConsumerEndPoint>();
-<<<<<<< HEAD
-=======
+
             container.RegisterType<IRequestEndPoint, RequestEndPoint>();
            
             
->>>>>>> 2a2a685f4645639256f75ad2965922ee1458c077
+
             
 
             return container;

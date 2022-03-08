@@ -10,20 +10,19 @@ namespace Handyman_UI.Controllers
 {
     public class LoginController : Controller
     {
-        
+
         protected private string Username, Password;
         protected private string UserRole;
         string ErrorMsg;
         protected bool isLoggedIn;
-       
         protected NewUserModel NewUser;
+        protected ProfileModel profileModel;
 
         private IAPIHelper _apiHepler;
         protected IProfileEndPoint _profileEndPoint;
         private IRegisterEndPoint _registerEndPoint;
-        protected ProfileModel profileModel;
-        
-        static protected IloggedInUserModel _loggedInUserModel;
+        protected static IloggedInUserModel _loggedInUserModel;
+
         protected static bool IsRegistered;
 
         public LoginController(IAPIHelper aPIHelper, IProfileEndPoint profile, IRegisterEndPoint registerEndPoint
@@ -48,60 +47,49 @@ namespace Handyman_UI.Controllers
 
                 try
                 {
-                    var results = await _apiHepler.AuthenticateUser(Username, Password); 
+                    var results = await _apiHepler.AuthenticateUser(Username, Password);
                     _loggedInUserModel = await _apiHepler.GetLoggedInUserInfor(results.Access_Token);
 
-<<<<<<< HEAD
-                    //_loggedInUserModel = ;
-                    //_loggedInUserModel.Token = result.Token;
-                    //_loggedInUserModel.Id = result.Id;
-                    //_loggedInUserModel.UserRole = result.UserRole;
-
-                    Session["LoggedinUser"] = _loggedInUserModel;
-                    Session["Token"] = results.Access_Token;
-
-                        if (Session["LoggedinUser"] == null)
-                    {
-                        RedirectToAction("SignIn", "Login");
-=======
                     //check if the logged user is not empty
                     if (_loggedInUserModel != null)
                     {
 
                         isLoggedIn = true;
                         Session["log"] = "logged";
-                        //Token = _loggedInUserModel.Token;
                         TempData["welcome"] = "Welcome " + Username;
                         Session["loggedinuser"] = _loggedInUserModel;//Session of the loggedinuser
                         profileModel = await _profileEndPoint.GetProfile(_loggedInUserModel.Id);
+
                         if (profileModel != null)
                         {
-                            Session["loggedprofile"] = profileModel;
-                        }
-                    }
+                            Session["loggedinprofile"] = profileModel;//profile session starts this can be removed after customer implementation
 
-                    if (Session["loggedinuser"] == null)
-                    {
-                        return View();
->>>>>>> 2a2a685f4645639256f75ad2965922ee1458c077
+                            //(! Illegal assignment of user-roles from aspnetdb, less secured in api level...  )
+                            if (_loggedInUserModel.UserRole.Equals("Customer"))
+                            {
+                                if (IsRegistered)
+                                {
+                                    return RedirectToAction("CreateAProfile", "Profile");
+                                }
+
+                                return RedirectToAction("Home", "CustomerHome");
+
+                            }
+                            else if (_loggedInUserModel.UserRole.Equals("ServiceProvider"))
+                            {
+                                if (IsRegistered)
+                                {
+                                    return RedirectToAction("CreateAProfile", "Profile");
+                                }
+
+                                return RedirectToAction("Home", "ServiceProviderHome");
+                            }
+                        }
                     }
                     else
                     {
-                        //////this will brake my code--(! Illegal assignment of user-roles from aspnetdb, less secured...  )
-                        if (_loggedInUserModel.UserRole.Equals("Customer"))
-                        {
-                            return RedirectToAction("Index", "Services");
-
-                        }else if(_loggedInUserModel.UserRole.Equals("ServiceProvider")){
-                            return RedirectToAction("Home", "ServiceProviderHome");
-                        }
-                        else
-                        {
-                            return View("ExceptionsHelper", "PageNotFound");
-                        }
+                        return View();
                     }
-
-
 
 
                 }
@@ -158,7 +146,7 @@ namespace Handyman_UI.Controllers
                 {
 
 
-                   
+
                     newUser.UserRole = "ServiceProvider";//User role assignment
                     NewUser = newUser;
                     var loggedInUser = await _registerEndPoint.RegisterUser(newUser);
@@ -180,7 +168,7 @@ namespace Handyman_UI.Controllers
 
 
         //Log Out Function
-        protected ActionResult Logout()
+        public ActionResult Logout()
         {
             //clear the instances in the container
 
@@ -188,12 +176,13 @@ namespace Handyman_UI.Controllers
             {
                 Session.Clear();
                 isLoggedIn = false;
-                _apiHepler.LogOutuser();               
+                _apiHepler.LogOutuser();
                 _apiHepler = null;
                 IsRegistered = false;
 
-                
-            }catch(Exception ex)
+
+            }
+            catch (Exception ex)
             {
                 ErrorMsg = ex.Message;
             }
