@@ -180,11 +180,14 @@
                         <!-- User image -->
                         <li class="user-header bg-primary">
                             <img src="~/BackEndTemp/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                        @{ 
+                            HandymanUILibrary.Models.IloggedInUserModel loggedinuser = (HandymanUILibrary.Models.IloggedInUserModel)Session["LoggedinUser"];
+                        <p>
 
-                            <p>
-                                @Session["Username"] - Handyman
-                                @*<small>Member since Nov. 2012</small>*@
-                            </p>
+                            @(loggedinuser.Email)  - Job Title
+
+                        </p>
+                            }
                         </li>
                         <!-- Menu Body -->
                         <li class="user-body">

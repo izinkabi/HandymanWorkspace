@@ -28,6 +28,11 @@ namespace Handyman_UI.Controllers.Helpers
 
         }
 
-        
+        //404 code exception
+        public ActionResult PageNotFound()
+        {
+            return View();
+        }
+
     }
 }

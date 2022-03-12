@@ -11,13 +11,15 @@ namespace Handyman_UI.Controllers
     {
         private IServicesLoader _serviceLoader;
         private List<ServiceDisplayModel> services;
+        private ExceptionsHelper _exceptionsHelper;
         private ExceptionsHelper DisplayExceptions; 
         
         string ErrorMsg;
 
        
 
-        public ServiceController(IServicesLoader servicesLoader)
+
+        public ServiceController(IServicesLoader servicesLoader,ExceptionsHelper exceptionHelper)
         {
             _serviceLoader = servicesLoader;
             DisplayExceptions = new ExceptionsHelper();

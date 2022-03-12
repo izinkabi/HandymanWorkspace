@@ -185,6 +185,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Controllers\Authentification\Helper\LoginHelper.cs" />
     <Compile Include="Controllers\Calendar\CalendarController.cs" />
     <Compile Include="Controllers\Customer\CustomerHomeController.cs" />
     <Compile Include="Controllers\Customer\Helpers\CustomerHelper.cs" />
