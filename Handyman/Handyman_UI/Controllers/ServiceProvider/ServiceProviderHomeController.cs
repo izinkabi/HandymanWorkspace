@@ -16,12 +16,9 @@ namespace Handyman_UI.Controllers.ServiceProvider
         private IServicesLoader _serviceLoader;
        // IServiceProviderEndPoint _serviceProviderEndPoint;
 
-
-
-
         public static string sessionToken;
         private ServiceProviderModel serviceProvider;
-        private ProfileModel profile;
+        //private ProfileModel profile;
         private List<ServiceDisplayModel> localServices;
         private Helpers.ServiceProviderHelper providersHelper;
         private string ErrorMsg;
@@ -44,19 +41,20 @@ namespace Handyman_UI.Controllers.ServiceProvider
         public ActionResult ServiceProviderLogin()
         {
             Session.Clear();//clear the old session if logged in
+            //Logout();
             return RedirectToAction("SignIn", "Login");
         }
         public async Task<ActionResult> Home()
         {
-            profile = (ProfileModel)Session["loggedinprofile"];
+            profileModel = (ProfileModel)Session["loggedinprofile"];
 
-            if (profile!=null)
+            if (profileModel != null)
             {
 
                 
                 try
                 {
-                    serviceProvider = await _serviceProviderEndPoint.GetProviderByProfileId(profile.Id);//we can store this in a session so that when a provider logs in it starts a session
+                    serviceProvider = await _serviceProviderEndPoint.GetProviderByProfileId(profileModel.Id);//we can store this in a session so that when a provider logs in it starts a session
                     ServiceProviderDisplayModel serviceProviderModel = new ServiceProviderDisplayModel();
                     serviceProviderModel.services = new List<ServiceDisplayModel>();
                     if (serviceProvider != null)
@@ -143,19 +141,21 @@ namespace Handyman_UI.Controllers.ServiceProvider
         //[HttpPost]
         public async Task<ActionResult> RegisterServiceProvider(ServiceProviderDisplayModel serviceProviderDisplay)
         {
-
-            /********Provider Type Dropdown list*/
-            var profile = new ProfileModel();
-            profile.Address = new ProfileModel.AddressModel();
-            serviceProvider = new ServiceProviderModel();
-            var tempProvider = new ServiceProviderDisplayModel();
-            //the cheat
-            tempProvider.CompanyName = "";
-            
-            tempProvider.providerServices = new List<ServiceDisplayModel>();
-            tempProvider.Profile = new ProfileModel();
-            tempProvider.Profile.Address = new ProfileModel.AddressModel();
            
+
+
+                /********Provider Type Dropdown list*/
+                var profile = new ProfileModel();
+                profile.Address = new ProfileModel.AddressModel();
+                serviceProvider = new ServiceProviderModel();
+                var tempProvider = new ServiceProviderDisplayModel();
+                //the cheat
+                tempProvider.CompanyName = "";
+
+                tempProvider.providerServices = new List<ServiceDisplayModel>();
+                tempProvider.Profile = new ProfileModel();
+                tempProvider.Profile.Address = new ProfileModel.AddressModel();
+
 
                 List<SelectListItem> serviceProviderTypeslist = new List<SelectListItem>()
                     {
@@ -186,8 +186,8 @@ namespace Handyman_UI.Controllers.ServiceProvider
                 var providersServiceDisplayModel = new ProvidersServiceDisplayModel();
                 var providersService = new ProvidersServiceModel();
 
-            try
-            {
+                try
+                {
                     List<ServiceDisplayModel> dbServices = await _serviceLoader.getDisplayServices();
                     List<SelectListItem> servicesSelectList = new List<SelectListItem>();
                     for (int i = 0; i < dbServices.Count; i++)
@@ -197,8 +197,8 @@ namespace Handyman_UI.Controllers.ServiceProvider
                     }
 
                     tempProvider.ServicesSelectList = servicesSelectList;
-                   
-                    
+
+
                     var selectedProviderItem = servicesSelectList.Find(p => p.Value == serviceProviderDisplay.SelectedServiceId.ToString());
 
                     if (selectedProviderItem != null)
@@ -211,40 +211,36 @@ namespace Handyman_UI.Controllers.ServiceProvider
                     /*END SERVICES DROPDOWN LIST********************************/
                     if (ModelState.IsValid)
                     {
-                            var _token = Session["Token"].ToString();
+                       
+                        profileModel = (ProfileModel)Session["loggedinprofile"];
+                        if (profileModel.Id != 0)
+                        serviceProvider.CompanyName = serviceProviderDisplay.CompanyName;
+                        serviceProvider.ProfileId = profileModel.Id;
 
-                            //_logge = await _apiHepler.GetLoggedInUserInfor(_token);
-                            //var user = new UserModel();
-                            //user.Id = loggeduser.Id;
-                            //Getting a profile with its Address
-                            //var results = await _profileEndPoint.GetProfile(user);
+                        var response = await _serviceProviderEndPoint.PostServiceProvider(serviceProvider);
+                        ViewBag.MessageService = selectedItem.Text;
 
-                            //serviceProvider.CompanyName = serviceProviderDisplay.CompanyName;
-                            //serviceProvider.ProfileId = results.Id;
+                        //store the provider's service
+                        var providerResult = await _serviceProviderEndPoint.GetProviderByProfileId(profileModel.Id);/*****/
+                        providersService.ServiceProviderId = providerResult.Id;
+                        var result = await _serviceProviderEndPoint.PostProvidersService(providersService);
+                        TempData["newuser"] = serviceProvider.CompanyName+"! You are now a Handyman";
+
+                        return RedirectToAction("Home", "ServiceProviderHome");
+                    }
 
 
-                            var response = await _serviceProviderEndPoint.PostServiceProvider(serviceProvider);
-                            ViewBag.MessageService = selectedItem.Text;
-
-                            //store the provider's service
-                            var providerResult = await _serviceProviderEndPoint.GetProviderByProfileId(0);/*****/
-                            providersService.ServiceProviderId = providerResult.Id;
-                            var result = await _serviceProviderEndPoint.PostProvidersService(providersService);
-                            TempData["newuser"] = "A new Service Provider, Handyman";
-                            
-                    return RedirectToAction("Home", "ServiceProviderHome");
+                    return View(tempProvider);
                 }
-                
+                catch (Exception ex)
+                {
 
-            return View(tempProvider);
-        }
-            catch (Exception ex)
-            {
+                    throw new Exception(ex.Message);
+                    return View();
+                }
 
-                throw new Exception(ex.Message);
-            }
-
-
+            
+            
         }
            //The details of the service provider method
         public async Task<ActionResult> ProviderDetails()
@@ -260,18 +256,18 @@ namespace Handyman_UI.Controllers.ServiceProvider
 
                     //_loggedInUserModel = (IloggedInUserModel)Session["loggedinuser"];
                      //profile = (ProfileModel)Session["loggedinprofile"];
-                    if (profile==null || isUpdatedProfile)
+                    if (profileModel == null || isUpdatedProfile)
                     {
-                        profile = (ProfileModel)Session["loggedinprofile"];//update
-                        Session["loggedinprofile"] = profile;
+                        profileModel = (ProfileModel)Session["loggedinprofile"];//update
+                        Session["loggedinprofile"] = profileModel;
                     }
                     
 
                     //get the provider and its services
-                    if (profile != null)
+                    if (profileModel != null)
                     {
 
-                        serviceProvider = await _serviceProviderEndPoint.GetProviderByProfileId(profile.Id);
+                        serviceProvider = await _serviceProviderEndPoint.GetProviderByProfileId(profileModel.Id);
                         var dbProviderServices = await _serviceProviderEndPoint.GetProvidersServiceByProviderId(serviceProvider.Id);
                         var dbServices = await _serviceLoader.getDisplayServices();
 
@@ -288,7 +284,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
                         }
                         providerModel.CompanyName = serviceProvider.CompanyName;
                         providerModel.ProviderType = serviceProvider.ProviderType;
-                        providerModel.Profile = profile;
+                        providerModel.Profile = profileModel;
                         providerModel.services = dbServices;
                         List<SelectListItem> serviceSelectList = new List<SelectListItem>();
                         for (int i = 0; i < dbServices.Count; i++)
@@ -339,12 +335,11 @@ namespace Handyman_UI.Controllers.ServiceProvider
 
             //var results = await _profileEndPoint.GetProfile("");
             //var response = await _serviceProviderEndPoint.GetProviderByProfileId(results.Id);
-            if (profile == null)
+            if (profileModel == null)
             {
-                
-                profile = (ProfileModel)Session["loggedinprofile"];
+                profileModel = (ProfileModel)Session["loggedinprofile"];
             }
-            serviceProvider = await _serviceProviderEndPoint.GetProviderByProfileId(profile.Id);
+            serviceProvider = await _serviceProviderEndPoint.GetProviderByProfileId(profileModel.Id);
             var dbProviderServices = await _serviceProviderEndPoint.GetProvidersServiceByProviderId(serviceProvider.Id);
 
 
@@ -380,15 +375,15 @@ namespace Handyman_UI.Controllers.ServiceProvider
                 {
                     //Getting a profile with its Address
 
-                    if(profile == null)
+                    if(profileModel == null)
                     {
-                        profile = (ProfileModel)Session["loggedinprofile"];
+                        profileModel = (ProfileModel)Session["loggedinprofile"];
 
                     }
                     
                     
 
-                    var providerResponse = await _serviceProviderEndPoint.GetProviderByProfileId(profile.Id);
+                    var providerResponse = await _serviceProviderEndPoint.GetProviderByProfileId(profileModel.Id);
                     List<ProvidersServiceModel> providerServices  = await _serviceProviderEndPoint.GetProvidersServiceByProviderId(providerResponse.Id);
                     List<ServiceDisplayModel> services = await _serviceLoader.getDisplayServices();
                     providerModel.providerServices = new List<ServiceDisplayModel>();
@@ -412,9 +407,9 @@ namespace Handyman_UI.Controllers.ServiceProvider
                     };
                     providerModel.serviceProviderTypes = 
                         serviceProviderTypeslist;
-                    if (profile.Address!=null && profile.Address is ProfileModel.AddressModel)
+                    if (profileModel.Address!=null && profileModel.Address is ProfileModel.AddressModel)
                     {
-                        providerModel.Profile = profile;
+                        providerModel.Profile = profileModel;
                         providerModel.ProviderType = providerResponse.ProviderType;
                         providerModel.CompanyName = providerResponse.CompanyName;
                         providerModel.ProviderType = providerResponse.ProviderType;
@@ -512,10 +507,10 @@ namespace Handyman_UI.Controllers.ServiceProvider
                 //user.Id = loggeduser.Id;
                 //Getting a profile with its Address
                 //var results = await _profileEndPoint.GetProfile("");
-                profile = (ProfileModel)Session["loggedprofile"];
-                if (profile != null)
+                profileModel = (ProfileModel)Session["loggedprofile"];
+                if (profileModel != null)
                 {
-                    var providerResponse = await _serviceProviderEndPoint.GetProviderByProfileId(profile.Id);
+                    var providerResponse = await _serviceProviderEndPoint.GetProviderByProfileId(profileModel.Id);
                     var dbProviderService = await _serviceProviderEndPoint.GetProvidersServiceByProviderId(providerResponse.Id);
 
 
