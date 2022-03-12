@@ -1,11 +1,6 @@
 ﻿using HandymanUILibrary.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HandymanUILibrary.API
@@ -15,12 +10,11 @@ namespace HandymanUILibrary.API
 
         private IAPIHelper _aPIHelper;
        
-        private IloggedInUserModel _loggedInUserModel;
-        //Initializing
-        public ProfileEndPoint(IAPIHelper aPIHelper, IloggedInUserModel loggedInUserModel)
+        
+        public ProfileEndPoint(IAPIHelper aPIHelper)
         {
             _aPIHelper = aPIHelper;
-            _loggedInUserModel = loggedInUserModel;
+            
         }
 
         //a Profile Post endpoint
@@ -28,7 +22,7 @@ namespace HandymanUILibrary.API
         {
           
 
-            HttpResponseMessage responseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync("/api/Profiles", profile);
+            HttpResponseMessage responseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync("/api/PostProfile", profile);
             
                 if (responseMessage.IsSuccessStatusCode)
                 {

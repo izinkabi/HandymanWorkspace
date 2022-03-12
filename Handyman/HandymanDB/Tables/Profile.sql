@@ -1,7 +1,7 @@
 ﻿
 CREATE TABLE [dbo].[Profile]
 (
-	[Id] INT IDENTITY  NOT NULL PRIMARY KEY, 
+	[Id] INT IDENTITY(1,1)  NOT NULL PRIMARY KEY, 
     [Name] VARCHAR(50) NOT NULL,
     [Surname] VARCHAR(50) NOT NULL,
     [HomeAddressId] INT NOT NULL,

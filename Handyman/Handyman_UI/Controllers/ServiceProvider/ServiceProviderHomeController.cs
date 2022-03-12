@@ -25,8 +25,9 @@ namespace Handyman_UI.Controllers.ServiceProvider
         private List<ServiceDisplayModel> localServices;
         private Helpers.ServiceProviderHelper providersHelper;
         private string ErrorMsg;
+        private bool isUpdatedProfile;
 
-        
+        //private bool isUpdatedProfile { get { return _isUpdatedProfile; } set { _isUpdatedProfile = value; } }
         public ServiceProviderHomeController(IAPIHelper aPIHelper, IProfileEndPoint profile, IRegisterEndPoint registerEndPoint
             , IloggedInUserModel loggedInUserModel,IServiceProviderEndPoint serviceProviderEndPoint, 
             IServicesLoader servicesLoader) : base(aPIHelper,profile,registerEndPoint,loggedInUserModel)
@@ -42,6 +43,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
 
         public ActionResult ServiceProviderLogin()
         {
+            Session.Clear();//clear the old session if logged in
             return RedirectToAction("SignIn", "Login");
         }
         public async Task<ActionResult> Home()
@@ -256,9 +258,14 @@ namespace Handyman_UI.Controllers.ServiceProvider
                 try
                 {
 
-                    _loggedInUserModel = (IloggedInUserModel)Session["loggedinuser"];
-                    profile = (ProfileModel)Session["loggedinprofile"];
-                   
+                    //_loggedInUserModel = (IloggedInUserModel)Session["loggedinuser"];
+                     //profile = (ProfileModel)Session["loggedinprofile"];
+                    if (profile==null || isUpdatedProfile)
+                    {
+                        profile = (ProfileModel)Session["loggedinprofile"];//update
+                        Session["loggedinprofile"] = profile;
+                    }
+                    
 
                     //get the provider and its services
                     if (profile != null)
@@ -332,7 +339,11 @@ namespace Handyman_UI.Controllers.ServiceProvider
 
             //var results = await _profileEndPoint.GetProfile("");
             //var response = await _serviceProviderEndPoint.GetProviderByProfileId(results.Id);
-            profile = (ProfileModel)Session["loggedprofile"];
+            if (profile == null)
+            {
+                
+                profile = (ProfileModel)Session["loggedinprofile"];
+            }
             serviceProvider = await _serviceProviderEndPoint.GetProviderByProfileId(profile.Id);
             var dbProviderServices = await _serviceProviderEndPoint.GetProvidersServiceByProviderId(serviceProvider.Id);
 
@@ -368,8 +379,14 @@ namespace Handyman_UI.Controllers.ServiceProvider
                 try
                 {
                     //Getting a profile with its Address
-                    profile = (ProfileModel)Session["loggedinprofile"];
-                    providerModel.Profile = profile;
+
+                    if(profile == null)
+                    {
+                        profile = (ProfileModel)Session["loggedinprofile"];
+
+                    }
+                    
+                    
 
                     var providerResponse = await _serviceProviderEndPoint.GetProviderByProfileId(profile.Id);
                     List<ProvidersServiceModel> providerServices  = await _serviceProviderEndPoint.GetProvidersServiceByProviderId(providerResponse.Id);
@@ -396,11 +413,14 @@ namespace Handyman_UI.Controllers.ServiceProvider
                     providerModel.serviceProviderTypes = 
                         serviceProviderTypeslist;
                     if (profile.Address!=null && profile.Address is ProfileModel.AddressModel)
-                        //providerModel.Profile.Address = profile.Address;
-                        //providerModel.ProviderType = providerResponse.ProviderType;
+                    {
+                        providerModel.Profile = profile;
+                        providerModel.ProviderType = providerResponse.ProviderType;
                         providerModel.CompanyName = providerResponse.CompanyName;
                         providerModel.ProviderType = providerResponse.ProviderType;
                         providerModel.Id = providerResponse.Id;
+                    }
+                        
 
                     return View("Edit", providerModel);
                 }
@@ -451,46 +471,29 @@ namespace Handyman_UI.Controllers.ServiceProvider
 
                     if (providerDisplay.Profile !=null && providerDisplay is ServiceProviderDisplayModel)
                     {
+                       
                         providerUpdate.ProfileId = providerDisplay.Profile.Id;
                         providerUpdate.ProviderType = providerDisplay.ProviderType;
                         providerUpdate.CompanyName = providerDisplay.CompanyName;
                         providerUpdate.Id = providerDisplay.Id;
-                        
+
                         await _profileEndPoint.UpdateProfile(providerDisplay.Profile);
                         await _serviceProviderEndPoint.UpdateServiceProvider(providerUpdate);
+                        TempData["updatedprofile"] = providerDisplay.Profile.Name + " you edited your Profile";
+                        isUpdatedProfile = true;
+                        Session["loggedinprofile"] = providerDisplay.Profile;//update the profile in the session
+                       
+
                     }
-
-                    //providerUpdate.CompanyName = providerDisplay.CompanyName;
-                  
-
-                    //Update the service provider
-
-                    //var providerResponse = await _serviceProviderEndPoint.GetProviderByProfileId(providerDisplay.Profile.Id);//should be in a session
-                   
-                    //var selectedItem = serviceProviderTypeslist.Find(p => p.Value == providerDisplay.ServiceProviderTypesId.ToString());
-
-                    //if (selectedItem != null)
-                    //{
-                    //    selectedItem.Selected = true;
-                    //    providerDisplay.ProviderType = selectedItem.Text;
-
-                    //    //providerUpdate.ProviderType = providerResponse.ProviderType;
-                    //    //var dbProviderServices = await _serviceProvider.GetProvidersServiceByProviderId(providerResponse.Id);
-                      
-                    //}
-
-                   
-
-
-                    return RedirectToAction("ProviderDetails");
 
                 }
                 catch (Exception ex)
                 {
                     ErrorMsg = (ex.Message);
-                    RedirectToAction("ServiceProviderLogin");
+                    return RedirectToAction("ServiceProviderLogin");
                 }
-
+               
+                return RedirectToAction("ProviderDetails");
             }
             return View();
         }

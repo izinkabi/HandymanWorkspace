@@ -7,7 +7,7 @@ namespace HandymanAPI.Controllers
 
     public class ProfilesController : ApiController
     {
-
+        [Route("api/PostProfile")]
         public void PostProfile(ProfileModel profile)
         {
             ProfileData data = new ProfileData();
@@ -22,7 +22,7 @@ namespace HandymanAPI.Controllers
             
             ProfileData data = new ProfileData();
             var dbProfile = data.GetProfileByUserId(userId);
-            var tempProfile = new ProfileModel();
+            //var tempProfile = new ProfileModel();
 
             return dbProfile;
         }

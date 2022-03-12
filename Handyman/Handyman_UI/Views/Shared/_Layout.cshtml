@@ -45,7 +45,7 @@
                 </ul>
                
                 <ul class="nav navbar-nav navbar-right">
-                    @if (Session["log"] == null)
+                    @if (Session["loggedinprofile"] == null)
                     {
 
                         <li><a href="https://localhost:44365/Login/Register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
@@ -59,9 +59,10 @@
                         //Works well in an anchor and a link
 
 
-                       HandymanUILibrary.Models.IloggedInUserModel loggedinuser = (HandymanUILibrary.Models.IloggedInUserModel)Session["loggedinuser"];
+                        //HandymanUILibrary.Models.IloggedInUserModel loggedinuser = (HandymanUILibrary.Models.IloggedInUserModel)Session["username"];
+                        var profile = (HandymanUILibrary.Models.ProfileModel)Session["loggedinprofile"];
 
-                        <li><a>@TempData["welcome"]</a></li>
+                        <li><a> @profile.Name</a></li>
                         <li class="dropdown ">
                             <a class="btn btn-default dropdown-toggle" id="menu1" data-toggle="dropdown">
 
@@ -70,7 +71,7 @@
                             </a>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
                                 <li role="presentation" class="divider"></li>
-                                <li role="presentation"><a href="https://localhost:44365/Profile/ProfileDetails"> @loggedinuser.Username</a></li>
+                                <li role="presentation"><a href="https://localhost:44365/Profile/ProfileDetails"> @profile.Name </a></li>
                                 <li role="presentation" class="divider"></li>
                                 <li class="dropdown-header"><a href="https://localhost:44365/ServiceProviderHome/RegisterServiceProvider"><strong>Be a provider</strong></a></li>
                                 <li role="presentation" class="divider"></li>

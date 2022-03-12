@@ -12,77 +12,53 @@ namespace Handyman_UI.Controllers
     public class ProfileController : Controller
     {
 
-        private IAPIHelper _apiHepler;
-        
-       
         static private string UserRole;
         private ProfileModel profileModel; 
         private IProfileEndPoint _profileEndPoint;
         string ErrorMsg;
+        private AuthenticatedUserModel authenticatedUser;
+        private IAPIHelper _apiHelper;
        
         static private IloggedInUserModel _loggedInUserModel;
-        public ProfileController(IAPIHelper aPIHelper,IProfileEndPoint profile,IloggedInUserModel LoggedInUserModel)
+        public ProfileController(IAPIHelper aPIHelper, IProfileEndPoint profile,IloggedInUserModel LoggedInUserModel)
         {
-            _apiHepler = aPIHelper;
+            _apiHelper = aPIHelper;
             _profileEndPoint = profile;
-            _loggedInUserModel = LoggedInUserModel;
+           // _loggedInUserModel = LoggedInUserModel;
         }
 
         //Address partial view
         public PartialViewResult CreateAddress()
         {
-            
             return PartialView();
         }
         
         //Creating a new profile
-        public async Task<ActionResult> CreateAProfile(Models.ProfileDisplayModel profile, Models.ProfileDisplayModel.AddressModel address )
+        public async Task<ActionResult> CreateAProfile(ProfileModel profile,ProfileModel.AddressModel address)
         {
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && profile.Name!=null)
             {
-                //this should be enough to pass to the API endpoint
-                profileModel = new HandymanUILibrary.Models.ProfileModel();
-                profileModel.Address = new HandymanUILibrary.Models.ProfileModel.AddressModel();
-               
-                profileModel.Name = profile.Name;
-                profileModel.Surname = profile.Surname;
-                profileModel.PhoneNumber = profile.PhoneNumber;
-                profileModel.DateOfBirth = profile.DateOfBirth;
-               
-                profileModel.Address.StreetName = address.StreetName;
-                profileModel.Address.Surburb = address.Surburb;
-                profileModel.Address.PostalCode = address.PostalCode;
-                profileModel.Address.HouseNumber = address.HouseNumber;
-                profileModel.Address.City = address.City;
 
-                ViewBag.profilename = profile.Name + profile.Surname;
-
+                //ViewBag.profilename = profile.Name + profile.Surname;//display the profile names
                 
                 try
                 {
-                    
-                   
-                    
-                    if (Session["Token"] == null)
+                    if (Session["loggedinuser"] != null)
                     {
-                        return RedirectToAction("SignIn", "Login");
-                    } else
-                        {
-
-                        var token = Session["Token"].ToString();
-                        var loggeuser = await _apiHepler.GetLoggedInUserInfor(token);// awaited loggedUser
-
-                        profileModel.UserId = loggeuser.Id;//pass user ID
-                        UserRole = loggeuser.UserRole;
-
+                        var loggeduser = (loggedInUserModel)Session["loggedinuser"];
+                        if(loggeduser != null && loggeduser is loggedInUserModel)
+                        profileModel = profile;
+                        profileModel.Address = address;
+                        profileModel.UserId = loggeduser.Id;//pass user ID
+                        UserRole = loggeduser.UserRole;
                         await _profileEndPoint.PostProfile(profileModel);//waited results of posted user profile
-
+                        Session["loggedinprofile"] = await _profileEndPoint.GetProfile(loggeduser.Id);
+                    }
+                       
                         if (UserRole == "Customer")
                         {
-
                             return RedirectToAction("RegisterCustomer", "CustomerHome");
-
                         }
                         else if (UserRole == "ServiceProvider")
                         {
@@ -90,16 +66,14 @@ namespace Handyman_UI.Controllers
                             return RedirectToAction("RegisterServiceProvider", "ServiceProviderHome");
                         }
                     }
-                    
-                     
-                }
+                
                 catch (Exception ex)
                 {
                     ViewBag.ErrorMsg = ex.Message;
+                    ErrorMsg = ex.Message;
                 }
 
                 
-
             }
 
             return View();
@@ -145,39 +119,25 @@ namespace Handyman_UI.Controllers
             } 
             else
             {
-                ProfileModel profile;
-               
                 try
                 {
-                    var token = Session["Token"].ToString();
-                    _loggedInUserModel = await _apiHepler.GetLoggedInUserInfor(token);
                     
-                     profile = await _profileEndPoint.GetProfile(_loggedInUserModel.Id);
-
-                   
-                    //profileDisplayModel.UserId = profile.UserId;
-                    //profileDisplayModel.ProfileId = profile.Id;
-                    //profileDisplayModel.Name = profile.Name;
-                    //profileDisplayModel.Surname = profile.Surname;
-                    //profileDisplayModel.DateOfBirth = profile.DateOfBirth;
-                    //profileDisplayModel.PhoneNumber = profile.PhoneNumber;
-
-                    //profileDisplayModel.AddressM = new ProfileDisplayModel.AddressModel();
-                    //profileDisplayModel.AddressM.Id = profile.Address.Id;
-                    //profileDisplayModel.AddressM.City = profile.Address.City;
-                    //profileDisplayModel.AddressM.PostalCode = profile.Address.PostalCode;
-                    //profileDisplayModel.AddressM.StreetName = profile.Address.StreetName;
-                    //profileDisplayModel.AddressM.Surburb = profile.Address.Surburb;
-                    //profileDisplayModel.AddressM.HouseNumber = profile.Address.HouseNumber;
-                    if (profile == null)
+                    profileModel = (ProfileModel)Session["loggedinprofile"];
+                    
+                    if (profileModel != null && profileModel is ProfileModel) 
+                    {
+                        return View("Edit", profileModel);
+                    }
+                    else
                     {
                         return HttpNotFound();
                     }
-                }catch(Exception ex)
+                }
+                catch(Exception ex)
                 {
                     throw new Exception(ex.Message);                   
                 }
-                return View("Edit", profile);
+               
             }
          
             
@@ -194,11 +154,15 @@ namespace Handyman_UI.Controllers
                
                 try
                 {
-
-                    TempData["updatedprofile"] = profile.Name + " you edited your Profile";
                     //first update the profile
-                    await _profileEndPoint.UpdateProfile(profile);
-                }catch(Exception ex)
+                    if (profile != null && profile is ProfileModel)
+                    {
+                        await _profileEndPoint.UpdateProfile(profile);
+                        Session["loggedinprofile"] = profile;
+                        TempData["updatedprofile"] = profile.Name + " you edited your Profile";
+                    }
+                }
+                catch(Exception ex)
                 {
                     throw new Exception(ex.Message);
                 }

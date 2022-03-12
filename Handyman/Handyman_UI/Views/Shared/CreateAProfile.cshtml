@@ -1,7 +1,7 @@
-﻿@model Handyman_UI.Models.ProfileDisplayModel
+﻿@model HandymanUILibrary.Models.ProfileModel
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("CreateAProfile", "Profile", FormMethod.Post)) 
 {
     @Html.AntiForgeryToken()
     

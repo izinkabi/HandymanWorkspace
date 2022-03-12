@@ -22,8 +22,9 @@ namespace Handyman_UI.Controllers
         protected IProfileEndPoint _profileEndPoint;
         private IRegisterEndPoint _registerEndPoint;              
         protected static IloggedInUserModel _loggedInUserModel;
-
-        protected static bool IsRegistered;
+        private static AuthenticatedUserModel authenticatedUser;
+        private static bool IsRegistered;
+        
 
         public LoginController(IAPIHelper aPIHelper, IProfileEndPoint profile, IRegisterEndPoint registerEndPoint
             , IloggedInUserModel loggedInUserModel)
@@ -35,7 +36,6 @@ namespace Handyman_UI.Controllers
         }
 
         //Login action function
-
         public async Task<ActionResult> SignIn(UserLoginModel model)
         {
 
@@ -47,18 +47,32 @@ namespace Handyman_UI.Controllers
 
                 try
                 {
-                    var results = await _apiHepler.AuthenticateUser(Username, Password); 
+                    if (IsRegistered)
+                    {
+                        if (Session["loggedinuser"] == null)
+                        {
+                            var result = await _apiHepler.AuthenticateUser(Username, Password);
+                            _loggedInUserModel = await _apiHepler.GetLoggedInUserInfor(result.Access_Token);
+                            Session["loggedinuser"] = _loggedInUserModel;
+                            return RedirectToAction("CreateAProfile","Profile");
+                        }
+                    }
+                    var results = await _apiHepler.AuthenticateUser(Username, Password);
                     _loggedInUserModel = await _apiHepler.GetLoggedInUserInfor(results.Access_Token);
-
+                    
                     //check if the logged user is not empty
-                    if (_loggedInUserModel != null)
+                    if (_loggedInUserModel.Id != null || authenticatedUser!=null)
                     {
 
-                        isLoggedIn = true;
-                        Session["log"] = "logged";
-                        TempData["welcome"] = "Welcome " + Username;
-                        Session["loggedinuser"] = _loggedInUserModel;//Session of the loggedinuser
-                        profileModel = await _profileEndPoint.GetProfile(_loggedInUserModel.Id);
+                        
+                        if (_loggedInUserModel.Id != null)
+                        
+                            profileModel = await _profileEndPoint.GetProfile(_loggedInUserModel.Id);
+                            TempData["welcome"] = "Welcome " + profileModel.Name + " " +profileModel.Surname;
+                            Session["loggedinuser"] = _loggedInUserModel;//Session of the loggedinuser
+                            isLoggedIn = true;
+                           
+                        
 
                         if (profileModel != null)
                         {
@@ -66,23 +80,22 @@ namespace Handyman_UI.Controllers
 
                             //(! Illegal assignment of user-roles from aspnetdb, less secured in api level...  )
                             if (_loggedInUserModel.UserRole.Equals("Customer"))
-                            {
-                                if (IsRegistered)
-                                {
-                                    return RedirectToAction("CreateAProfile", "Profile");
-                                }
-                                
+                            { 
+                                profileModel = await _profileEndPoint.GetProfile(_loggedInUserModel.Id);
                                 return RedirectToAction("Home", "CustomerHome");
-
                             }
                             else if (_loggedInUserModel.UserRole.Equals("ServiceProvider"))
-                            {
-                                if (IsRegistered)
-                                {
-                                    return RedirectToAction("CreateAProfile", "Profile");
-                                }
-                               
+                            { 
+                                profileModel = await _profileEndPoint.GetProfile(_loggedInUserModel.Id);
                                 return RedirectToAction("Home", "ServiceProviderHome");
+                            }
+                        }
+                        else
+                        {
+                            if (!IsRegistered)
+                            {
+                                Session.Clear();
+                                return View("Register");
                             }
                         }
                     }
@@ -90,21 +103,14 @@ namespace Handyman_UI.Controllers
                     {
                         return View();
                     }
-
-
                 }
                 catch (Exception ex)
                 {
                     ViewBag.ErrorMsg = ex.Message;
                     Session.Clear();//clear session 
                 }
-
-
             }
-
-
             return View();
-
         }
 
         //Register action methods
@@ -115,22 +121,23 @@ namespace Handyman_UI.Controllers
             {
                 try
                 {
-
                     newUser.UserRole = "Customer";
                     NewUser = newUser;
-
-                    var authenticatedUser = await _registerEndPoint.RegisterUser(newUser);
-                    // Session["Token"] = loggedInUser.Access_Token;
-                    if (authenticatedUser != null)
+                    var result = await _registerEndPoint.RegisterUser(newUser);
+                    authenticatedUser = (AuthenticatedUserModel)result;
+                    //Session["loggedinuser"] = await _apiHepler.GetLoggedInUserInfor(result.Access_Token.ToString());
+                    if (authenticatedUser != null && authenticatedUser is AuthenticatedUserModel)
                     {
+                        Session["authedUser"] = authenticatedUser;
                         IsRegistered = true;
-                        return RedirectToAction("SignIn", "Login");
+                        return RedirectToAction("SignIn");
                     }
                 }
                 catch (Exception ex)
                 {
                     ViewBag.RegisterErrorMsg = ex.Message;
                     IsRegistered = false;
+                    return View();
                 }
 
             }
@@ -144,16 +151,16 @@ namespace Handyman_UI.Controllers
             {
                 try
                 {
-
-
-                   
                     newUser.UserRole = "ServiceProvider";//User role assignment
                     NewUser = newUser;
-                    var loggedInUser = await _registerEndPoint.RegisterUser(newUser);
-                    //Session["Token"] = loggedInUser.Access_Token;
-                    IsRegistered = true;
+                    authenticatedUser = await _registerEndPoint.RegisterUser(newUser);
 
-                    return RedirectToAction("SignIn", "Login");
+                    if (authenticatedUser != null && authenticatedUser is AuthenticatedUserModel)
+                    {
+                        Session["authedUser"] = authenticatedUser;
+                        IsRegistered = true;
+                        return RedirectToAction("SignIn", "Login");
+                    }
 
                 }
                 catch (Exception ex)

@@ -18,7 +18,7 @@ namespace Handyman_UI.Controllers
          IConsumerEndPoint _consumerEndPoint;
          IRequestEndPoint _requestEndPoint;
          IServiceProviderEndPoint _serviceProviderEndPoint;
-         ConsumerModel customer;
+         private ConsumerModel customer;
          string ErrorMsg;
         
 
@@ -42,7 +42,9 @@ namespace Handyman_UI.Controllers
         {
                 try
                 {
-                    profileModel = (ProfileModel)Session["loggedinprofile"];//Get the logged in profile
+                if (Session["loggedinprofile"] != null)
+                    profileModel = (ProfileModel)Session["loggedinprofile"];
+                    //profileModel = (ProfileModel)Session["loggedinprofile"];//Get the logged in profile
                     if (profileModel is ProfileModel)
                         Helper.IsLoggedIn = true;
                     customer = await _consumerEndPoint.GetConsumerByProfileId(profileModel.Id);//getting the customer. This can start a customer session
@@ -103,14 +105,14 @@ namespace Handyman_UI.Controllers
             {
 
                 profileModel = (ProfileModel)Session["loggedinprofile"];
-
+                if(profileModel!=null)
                 customer = new ConsumerModel();
                 customer.Activation = 1;
                 customer.ProfileId = profileModel.Id;
 
                 await _consumerEndPoint.PostConsumer(customer);
                 Helper.IsCustomer = true;
-                TempData["newuser"] = "Customer";
+                TempData["newuser"] = profileModel.Name + " " + profileModel.Surname;
 
                 return RedirectToAction("Index", "Service");
             }
