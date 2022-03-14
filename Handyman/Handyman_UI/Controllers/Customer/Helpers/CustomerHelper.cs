@@ -1,7 +1,10 @@
 ﻿using Handyman_UI.Models;
+using HandymanUILibrary.API;
+using HandymanUILibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -12,15 +15,17 @@ namespace Handyman_UI.Controllers.Customer.Helpers
         static bool _IsLoggedIn;
         static bool _IsRegistered;
         static bool _IsCustomer;
-         bool _CanRequest;
-         bool _CanCancelRequest;
-         IServicesLoader _servicesLoader;
-         
+        protected List<ProfileModel.AddressModel> Addresses;
+        protected bool _CanRequest;
+        protected bool _CanCancelRequest;
+        private IServicesLoader _servicesLoader;
+        private IProfileEndPoint _profileEndPoint;
+        string ErrorMsg;
 
-
-        public CustomerHelper(IServicesLoader servicesLoader)
+        public CustomerHelper(IServicesLoader servicesLoader,IProfileEndPoint profileEndPoint)
         {
             _servicesLoader = servicesLoader;
+            _profileEndPoint = profileEndPoint;
         }
 
 
@@ -110,6 +115,51 @@ namespace Handyman_UI.Controllers.Customer.Helpers
         //******************************End Properties********************************//
 
 
+        //Find Service Provider by:
+        //City
+        //Postal code
+        //Surburb
+        public async Task<List<ProfileModel.AddressModel>> GetAddressesByCity(string City)
+        {
+            try
+            {
+                Addresses = await _profileEndPoint.GetAddressesByCiy(City);
+            }catch(Exception ex)
+            {
+                ErrorMsg = ex.Message;
+                Addresses.Clear();
+            }
+
+            return Addresses;
+        }
+        public async Task<List<ProfileModel.AddressModel>> GetAddressesByPostalCode(int PostalCode)
+        {
+            try
+            {
+                Addresses = await _profileEndPoint.GetAddressesByPostalCode(PostalCode);
+            }
+            catch (Exception ex)
+            {
+                ErrorMsg = ex.Message;
+                Addresses.Clear();
+            }
+
+            return Addresses;
+        }
+        public async Task<List<ProfileModel.AddressModel>> GetAddressesBySurburb(string Surburb)
+        {
+            try
+            {
+                Addresses = await _profileEndPoint.GetAddressesBySurburb(Surburb);
+            }
+            catch (Exception ex)
+            {
+                ErrorMsg = ex.Message;
+                Addresses.Clear();
+            }
+
+            return Addresses;
+        }
 
 
         public void LogOnVerification()
@@ -126,7 +176,7 @@ namespace Handyman_UI.Controllers.Customer.Helpers
 
 
         //Make the request with a customer and the a Service
-        public void ActionARequest(CustomerModel customer ,ServiceModel service)
+        public void ActionARequest(CustomerModel customer , Models.ServiceModel service)
         {
 
             if (_IsLoggedIn)

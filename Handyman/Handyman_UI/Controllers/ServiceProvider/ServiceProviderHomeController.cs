@@ -11,20 +11,18 @@ namespace Handyman_UI.Controllers.ServiceProvider
 {
     public sealed class ServiceProviderHomeController : LoginController 
     {
-        //interfaces for classes
+        //properties and local variables
         private IServiceProviderEndPoint _serviceProviderEndPoint;
         private IServicesLoader _serviceLoader;
-       // IServiceProviderEndPoint _serviceProviderEndPoint;
 
         public static string sessionToken;
         private ServiceProviderModel serviceProvider;
-        //private ProfileModel profile;
         private List<ServiceDisplayModel> localServices;
         private Helpers.ServiceProviderHelper providersHelper;
         private string ErrorMsg;
         private bool isUpdatedProfile;
 
-        //private bool isUpdatedProfile { get { return _isUpdatedProfile; } set { _isUpdatedProfile = value; } }
+       
         public ServiceProviderHomeController(IAPIHelper aPIHelper, IProfileEndPoint profile, IRegisterEndPoint registerEndPoint
             , IloggedInUserModel loggedInUserModel,IServiceProviderEndPoint serviceProviderEndPoint, 
             IServicesLoader servicesLoader) : base(aPIHelper,profile,registerEndPoint,loggedInUserModel)
@@ -37,21 +35,22 @@ namespace Handyman_UI.Controllers.ServiceProvider
             providersHelper = new Helpers.ServiceProviderHelper(serviceProviderEndPoint);
         }
 
-
+        //This is the provider's method of logging in, using the fact of inheritence 
+        //eventually this method shall override the SignIn method instead of invoking it as a view/action
         public ActionResult ServiceProviderLogin()
         {
             Session.Clear();//clear the old session if logged in
             //Logout();
             return RedirectToAction("SignIn", "Login");
         }
+
+        //The home/index page of the service provider 
         public async Task<ActionResult> Home()
         {
-            profileModel = (ProfileModel)Session["loggedinprofile"];
+            profileModel = (ProfileModel)Session["loggedinprofile"];//get the loggedin profile
 
             if (profileModel != null)
             {
-
-                
                 try
                 {
                     serviceProvider = await _serviceProviderEndPoint.GetProviderByProfileId(profileModel.Id);//we can store this in a session so that when a provider logs in it starts a session
@@ -73,6 +72,9 @@ namespace Handyman_UI.Controllers.ServiceProvider
             }
             else
             {
+                 Session.Clear();
+                _loggedInUserModel = null;
+                profileModel = null;
                 return RedirectToAction("SignIn", "Login");
             }
           
@@ -138,7 +140,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
 
         }
 
-        //[HttpPost]
+        //Register a new service provider
         public async Task<ActionResult> RegisterServiceProvider(ServiceProviderDisplayModel serviceProviderDisplay)
         {
            
@@ -242,7 +244,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
             
             
         }
-           //The details of the service provider method
+        //The details of the service provider method
         public async Task<ActionResult> ProviderDetails()
         {
 
@@ -306,7 +308,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
             return View(providerModel);
         }
 
-        //The two following methods delete the provider's service
+        //The two following methods deletes the provider's service
         [ActionName("Delete")]
         public async Task<ActionResult> DeleteService(int? id)
         {
@@ -321,6 +323,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
         }
 
         // POST: /Movies/Delete/5
+        //Confirming the delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
@@ -366,6 +369,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
             return RedirectToAction("ProviderDetails");
            
         }
+        //The two following methods edit a service of a service provider
         public async Task<ActionResult> Edit(int? id)
         {
             var providerModel = new ServiceProviderDisplayModel();
@@ -427,7 +431,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
 
             return View();
         }
-
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(ServiceProviderDisplayModel providerDisplay)

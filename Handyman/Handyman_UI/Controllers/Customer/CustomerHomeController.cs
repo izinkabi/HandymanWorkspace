@@ -31,13 +31,13 @@ namespace Handyman_UI.Controllers
         {
             
             _consumerEndPoint = consumerEndpoint;
-            Helper = new CustomerHelper(servicesLoader);
+            Helper = new CustomerHelper(servicesLoader,profileEndpoint);
            
             _requestEndPoint = requestEndPoint;
             _serviceProviderEndPoint = serviceProviderEndPoint;
         }
 
-
+        //The home page method of the customer
         public async Task<ActionResult> Home()
         {
                 try
@@ -83,7 +83,7 @@ namespace Handyman_UI.Controllers
             return View("Details","Requests");
         }
 
-        //Starting the process
+        //Starting the process method/Authenticate and Authorize in the api
         private ActionResult SignIn()
         {
             if (Session.IsCookieless)
@@ -98,7 +98,7 @@ namespace Handyman_UI.Controllers
             }
         }
 
-        //Register a new customer
+        //Register a new customer method
         public async Task<RedirectToRouteResult> RegisterCustomer()
         {
             try
