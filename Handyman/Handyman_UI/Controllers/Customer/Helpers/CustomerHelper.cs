@@ -15,7 +15,7 @@ namespace Handyman_UI.Controllers.Customer.Helpers
         static bool _IsLoggedIn;
         static bool _IsRegistered;
         static bool _IsCustomer;
-        protected List<ProfileModel.AddressModel> Addresses;
+        protected List<ProviderAddress> Addresses;
         protected bool _CanRequest;
         protected bool _CanCancelRequest;
         private IServicesLoader _servicesLoader;
@@ -119,7 +119,7 @@ namespace Handyman_UI.Controllers.Customer.Helpers
         //City
         //Postal code
         //Surburb
-        public async Task<List<ProfileModel.AddressModel>> GetAddressesByCity(string City)
+        public async Task<List<ProviderAddress>> GetAddressesByCity(string City)
         {
             try
             {
@@ -132,7 +132,7 @@ namespace Handyman_UI.Controllers.Customer.Helpers
 
             return Addresses;
         }
-        public async Task<List<ProfileModel.AddressModel>> GetAddressesByPostalCode(int PostalCode)
+        public async Task<List<ProviderAddress>> GetAddressesByPostalCode(int PostalCode)
         {
             try
             {
@@ -146,7 +146,7 @@ namespace Handyman_UI.Controllers.Customer.Helpers
 
             return Addresses;
         }
-        public async Task<List<ProfileModel.AddressModel>> GetAddressesBySurburb(string Surburb)
+        public async Task<List<ProviderAddress>> GetAddressesBySurburb(string Surburb)
         {
             try
             {

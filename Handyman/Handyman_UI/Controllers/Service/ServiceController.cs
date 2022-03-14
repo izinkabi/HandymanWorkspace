@@ -17,8 +17,6 @@ namespace Handyman_UI.Controllers
         string ErrorMsg;
 
        
-
-
         public ServiceController(IServicesLoader servicesLoader,ExceptionsHelper exceptionHelper)
         {
             _serviceLoader = servicesLoader;

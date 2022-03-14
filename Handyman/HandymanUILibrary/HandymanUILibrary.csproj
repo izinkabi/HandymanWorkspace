@@ -72,6 +72,7 @@
     <Compile Include="Models\OTPEnvironmentModel.cs" />
     <Compile Include="Models\OTPResult.cs" />
     <Compile Include="Models\ProfileModel.cs" />
+    <Compile Include="Models\ProviderAddress.cs" />
     <Compile Include="Models\ProvidersServiceModel.cs" />
     <Compile Include="Models\RequestModel.cs" />
     <Compile Include="Models\ServiceCategoryModel.cs" />

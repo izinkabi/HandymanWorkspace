@@ -10,7 +10,7 @@ namespace HandymanDataLibrary.Internal
     public class ProfileData
     {
         private ProfileModel.AddressModel AddressModel;
-        private List<ProfileModel.AddressModel> addresses;
+        private List<ProviderAddress> addresses;
         private SQLDataAccess sql;
 
         /*Getting profile by Id*/
@@ -130,13 +130,13 @@ namespace HandymanDataLibrary.Internal
         }
 
         //This following method returns a list of addresses in the given city
-        public List<ProfileModel.AddressModel> GetAddressesByCity(string City)
+        public List<ProviderAddress> GetAddressesByCity(string City)
         {
              sql = new SQLDataAccess();
            
             try
             {
-                addresses = sql.LoadData<List<ProfileModel.AddressModel>, dynamic>("dbo.spAddressLookUpByCity", new { City = City }, "HandymanDB").First();
+                addresses = sql.LoadData<List<ProviderAddress>, dynamic>("dbo.spAddressLookUpByCity", new { City = City }, "HandymanDB").First();
             }
             catch (Exception ex)
             {
@@ -148,13 +148,13 @@ namespace HandymanDataLibrary.Internal
         }
 
         //Getting all Addresses of of the following postal code
-        public List<ProfileModel.AddressModel>  GetAddressesByPostalCode(int PostalCode)
+        public List<ProviderAddress>  GetAddressesByPostalCode(int PostalCode)
         {
              sql = new SQLDataAccess();
            
             try
             {
-                addresses = sql.LoadData<List<ProfileModel.AddressModel>, dynamic>("dbo.spAddressLookUpByCity", new { PostalCode = PostalCode }, "HandymanDB").First();
+                addresses = sql.LoadData<List<ProviderAddress>, dynamic>("dbo.spAddressLookUpByCity", new { PostalCode = PostalCode }, "HandymanDB").First();
             }
             catch (Exception ex)
             {
@@ -165,14 +165,14 @@ namespace HandymanDataLibrary.Internal
         }
 
         //This function returns a list of all address in the given surburb
-        public List<ProfileModel.AddressModel> GetAddressesBySurburb(string Surburb)
+        public List<ProviderAddress> GetAddressesBySurburb(string Surburb)
         {
 
 
             sql = new SQLDataAccess();
             try
             {
-                addresses = sql.LoadData<List<ProfileModel.AddressModel>, dynamic>("dbo.spAddressLookUpByCity", new { Surburb = Surburb }, "HandymanDB").First();
+                addresses = sql.LoadData<List<ProviderAddress>, dynamic>("dbo.spAddressLookUpByCity", new { Surburb = Surburb }, "HandymanDB").First();
             }
             catch (Exception ex)
             {

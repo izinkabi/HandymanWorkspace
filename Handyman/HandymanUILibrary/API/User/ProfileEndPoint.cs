@@ -11,7 +11,7 @@ namespace HandymanUILibrary.API
 
         private IAPIHelper _aPIHelper;
         private ProfileModel.AddressModel address;
-        private List<ProfileModel.AddressModel> addresses;
+        private List<ProviderAddress> addresses;
        
         
         public ProfileEndPoint(IAPIHelper aPIHelper)
@@ -99,14 +99,14 @@ namespace HandymanUILibrary.API
         }
 
         //Getting address in the given City
-        public async Task<List<ProfileModel.AddressModel>> GetAddressesByCiy(string City)
+        public async Task<List<ProviderAddress>> GetAddressesByCiy(string City)
         {
             using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync($"/api/GetAddressesByCity?City={City}"))
             {
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
 
-                    addresses = await httpResponseMessage.Content.ReadAsAsync<List<ProfileModel.AddressModel>>();
+                    addresses = await httpResponseMessage.Content.ReadAsAsync<List<ProviderAddress>>();
                     return addresses;
                 }
                 else
@@ -117,14 +117,14 @@ namespace HandymanUILibrary.API
         }
 
         //Returning a list of Addresses by Surburb
-        public async Task<List<ProfileModel.AddressModel>> GetAddressesBySurburb(string Surburb)
+        public async Task<List<ProviderAddress>> GetAddressesBySurburb(string Surburb)
         {
             using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync($"/api/GetAddressesBySurburb?Surburb={Surburb}"))
             {
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
 
-                    addresses = await httpResponseMessage.Content.ReadAsAsync<List<ProfileModel.AddressModel>>();
+                    addresses = await httpResponseMessage.Content.ReadAsAsync<List<ProviderAddress>>();
                     return addresses;
                 }
                 else
@@ -135,14 +135,14 @@ namespace HandymanUILibrary.API
         }
 
         //Getting a list of addresses in the given Postal Code
-        public async Task<List<ProfileModel.AddressModel>> GetAddressesByPostalCode(int PostalCode)
+        public async Task<List<ProviderAddress>> GetAddressesByPostalCode(int PostalCode)
         {
             using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync($"/api/GetAddressesByPostalCode?PostalCode={PostalCode}"))
             {
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
 
-                    addresses = await httpResponseMessage.Content.ReadAsAsync<List<ProfileModel.AddressModel>>();
+                    addresses = await httpResponseMessage.Content.ReadAsAsync<List<ProviderAddress>>();
                     return addresses;
                 }
                 else

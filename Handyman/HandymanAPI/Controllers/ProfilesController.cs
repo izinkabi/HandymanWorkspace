@@ -10,7 +10,7 @@ namespace HandymanAPI.Controllers
     {
         private ProfileData profileData;
         private ProfileModel profileModel;
-        private List<ProfileModel.AddressModel> addresses;
+        private List<ProviderAddress> addresses;
 
 
         //Posting a profile 
@@ -40,7 +40,7 @@ namespace HandymanAPI.Controllers
 
         //Getting addresses by City
         [Route("api/GetAddressesByCiy")]
-        public List<ProfileModel.AddressModel> GetAddressesByCiy(string City)
+        public List<ProviderAddress> GetAddressesByCiy(string City)
         {
             profileData = new ProfileData();
             addresses = profileData.GetAddressesByCity(City);
@@ -48,7 +48,7 @@ namespace HandymanAPI.Controllers
         }
         //Getting addresses by Postal code
         [Route("api/GetAddressesByPostalCode")]
-        public List<ProfileModel.AddressModel> GetAddressesByPostalCode(int PostalCode)
+        public List<ProviderAddress> GetAddressesByPostalCode(int PostalCode)
         {
             profileData = new ProfileData();
             addresses = profileData.GetAddressesByPostalCode(PostalCode);
@@ -56,7 +56,7 @@ namespace HandymanAPI.Controllers
         }
         //Getting addresses by Surburb
         [Route("api/GetAddressesBySurburb")]
-        public List<ProfileModel.AddressModel> GetAddressesBySurburb(string Surburb)
+        public List<ProviderAddress> GetAddressesBySurburb(string Surburb)
         {
             addresses =  profileData.GetAddressesBySurburb(Surburb);
             return addresses;

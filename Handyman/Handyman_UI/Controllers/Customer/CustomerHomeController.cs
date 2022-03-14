@@ -4,6 +4,7 @@ using Handyman_UI.Controllers.Requests.Helpers;
 using HandymanUILibrary.API;
 using HandymanUILibrary.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -64,6 +65,97 @@ namespace Handyman_UI.Controllers
         
         public ActionResult UserDashBoard()
         {
+            return View();
+        }
+
+        //Searching addresses by City
+        public async Task<ActionResult> SearchProvidersByCity(string City)
+        {
+            if (City != null)
+            {
+
+                List<ProviderAddress> addresses = new List<ProviderAddress>();
+                var searchResults = new List<ProviderAddress>();
+                try
+                {
+                    addresses = await Helper.GetAddressesByCity(City);
+
+                    foreach (var address in addresses)
+                    {
+                        if (address.City.Contains(City))
+                        {
+                            searchResults.Add(address);
+
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ErrorMsg = ex.Message;
+
+                }
+                return View("ProviderSearchByCity", new { Addresses = addresses });
+            }
+            return View();
+        }
+        //Searching addresses by Postal Code
+        public async Task<ActionResult> SearchProvidersByPostalCode(int PostalCode)
+        {
+            if (PostalCode != 0)
+            {
+
+                List<ProviderAddress> addresses = new List<ProviderAddress>();
+                var searchResults = new List<ProviderAddress>();
+                try
+                {
+                    addresses = await Helper.GetAddressesByPostalCode(PostalCode);
+
+                    foreach (var address in addresses)
+                    {
+                        if (address.City.Equals(PostalCode))
+                        {
+                            searchResults.Add(address);
+
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ErrorMsg = ex.Message;
+
+                }
+                return View( addresses );
+            }
+            return View();
+        }
+        //Searching addresses by Surburb
+        public async Task<ActionResult> SearchProvidersBySurburb(string Surburb)
+        {
+            if (Surburb != null)
+            {
+
+                List<ProviderAddress> addresses = new List<ProviderAddress>();
+                var searchResults = new List<ProviderAddress>();
+                try
+                {
+                    addresses = await Helper.GetAddressesBySurburb(Surburb);
+
+                    foreach (var address in addresses)
+                    {
+                        if (address.City.Contains(Surburb))
+                        {
+                            searchResults.Add(address);
+
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ErrorMsg = ex.Message;
+
+                }
+                return View("ProviderSearchByCity", new { Addresses = addresses });
+            }
             return View();
         }
 
