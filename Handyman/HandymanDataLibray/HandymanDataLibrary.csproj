@@ -82,6 +82,7 @@
     <Compile Include="Models\IUserRoleModel.cs" />
     <Compile Include="Models\NewUserModel.cs" />
     <Compile Include="Models\ProfileModel.cs" />
+    <Compile Include="Models\ProviderAddress.cs" />
     <Compile Include="Models\ProvidersServiceModel.cs" />
     <Compile Include="Models\RequestModel.cs" />
     <Compile Include="Models\RoleModel.cs" />

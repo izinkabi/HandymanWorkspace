@@ -66,6 +66,7 @@
     <Folder Include="Stored Procedures\Service" />
     <Folder Include="Stored Procedures\Profile" />
     <Folder Include="Stored Procedures\User" />
+    <Folder Include="Stored Procedures\Profile\Address" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Stored Procedures\spActivationLookUp.sql" />
@@ -100,14 +101,17 @@
     <Build Include="Stored Procedures\Service\spServiceInsert.sql" />
     <Build Include="Stored Procedures\Service\spServiceLookUp.sql" />
     <Build Include="Stored Procedures\Service\spServicesLookUp.sql" />
-    <Build Include="Stored Procedures\Profile\spAddressInsert.sql" />
-    <Build Include="Stored Procedures\Profile\spAddressUpdate.sql" />
     <Build Include="Stored Procedures\Profile\spProfileInsert.sql" />
     <Build Include="Stored Procedures\Profile\spProfileLookUp.sql" />
     <Build Include="Stored Procedures\User\spUserInsert.sql" />
     <Build Include="Stored Procedures\User\spUserLookUp.sql" />
     <Build Include="Stored Procedures\spActivationInsert.sql" />
-    <Build Include="Stored Procedures\Profile\spAddressLookUp.sql" />
+    <Build Include="Stored Procedures\Profile\Address\spAddressInsert.sql" />
+    <Build Include="Stored Procedures\Profile\Address\spAddressLookUp.sql" />
+    <Build Include="Stored Procedures\Profile\Address\spAddressLookUpByCity.sql" />
+    <Build Include="Stored Procedures\Profile\Address\spAddressUpdate.sql" />
+    <Build Include="Stored Procedures\Profile\Address\spAddressLookUpBySurburb.sql" />
+    <Build Include="Stored Procedures\Profile\Address\spAddressLookUpByPostalCode.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish\HandymanDB.publish.xml" />

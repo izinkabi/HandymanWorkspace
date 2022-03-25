@@ -9,11 +9,14 @@ namespace HandymanDataLibrary.Internal
 {
     public class ProfileData
     {
+        private ProfileModel.AddressModel AddressModel;
+        private List<ProviderAddress> addresses;
+        private SQLDataAccess sql;
 
         /*Getting profile by Id*/
         public ProfileModel GetProfileById(int Id)
         {
-            SQLDataAccess sql = new SQLDataAccess();
+             sql = new SQLDataAccess();
             ///*Getting profile by Id*
 
             var p = new { Id = Id };
@@ -34,7 +37,7 @@ namespace HandymanDataLibrary.Internal
             var p = new { UserId = userId };
             var tempProfile = new ProfileModel();
 
-            SQLDataAccess sql = new SQLDataAccess();
+           sql = new SQLDataAccess();
             try
             {
                 var output = sql.LoadData<aliasProfileModel, dynamic>("dbo.spProfileLookUp", p, "HandymanDB").First();
@@ -72,7 +75,7 @@ namespace HandymanDataLibrary.Internal
         {
             
 
-            using (SQLDataAccess sql = new SQLDataAccess())
+            using ( sql = new SQLDataAccess())
             {
                 //Save the Address model
                 sql.StartTransaction("HandymanDB");
@@ -102,15 +105,15 @@ namespace HandymanDataLibrary.Internal
         //Profile Update
         public void UpdateProfile(ProfileModel profile)
         {
-            using (SQLDataAccess sql = new SQLDataAccess())
+            using (sql = new SQLDataAccess())
             {
                 //Start transaction
                 sql.StartTransaction("HandymanDB");
-                //Update address
-                sql.SaveDataTransaction("dbo.spAddressUpdate", new {PostalCode = profile.Address.PostalCode, HouseNumber = profile.Address.HouseNumber, StreetName = profile.Address.StreetName, City = profile.Address.City,Surburb = profile.Address.Surburb, Id = profile.Address.Id });
-                
+                                
                 try
                 {
+                    //Update address
+                    sql.SaveDataTransaction("dbo.spAddressUpdate", new { PostalCode = profile.Address.PostalCode, HouseNumber = profile.Address.HouseNumber, StreetName = profile.Address.StreetName, City = profile.Address.City, Surburb = profile.Address.Surburb, Id = profile.Address.Id });
 
                     //Update Profile
                     sql.SaveDataTransaction("dbo.spProfileUpdate", new { Name = profile.Name, Surname = profile.Surname, PhoneNumber = profile.PhoneNumber, DateOfBirth = profile.DateofBirth, Id = profile.Id });
@@ -126,6 +129,57 @@ namespace HandymanDataLibrary.Internal
             }
         }
 
+        //This following method returns a list of addresses in the given city
+        public List<ProviderAddress> GetAddressesByCity(string City)
+        {
+             sql = new SQLDataAccess();
+           
+            try
+            {
+                addresses = sql.LoadData<List<ProviderAddress>, dynamic>("dbo.spAddressLookUpByCity", new { City = City }, "HandymanDB").First();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+                sql.Dispose();
+            }
+            return addresses;
 
+        }
+
+        //Getting all Addresses of of the following postal code
+        public List<ProviderAddress>  GetAddressesByPostalCode(int PostalCode)
+        {
+             sql = new SQLDataAccess();
+           
+            try
+            {
+                addresses = sql.LoadData<List<ProviderAddress>, dynamic>("dbo.spAddressLookUpByCity", new { PostalCode = PostalCode }, "HandymanDB").First();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+                sql.Dispose();
+            }
+            return addresses;
+        }
+
+        //This function returns a list of all address in the given surburb
+        public List<ProviderAddress> GetAddressesBySurburb(string Surburb)
+        {
+
+
+            sql = new SQLDataAccess();
+            try
+            {
+                addresses = sql.LoadData<List<ProviderAddress>, dynamic>("dbo.spAddressLookUpByCity", new { Surburb = Surburb }, "HandymanDB").First();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+                sql.Dispose();
+            }
+            return addresses;
+        }
     }
 }

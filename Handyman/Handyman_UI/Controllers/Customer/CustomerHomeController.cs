@@ -4,6 +4,7 @@ using Handyman_UI.Controllers.Requests.Helpers;
 using HandymanUILibrary.API;
 using HandymanUILibrary.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -32,13 +33,13 @@ namespace Handyman_UI.Controllers
         {
             
             _consumerEndPoint = consumerEndpoint;
-            Helper = new CustomerHelper(servicesLoader);
+            Helper = new CustomerHelper(servicesLoader,profileEndpoint);
            
             _requestEndPoint = requestEndPoint;
             _serviceProviderEndPoint = serviceProviderEndPoint;
         }
 
-
+        //The home page method of the customer
         public async Task<ActionResult> Home()
         {
                 try
@@ -69,12 +70,108 @@ namespace Handyman_UI.Controllers
         {
             return View();
         }
+<<<<<<< HEAD
         /// <summary>
         /// this method invokes a request 
         /// </summary>
         /// <param name="consumer"></param>
         /// <param name="service"></param>
         /// <returns></returns
+=======
+
+        //Searching addresses by City
+        public async Task<ActionResult> SearchProvidersByCity(string City)
+        {
+            if (City != null)
+            {
+
+                List<ProviderAddress> addresses = new List<ProviderAddress>();
+                var searchResults = new List<ProviderAddress>();
+                try
+                {
+                    addresses = await Helper.GetAddressesByCity(City);
+
+                    foreach (var address in addresses)
+                    {
+                        if (address.City.Contains(City))
+                        {
+                            searchResults.Add(address);
+
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ErrorMsg = ex.Message;
+
+                }
+                return View("ProviderSearchByCity", new { Addresses = addresses });
+            }
+            return View();
+        }
+        //Searching addresses by Postal Code
+        public async Task<ActionResult> SearchProvidersByPostalCode(int PostalCode)
+        {
+            if (PostalCode != 0)
+            {
+
+                List<ProviderAddress> addresses = new List<ProviderAddress>();
+                var searchResults = new List<ProviderAddress>();
+                try
+                {
+                    addresses = await Helper.GetAddressesByPostalCode(PostalCode);
+
+                    foreach (var address in addresses)
+                    {
+                        if (address.City.Equals(PostalCode))
+                        {
+                            searchResults.Add(address);
+
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ErrorMsg = ex.Message;
+
+                }
+                return View( addresses );
+            }
+            return View();
+        }
+        //Searching addresses by Surburb
+        public async Task<ActionResult> SearchProvidersBySurburb(string Surburb)
+        {
+            if (Surburb != null)
+            {
+
+                List<ProviderAddress> addresses = new List<ProviderAddress>();
+                var searchResults = new List<ProviderAddress>();
+                try
+                {
+                    addresses = await Helper.GetAddressesBySurburb(Surburb);
+
+                    foreach (var address in addresses)
+                    {
+                        if (address.City.Contains(Surburb))
+                        {
+                            searchResults.Add(address);
+
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ErrorMsg = ex.Message;
+
+                }
+                return View("ProviderSearchByCity", new { Addresses = addresses });
+            }
+            return View();
+        }
+
+        //this method invokes a request 
+>>>>>>> 950a72eb6a3de88a5c2d1ec9950e40bd4785d55d
         public ActionResult CustomerServiceRequest(ConsumerModel consumer,ServiceModel service)
         {
             if (Helper.IsCustomer)
@@ -89,10 +186,15 @@ namespace Handyman_UI.Controllers
             }
             return View("Details","Requests");
         }
+<<<<<<< HEAD
         /// <summary>
         /// Starting the new signin process
         /// </summary>
         /// <returns></returns>
+=======
+
+        //Starting the process method/Authenticate and Authorize in the api
+>>>>>>> 950a72eb6a3de88a5c2d1ec9950e40bd4785d55d
         private ActionResult SignIn()
         {
             if (Session.IsCookieless)
@@ -106,11 +208,16 @@ namespace Handyman_UI.Controllers
                 return View();
             }
         }
+<<<<<<< HEAD
         /// <summary>
         /// Register a new customer
         /// </summary>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
+=======
+
+        //Register a new customer method
+>>>>>>> 950a72eb6a3de88a5c2d1ec9950e40bd4785d55d
         public async Task<RedirectToRouteResult> RegisterCustomer()
         {
             try
