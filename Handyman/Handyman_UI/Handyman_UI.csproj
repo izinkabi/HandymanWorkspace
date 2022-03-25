@@ -2489,8 +2489,10 @@
     <Folder Include="Areas\loadingArea\Views\Shared\" />
     <Folder Include="BackEndTemp\Test\" />
     <Folder Include="Data\" />
-    <Folder Include="Views\Error\" />
+    <Folder Include="Views\Errors\" />
     <Folder Include="Views\Exceptions\" />
+    <Folder Include="Views\Profile\Customer\" />
+    <Folder Include="Views\Profile\SeviceProvider\" />
     <Folder Include="Views\Requests\" />
   </ItemGroup>
   <ItemGroup>

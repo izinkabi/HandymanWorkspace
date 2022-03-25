@@ -25,7 +25,13 @@ namespace Handyman_UI.Controllers
         private static AuthenticatedUserModel authenticatedUser;
         private static bool IsRegistered;
         
-
+        /// <summary>
+        /// Constructor for this class
+        /// </summary>
+        /// <param name="aPIHelper"></param>
+        /// <param name="profile"></param>
+        /// <param name="registerEndPoint"></param>
+        /// <param name="loggedInUserModel"></param>
         public LoginController(IAPIHelper aPIHelper, IProfileEndPoint profile, IRegisterEndPoint registerEndPoint
             , IloggedInUserModel loggedInUserModel)
         {
@@ -35,7 +41,11 @@ namespace Handyman_UI.Controllers
             _loggedInUserModel = loggedInUserModel;
         }
 
-        //Login action function
+        /// <summary>
+        /// Log in Fuction for both user and service provider
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>Logged in User model</returns>
         public async Task<ActionResult> SignIn(UserLoginModel model)
         {
 
@@ -112,8 +122,11 @@ namespace Handyman_UI.Controllers
             }
             return View();
         }
-
-        //Register action methods
+        /// <summary>
+        /// Register User/Customer function
+        /// </summary>
+        /// <param name="newUser"></param>
+        /// <returns></returns>
         public async Task<ActionResult> Register(NewUserModel newUser)
         {
 
@@ -143,7 +156,11 @@ namespace Handyman_UI.Controllers
             }
             return View();
         }
-
+        /// <summary>
+        /// Regiater Service Provider function
+        /// </summary>
+        /// <param name="newUser"></param>
+        /// <returns></returns>
         public async Task<ActionResult> RegisterProvider(NewUserModel newUser)
         {
 
@@ -172,9 +189,10 @@ namespace Handyman_UI.Controllers
             }
             return View();
         }
-
-
-        //Log Out Function
+        /// <summary>
+        /// Logout function for clearing out the users values
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Logout()
         {
             //clear the instances in the container
@@ -194,10 +212,18 @@ namespace Handyman_UI.Controllers
             }
             return RedirectToAction("LockScreen", "Login");
         }
+        /// <summary>
+        /// Forgot Password Function
+        /// </summary>
+        /// <returns></returns>
         public ActionResult ForgotPassword()
         {
             return View();
         }
+        /// <summary>
+        /// Lock screen funtion for session locking session Idle
+        /// </summary>
+        /// <returns></returns>
         public ActionResult LockScreen()
         {
             return View();

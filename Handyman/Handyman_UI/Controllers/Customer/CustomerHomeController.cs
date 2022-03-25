@@ -20,9 +20,10 @@ namespace Handyman_UI.Controllers
          IServiceProviderEndPoint _serviceProviderEndPoint;
          private ConsumerModel customer;
          string ErrorMsg;
-        
 
-        //The use of constructor allows for the Imterfaces to be rendered
+        /// <summary>
+        /// The use of constructor allows for the Imterfaces to be rendered
+        /// </summary
         public CustomerHomeController(IAPIHelper aPIHelper,IProfileEndPoint profileEndpoint,
             IConsumerEndPoint consumerEndpoint,IRegisterEndPoint registerEndPoint,
             IloggedInUserModel LoggedInUserModel,IServicesLoader servicesLoader,IRequestEndPoint
@@ -60,14 +61,20 @@ namespace Handyman_UI.Controllers
                     return RedirectToAction("SignIn", "LogIn");
                 }
         }
-            //Home page Action funtion
-        
+        /// <summary>
+        /// Home page Action funtion
+        /// </summary>
+        /// <returns></returns>
         public ActionResult UserDashBoard()
         {
             return View();
         }
-
-        //this method invokes a request 
+        /// <summary>
+        /// this method invokes a request 
+        /// </summary>
+        /// <param name="consumer"></param>
+        /// <param name="service"></param>
+        /// <returns></returns
         public ActionResult CustomerServiceRequest(ConsumerModel consumer,ServiceModel service)
         {
             if (Helper.IsCustomer)
@@ -82,8 +89,10 @@ namespace Handyman_UI.Controllers
             }
             return View("Details","Requests");
         }
-
-        //Starting the process
+        /// <summary>
+        /// Starting the new signin process
+        /// </summary>
+        /// <returns></returns>
         private ActionResult SignIn()
         {
             if (Session.IsCookieless)
@@ -97,8 +106,11 @@ namespace Handyman_UI.Controllers
                 return View();
             }
         }
-
-        //Register a new customer
+        /// <summary>
+        /// Register a new customer
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<RedirectToRouteResult> RegisterCustomer()
         {
             try

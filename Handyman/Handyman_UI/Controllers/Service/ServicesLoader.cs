@@ -19,14 +19,19 @@ namespace Handyman_UI.Controllers
             get { return errorMsg; } 
         }
 
-
+        /// <summary>
+        /// This method loads services from the service endpoint 
+        /// </summary>
+        /// <param name="serviceEndPoint"></param>
         public ServicesLoader(IServiceEndPoint serviceEndPoint)
         {
             _serviceEndPoint = serviceEndPoint;
 
         }
-
-        //Load/populate services from the database to the local list
+        /// <summary>
+        /// Load/populate services from the database to the local list
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<ServiceModel>> LoadServices()
         {
             try
@@ -57,8 +62,10 @@ namespace Handyman_UI.Controllers
                 return Services;
            
         }
-
-        //Loading the service categories 
+        /// <summary>
+        /// This method load the service category
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<ServiceCategoryModel>> LoadServiceCategories()
         {
             try
@@ -84,8 +91,10 @@ namespace Handyman_UI.Controllers
             }
             return Categories;
         }
-
-        //Merging the Services and Categories into 1 list
+        /// <summary>
+        /// This method combines the list of service category and services into one/1 list for Displaying
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<ServiceDisplayModel>> getDisplayServices()
         {
             try
@@ -123,7 +132,11 @@ namespace Handyman_UI.Controllers
             }
             return displayCategories;
         }
-
+        /// <summary>
+        /// This method finds a service based on an ID 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<ServiceDisplayModel> getServiceById(int id)
         {
             var service = new ServiceDisplayModel();
@@ -142,7 +155,5 @@ namespace Handyman_UI.Controllers
 
 
         }
-
-       
     }
 }

@@ -15,7 +15,10 @@ namespace Handyman_UI.Controllers.ServiceProvider.Helpers
 
         static bool _IsServiceProvider,_IsLoggedIn,_CanProvideService, _IsAvailable,_CanCloseRequest;
 
-
+        /// <summary>
+        /// Constractor for the Service Provider's Instance of an interface
+        /// </summary>
+        /// <param name="serviceProviderEndPoint"></param>
         public ServiceProviderHelper(IServiceProviderEndPoint serviceProviderEndPoint)
         {
             _serviceProviderEndPoint = serviceProviderEndPoint;
@@ -23,8 +26,9 @@ namespace Handyman_UI.Controllers.ServiceProvider.Helpers
 
         }
 
-
-        //****************The properties of the Service Provider Helper**********************************//
+       /// <summary>
+       /// Property is used to check is service is availble 
+       /// </summary>
         public bool IsAvailable 
         {
             get
@@ -36,6 +40,9 @@ namespace Handyman_UI.Controllers.ServiceProvider.Helpers
                 _IsAvailable = value;
             }
         }
+        /// <summary>
+        /// Property used to check if service provider is available
+        /// </summary>
         public bool IsServiceProvider 
         {
             get
@@ -51,7 +58,9 @@ namespace Handyman_UI.Controllers.ServiceProvider.Helpers
                 _IsServiceProvider = value;
             }
         }
-
+        /// <summary>
+        /// This Property is used to check is a request can be closed
+        /// </summary>
         public bool CanCloseRequest 
         {
             get
@@ -63,11 +72,11 @@ namespace Handyman_UI.Controllers.ServiceProvider.Helpers
                 _CanCloseRequest = value;
             }
         }
-        //*********************End of properties**********************//
 
-
-
-        //Populate requests
+       /// <summary>
+       /// This function is used to Start a request
+       /// </summary>
+       /// <returns></returns>
         async Task GetRequests()
         {
             //try
@@ -80,23 +89,9 @@ namespace Handyman_UI.Controllers.ServiceProvider.Helpers
             //}
            
         }
-
-        ////Update the request in the database
-        //public async Task UpdateRequestStatus(Service providerService)
-        //{          
-        //    try
-        //    {
-
-        //        
-
-        //    }catch(Exception ex)
-        //    {
-        //        ErrorMsg = ex.Message;
-        //    }
-        //}
-
-
-       
+       /// <summary>
+       /// This function is used to start a service 
+       /// </summary>
         void StartService()
         {
             /**Start the service*/
@@ -109,7 +104,9 @@ namespace Handyman_UI.Controllers.ServiceProvider.Helpers
                 }
             }
         }
-
+        /// <summary>
+        /// This function is used to cancel and close a request
+        /// </summary>
         void FinishService()
         {
             if (_CanCloseRequest)
@@ -117,9 +114,11 @@ namespace Handyman_UI.Controllers.ServiceProvider.Helpers
 
             }
         }
-
-
-        async Task AcceptServiceRequest()//Accept or decline the request
+        /// <summary>
+        /// This validation method is used to Accept or Decline a request
+        /// </summary>
+        /// <returns></returns>
+        async Task AcceptServiceRequest()
         {
 
         }

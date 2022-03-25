@@ -12,13 +12,21 @@ namespace HandymanUILibrary.API
     {
         private IAPIHelper _aPIHelper;
        
-
+        /// <summary>
+        /// This method is used to construct a the API helper
+        /// </summary>
+        /// <param name="aPIHelper"></param>
         public RequestEndPoint(IAPIHelper aPIHelper)
         {
             _aPIHelper = aPIHelper;
         }
 
-        //Post a request
+        /// <summary>
+        /// This method is used to Post a request to the API
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<RequestModel> PostRequest(RequestModel request)
         {
 
@@ -35,8 +43,12 @@ namespace HandymanUILibrary.API
                 throw new Exception(responseMessage.ReasonPhrase);
             }
         }
-
-        //Get requests by customerId
+        /// <summary>
+        /// This method is used to Find a request using the Customer ID from the API
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<RequestModel> GetRequest(int customerId)
         {
 
@@ -56,8 +68,12 @@ namespace HandymanUILibrary.API
             }
 
         }
-
-        //Update request of the passed id
+        /// <summary>
+        /// This method is used to update a request from the API
+        /// </summary>
+        /// <param name="requestUpdate"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task UpdateRequest(RequestModel requestUpdate)
         {
             HttpResponseMessage responseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync("api/UpdateProfile", requestUpdate);
@@ -72,9 +88,12 @@ namespace HandymanUILibrary.API
                 throw new Exception(responseMessage.ReasonPhrase);
             }
         }
-
-
-        //Delete a request of the passed id if it exists
+        /// <summary>
+        /// This methos is used to Delete a request from the API
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task DeleteRequest(int Id)
         {
             using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.DeleteAsync($"/api/Request/Delete?Id={Id}"))//Deleting the request of the parameterized request id 

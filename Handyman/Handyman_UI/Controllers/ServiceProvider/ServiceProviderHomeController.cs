@@ -24,7 +24,15 @@ namespace Handyman_UI.Controllers.ServiceProvider
         private string ErrorMsg;
         private bool isUpdatedProfile;
 
-        //private bool isUpdatedProfile { get { return _isUpdatedProfile; } set { _isUpdatedProfile = value; } }
+        /// <summary>
+        /// This is a costructor to create Instances of the Interfaces of classes
+        /// </summary>
+        /// <param name="aPIHelper"></param>
+        /// <param name="profile"></param>
+        /// <param name="registerEndPoint"></param>
+        /// <param name="loggedInUserModel"></param>
+        /// <param name="serviceProviderEndPoint"></param>
+        /// <param name="servicesLoader"></param>
         public ServiceProviderHomeController(IAPIHelper aPIHelper, IProfileEndPoint profile, IRegisterEndPoint registerEndPoint
             , IloggedInUserModel loggedInUserModel,IServiceProviderEndPoint serviceProviderEndPoint, 
             IServicesLoader servicesLoader) : base(aPIHelper,profile,registerEndPoint,loggedInUserModel)
@@ -37,13 +45,21 @@ namespace Handyman_UI.Controllers.ServiceProvider
             providersHelper = new Helpers.ServiceProviderHelper(serviceProviderEndPoint);
         }
 
-
+        /// <summary>
+        /// This method is used to log in the service provider
+        /// </summary>
+        /// <returns></returns>
         public ActionResult ServiceProviderLogin()
         {
             Session.Clear();//clear the old session if logged in
             //Logout();
             return RedirectToAction("SignIn", "Login");
         }
+        /// <summary>
+        /// This is a method used to diplay sertain infomation about service provider once logged in
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<ActionResult> Home()
         {
             profileModel = (ProfileModel)Session["loggedinprofile"];
@@ -79,38 +95,18 @@ namespace Handyman_UI.Controllers.ServiceProvider
             //return View(serviceProvider);
         }
         
-        //public ActionResult Requests()
-        //{
-        //    return View();
-        //}
-        //public ActionResult Services()
-        //{
-        //    return View();
-        //}
-
-        //public ActionResult AddressDetails()
-        //{
-        //    return PartialView();
-        //}
-        //public ActionResult ServiceDisplay()
-        //{
-        //    return View();
-        //}
-        //public ActionResult Profile()
-        //{
-        //    return View();
-        //}
-        //public ActionResult ActiveRequests()
-        //{
-        //    return View();
-        //}
         public async Task<ActionResult> Test()
         {
             localServices = new List<ServiceDisplayModel>();
             localServices = await _serviceLoader.getDisplayServices();
             return View(localServices);
         }
-
+        /// <summary>
+        /// This is a method used to search for services by a service provider
+        /// </summary>
+        /// <param name="serviceSearchString"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<ActionResult> Search(string serviceSearchString)
         {
             localServices = new List<ServiceDisplayModel>();
@@ -138,7 +134,12 @@ namespace Handyman_UI.Controllers.ServiceProvider
 
         }
 
-        //[HttpPost]
+        /// <summary>
+        /// This method is used to register a service provider
+        /// </summary>
+        /// <param name="serviceProviderDisplay"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<ActionResult> RegisterServiceProvider(ServiceProviderDisplayModel serviceProviderDisplay)
         {
            
@@ -242,7 +243,11 @@ namespace Handyman_UI.Controllers.ServiceProvider
             
             
         }
-           //The details of the service provider method
+        /// <summary>
+        /// This method is used to find the details of the Services provider
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<ActionResult> ProviderDetails()
         {
 
@@ -305,8 +310,11 @@ namespace Handyman_UI.Controllers.ServiceProvider
             }
             return View(providerModel);
         }
-
-        //The two following methods delete the provider's service
+        /// <summary>
+        /// This method is uses an ID to FIND and DELETE a service from the service providers list of services
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [ActionName("Delete")]
         public async Task<ActionResult> DeleteService(int? id)
         {
@@ -319,22 +327,16 @@ namespace Handyman_UI.Controllers.ServiceProvider
             }
             return View();
         }
-
-        // POST: /Movies/Delete/5
+        /// <summary>
+        /// This method is used to confirm the deletion of a service before deleting the service
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
 
-
-            //var token = Session["Token"].ToString();
-
-            //UserModel user = new UserModel();
-            //var loggedUseResult = await _apiHepler.GetLoggedInUserInfor(token);
-            //user.Id = loggedUseResult.Id;
-
-            //var results = await _profileEndPoint.GetProfile("");
-            //var response = await _serviceProviderEndPoint.GetProviderByProfileId(results.Id);
             if (profileModel == null)
             {
                 profileModel = (ProfileModel)Session["loggedinprofile"];
@@ -366,6 +368,12 @@ namespace Handyman_UI.Controllers.ServiceProvider
             return RedirectToAction("ProviderDetails");
            
         }
+        /// <summary>
+        /// This method is used find and edit a service
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<ActionResult> Edit(int? id)
         {
             var providerModel = new ServiceProviderDisplayModel();
@@ -427,7 +435,11 @@ namespace Handyman_UI.Controllers.ServiceProvider
 
             return View();
         }
-
+        /// <summary>
+        /// This method is used to edit a service provider details 
+        /// </summary>
+        /// <param name="providerDisplay"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(ServiceProviderDisplayModel providerDisplay)
@@ -492,7 +504,11 @@ namespace Handyman_UI.Controllers.ServiceProvider
             }
             return View();
         }
-        //Register a new provider's service
+        /// <summary>
+        /// This method is used to add a new service provider 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<ActionResult> AddNewProviderService(int id)
         {
             var _token = Session["Token"].ToString();

@@ -18,7 +18,11 @@ namespace Handyman_UI.Controllers
 
        
 
-
+        /// <summary>
+        /// This is a constrator to render the Interfaces of a Instance of a classes
+        /// </summary>
+        /// <param name="servicesLoader"></param>
+        /// <param name="exceptionHelper"></param>
         public ServiceController(IServicesLoader servicesLoader,ExceptionsHelper exceptionHelper)
         {
             _serviceLoader = servicesLoader;
@@ -26,7 +30,10 @@ namespace Handyman_UI.Controllers
         }
 
 
-        // GET: Service
+        /// <summary>
+        /// This methods gets the list of services to be displayed at start up of the webisite
+        /// </summary>
+        /// <returns>services</returns>
         public async Task<ActionResult> Index()
         {
             /*Display all Services*/
@@ -46,8 +53,11 @@ namespace Handyman_UI.Controllers
            return View(services);
         }
 
-
-        //A filter/search method for a service
+        /// <summary>
+        /// This is a method for seaarching for a service in a list of services 
+        /// </summary>
+        /// <param name="serviceSearchString"></param>
+        /// <returns>tempServices - a list of service matching the passes in parameter</returns>
         public async Task<ActionResult> Search(string serviceSearchString)
         {
             var tempServices = new List<ServiceDisplayModel>();
@@ -78,14 +88,19 @@ namespace Handyman_UI.Controllers
             return View(tempServices);
         }
 
-        // GET: Service/GetServices
+        /// <summary>
+        /// This function gets a list of services to be Diplayed
+        /// </summary>
+        /// <returns></returns>
         public async Task<ActionResult>  GetServices()
-        {
-            //this niggah actualy works
-           
+        {           
             return View();
         }
-        // GET: Service/Details/5
+        /// <summary>
+        /// This method takes in an ID to find details about a service
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<ActionResult> Details(int id)
         {
             IEnumerable<ServiceDisplayModel> displayServices = await _serviceLoader.getDisplayServices();
@@ -98,78 +113,20 @@ namespace Handyman_UI.Controllers
             }
             return View();
         }
-
+        /// <summary>
+        /// This method is to Display a list of different types of service categories
+        /// </summary>
+        /// <returns></returns>
         public async Task<ActionResult> DisplayServiceCategory()
         {
             
             IEnumerable<ServiceDisplayModel> displayCategories = await _serviceLoader.getDisplayServices();
             return View(displayCategories);
         }
-        // GET: Service/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
 
-        // POST: Service/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
 
-        // GET: Service/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Service/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Service/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Service/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //TODO - Remove this Test function if it is no longer in use
         public async Task<ActionResult> Test()
         {
             IEnumerable<ServiceDisplayModel> displayCategories = await _serviceLoader.getDisplayServices();

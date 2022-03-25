@@ -26,14 +26,20 @@ namespace Handyman_UI.Controllers
             _profileEndPoint = profile;
            // _loggedInUserModel = LoggedInUserModel;
         }
-
-        //Address partial view
+        /// <summary>
+        /// Partial view of Address Creation
+        /// </summary>
+        /// <returns></returns>
         public PartialViewResult CreateAddress()
         {
             return PartialView();
         }
-        
-        //Creating a new profile
+        /// <summary>
+        /// Create Profile Funtion
+        /// </summary>
+        /// <param name="profile"></param>
+        /// <param name="address"></param>
+        /// <returns></returns>
         public async Task<ActionResult> CreateAProfile(ProfileModel profile,ProfileModel.AddressModel address)
         {
 
@@ -79,12 +85,18 @@ namespace Handyman_UI.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Partial View of Profile Display
+        /// </summary>
+        /// <returns></returns>
         public ActionResult AddressDetails()
         {
             return PartialView();
         }
-        
-        //Display the profile details
+        /// <summary>
+        /// Display Profile Function
+        /// </summary>
+        /// <returns></returns>
         public  ActionResult ProfileDetails()
         {
 
@@ -109,8 +121,12 @@ namespace Handyman_UI.Controllers
             return View();
         }
 
-        //The two following methods edit the customer's profile
-        // GET: /Profile/Edit/5
+        /// <summary>
+        /// This methods finds the details of a Profile to be editted/modified
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -142,11 +158,14 @@ namespace Handyman_UI.Controllers
          
             
         }
-
-        // POST: /Profile/Edit/5    
-
         [HttpPost]
         [ValidateAntiForgeryToken]
+        /// <summary>
+        /// This method Updates the Profile details that were editted 
+        /// </summary>
+        /// <param name="profile"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<ActionResult> Edit(ProfileModel profile)
         {
             if (ModelState.IsValid)

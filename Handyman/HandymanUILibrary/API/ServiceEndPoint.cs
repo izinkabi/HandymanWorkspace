@@ -12,12 +12,19 @@ namespace HandymanUILibrary.API
     {
         private IAPIHelper _aPIHelper;
         
-
+        /// <summary>
+        /// Constractor for the API helper
+        /// </summary>
+        /// <param name="aPIHelper"></param>
         public ServiceEndPoint(IAPIHelper aPIHelper)
         {
             _aPIHelper = aPIHelper;
         }
-
+        /// <summary>
+        /// This method is used to Get a list of Service from the API
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<List<ServiceModel>> GetServices()
         {
 
@@ -38,8 +45,11 @@ namespace HandymanUILibrary.API
             }
 
         }
-
-
+        /// <summary>
+        /// This method is used to get a list of service categories from the API
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<List<ServiceCategoryModel>> GetServiceCategories()
         {
 
@@ -60,8 +70,12 @@ namespace HandymanUILibrary.API
             }
 
         }
-
-        //Get a service by id- api
+        /// <summary>
+        ///This method is used to Find a service using it's ID from the API
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<ServiceModel> GetServiceById(int id)
         {
 
