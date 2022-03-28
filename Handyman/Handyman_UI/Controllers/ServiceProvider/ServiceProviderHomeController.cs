@@ -22,7 +22,6 @@ namespace Handyman_UI.Controllers.ServiceProvider
         private string ErrorMsg;
         private bool isUpdatedProfile;
 
-<<<<<<< HEAD
         /// <summary>
         /// This is a costructor to create Instances of the Interfaces of classes
         /// </summary>
@@ -31,10 +30,7 @@ namespace Handyman_UI.Controllers.ServiceProvider
         /// <param name="registerEndPoint"></param>
         /// <param name="loggedInUserModel"></param>
         /// <param name="serviceProviderEndPoint"></param>
-        /// <param name="servicesLoader"></param>
-=======
-       
->>>>>>> 950a72eb6a3de88a5c2d1ec9950e40bd4785d55d
+
         public ServiceProviderHomeController(IAPIHelper aPIHelper, IProfileEndPoint profile, IRegisterEndPoint registerEndPoint
             , IloggedInUserModel loggedInUserModel,IServiceProviderEndPoint serviceProviderEndPoint, 
             IServicesLoader servicesLoader) : base(aPIHelper,profile,registerEndPoint,loggedInUserModel)
@@ -47,31 +43,24 @@ namespace Handyman_UI.Controllers.ServiceProvider
             providersHelper = new Helpers.ServiceProviderHelper(serviceProviderEndPoint);
         }
 
-<<<<<<< HEAD
+
         /// <summary>
         /// This method is used to log in the service provider
+        /// This is the provider's method of logging in, using the fact of inheritence 
+        /// eventually this method shall override the SignIn method instead of invoking it as a view/
         /// </summary>
         /// <returns></returns>
-=======
-        //This is the provider's method of logging in, using the fact of inheritence 
-        //eventually this method shall override the SignIn method instead of invoking it as a view/action
->>>>>>> 950a72eb6a3de88a5c2d1ec9950e40bd4785d55d
         public ActionResult ServiceProviderLogin()
         {
             Session.Clear();//clear the old session if logged in
             //Logout();
             return RedirectToAction("SignIn", "Login");
         }
-<<<<<<< HEAD
         /// <summary>
         /// This is a method used to diplay sertain infomation about service provider once logged in
         /// </summary>
         /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-=======
-
-        //The home/index page of the service provider 
->>>>>>> 950a72eb6a3de88a5c2d1ec9950e40bd4785d55d
+        /// <exception cref="Exception"></exception
         public async Task<ActionResult> Home()
         {
             profileModel = (ProfileModel)Session["loggedinprofile"];//get the loggedin profile
@@ -107,7 +96,6 @@ namespace Handyman_UI.Controllers.ServiceProvider
           
             //return View(serviceProvider);
         }
-        
         public async Task<ActionResult> Test()
         {
             localServices = new List<ServiceDisplayModel>();
@@ -146,17 +134,13 @@ namespace Handyman_UI.Controllers.ServiceProvider
             return View(localServices);
 
         }
-
-<<<<<<< HEAD
         /// <summary>
         /// This method is used to register a service provider
         /// </summary>
         /// <param name="serviceProviderDisplay"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-=======
-        //Register a new service provider
->>>>>>> 950a72eb6a3de88a5c2d1ec9950e40bd4785d55d
+        /// 
         public async Task<ActionResult> RegisterServiceProvider(ServiceProviderDisplayModel serviceProviderDisplay)
         {
            
@@ -260,15 +244,11 @@ namespace Handyman_UI.Controllers.ServiceProvider
             
             
         }
-<<<<<<< HEAD
         /// <summary>
         /// This method is used to find the details of the Services provider
         /// </summary>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-=======
-        //The details of the service provider method
->>>>>>> 950a72eb6a3de88a5c2d1ec9950e40bd4785d55d
         public async Task<ActionResult> ProviderDetails()
         {
 
@@ -331,16 +311,11 @@ namespace Handyman_UI.Controllers.ServiceProvider
             }
             return View(providerModel);
         }
-<<<<<<< HEAD
         /// <summary>
         /// This method is uses an ID to FIND and DELETE a service from the service providers list of services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-=======
-
-        //The two following methods deletes the provider's service
->>>>>>> 950a72eb6a3de88a5c2d1ec9950e40bd4785d55d
         [ActionName("Delete")]
         public async Task<ActionResult> DeleteService(int? id)
         {
@@ -352,18 +327,12 @@ namespace Handyman_UI.Controllers.ServiceProvider
                 return View(service);
             }
             return View();
-        }
-<<<<<<< HEAD
-        /// <summary>
+        
+            /// <summary>
         /// This method is used to confirm the deletion of a service before deleting the service
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-=======
-
-        // POST: /Movies/Delete/5
-        //Confirming the delete
->>>>>>> 950a72eb6a3de88a5c2d1ec9950e40bd4785d55d
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
@@ -400,16 +369,13 @@ namespace Handyman_UI.Controllers.ServiceProvider
             return RedirectToAction("ProviderDetails");
            
         }
-<<<<<<< HEAD
+
         /// <summary>
         /// This method is used find and edit a service
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-=======
-        //The two following methods edit a service of a service provider
->>>>>>> 950a72eb6a3de88a5c2d1ec9950e40bd4785d55d
         public async Task<ActionResult> Edit(int? id)
         {
             var providerModel = new ServiceProviderDisplayModel();
@@ -471,15 +437,12 @@ namespace Handyman_UI.Controllers.ServiceProvider
 
             return View();
         }
-<<<<<<< HEAD
+
         /// <summary>
         /// This method is used to edit a service provider details 
         /// </summary>
         /// <param name="providerDisplay"></param>
         /// <returns></returns>
-=======
-        
->>>>>>> 950a72eb6a3de88a5c2d1ec9950e40bd4785d55d
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(ServiceProviderDisplayModel providerDisplay)

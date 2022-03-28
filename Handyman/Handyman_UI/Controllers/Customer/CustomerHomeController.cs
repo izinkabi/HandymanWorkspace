@@ -70,15 +70,12 @@ namespace Handyman_UI.Controllers
         {
             return View();
         }
-<<<<<<< HEAD
         /// <summary>
         /// this method invokes a request 
         /// </summary>
         /// <param name="consumer"></param>
         /// <param name="service"></param>
-        /// <returns></returns
-=======
-
+        /// <returns></return>
         //Searching addresses by City
         public async Task<ActionResult> SearchProvidersByCity(string City)
         {
@@ -171,7 +168,6 @@ namespace Handyman_UI.Controllers
         }
 
         //this method invokes a request 
->>>>>>> 950a72eb6a3de88a5c2d1ec9950e40bd4785d55d
         public ActionResult CustomerServiceRequest(ConsumerModel consumer,ServiceModel service)
         {
             if (Helper.IsCustomer)
@@ -186,15 +182,10 @@ namespace Handyman_UI.Controllers
             }
             return View("Details","Requests");
         }
-<<<<<<< HEAD
         /// <summary>
         /// Starting the new signin process
         /// </summary>
         /// <returns></returns>
-=======
-
-        //Starting the process method/Authenticate and Authorize in the api
->>>>>>> 950a72eb6a3de88a5c2d1ec9950e40bd4785d55d
         private ActionResult SignIn()
         {
             if (Session.IsCookieless)
@@ -208,16 +199,12 @@ namespace Handyman_UI.Controllers
                 return View();
             }
         }
-<<<<<<< HEAD
+
         /// <summary>
         /// Register a new customer
         /// </summary>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-=======
-
-        //Register a new customer method
->>>>>>> 950a72eb6a3de88a5c2d1ec9950e40bd4785d55d
         public async Task<RedirectToRouteResult> RegisterCustomer()
         {
             try

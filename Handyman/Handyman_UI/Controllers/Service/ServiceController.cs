@@ -17,15 +17,13 @@ namespace Handyman_UI.Controllers
         string ErrorMsg;
 
        
-<<<<<<< HEAD
 
         /// <summary>
         /// This is a constrator to render the Interfaces of a Instance of a classes
         /// </summary>
         /// <param name="servicesLoader"></param>
         /// <param name="exceptionHelper"></param>
-=======
->>>>>>> 950a72eb6a3de88a5c2d1ec9950e40bd4785d55d
+
         public ServiceController(IServicesLoader servicesLoader,ExceptionsHelper exceptionHelper)
         {
             _serviceLoader = servicesLoader;
