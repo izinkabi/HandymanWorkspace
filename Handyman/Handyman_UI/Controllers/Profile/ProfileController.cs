@@ -84,7 +84,6 @@ namespace Handyman_UI.Controllers
 
             return View();
         }
-
         /// <summary>
         /// Partial View of Profile Display
         /// </summary>

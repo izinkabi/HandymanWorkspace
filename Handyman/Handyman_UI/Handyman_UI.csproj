@@ -2481,6 +2481,7 @@
     <Content Include="Views\RequestModels\Index.cshtml" />
     <Content Include="Views\Shared\_frontEndLayout.cshtml" />
     <Content Include="Views\Test\View.cshtml" />
+    <Content Include="Views\Profile\Profile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2488,6 +2489,8 @@
     <Folder Include="Areas\loadingArea\Data\" />
     <Folder Include="Areas\loadingArea\Views\Shared\" />
     <Folder Include="BackEndTemp\Test\" />
+    <Folder Include="Controllers\Profile\CustomerProfile\" />
+    <Folder Include="Controllers\Profile\ServiceProviderProfile\" />
     <Folder Include="Data\" />
     <Folder Include="Views\Errors\" />
     <Folder Include="Views\Exceptions\" />
