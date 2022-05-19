@@ -34,7 +34,7 @@
                 <div class="card-body login-card-body">
                     <p class="login-box-msg">Sign in to start your session</p>
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    <form action="../../index3.html" method="post">
+                    @*<form action="../../index3.html" method="post">*@
                         <div class="input-group mb-3">
                             @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", @placeholder = "Username" } })
                             <div class="input-group-append">
@@ -61,14 +61,16 @@
                                 </div>
                             </div>
                             <!-- /.col -->
-                            <div class="col-4">
-                                <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Login" class="btn btn-default" />
+                                </div>
                             </div>
                             <!-- /.col -->
                         </div>
  
 
-                    </form>
+                    @*</form>*@
 
                     <p class="mb-1">
                         <a href="https://localhost:44365/Login/ForgotPassword">I forgot my password</a>

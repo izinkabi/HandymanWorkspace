@@ -3,6 +3,7 @@ using Caliburn.Micro;
 using Handyman_UI.Controllers;
 using Handyman_UI.Controllers.Customer.Helpers;
 using Handyman_UI.Controllers.Helpers;
+using Handyman_UI.Filters;
 using HandymanUILibrary.API;
 using HandymanUILibrary.Models;
 using Microsoft.Practices.Unity;
@@ -42,10 +43,11 @@ namespace Handyman_UI
             container.RegisterType<IConsumerEndPoint, ConsumerEndPoint>();
 
             container.RegisterType<IRequestEndPoint, RequestEndPoint>();
-           
-            
 
-            
+
+            container.RegisterInstance<IFilterProvider>("FilterProvider", new FilterProvider(container));
+            container.RegisterInstance<IActionFilter>("LogActionFilter", new TraceActionFilter());
+
 
             return container;
         }

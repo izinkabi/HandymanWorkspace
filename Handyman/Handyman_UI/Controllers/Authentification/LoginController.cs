@@ -127,11 +127,15 @@ namespace Handyman_UI.Controllers
         /// </summary>
         /// <param name="newUser"></param>
         /// <returns></returns>
+        /// [ActionName("RegisterCustomer")]
         public async Task<ActionResult> Register(NewUserModel newUser)
         {
 
+            
             if (ModelState.IsValid)
             {
+                if (newUser.Password != null && newUser.Email != null && newUser.ConfirmPassword != null)
+                 
                 try
                 {
                     newUser.UserRole = "Customer";
@@ -152,7 +156,7 @@ namespace Handyman_UI.Controllers
                     IsRegistered = false;
                     return View();
                 }
-
+              
             }
             return View();
         }
@@ -166,6 +170,7 @@ namespace Handyman_UI.Controllers
 
             if (ModelState.IsValid)
             {
+                if (newUser.Password != null && newUser.Email != null && newUser.ConfirmPassword != null)
                 try
                 {
                     newUser.UserRole = "ServiceProvider";//User role assignment

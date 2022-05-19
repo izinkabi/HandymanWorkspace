@@ -28,31 +28,37 @@ namespace HandymanAPI.Controllers
             var userModel = new UserModel();
             //bool isRole = RequestContext.Principal.IsInRole("Customer");       
             
+            
             userModel.Id = userId;
+            userModel.Email = User.Identity.GetUserName();
+            userModel.Username = User.Identity.GetUserName();   
+            
             UserData data = new UserData();
-            var dbuser = new UserModel();
+            //var dbuser = new UserModel();
+
             //assigning roles(More security can be enforced)
             //this is due to the fact tha our current ui app has not auth
             //(single or azure user option on app creation)
-            dbuser = data.GetUserById(userModel);
+
+            //--dbuser = data.GetUserById(userModel);--
             if (User.IsInRole("Customer"))
             {
-                dbuser.UserRole = "Customer";
+                userModel.UserRole = "Customer";
             }
             else if (User.IsInRole("Admin"))
             {
-                dbuser.UserRole = "Admin";
+                userModel.UserRole ="Admin";
             }
             else if (User.IsInRole("ServiceProvider"))
             {
-                dbuser.UserRole = "ServiceProvider";
+                userModel.UserRole = "ServiceProvider";
             }
             else
             {
-                dbuser.UserRole = null;
+                userModel.UserRole = null;
             }
             
-            return dbuser;
+            return userModel;
         }
 
        
