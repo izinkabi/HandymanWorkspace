@@ -11,8 +11,12 @@ namespace Handyman_UI_S
 {
     public class MvcApplication : System.Web.HttpApplication
     {
+
         protected void Application_Start()
         {
+            //Register Syncfusion license
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Mgo+DSMBPh8sVXJ0S0d+XE9AcVRDX3xKf0x/TGpQb19xflBPallYVBYiSV9jS3xTc0RqWHlbdHRQR2BZVQ=="); 
+
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

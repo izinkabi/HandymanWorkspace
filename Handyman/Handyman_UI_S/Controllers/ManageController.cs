@@ -11,6 +11,7 @@ using System.Web.Mvc;
 namespace Handyman_UI_S.Controllers
 {
     [Authorize]
+    [RequireHttps]
     public class ManageController : Controller
     {
         private ApplicationSignInManager _signInManager;

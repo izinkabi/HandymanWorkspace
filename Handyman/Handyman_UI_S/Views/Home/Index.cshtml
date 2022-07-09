@@ -1,33 +1,73 @@
+@using Syncfusion.EJ2.Schedule;
+
 @{
     ViewBag.Title = "Home Page";
 }
+@model Handyman_UI_S.Models.spacingModel
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+<div class="control-section">
+    <div>
+        <!--  DashboardLayout element declaration -->
+        @Html.EJS().DashboardLayout("defaultLayout").Columns(6).CellSpacing(Model.cellSpacing).ContentTemplate(@<div>
+            <div id="one" class="e-panel" data-row="0" data-col="0" data-sizeX="1" data-sizeY="1">
+                <div class="e-panel-container">
+                    <div class="text-align">0</div>
+                </div>
+            </div>
+            <div id="two" class="e-panel" data-row="1" data-col="0" data-sizeX="1" data-sizeY="2">
+                <div class="e-panel-container">
+                    <div class="text-align">1</div>
+                </div>
+            </div>
+            <div id="three" class="e-panel" data-row="0" data-col="1" data-sizeX="2" data-sizeY="2">
+                <div class="e-panel-container">
+                    <div class="text-align">2</div>
+                </div>
+            </div>
+            <div id="four" class="e-panel" data-row="2" data-col="1" data-sizeX="1" data-sizeY="1">
+                <div class="e-panel-container">
+                    <div class="text-align">3</div>
+                </div>
+            </div>
+            <div id="five" class="e-panel" data-row="2" data-col="2" data-sizeX="2" data-sizeY="1">
+                <div class="e-panel-container">
+                    <div class="text-align">4</div>
+                </div>
+            </div>
+            <div id="six" class="e-panel" data-row="0" data-col="3" data-sizeX="1" data-sizeY="1">
+                <div class="e-panel-container">
+                    <div class="text-align">5</div>
+                </div>
+            </div>
+            <div id="seven" class="e-panel" data-row="1" data-col="3" data-sizeX="1" data-sizeY="1">
+                <div class="e-panel-container">
+                    <div class="text-align">6</div>
+                </div>
+            </div>
+            <div id="eight" class="e-panel" data-row="0" data-col="4" data-sizeX="1" data-sizeY="3">
+                <div class="e-panel-container">
+                    <div class="text-align">7</div>
+                </div>
+            </div>
+        </div>).Render()
+        <!-- end of dashboardlayout element -->
+    </div>
 </div>
 
-     <!--SamplesToBeReplaced-->
+<style>
+    /* DashboardLayout element styles  */
+    #defaultLayout {
+        padding: 10px;
+    }
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+        #defaultLayout .e-panel .e-panel-container {
+            vertical-align: middle;
+            font-weight: 600;
+            font-size: 20px;
+            text-align: center;
+        }
+
+    .text-align {
+        line-height: 160px;
+    }
+</style>

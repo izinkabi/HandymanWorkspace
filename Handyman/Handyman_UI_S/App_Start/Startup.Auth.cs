@@ -37,8 +37,11 @@ namespace Handyman_UI_S
             //app.UseFacebookAuthentication(
             //   appId: "",
             //   appSecret: "");
-
-            //app.UseGoogleAuthentication();
+            
+            //#NEED TO COME BACK AND SAVE ID AND SECRETE IN A SAFE PLACE
+            app.UseGoogleAuthentication(
+                 clientId: "1073851415525-6b5javce4n7umbggs3pie8ubfid3mbb0.apps.googleusercontent.com",
+                 clientSecret: "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");
         }
     }
 }

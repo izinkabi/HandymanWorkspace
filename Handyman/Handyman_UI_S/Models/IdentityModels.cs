@@ -21,7 +21,7 @@ namespace Handyman_UI_S.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("Handyman_UIContext", throwIfV1Schema: false)
         {
         }
 
@@ -29,5 +29,7 @@ namespace Handyman_UI_S.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<Handyman_UI_S.Models.AppointmentData> AppointmentDatas { get; set; }
     }
 }

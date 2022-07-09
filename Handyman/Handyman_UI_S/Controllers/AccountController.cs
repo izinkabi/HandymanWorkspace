@@ -13,6 +13,7 @@ using System.Web.Mvc;
 namespace Handyman_UI_S.Controllers
 {
     [Authorize]
+    [RequireHttps]
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
