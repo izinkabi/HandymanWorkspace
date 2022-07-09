@@ -4,13 +4,20 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Handyman_UI_S</title>
+    ...
+    <!-- Syncfusion ASP.NET MVC controls styles -->
+    <link href="~/Content/ej2/fluent.css" rel="stylesheet" />
+    <!-- Syncfusion ASP.NET MVC controls scripts -->
+    <script src="~/Scripts/ej2/ej2.min.js"></script>
     @Styles.Render("~/Content/css")
-    
-     
-@Styles.Render("~/Content/ej2/bootstrap5.css")
-@Scripts.Render("~/Scripts/ej2/ej2.min.js")
+
+
+    @Styles.Render("~/Content/ej2/bootstrap5.css")
+    @Scripts.Render("~/Scripts/ej2/ej2.min.js")
 </head>
 <body>
+
+
     <div class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="/home/index">Handyman</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,14 +39,15 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/account/login">LogIn</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Account/LogOff">LogOff</a>
+                </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
+            
         </div>
     </div>
     <div class="container body-content">
+
         @RenderBody()
     </div>
     <footer>
@@ -48,9 +56,10 @@
             <p>&copy; @DateTime.Now.Year - Handyman_UI_S</p>
         </div>
     </footer>
-   @Scripts.Render("~/bundles/jquery")
-   @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
 
+    <!-- Syncfusion ASP.NET MVC Script Manager -->
     @Html.EJS().ScriptManager()
     @RenderSection("scripts", required: false)
 </body>
