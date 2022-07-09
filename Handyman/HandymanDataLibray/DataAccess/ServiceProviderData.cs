@@ -1,6 +1,4 @@
-﻿
-using HandymanDataLibrary.Models;
-using HandymanDataLibray.DataAccess.Internal;
+﻿using HandymanDataLibray.DataAccess.Internal;
 using HandymanDataLibray.Models;
 using System;
 using System.Collections.Generic;
@@ -14,58 +12,56 @@ namespace HandymanDataLibray.DataAccess
     {
 
         //Getting the service provider by Id
-        public ServiceProviderModel GetProviderByProfileId(int profileId)
+        public ServiceProviderModel GetProviderById(string Id)
         {
             SQLDataAccess sql = new SQLDataAccess();
 
-            var p = new { ProfileId = profileId };
-
-            var output = sql.LoadData<ServiceProviderModel, dynamic>("dbo.spServiceProviderLookUp", p, "HandymanDB").FirstOrDefault();
+            var output = sql.LoadData<ServiceProviderModel, dynamic>("ServiceDelivery.spGetServiceProviderById",new { Id = Id }, "HandymanDB").FirstOrDefault();
 
             return output;
 
         }
 
         /*Getting Service providers in a list*/
-
-        public List<ServiceProviderModel> GetServiceProviders()
-        {
+        //public List<ServiceProviderModel> GetServiceProviders()
+        //{
             
-            SQLDataAccess sql = new SQLDataAccess();
-            var output = sql.LoadData<ServiceProviderModel, dynamic>("dbo.spServiceProvidersLookUp", new { }, "HandymanDB");
-            return output;
-        }
+        //    SQLDataAccess sql = new SQLDataAccess();
+        //    var output = sql.LoadData<ServiceProviderModel, dynamic>("dbo.spServiceProvidersLookUp", new { }, "HandymanDB");
+        //    return output;
+        //}
 
         /*Posting a new Service Provider*/
         /*The following method will eventually be converted to a transaction as it should post the service provider
          followed by the provider's service(s)*/
-        public void PostProvider(ServiceProviderModel val)
+        public void PostProvider(ServiceProviderModel provider)
         {
-            var provider = new {ProfileId = val.ProfileId,CompanyName = val.CompanyName,ProviderType = val.ProviderType };
+            var p = new {Id = provider.Id,RegistrationDate = provider.RegistrationDate,CompanyName = provider.CompanyName,ProviderType = provider.ProviderType };
             SQLDataAccess sql = new SQLDataAccess();
-            sql.SaveData("dbo.spServiceProviderInsert", provider, "HandymanDB");
+            sql.SaveData("ServiceDelivery.spServiceProviderInsert", provider, "HandymanDB");
         }
 
         
 
         //Put the ProvidersService
-        public void PutProvidersService(ProvidersServiceModel providersServiceModel)
+        public void PutProvidersService(string providerId,int jobId)
         {
             SQLDataAccess sql = new SQLDataAccess();
-            var output = sql.SaveData<ProvidersServiceModel>("dbo.spProvidersServiceInsert", providersServiceModel, "HandymanDB");
+            var providersService = new {JobId = jobId, ServiceProviderId = providerId};
+            var output = sql.SaveData("dbo.spProvidersServiceInsert", providersService, "HandymanDB");
         }
         //Getting Providers Services
-        public List<ProvidersServiceModel> GetProvidersServiceByProviderId(int providerId)
+        public List<ProviderServiceModel> GetProvidersServiceByProviderId(string providerId)
         {
             SQLDataAccess sql = new SQLDataAccess();
-            var output = sql.LoadData<ProvidersServiceModel, dynamic>("dbo.spProvidersServiceLookUp",new { ServiceProviderId = providerId}, "HandymanDB");
+            var output = sql.LoadData<ProviderServiceModel, dynamic>("ServiceDelivery.spGetProviderServiceByProviderId",new { ServiceProviderId = providerId}, "HandymanDB");
             return output;
         }
 
         public void UpdateServiceProvider(ServiceProviderModel provider)
         {
             SQLDataAccess sql = new SQLDataAccess();
-            var output = sql.SaveData("dbo.spServiceProviderUpdate", new { CompanyName = provider.CompanyName,ProfileId = provider.ProfileId, ProviderType = provider.ProviderType}, "HandymanDB");
+            var output = sql.SaveData("ServiceDelivery.spServiceProviderUpdate", new { Id = provider.Id,CompanyName = provider.CompanyName, ProviderType = provider.ProviderType}, "HandymanDB");
         }
 
         public void DeleteProvidersService(int Id)

@@ -10,11 +10,11 @@ namespace HandymanAPI.Controllers
 
         //GET
         //api/Consumers/ProfileId
-        [Route("api/Consumer/GetConsumerByProfileId")]
-        public ConsumerModel GetConsumerByProfileId(int profileId)
+        [Route("api/Consumer/GetConsumerById")]
+        public ConsumerModel GetConsumerById(string Id)
         {
             consumerData = new ConsumerData();
-            return consumerData.GetConsumerByProfileId(profileId);
+            return consumerData.GetConsumerById(Id);
         }
 
         //Post

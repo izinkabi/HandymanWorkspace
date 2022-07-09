@@ -70,29 +70,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataAccess\ActivationData.cs" />
     <Compile Include="DataAccess\ConsumerData.cs" />
+    <Compile Include="DataAccess\JobData.cs" />
+    <Compile Include="DataAccess\OrderData.cs" />
     <Compile Include="DataAccess\RequestData.cs" />
     <Compile Include="Internal\DataAccess\SQLDataAccess.cs" />
-    <Compile Include="DataAccess\ProfileData.cs" />
-    <Compile Include="DataAccess\ServiceData.cs" />
     <Compile Include="DataAccess\ServiceProviderData.cs" />
     <Compile Include="DataAccess\UserData.cs" />
-    <Compile Include="Models\aliasProfileModel.cs" />
-    <Compile Include="Models\AuthenticatedUserModel.cs" />
     <Compile Include="Models\ConsumerModel.cs" />
-    <Compile Include="Models\CustomerModel.cs" />
-    <Compile Include="Models\IUserRoleModel.cs" />
-    <Compile Include="Models\NewUserModel.cs" />
-    <Compile Include="Models\ProfileModel.cs" />
-    <Compile Include="Models\ProviderAddress.cs" />
-    <Compile Include="Models\ProvidersServiceModel.cs" />
+    <Compile Include="Models\JobModel.cs" />
+    <Compile Include="Models\JobCategoryModel.cs" />
+    <Compile Include="Models\JobOfferModel.cs" />
+    <Compile Include="Models\OrderModel.cs" />
+    <Compile Include="Models\ProviderServiceModel.cs" />
     <Compile Include="Models\RequestModel.cs" />
     <Compile Include="Models\RoleModel.cs" />
-    <Compile Include="Models\ServiceCategoryModel.cs" />
-    <Compile Include="Models\ServiceModel.cs" />
     <Compile Include="Models\ServiceProviderModel.cs" />
-    <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\UserRoleModel.cs" />
   </ItemGroup>
   <ItemGroup>

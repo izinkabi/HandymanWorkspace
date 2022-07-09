@@ -1,11 +1,9 @@
-﻿/*Consumer Insert SP*/
-CREATE PROCEDURE [dbo].[spConsumerInsert]
-
-	@ProfileId int ,
-	@Activation int
+﻿CREATE PROCEDURE [Customer].[spConsumerInsert]
+	@ConsumerID       NVARCHAR,
+    @RegistrationDate DATETIME2
 AS
 Begin
 
-	INSERT INTO Consumer (ProfileId,Activation)
-	VALUES (@ProfileId,@Activation)
+	INSERT INTO [Customer].Consumer (ConsumerID,RegistrationDate)
+	VALUES (@ConsumerID,@RegistrationDate)
 End

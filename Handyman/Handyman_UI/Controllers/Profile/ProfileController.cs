@@ -16,10 +16,10 @@ namespace Handyman_UI.Controllers
         private ProfileModel profileModel; 
         private IProfileEndPoint _profileEndPoint;
         string ErrorMsg;
-        private AuthenticatedUserModel authenticatedUser;
+       
         private IAPIHelper _apiHelper;
        
-        static private IloggedInUserModel _loggedInUserModel;
+        
         public ProfileController(IAPIHelper aPIHelper, IProfileEndPoint profile,IloggedInUserModel LoggedInUserModel)
         {
             _apiHelper = aPIHelper;

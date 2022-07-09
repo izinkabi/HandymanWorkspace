@@ -10,50 +10,43 @@ namespace HandymanDataLibray.DataAccess
 {
     public class RequestData
     {
-        //Get a list of request by the consumer's id
-        public List<RequestModel> GetRequestsByConsumerId(int Id)
+        ////Get a list of request by provider's id
+        public List<RequestModel> GetRequestsByProviderId(string providerId)
         {
             SQLDataAccess sql = new SQLDataAccess();
-            ///*Getting requests by Id*
 
-            var p = new { Id = Id };
-            //    var p = new { Id = Id };
-
-            var output = sql.LoadData<RequestModel, dynamic>("dbo.spRequestLookUp", p, "HandymanDB");
+            var output = sql.LoadData<RequestModel, dynamic>("dbo.spRequestLookUpByProviderId", new { Id = providerId }, "HandymanDB");
 
             return output;
-
-
         }
 
 
-        //Post a request
+        ////Post a request
         public void PostRequest(RequestModel request)
         {
             var req = new
             {
-                ConsumerId = request.ConsumerId,
-                ProvidersServiceId = request.ProvidersServiceId,
-                RequestStatus = request.RequestStatus,
-                StartTime = request.StartTime
+                ProviderServiceID = request.ProviderServiceID,
+                IsDelivered = request.IsDelivered,
+                OrderId = request.OrderId
             };
             SQLDataAccess sql = new SQLDataAccess();
             sql.SaveData("dbo.spRequestInsert", req, "HandymanDB");
         }
 
 
-        //Updating the request
+        ////Updating the request
         public void UpdateRequest(RequestModel update)
         {
             var reqUpdate = new
             {
-                //only these attributes are updated, if more is to be done then we'll delete the request for security reasons
-                Id = update.Id,             
-                RequestStatus = update.RequestStatus,
-                FinishTime = update.FinishTime
+                ProviderServiceID = update.ProviderServiceID,
+                IsDelivered = update.IsDelivered,
+                OrderId = update.OrderId
+
             };
             SQLDataAccess sql = new SQLDataAccess();
-           
+
             var output = sql.SaveData("dbo.spRequestUpdate", reqUpdate, "HandymanDB");
 
         }

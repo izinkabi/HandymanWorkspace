@@ -37,12 +37,12 @@ namespace HandymanUILibrary.API
             }
         }
 
-        //Get a customer using the profileId
-        public async Task<ConsumerModel> GetConsumerByProfileId(int profileId)
+        //Get a customer using the Identity UserId
+        public async Task<ConsumerModel> GetConsumerById(string Id)
         {
 
 
-            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync($"/api/Consumer/GetConsumerByProfileId?profileId={profileId}"))
+            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync($"/api/Consumer/GetConsumerById?Id={Id}"))
             {
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {

@@ -8,9 +8,9 @@ namespace HandymanDataLibray.Models
 {
     public class ConsumerModel
     {
-        public int Id { get; set; }
-        public int ProfileId { get; set; }
+        //UserId by Identity
+        public string Id { get; set; }
+        public DateTimeOffset RegistrationDate { get; set; }
 
-        public int Activation { get; set; }
     }
 }

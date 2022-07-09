@@ -12,17 +12,22 @@ namespace HandymanAPI.Controllers
 
         //GET 
         //api/Request/@ConsumerId
-        [Route("api/GetRequestsByConsumerId")]
-        public List<RequestModel> GetRequestsByConsumerId(int customerId)
-        {          
+        [Route("api/GetRequestsByProviderId")]
+        public List<RequestModel> GetRequestsByProviderId(string providerId)
+        {
             requestData = new RequestData();
-            return requestData.GetRequestsByConsumerId(customerId);
+            if (string.IsNullOrEmpty(providerId))
+            {
+                return null;    
+            }    
+            return requestData.GetRequestsByProviderId(providerId);
         }
 
         //POST
         [Route("api/Request/Post")]
         public void Post(RequestModel request)
         {
+
             requestData = new RequestData();
             requestData.PostRequest(request);
         }

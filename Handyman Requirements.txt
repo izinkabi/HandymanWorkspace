@@ -1,0 +1,19 @@
+
+
+Handyman Stakeholders
+i)	Customer(first level end user)
+ii)	ServiceProvider(Secondary level user)
+iii)	Administrator 
+
+Handyman Functional Requirements
+
+1.User aunthentication
+2.Browse Availabe Services 
+3.Request a service
+4.Alert a handyman
+5.Report on service delivery status
+6.Make a transaction with invoice
+7.Email a copy of Invoice
+
+Non-Functional Requirements
+

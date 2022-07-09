@@ -10,15 +10,13 @@ namespace HandymanDataLibray.DataAccess
 {
     public class ConsumerData
     {
-        public ConsumerModel GetConsumerByProfileId(int Id)
+        public ConsumerModel GetConsumerById(string Id)
         {
             SQLDataAccess sql = new SQLDataAccess();
-            ///*Getting Consumer by profileId*
-
-            var p = new { ProfileId = Id };
-            //    var p = new { Id = Id };
-
-            var output = sql.LoadData<ConsumerModel, dynamic>("dbo.spConsumerLookUp", p, "HandymanDB");
+            
+            var p = new { ConsumerID = Id };
+            
+            var output = sql.LoadData<ConsumerModel, dynamic>("Customer.spGetConsumerById", p, "HandymanDB");
 
              return output.First();
 
@@ -27,9 +25,9 @@ namespace HandymanDataLibray.DataAccess
 
         //Post a consumer
         public void PostConsumer(ConsumerModel consumer)
-        {           
+        {
             SQLDataAccess sql = new SQLDataAccess();
-            sql.SaveData("dbo.spConsumerInsert", new { ProfileId=consumer.ProfileId,Activation=consumer.Activation}, "HandymanDB");
+            sql.SaveData("Customer.spConsumerInsert", new { ConsumerID = consumer.Id,RegistrationDate = consumer.RegistrationDate}, "HandymanDB");
         }
 
     }

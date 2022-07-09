@@ -27,8 +27,8 @@ namespace HandymanUILibrary.API
             {
                 if (responseMessage.IsSuccessStatusCode)
                 {
-                    var result = await responseMessage.Content.ReadAsAsync<ServiceProviderModel>();
-                    return result;
+                    providerModel = await responseMessage.Content.ReadAsAsync<ServiceProviderModel>();
+                    return providerModel;   
                 }
                 else
                 {
@@ -39,22 +39,22 @@ namespace HandymanUILibrary.API
         }
 
         //Getting a provider by profileId
-        public async Task<ServiceProviderModel> GetProviderByProfileId(int profileId)
+        public async Task<ServiceProviderModel> GetProviderById(int Id)
         {
-            providerModel = new ServiceProviderModel();
+  
 
-            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync($"/api/GetServiceProviderByProfileId?ProfileId={profileId}"))//passing the profileId to return the ServiceProvider
+            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync($"/api/GetServiceProviderById?Id={Id}"))
             {
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
                     try
                     {
 
-                        var result = await httpResponseMessage.Content.ReadAsAsync<ServiceProviderModel>();
-                        providerModel.ProviderType = result.ProviderType;
-                        providerModel.ProfileId = result.ProfileId;
-                        providerModel.Id = result.Id;
-                        providerModel.CompanyName = result.CompanyName;
+                        providerModel = await httpResponseMessage.Content.ReadAsAsync<ServiceProviderModel>();
+                        //providerModel = result;
+                        //providerModel.ProviderType = result.ProviderType;                       
+                        //providerModel.Id = result.Id;
+                        //providerModel.CompanyName = result.CompanyName;
                         return providerModel;
                     }
                     catch (Exception ex)
@@ -100,7 +100,7 @@ namespace HandymanUILibrary.API
         }
 
         //Get a list of service for the given service provider's id
-        public async Task<List<ProvidersServiceModel>> GetProvidersServiceByProviderId(int providerId)
+        public async Task<List<ProviderServiceModel>> GetProvidersServiceByProviderId(int providerId)
         {
             using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync($"/api/GetProvidersServiceByProviderId?ProviderId={providerId}"))
             {
@@ -109,7 +109,7 @@ namespace HandymanUILibrary.API
 
                     providerModel = new ServiceProviderModel();
 
-                    var result = await httpResponseMessage.Content.ReadAsAsync<List<ProvidersServiceModel>>();
+                    var result = await httpResponseMessage.Content.ReadAsAsync<List<ProviderServiceModel>>();
 
                     return result;
                 }
@@ -121,25 +121,21 @@ namespace HandymanUILibrary.API
         }
         
 
-        public async Task<ProvidersServiceModel> PostProvidersService(ProvidersServiceModel providersService)
+        public async Task<ProviderServiceModel> PostProvidersService(ProviderServiceModel providersService)
         {
-            ProvidersServiceModel ps = new ProvidersServiceModel();
-            if (_aPIHelper != null)
+            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.PutAsJsonAsync("/api/PutProvidersService", providersService))
             {
-
-                using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.PutAsJsonAsync("/api/PutProvidersService", providersService))
+                if (httpResponseMessage.IsSuccessStatusCode)
                 {
-                    if (httpResponseMessage.IsSuccessStatusCode)
-                    {
-                        ps = await httpResponseMessage.Content.ReadAsAsync<ProvidersServiceModel>();
-                    }
-                    else
-                    {
-                        throw new Exception(httpResponseMessage.ReasonPhrase);
-                    }
+                    var result = await httpResponseMessage.Content.ReadAsAsync<ProviderServiceModel>();
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(httpResponseMessage.ReasonPhrase);
                 }
             }
-            return ps;
+             
         }
 
 
@@ -168,7 +164,7 @@ namespace HandymanUILibrary.API
             {
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
-                   var  result = await httpResponseMessage.Content.ReadAsAsync<ProvidersServiceModel>();
+                   var  result = await httpResponseMessage.Content.ReadAsAsync<ProviderServiceModel>();
                 }
                 else
                 {

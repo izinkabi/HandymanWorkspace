@@ -67,18 +67,23 @@
     <Compile Include="Models\AuthenticatedUserModel.cs" />
     <Compile Include="Models\ConsumerModel.cs" />
     <Compile Include="Models\IloggedInUserModel.cs" />
+    <Compile Include="Models\JobCategoryModel.cs" />
+    <Compile Include="Models\JobModel.cs" />
+    <Compile Include="Models\JobOfferModel.cs" />
     <Compile Include="Models\loggedInUserModel.cs" />
     <Compile Include="Models\NewUserModel.cs" />
     <Compile Include="Models\OTPEnvironmentModel.cs" />
     <Compile Include="Models\OTPResult.cs" />
     <Compile Include="Models\ProfileModel.cs" />
     <Compile Include="Models\ProviderAddress.cs" />
-    <Compile Include="Models\ProvidersServiceModel.cs" />
+    <Compile Include="Models\ProviderServiceModel.cs" />
     <Compile Include="Models\RequestModel.cs" />
+    <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\ServiceCategoryModel.cs" />
     <Compile Include="Models\ServiceModel.cs" />
     <Compile Include="Models\ServiceProviderModel.cs" />
     <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Models\UserRoleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

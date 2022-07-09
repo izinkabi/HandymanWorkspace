@@ -61,65 +61,49 @@
     <Folder Include="Tables" />
     <Folder Include="Publish\" />
     <Folder Include="Stored Procedures\Customer" />
-    <Folder Include="Stored Procedures\ServiceProvider" />
-    <Folder Include="Stored Procedures\ServiceRequest" />
+    <Folder Include="Stored Procedures\ServiceDelivery" />
     <Folder Include="Stored Procedures\Service" />
-    <Folder Include="Stored Procedures\Profile" />
-    <Folder Include="Stored Procedures\User" />
-    <Folder Include="Stored Procedures\Profile\Address" />
+    <Folder Include="Scripts\" />
+    <Folder Include="Schemas" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Stored Procedures\spActivationLookUp.sql" />
-    <Build Include="Stored Procedures\spTransactionInsert.sql" />
-    <Build Include="Stored Procedures\spTransactionLookUp.sql" />
-    <Build Include="Tables\User.sql" />
-    <Build Include="Tables\Transaction.sql" />
-    <Build Include="Tables\ServiceProvider.sql" />
-    <Build Include="Tables\Service.sql" />
-    <Build Include="Tables\Request.sql" />
-    <Build Include="Tables\Profile.sql" />
+    <None Include="Scripts\ScriptsIgnoredOnImport.sql" />
+    <Build Include="Schemas\Service.sql" />
+    <Build Include="Schemas\ServiceDelivery.sql" />
+    <Build Include="Schemas\Customer.sql" />
     <Build Include="Tables\Consumer.sql" />
-    <Build Include="Tables\Activation.sql" />
-    <Build Include="Tables\ProvidersService.sql" />
-    <Build Include="Tables\Address.sql" />
-    <Build Include="Tables\ServiceCategory.sql" />
+    <Build Include="Tables\Order.sql" />
+    <Build Include="Tables\Job.sql" />
+    <Build Include="Tables\JobCategory.sql" />
+    <Build Include="Tables\ServiceProvider.sql" />
+    <Build Include="Tables\ProviderService.sql" />
+    <Build Include="Tables\Request.sql" />
     <Build Include="Stored Procedures\Customer\spConsumerInsert.sql" />
-    <Build Include="Stored Procedures\Customer\spConsumerLookUp.sql" />
-    <Build Include="Stored Procedures\ServiceProvider\spServiceProviderUpdate.sql" />
-    <Build Include="Stored Procedures\ServiceProvider\spServiceProvidersLookUp.sql" />
-    <Build Include="Stored Procedures\ServiceProvider\spServiceProviderLookUp.sql" />
-    <Build Include="Stored Procedures\ServiceProvider\spServiceProviderInsert.sql" />
-    <Build Include="Stored Procedures\ServiceProvider\spServicesProviderLookUp.sql" />
-    <Build Include="Stored Procedures\ServiceRequest\spRequestDelete.sql" />
-    <Build Include="Stored Procedures\ServiceRequest\spRequestInsert.sql" />
-    <Build Include="Stored Procedures\ServiceRequest\spRequestLookUp.sql" />
-    <Build Include="Stored Procedures\ServiceRequest\spRequestUpdate.sql" />
-    <Build Include="Stored Procedures\Service\spProvidersServiceDelete.sql" />
-    <Build Include="Stored Procedures\Service\spProvidersServiceInsert.sql" />
-    <Build Include="Stored Procedures\Service\spProvidersServiceLookUp.sql" />
-    <Build Include="Stored Procedures\Service\spServiceCategoriesLookUp.sql" />
-    <Build Include="Stored Procedures\Service\spServiceInsert.sql" />
-    <Build Include="Stored Procedures\Service\spServiceLookUp.sql" />
-    <Build Include="Stored Procedures\Service\spServicesLookUp.sql" />
-    <Build Include="Stored Procedures\Profile\spProfileInsert.sql" />
-    <Build Include="Stored Procedures\Profile\spProfileLookUp.sql" />
-    <Build Include="Stored Procedures\User\spUserInsert.sql" />
-    <Build Include="Stored Procedures\User\spUserLookUp.sql" />
-    <Build Include="Stored Procedures\spActivationInsert.sql" />
-    <Build Include="Stored Procedures\Profile\Address\spAddressInsert.sql" />
-    <Build Include="Stored Procedures\Profile\Address\spAddressLookUp.sql" />
-    <Build Include="Stored Procedures\Profile\Address\spAddressLookUpByCity.sql" />
-    <Build Include="Stored Procedures\Profile\Address\spAddressUpdate.sql" />
-    <Build Include="Stored Procedures\Profile\Address\spAddressLookUpBySurburb.sql" />
-    <Build Include="Stored Procedures\Profile\Address\spAddressLookUpByPostalCode.sql" />
+    <Build Include="Stored Procedures\Customer\spConsumerLookUpById.sql" />
+    <Build Include="Stored Procedures\Service\spCategoryInsert.sql" />
+    <Build Include="Stored Procedures\Service\spCategoriesLookUp.sql" />
+    <Build Include="Stored Procedures\Service\spJobsLookUp.sql" />
+    <Build Include="Stored Procedures\Service\spJobCategoryLookUpById.sql" />
+    <Build Include="Stored Procedures\Service\spJobInsert.sql" />
+    <Build Include="Stored Procedures\Service\JobUpdate.sql" />
+    <Build Include="Stored Procedures\ServiceDelivery\spRequestLookUpByProviderServiceId.sql" />
+    <Build Include="Stored Procedures\ServiceDelivery\spProviderServicesLookUp.sql" />
+    <Build Include="Stored Procedures\ServiceDelivery\spServiceProviderLookUpById.sql" />
+    <Build Include="Stored Procedures\ServiceDelivery\spProviderServiceInsert.sql" />
+    <Build Include="Stored Procedures\ServiceDelivery\spProviderServiceUpdate.sql" />
+    <Build Include="Stored Procedures\ServiceDelivery\spServiceProviderInsert.sql" />
+    <Build Include="Stored Procedures\ServiceDelivery\spRequestLookUpByProviderId.sql" />
+    <Build Include="Stored Procedures\ServiceDelivery\spRequestInsert.sql" />
+    <Build Include="Stored Procedures\ServiceDelivery\spServiceProviderUpdate.sql" />
+    <Build Include="Stored Procedures\ServiceDelivery\spRequestUpdate.sql" />
+    <Build Include="Stored Procedures\Customer\spOrderInsert.sql" />
+    <Build Include="Stored Procedures\Customer\OrderLookUpByConsumerID.sql" />
+    <Build Include="Stored Procedures\Customer\OrderUpdate.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish\HandymanDB.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="HandymanDB.refactorlog" />
-  </ItemGroup>
-  <ItemGroup>
-    <Build Include="Stored Procedures\Profile\spProfileUpDate.sql" />
   </ItemGroup>
 </Project>

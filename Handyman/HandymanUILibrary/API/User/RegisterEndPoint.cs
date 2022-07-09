@@ -11,8 +11,7 @@ namespace HandymanUILibrary.API
     public class RegisterEndPoint : IRegisterEndPoint
     {
         private IAPIHelper _apiHelper;
-        static private string email;
-        static private loggedInUserModel loggedInUserModel;
+        
         public RegisterEndPoint(IAPIHelper aPIHelper)
         {
             _apiHelper = aPIHelper;

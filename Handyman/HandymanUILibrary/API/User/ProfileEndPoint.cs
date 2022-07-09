@@ -10,7 +10,7 @@ namespace HandymanUILibrary.API
     {
 
         private IAPIHelper _aPIHelper;
-        private ProfileModel.AddressModel address;
+        
         private List<ProviderAddress> addresses;
        
         
