@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,7 +28,7 @@ namespace HandymanUILibrary.API
             {
                 if (responseMessage.IsSuccessStatusCode)
                 {
-                    providerModel = await responseMessage.Content.ReadAsAsync<ServiceProviderModel>();
+                    providerModel = await responseMessage.Content.ReadFromJsonAsync<ServiceProviderModel>();
                     return providerModel;   
                 }
                 else
@@ -50,7 +51,7 @@ namespace HandymanUILibrary.API
                     try
                     {
 
-                        providerModel = await httpResponseMessage.Content.ReadAsAsync<ServiceProviderModel>();
+                        providerModel = await httpResponseMessage.Content.ReadFromJsonAsync<ServiceProviderModel>();
                         //providerModel = result;
                         //providerModel.ProviderType = result.ProviderType;                       
                         //providerModel.Id = result.Id;
@@ -85,7 +86,7 @@ namespace HandymanUILibrary.API
 
                         providerModel = new ServiceProviderModel();
 
-                        var result = await httpResponseMessage.Content.ReadAsAsync<List<ServiceProviderModel>>();
+                        var result = await httpResponseMessage.Content.ReadFromJsonAsync<List<ServiceProviderModel>>();
                          return result;
                     }
                     else
@@ -109,7 +110,7 @@ namespace HandymanUILibrary.API
 
                     providerModel = new ServiceProviderModel();
 
-                    var result = await httpResponseMessage.Content.ReadAsAsync<List<ProviderServiceModel>>();
+                    var result = await httpResponseMessage.Content.ReadFromJsonAsync<List<ProviderServiceModel>>();
 
                     return result;
                 }
@@ -127,7 +128,7 @@ namespace HandymanUILibrary.API
             {
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
-                    var result = await httpResponseMessage.Content.ReadAsAsync<ProviderServiceModel>();
+                    var result = await httpResponseMessage.Content.ReadFromJsonAsync<ProviderServiceModel>();
                     return result;
                 }
                 else
@@ -146,7 +147,7 @@ namespace HandymanUILibrary.API
             {
                 if (responseMessage.IsSuccessStatusCode)
                 {
-                    var result = await responseMessage.Content.ReadAsAsync<ServiceProviderModel>();
+                    var result = await responseMessage.Content.ReadFromJsonAsync<ServiceProviderModel>();
                     return result;
                 }
                 else
@@ -164,7 +165,7 @@ namespace HandymanUILibrary.API
             {
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
-                   var  result = await httpResponseMessage.Content.ReadAsAsync<ProviderServiceModel>();
+                   var  result = await httpResponseMessage.Content.ReadFromJsonAsync<ProviderServiceModel>();
                 }
                 else
                 {

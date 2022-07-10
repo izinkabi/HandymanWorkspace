@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using HandymanUIApp.Models;
 
 namespace HandymanUIApp.Data
 {
@@ -9,5 +10,6 @@ namespace HandymanUIApp.Data
             : base(options)
         {
         }
+        public DbSet<HandymanUIApp.Models.JobModel>? JobModel { get; set; }
     }
 }

@@ -1,8 +1,10 @@
-﻿using HandymanUILibrary.Models;
+﻿using HandymanUILibrary.API.User;
+using HandymanUILibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,7 +36,7 @@ namespace HandymanUILibrary.API
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
 
-                    var result = await httpResponseMessage.Content.ReadAsAsync<List<ServiceModel>>();
+                    var result = await httpResponseMessage.Content.ReadFromJsonAsync<List<ServiceModel>>();
 
                     return result;
                 }
@@ -59,7 +61,7 @@ namespace HandymanUILibrary.API
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
 
-                    var result = await httpResponseMessage.Content.ReadAsAsync<List<ServiceCategoryModel>>();
+                    var result = await httpResponseMessage.Content.ReadFromJsonAsync<List<ServiceCategoryModel>>();
 
                     return result;
                 }
@@ -85,7 +87,7 @@ namespace HandymanUILibrary.API
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
 
-                    var result = await httpResponseMessage.Content.ReadAsAsync<ServiceModel>();
+                    var result = await httpResponseMessage.Content.ReadFromJsonAsync<ServiceModel>();
 
                     return result;
                 }

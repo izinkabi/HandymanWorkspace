@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace HandymanUILibrary.API
+namespace HandymanUILibrary.API.User
 {
     public interface IServiceEndPoint
     {

@@ -15,7 +15,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
-builder.Services.AddSingleton<IAPIHelper, APIHelper>();
+builder.Services.AddSingleton<APIHelper>();
+
 
 var app = builder.Build();
 

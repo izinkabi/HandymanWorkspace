@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,6 +14,10 @@ namespace HandymanUILibrary.API
 
 
         private IAPIHelper _aPIHelper;
+        public ConsumerEndPoint()
+        {
+
+        }
         public ConsumerEndPoint(IAPIHelper aPIHelper)
         {
             _aPIHelper = aPIHelper;
@@ -28,7 +33,7 @@ namespace HandymanUILibrary.API
 
             if (responseMessage.IsSuccessStatusCode)
             {
-                var result = await responseMessage.Content.ReadAsAsync<ConsumerModel>();
+                var result = await responseMessage.Content.ReadFromJsonAsync<ConsumerModel>();
                 return result;
             }
             else
@@ -47,7 +52,7 @@ namespace HandymanUILibrary.API
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
 
-                    var result = await httpResponseMessage.Content.ReadAsAsync<ConsumerModel>();
+                    var result = await httpResponseMessage.Content.ReadFromJsonAsync<ConsumerModel>();
                     return result;
                 }
                 else

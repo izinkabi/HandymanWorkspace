@@ -1,20 +1,24 @@
 ﻿using HandymanUILibrary.Models;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace HandymanUILibrary.API
 {
      public class APIHelper : IAPIHelper
     {
+        //readonly IHttpClientFactory _clientFactory;
         private HttpClient _apiClient;
         private IloggedInUserModel _loggedInUserModel;
+        IConfiguration Configuration;
+        public APIHelper()
+        {
 
+        }
         public APIHelper(IloggedInUserModel loggedInUser)
         {
             InitializeCLient();
@@ -33,7 +37,8 @@ namespace HandymanUILibrary.API
         //We initialize the HTTP client and format the clients headings to pass the data as a json objet
         private void InitializeCLient()
         {
-            string api = ConfigurationManager.AppSettings["api"];
+            
+            string api = Configuration["api"];
 
             _apiClient = new HttpClient();
             _apiClient.BaseAddress = new Uri(api);
@@ -59,7 +64,7 @@ namespace HandymanUILibrary.API
             {
                 if (httpResponse.IsSuccessStatusCode)
                 {
-                    var result = await httpResponse.Content.ReadAsAsync<AuthenticatedUserModel>();
+                    var result = await httpResponse.Content.ReadFromJsonAsync<AuthenticatedUserModel>();
                     return result;
                 }
                 else
@@ -81,7 +86,7 @@ namespace HandymanUILibrary.API
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
                    
-                    var result = await httpResponseMessage.Content.ReadAsAsync<loggedInUserModel>();
+                    var result = await httpResponseMessage.Content.ReadFromJsonAsync<loggedInUserModel>();
                     _loggedInUserModel.Token = result.Token;
                     _loggedInUserModel.Id = result.Id;
                     _loggedInUserModel.Username = result.Username;
