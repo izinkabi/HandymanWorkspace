@@ -1,25 +1,22 @@
-﻿@model IEnumerable<HandymanUIApp.Models.JobModel>
+﻿@model IEnumerable<HandymanUIApp.Models.ServiceModel>
 
 @{
-    ViewData["Title"] = "CustomerHome";
+    ViewData["Title"] = "Customer Home";
 }
-
-<h1>CustomerHome</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.JobName)
+                @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.JobDecription)
+                @Html.DisplayNameFor(model => model.Decription)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.JobCategory)
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImageUrl)
             </th>
             <th></th>
         </tr>
@@ -28,13 +25,17 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.JobName)
+                @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.JobDecription)
+                @Html.DisplayFor(modelItem => item.Decription)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.JobCategory)
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>
+            <td>
+                
+                <img src=$"/images/{@item.ImageUrl}" class="rounded mx-auto d-block" alt="Image">
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

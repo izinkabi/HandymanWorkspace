@@ -1,69 +1,67 @@
-﻿using HandymanUIApp.Models;
-using Microsoft.AspNetCore.Http;
+﻿using HandymanUILibrary.API;
 using Microsoft.AspNetCore.Mvc;
-
+using HandymanUIApp.Models;
 
 namespace HandymanUIApp.Controllers
 {
     public class Consumer : Controller
     {
       
-        protected List<JobModel>? jobs;
-      
+        protected List<ServiceModel>? AllServices;
+        private List<HandymanUILibrary.Models.ServiceModel> servicesData;
+        private IServiceEndPoint? _serviceEndpoint;
+        string errorString;
+        private IAPIHelper _apiClient;
 
-
-        // GET: Consumer
-        public ActionResult CustomerHome()
+        public Consumer(IAPIHelper aPIHelper, IServiceEndPoint seviceEndPoint)
         {
-            if(jobs == null)
+            _apiClient = aPIHelper;
+            _serviceEndpoint = seviceEndPoint;
+
+        }
+        internal async Task<IEnumerable<ServiceModel>> LoadServices()
+        {
+            AllServices = new List<ServiceModel>();
+            servicesData =  new List<HandymanUILibrary.Models.ServiceModel>();
+            try
             {
-                jobs = LoadJobs();
+                servicesData = await _serviceEndpoint?.GetServices();
+            }catch(Exception ex)
+            {
+                errorString = ex.Message;
             }
-                
-            return View(jobs);
+            
+            foreach(var service in servicesData)
+            {
+                //populating a service to UI model
+                var s = new ServiceModel();
+                s.Name = service.Name;
+                s.Decription = service.Description;
+                s.ImageUrl = service.ImageUrl;
+                s.Id = service.Id;
+                s.Category = new CategoryModel();
+                s.Category.Name = service.Name;
+                AllServices.Add(s);
+            }
+            return AllServices;
         }
-        private List<JobModel> LoadJobs()
+        // GET: Consumer
+        public async Task<ActionResult> Index()
         {
-            if (jobs == null)
-            {  
-                jobs = new List<JobModel>
-                {
-                    new JobModel
-                    {
-                        Id = 4,
-                        JobCategory = "Cleanig",
-                        JobDecription = "mach.jpg",
-                        JobName = "House Kitchen Cleaning",
-                        JobImageUrl = "image"
-                    },
-                    new JobModel
-                    {
-                        Id = 5,
-                        JobCategory = "Mechanic",
-                        JobDecription = "mach.jpg",
-                        JobName = "Car enginefixing"
-                    },
-                    new JobModel
-                    {
-                       Id = 3,
-                        JobCategory = "Electronics",
-                        JobDecription = "mach.jpg",
-                        JobName = "Car lights fixing",
-                        JobImageUrl = "image"
-                    },
-                    new JobModel
-                    {
-                        Id = 7,
-                        JobCategory = "Gardening",
-                        JobDecription = "mach.jpg",
-                        JobName = "Grass cuttig",
-                        JobImageUrl = "image"
-                    }
-                };
-
-           }
-            return jobs;
+             
+            try
+            {
+                var svs = await LoadServices();
+                    return View(svs);
+            }
+            catch (Exception ex)
+            {
+                errorString = ex.Message;
+                return Redirect("Error");
+            }
+            
         }
+       
         // GET: Consumer/Details/5
         public ActionResult Details(int id)
         {
@@ -112,58 +110,5 @@ namespace HandymanUIApp.Controllers
                 return View();
             }
         }
-
-        // GET: Consumer/Delete/5
-        public ActionResult Delete(int id)
-        {
-            JobModel removedJob = new();
-            if (jobs == null)
-            {
-                jobs = LoadJobs();
-            }
-            foreach (var j in jobs)
-            {
-
-            
-                
-               if(j.Id==id)
-                    removedJob.Id = j.Id;
-                    removedJob.JobCategory = j.JobCategory;
-                    removedJob.JobName = j.JobName;
-                    removedJob.JobDecription = j.JobDecription;   
-                    removedJob.JobImageUrl = j.JobImageUrl;   
-               return View(removedJob);
-            }
-           
-            return View();
-        }
-
-        // POST: Consumer/Delete/5
-        
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirm(int id, IFormCollection collection)
-        {
-            try
-            {
-                if (jobs == null)
-                {
-                    jobs = LoadJobs();
-                }
-                foreach(var j in jobs)
-                {
-                    if (j.Id == id)
-                        jobs.Remove(j);
-                }
-                return RedirectToAction(nameof(CustomerHome ), jobs);
-            }
-            catch
-            {
-                return View();
-            }
-        }
-        
-       
-
     }
 }

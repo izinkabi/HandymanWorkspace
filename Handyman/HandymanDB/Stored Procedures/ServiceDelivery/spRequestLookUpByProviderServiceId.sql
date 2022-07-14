@@ -3,7 +3,7 @@
 AS
 BEGIN
 Set nocount on
-	SELECT ServiceProviderId,JobID,Id
+	SELECT ServiceProviderId,ServiceID,Id
 	FROM [ServiceDelivery].[ProviderService] 
 	WHERE ServiceProviderId = @ServiceProviderId;
 END

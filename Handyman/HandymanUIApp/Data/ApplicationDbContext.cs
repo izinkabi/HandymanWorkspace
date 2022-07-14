@@ -10,6 +10,6 @@ namespace HandymanUIApp.Data
             : base(options)
         {
         }
-        public DbSet<HandymanUIApp.Models.JobModel>? JobModel { get; set; }
+        public DbSet<HandymanUIApp.Models.ServiceModel>? ServiceModel { get; set; }
     }
 }

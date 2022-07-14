@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace HandymanDataLibray.Models
 {
-    public class JobCategoryModel
+    public class ServiceCategoryModel
     {
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        public ServiceCategoryModel Category { get; set; }
     }
 }

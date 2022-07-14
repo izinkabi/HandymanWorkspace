@@ -74,8 +74,6 @@
     <Build Include="Schemas\Customer.sql" />
     <Build Include="Tables\Consumer.sql" />
     <Build Include="Tables\Order.sql" />
-    <Build Include="Tables\Job.sql" />
-    <Build Include="Tables\JobCategory.sql" />
     <Build Include="Tables\ServiceProvider.sql" />
     <Build Include="Tables\ProviderService.sql" />
     <Build Include="Tables\Request.sql" />
@@ -83,10 +81,10 @@
     <Build Include="Stored Procedures\Customer\spConsumerLookUpById.sql" />
     <Build Include="Stored Procedures\Service\spCategoryInsert.sql" />
     <Build Include="Stored Procedures\Service\spCategoriesLookUp.sql" />
-    <Build Include="Stored Procedures\Service\spJobsLookUp.sql" />
-    <Build Include="Stored Procedures\Service\spJobCategoryLookUpById.sql" />
-    <Build Include="Stored Procedures\Service\spJobInsert.sql" />
-    <Build Include="Stored Procedures\Service\JobUpdate.sql" />
+    <Build Include="Stored Procedures\Service\spServicesLookUp.sql" />
+    <Build Include="Stored Procedures\Service\spServiceLookUpByCategoryId.sql" />
+    <Build Include="Stored Procedures\Service\spServiceInsert.sql" />
+    <Build Include="Stored Procedures\Service\spServiceUpdate.sql" />
     <Build Include="Stored Procedures\ServiceDelivery\spRequestLookUpByProviderServiceId.sql" />
     <Build Include="Stored Procedures\ServiceDelivery\spProviderServicesLookUp.sql" />
     <Build Include="Stored Procedures\ServiceDelivery\spServiceProviderLookUpById.sql" />
@@ -106,5 +104,10 @@
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="HandymanDB.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Tables\Service.sql" />
+    <Build Include="Tables\Category.sql" />
+    <Build Include="Stored Procedures\Service\spServiceLookUp.sql" />
   </ItemGroup>
 </Project>

@@ -15,7 +15,10 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
-builder.Services.AddSingleton<APIHelper>();
+builder.Services.AddSingleton<IAPIHelper,APIHelper>();
+builder.Services.AddTransient<IServiceEndPoint, ServiceEndPoint>();
+builder.Services.AddTransient<IConsumerEndPoint, ConsumerEndPoint>();
+
 
 
 var app = builder.Build();
@@ -42,7 +45,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Consumer}/{action=Index}/{id?}");
 app.MapRazorPages();
 
 app.Run();

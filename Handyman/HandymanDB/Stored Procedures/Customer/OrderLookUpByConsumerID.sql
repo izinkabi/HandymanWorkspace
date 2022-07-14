@@ -3,7 +3,7 @@
 
 AS
 BEGIN
-	SELECT DateCreated,Stage,JobId      
+	SELECT DateCreated,Stage,ServiceId      
 	FROM [Customer].[Order]
 	WHERE ConsumerID = @ConsumerID
 END

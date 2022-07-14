@@ -43,10 +43,10 @@ namespace HandymanDataLibray.DataAccess
         }
 
         //Get all Job Categories
-        public List<JobCategoryModel> GetJobCategories()
+        public List<ServiceCategoryModel> GetJobCategories()
         {
             SQLDataAccess sql = new SQLDataAccess();
-            var output = sql.LoadData<JobCategoryModel, dynamic>("Service.spGetAllJobCategories", new { }, "HandymanDB");
+            var output = sql.LoadData<ServiceCategoryModel, dynamic>("Service.spGetAllJobCategories", new { }, "HandymanDB");
             return output;
         }
     }

@@ -14,15 +14,14 @@ namespace HandymanUILibrary.API
         //readonly IHttpClientFactory _clientFactory;
         private HttpClient _apiClient;
         private IloggedInUserModel _loggedInUserModel;
-        IConfiguration Configuration;
-        public APIHelper()
+        IConfiguration _Configuration;
+       
+        public APIHelper(IConfiguration configuration)
         {
-
-        }
-        public APIHelper(IloggedInUserModel loggedInUser)
-        {
+            _Configuration = configuration;
             InitializeCLient();
-            _loggedInUserModel = loggedInUser;  
+            //_loggedInUserModel = loggedInUser;
+           
         }
 
         public HttpClient ApiClient
@@ -37,11 +36,12 @@ namespace HandymanUILibrary.API
         //We initialize the HTTP client and format the clients headings to pass the data as a json objet
         private void InitializeCLient()
         {
+           
             
-            string api = Configuration["api"];
+            //string api = "https://localhost:44308/api/";
 
             _apiClient = new HttpClient();
-            _apiClient.BaseAddress = new Uri(api);
+            _apiClient.BaseAddress = new Uri(_Configuration["Api"]);
             _apiClient.DefaultRequestHeaders.Accept.Clear();
             _apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("applications/json"));
         }
