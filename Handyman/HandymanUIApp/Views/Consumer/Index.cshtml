@@ -19,7 +19,10 @@
                 @Html.DisplayNameFor(model => model.Decription)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Category)
+                @Html.DisplayNameFor(model => model.Category.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category.Description)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ImageUrl)
@@ -37,7 +40,10 @@
                 @Html.DisplayFor(modelItem => item.Decription)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Category)
+                @Html.DisplayFor(modelItem => item.Category.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.Description)
             </td>
             <td>
                <img src=$"Images/{@item.ImageUrl}" class="rounded mx-auto d-block" alt="Image"/>
