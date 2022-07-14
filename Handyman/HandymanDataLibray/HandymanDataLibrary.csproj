@@ -105,7 +105,7 @@
     <Compile Include="DataAccess\UserData.cs" />
     <Compile Include="Models\ConsumerModel.cs" />
     <Compile Include="Models\JobModel.cs" />
-    <Compile Include="Models\JobCategoryModel.cs" />
+    <Compile Include="Models\ServiceCategoryModel.cs" />
     <Compile Include="Models\JobOfferModel.cs" />
     <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Models\ProviderServiceModel.cs" />

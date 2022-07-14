@@ -3,20 +3,25 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HandymanUILibrary.API
+namespace HandymanUILibrary.API.Consumer
 {
-    public class RequestEndPoint:IRequestEndPoint
+    internal class OrderEndPoint : IOrderEndPoint
     {
         private IAPIHelper _aPIHelper;
-       
+
         /// <summary>
         /// This method is used to construct a the API helper
         /// </summary>
         /// <param name="aPIHelper"></param>
-        public RequestEndPoint(IAPIHelper aPIHelper)
+        public OrderEndPoint()
+        {
+
+        }
+        public OrderEndPoint(IAPIHelper aPIHelper)
         {
             _aPIHelper = aPIHelper;
         }
@@ -24,18 +29,18 @@ namespace HandymanUILibrary.API
         /// <summary>
         /// This method is used to Post a request to the API
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="order"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<RequestModel> PostRequest(RequestModel request)
+        public async Task<OrderModel> PostOrder(OrderModel request)
         {
 
 
-            HttpResponseMessage responseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync("/api/PostRequest", request);
+            HttpResponseMessage responseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync("/api/PostOrder", request);
 
             if (responseMessage.IsSuccessStatusCode)
             {
-                var result = await responseMessage.Content.ReadAsAsync<RequestModel>();
+                var result = await responseMessage.Content.ReadFromJsonAsync<OrderModel>();
                 return result;
             }
             else
@@ -49,16 +54,16 @@ namespace HandymanUILibrary.API
         /// <param name="customerId"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<RequestModel> GetRequest(int customerId)
+        public async Task<OrderModel> GetOrder(string customerId)
         {
 
 
-            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync($"/api/GetRequestsByConsumerId?customerId={customerId}"))
+            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync($"/api/GetOrdersByCustomerId?providerId={customerId}"))
             {
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
 
-                    var result = await httpResponseMessage.Content.ReadAsAsync<RequestModel>();
+                    var result = await httpResponseMessage.Content.ReadFromJsonAsync<OrderModel>();
                     return result;
                 }
                 else
@@ -71,17 +76,16 @@ namespace HandymanUILibrary.API
         /// <summary>
         /// This method is used to update a request from the API
         /// </summary>
-        /// <param name="requestUpdate"></param>
+        /// <param name="orderUpdate"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task UpdateRequest(RequestModel requestUpdate)
+        public async Task UpdateOrder(OrderModel orderUpdate)
         {
-            HttpResponseMessage responseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync("api/UpdateProfile", requestUpdate);
+            HttpResponseMessage responseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync("api/UpdateOrder", orderUpdate);
 
             if (responseMessage.IsSuccessStatusCode)
             {
-                var result = await responseMessage.Content.ReadAsAsync<RequestModel>();
-
+                var result = await responseMessage.Content.ReadFromJsonAsync<OrderModel>();
             }
             else
             {
@@ -94,13 +98,13 @@ namespace HandymanUILibrary.API
         /// <param name="Id"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task DeleteRequest(int Id)
+        public async Task DeleteOrder(int Id)
         {
-            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.DeleteAsync($"/api/Request/Delete?Id={Id}"))//Deleting the request of the parameterized request id 
+            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.DeleteAsync($"/api/Orders/Delete?Id={Id}"))//Deleting the order of the parameterized request id 
             {
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
-                    var result = await httpResponseMessage.Content.ReadAsAsync<RequestModel>();
+                    var result = await httpResponseMessage.Content.ReadFromJsonAsync<OrderModel>();
                 }
                 else
                 {
@@ -109,5 +113,4 @@ namespace HandymanUILibrary.API
             }
         }
     }
-
 }

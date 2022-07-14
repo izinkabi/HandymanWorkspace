@@ -6,6 +6,6 @@ AS
 BEGIN
 Set nocount on
 	UPDATE [ServiceDelivery].[ProviderService]
-	SET JobId = @JobId
+	SET ServiceId = @JobId
 	WHERE Id=@Id AND ServiceProviderId = @ServiceProviderId
 END

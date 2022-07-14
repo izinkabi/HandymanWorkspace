@@ -1,9 +1,10 @@
 ﻿CREATE PROCEDURE [Service].[spCategoryInsert]
-    @Title       VARCHAR,
-    @Type VARCHAR          
+    @CategoryName       VARCHAR,
+    @Description VARCHAR,
+    @Type   VARCHAR
 AS
 BEGIN
 Set nocount on
-	INSERT INTO [Service].[Category] (Category_Title,Category_Type)
-	VALUES (@Title,@Type)	
+	INSERT INTO [Service].[Category] (CategoryName,CategoryDescription,Type)
+	VALUES (@CategoryName,@Description,@Type)	
 END

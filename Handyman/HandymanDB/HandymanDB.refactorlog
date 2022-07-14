@@ -147,11 +147,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="RequestStatus" />
   </Operation>
-  <Operation Name="Rename Refactor" Key="bba772ec-ce54-4feb-9eb9-5a321cf1168b" ChangeDateTime="07/09/2022 17:21:20">
-    <Property Name="ElementName" Value="[Service].[Category].[Id]" />
+  <Operation Name="Rename Refactor" Key="910916c3-8389-4db0-8163-4b1c28c005e4" ChangeDateTime="07/13/2022 19:37:17">
+    <Property Name="ElementName" Value="[Service].[Category].[Name]" />
     <Property Name="ElementType" Value="SqlSimpleColumn" />
     <Property Name="ParentElementName" Value="[Service].[Category]" />
     <Property Name="ParentElementType" Value="SqlTable" />
-    <Property Name="NewName" Value="Category_ID" />
+    <Property Name="NewName" Value="CategoryName" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="eeb60751-4163-4040-a107-ec209cb56216" ChangeDateTime="07/13/2022 19:37:28">
+    <Property Name="ElementName" Value="[Service].[Category].[Description]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Service].[Category]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CategoryDescription" />
   </Operation>
 </Operations>

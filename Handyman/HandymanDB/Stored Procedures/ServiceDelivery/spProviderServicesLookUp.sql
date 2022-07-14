@@ -3,6 +3,6 @@
 AS
 BEGIN
 Set nocount on
-	SELECT ServiceProviderId,JobID
+	SELECT ServiceProviderId,ServiceId
 	FROM [ServiceDelivery].[ProviderService] 
 END

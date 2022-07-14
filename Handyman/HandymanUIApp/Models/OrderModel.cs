@@ -1,6 +1,6 @@
 ﻿namespace HandymanUIApp.Models
 {
-    public class Order
+    public class OrderModel
     {
         internal int Id { get; set; }
         public string? JobName { get; set; }

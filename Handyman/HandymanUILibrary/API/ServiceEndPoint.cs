@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,6 +17,8 @@ namespace HandymanUILibrary.API
         /// Constractor for the API helper
         /// </summary>
         /// <param name="aPIHelper"></param>
+        /// 
+        
         public ServiceEndPoint(IAPIHelper aPIHelper)
         {
             _aPIHelper = aPIHelper;
@@ -28,21 +31,30 @@ namespace HandymanUILibrary.API
         public async Task<List<ServiceModel>> GetServices()
         {
 
-           
-            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync("/GetServices"))
+            try
             {
-                if (httpResponseMessage.IsSuccessStatusCode)
-                {
 
-                    var result = await httpResponseMessage.Content.ReadAsAsync<List<ServiceModel>>();
 
-                    return result;
-                }
-                else
-                {
-                    throw new Exception(httpResponseMessage.ReasonPhrase);
-                }
+                List<ServiceModel> httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<List<ServiceModel>>("Services/GetServies");
+                return httpResponseMessage;
             }
+            catch (Exception ex) 
+            {
+                throw  new Exception(ex.Message);  
+            }
+                //{
+            //    if (httpResponseMessage.IsSuccessStatusCode)
+            //    {
+
+            //        var result = await httpResponseMessage.Content.ReadFromJsonAsync<List<ServiceModel>>();
+
+                  
+            //    }
+            //    else
+            //    {
+            //        throw new Exception(httpResponseMessage.ReasonPhrase);
+            //    }
+            //}
 
         }
         /// <summary>
@@ -59,7 +71,7 @@ namespace HandymanUILibrary.API
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
 
-                    var result = await httpResponseMessage.Content.ReadAsAsync<List<ServiceCategoryModel>>();
+                    var result = await httpResponseMessage.Content.ReadFromJsonAsync<List<ServiceCategoryModel>>();
 
                     return result;
                 }
@@ -85,7 +97,7 @@ namespace HandymanUILibrary.API
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
 
-                    var result = await httpResponseMessage.Content.ReadAsAsync<ServiceModel>();
+                    var result = await httpResponseMessage.Content.ReadFromJsonAsync<ServiceModel>();
 
                     return result;
                 }

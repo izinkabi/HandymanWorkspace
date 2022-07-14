@@ -10,7 +10,7 @@ namespace HandymanUILibrary.Models
     {
         public string Name { get; set; }
         public int Id { get; set; }
-        public int ServiceCategoryId { get; set; }
+        public ServiceCategoryModel ServiceCategory { get; set; }
         public string ImageUrl { get; set; }
         public string Description { get; set; }
        
