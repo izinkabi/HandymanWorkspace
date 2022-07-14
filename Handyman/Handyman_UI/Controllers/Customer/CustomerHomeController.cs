@@ -62,6 +62,12 @@ namespace Handyman_UI.Controllers
                     return RedirectToAction("SignIn", "LogIn");
                 }
         }
+
+        private ActionResult RedirectToAction(string v1, string v2)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Home page Action funtion
         /// </summary>
@@ -205,28 +211,28 @@ namespace Handyman_UI.Controllers
         /// </summary>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<RedirectToRouteResult> RegisterCustomer()
-        {
-            try
-            {
+        //public async Task<RedirectToRouteResult> RegisterCustomer()
+        //{
+        //    try
+        //    {
 
-                profileModel = (ProfileModel)Session["loggedinprofile"];
-                if(profileModel!=null)
-                customer = new ConsumerModel();
-                customer.Activation = 1;
-                customer.ProfileId = profileModel.Id;
+        //        profileModel = (ProfileModel)Session["loggedinprofile"];
+        //        if(profileModel!=null)
+        //        customer = new ConsumerModel();
+        //        customer.Activation = 1;
+        //        customer.ProfileId = profileModel.Id;
 
-                await _consumerEndPoint.PostConsumer(customer);
-                Helper.IsCustomer = true;
-                TempData["newuser"] = profileModel.Name + " " + profileModel.Surname;
+        //        await _consumerEndPoint.PostConsumer(customer);
+        //        Helper.IsCustomer = true;
+        //        TempData["newuser"] = profileModel.Name + " " + profileModel.Surname;
 
-                return RedirectToAction("Index", "Service");
-            }
-            catch(Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
+        //        return RedirectToAction("Index", "Service");
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        throw new Exception(ex.Message);
+        //    }
+        //}
        
         
       

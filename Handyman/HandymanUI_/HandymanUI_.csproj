@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>aspnet-HandymanUIApp-2CCE370D-B901-4F71-AA68-5AED67A73E55</UserSecretsId>
+    <UserSecretsId>aspnet-HandymanUI_-778CAA44-2217-4DEE-B519-6ED55F5C6D22</UserSecretsId>
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
@@ -14,12 +14,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.6" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.7" />
-    <PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HandymanUILibrary\HandymanUILibrary.csproj" />
+    <ProjectReference Include="..\HandymanUILibrary_\HandymanUILibrary_.csproj" />
   </ItemGroup>
 
 </Project>
