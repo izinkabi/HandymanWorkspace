@@ -1,0 +1,140 @@
+﻿@using HandymanUILibrary_.API.EndPoints
+@using Microsoft.AspNetCore.Components.Forms
+
+<h3>ServiceControl</h3>
+
+<p>
+    This service Load
+</p>
+<h2>Insert Services</h2>
+<EditForm Model="@service">
+    <div class="mb-3">
+        
+        <label for="Name" class="form-label">Name</label>
+        <InputText @bind-Value="service.Name" class="form-control" id="Name" />
+        <label for="Description" class="form-label">Description</label>
+        <InputText @bind-Value="service.Description" class="form-control" id="Name" />
+        <label for="Image" class="form-label">Image</label>
+        <InputText @bind-Value="service.ImageUrl" class="form-control" id="Name" />
+        <button class="btn btn-primary" @onclick="AddService">Add</button>
+        </div>
+</EditForm>
+
+<h2>Services</h2>
+<ul>
+@foreach(var service in services)
+{
+    <li>
+        <b>Name: @service.Name</b>
+        <br />
+        <b>Description: @service.Description</b>
+        <br />
+        <b>Image: @service.ImageUrl</b>
+        <br />
+        <b>Category: @service.ServiceCategoryId</b>
+        
+        </li>
+        <br/>
+
+}
+</ul>
+
+@code {
+    private ServiceEndpoint _serviceEndpoint;
+    private List<ServiceModel> services = new List<ServiceModel>();
+    private ServiceModel service = new();
+
+    public ServiceControl(ServiceEndpoint serviceEndpoint)
+    {
+        _serviceEndpoint = serviceEndpoint;
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+       
+
+
+        //services = new List<ServiceModel>
+        //{
+        //    new ServiceModel
+        //    {
+        //        Id = 1,
+        //        Name = "Grass Cutting ",
+        //        Description = "we can cut your grass for cheap",
+        //        ImageUrl = "[Locatin]/[Folder]/[FileName]",
+        //        ServiceCategoryId = 1
+        //    },
+        //   new ServiceModel
+        //    {
+        //        Id = 2,
+        //        Name = "Cleaning",
+        //        Description = "we can clean you house for cheap",
+        //        ImageUrl = "[Locatin]/[Folder]/[FileName]",
+        //        ServiceCategoryId = 2
+        //    },
+        //   new ServiceModel
+        //    {
+        //        Id = 3,
+        //        Name = "Gardening ",
+        //        Description = "we can clean your garden for cheap",
+        //        ImageUrl = "[Locatin]/[Folder]/[FileName]",
+        //        ServiceCategoryId = 1
+        //    },
+        //   new ServiceModel
+        //    {
+        //        Id = 4,
+        //        Name = "Electrician ",
+        //        Description = "we can your electronics for cheap",
+        //        ImageUrl = "[Locatin]/[Folder]/[FileName]",
+        //        ServiceCategoryId = 3
+        //    },
+        //   new ServiceModel
+        //    {
+        //        Id = 5,
+        //        Name = "Car washing ",
+        //        Description = "we can wash your car for cheap",
+        //        ImageUrl = "[Locatin]/[Folder]/[FileName]",
+        //        ServiceCategoryId = 4
+        //    }
+        //};
+
+    }
+   
+    public async Task<List<ServiceModel>> GetServices()
+    {
+          try
+            {
+
+                var tempServices = await _serviceEndpoint.GetAllServices();
+                
+                services = new List<ServiceModel>();//initialize the list
+                foreach ( var s in tempServices)
+                {
+                    var tempService = new ServiceModel();// this is new everytime the for-Loop loops only, not in the foreach
+                     //the following is populating the data from UILibrary
+                    tempService.Id = s.Id;
+                    tempService.Name = s.Name;
+                    tempService.Description = s.Description;
+                   
+                    tempService.ImageUrl = s.ImageUrl;
+                    tempService.ServiceCategoryId = s.ServiceCategoryId;
+                    
+                    services.Add(tempService);//Add to the sevices list
+                   
+                }
+            }
+            catch (Exception ex)
+            {
+                var errorMsg = ex.Message;
+            }
+                return services;
+    }
+    private void AddService()
+    {
+        services.Add(service);
+        service = new();
+    }
+
+}

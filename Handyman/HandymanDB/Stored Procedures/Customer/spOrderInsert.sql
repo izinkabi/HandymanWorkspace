@@ -1,9 +1,9 @@
 ﻿CREATE PROCEDURE [Customer].[spOrderInsert]
 	
-    @ConsumerID NVARCHAR  NOT NULL,
-    @DateCreated DATETIME2  NOT NULL,
-    @Stage       VARCHAR    NOT NULL,
-    @JobId       INT            NOT NULL
+    @ConsumerID NVARCHAR  ,
+    @DateCreated DATETIME2  ,
+    @Stage       VARCHAR    ,
+    @JobId       INT          
 AS
 BEGIN
 	INSERT INTO [Customer].[Order] (ConsumerID,DateCreated,Stage,JobId)

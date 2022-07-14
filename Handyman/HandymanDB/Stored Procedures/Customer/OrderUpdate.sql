@@ -2,9 +2,9 @@
 
 	@Id	INT = 0 ,
 	@ConsumerId INT,
-	@DateCreated DATETIME2  NOT NULL,
-    @Stage       VARCHAR    NOT NULL,
-    @JobId       INT            NOT NULL
+	@DateCreated DATETIME2 ,
+    @Stage       VARCHAR    ,
+    @JobId       INT          
 AS
 BEGIN
 --Updating the Customer's Order with its ID

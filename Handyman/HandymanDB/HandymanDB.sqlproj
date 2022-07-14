@@ -107,4 +107,9 @@
   <ItemGroup>
     <RefactorLog Include="HandymanDB.refactorlog" />
   </ItemGroup>
+  <ItemGroup>
+    <Build Include="Tables\Services.sql" />
+    <Build Include="Tables\Category_1.sql" />
+    <Build Include="Stored Procedures\Service\spGetAllServices.sql" />
+  </ItemGroup>
 </Project>
