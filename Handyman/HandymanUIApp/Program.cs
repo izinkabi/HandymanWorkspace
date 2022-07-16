@@ -1,7 +1,5 @@
 using HandymanUIApp.Data;
 using HandymanUILibrary.API;
-using HandymanUILibrary.API.Consumer;
-using HandymanUILibrary.API.ServiceProvider;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,10 +16,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IAPIHelper,APIHelper>();
 builder.Services.AddTransient<IServiceEndPoint, ServiceEndPoint>();
-builder.Services.AddScoped<IConsumerEndPoint, ConsumerEndPoint>();
-builder.Services.AddScoped<IServiceProviderEndPoint, ServiceProviderEndPoint>();
-builder.Services.AddTransient<IOrderEndPoint, OrderEndPoint>();
-
+builder.Services.AddTransient<IConsumerEndPoint, ConsumerEndPoint>();
 
 
 
@@ -49,7 +44,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Services}/{action=DisplayServices}/{id?}");
+    pattern: "{controller=Services}/{action=ServiceHome}/{id?}");
 app.MapRazorPages();
 
 app.Run();

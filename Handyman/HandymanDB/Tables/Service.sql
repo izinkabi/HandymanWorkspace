@@ -6,5 +6,5 @@
     [CategoryID] INT NOT NULL, 
     [ImageUrl] VARCHAR(50) NOT NULL,
     CONSTRAINT [PK_Service.Service] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_Service.Service_Service.Category] FOREIGN KEY ([CategoryID]) REFERENCES [Service].[Category]([Id])
+    CONSTRAINT [FK_Service.Service_Service.Category] FOREIGN KEY ([CategoryID]) REFERENCES [Service].[Category]([CategoryId])
 )

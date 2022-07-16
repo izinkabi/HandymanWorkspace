@@ -8,16 +8,15 @@ namespace HandymanUIApp.Controllers
     {
       
         
-        string errorString;
-        private IAPIHelper _apiClient;
 
         public Consumer(IAPIHelper aPIHelper)
         {
-            _apiClient = aPIHelper;
-            //_serviceEndpoint = seviceEndPoint;
+            //_apiClient = aPIHelper;
+           // _serviceEndpoint = seviceEndPoint;
 
         }
-        
+       
+       
         // GET: Consumer
         
        
@@ -34,8 +33,7 @@ namespace HandymanUIApp.Controllers
             return View();
         }
 
-        // POST: Consumer/Create
-        //Called when a customer calls a consumer
+        //// POST: Consumer/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)

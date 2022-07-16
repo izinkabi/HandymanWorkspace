@@ -98,9 +98,7 @@
     <Build Include="Stored Procedures\Customer\spOrderInsert.sql" />
     <Build Include="Stored Procedures\Customer\OrderLookUpByConsumerID.sql" />
     <Build Include="Stored Procedures\Customer\OrderUpdate.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Publish\HandymanDB.publish.xml" />
+    <None Include="HandymanDB.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="HandymanDB.refactorlog" />
