@@ -55,8 +55,20 @@ namespace HandymanUIApp.Controllers
             }
 
         // GET: Services/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
+            if (AllServices == null)
+            {
+                AllServices = await LoadServices();
+            }
+               
+            foreach (var service in AllServices)
+            {
+                if(service.Id == id)
+                {
+                    return View(service);
+                }    
+            }
             return View();
         }
 
