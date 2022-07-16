@@ -1,3 +1,5 @@
+using HandymanProviderLibrary.Api.Service;
+using HandymanProviderLibrary.API;
 using HandymanProvideUI.Areas.Identity;
 using HandymanProvideUI.Data;
 using Microsoft.AspNetCore.Components;
@@ -19,7 +21,9 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
-builder.Services.AddSingleton<WeatherForecastService>();
+
+builder.Services.AddSingleton<IAPIHelper, APIHelper>();
+builder.Services.AddTransient<IServiceEndpoint, ServiceEndpoint>();
 
 var app = builder.Build();
 

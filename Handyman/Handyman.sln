@@ -21,9 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HandymanUIApp", "HandymanUI
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI-Consumer", "UI-Consumer", "{B7BD0881-3404-433A-9CA7-56DDB5C5B8E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HandymanProvideUI", "HandymanProvideUI\HandymanProvideUI.csproj", "{50D8BAF4-955D-4F1C-9BF7-747EC326DE4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HandymanProvideUI", "HandymanProvideUI\HandymanProvideUI.csproj", "{50D8BAF4-955D-4F1C-9BF7-747EC326DE4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HandymanProviderLibrary", "HandymanProviderLibrary\HandymanProviderLibrary.csproj", "{01D9ECB9-CA99-41BB-BF69-05E0C1CDD874}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HandymanProviderLibrary", "HandymanProviderLibrary\HandymanProviderLibrary.csproj", "{01D9ECB9-CA99-41BB-BF69-05E0C1CDD874}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI-Web", "UI-Web", "{0E5ED1C2-3AB3-4B52-BFFD-2D69B080260B}"
 EndProject
@@ -85,7 +85,7 @@ Global
 		{82A66751-16A3-4E17-BF49-C701B17B70B8} = {5EA75F13-C269-412B-A920-2CDFEF32ECB1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
 		SolutionGuid = {9CE7BC51-6CF4-496B-8C0C-3627C4C48F8D}
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
 	EndGlobalSection
 EndGlobal

@@ -1,4 +1,9 @@
-﻿[*.cs]
+root = true
 
-# IDE0055: Fix formatting
-dotnet_diagnostic.IDE0055.severity = none
+# All files
+[*]
+indent_style = space
+
+# Xml files
+[*.xml]
+indent_size = 2

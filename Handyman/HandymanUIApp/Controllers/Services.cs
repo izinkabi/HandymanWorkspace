@@ -15,6 +15,7 @@ namespace HandymanUIApp.Controllers
         {
             _serviceEndPoint = serviceEndPoint;
         }
+
         private async Task<List<ServiceModel>> LoadServices()
         {
             AllServices = new List<ServiceModel>();
