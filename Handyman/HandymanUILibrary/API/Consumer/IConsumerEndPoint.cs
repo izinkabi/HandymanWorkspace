@@ -7,6 +7,5 @@ namespace HandymanUILibrary.API
     {
         Task<ConsumerModel> PostConsumer(ConsumerModel consumer);
         Task<ConsumerModel> GetConsumerById(string Id);
-        Task<ConsumerModel> GetConsumerByProfileId(int id);
     }
 }
