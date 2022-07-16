@@ -1,0 +1,36 @@
+﻿<!--Partial View-->
+@model IEnumerable<HandymanUIApp.Models.ServiceModel>
+
+@{
+    ViewData["Title"] = "Services";
+}
+
+<div class="container">
+  <div class="row">
+    
+      @foreach (var item in Model)
+      {
+           <div class="col">
+            <p> @Html.DisplayNameFor(model => model.Name)</p><br/>
+            <p> @Html.DisplayFor(modelItem => item.Name)</p><br/>
+
+            <p>@Html.DisplayNameFor(model => model.Decription)</p><br/>
+            <p>@Html.DisplayFor(modelItem => item.Decription)</p><br/>
+
+            @*<p> @Html.DisplayNameFor(model => model.Category.Name)</p><br/>
+            <p>@Html.DisplayFor(modelItem => item.Category.Name)</p><br/>
+
+            <p> @Html.DisplayNameFor(model => model.Category.Description)</p><br/>
+            <p>@Html.DisplayFor(modelItem => item.Category.Description)</p><br/>
+*@
+            <p> @Html.DisplayNameFor(model => model.ImageUrl)</p><br/>
+            <p>@Html.DisplayFor(modelItem => item.ImageUrl)</p><br/>
+                    <p><a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a></p>
+           </div>
+      }
+   
+    
+  </div>
+</div>

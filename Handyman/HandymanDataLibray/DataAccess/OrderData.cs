@@ -10,14 +10,14 @@ namespace HandymanDataLibray.DataAccess
 {
     public class OrderData
     {
-        public List<OrderModel> GetOrdersByConsumerId(string Id)
+        public IEnumerable<OrderModel> GetOrdersByConsumerId(string Id)
         {
             SQLDataAccess sql = new SQLDataAccess();
             ///*Getting Job by Id*
 
             var p = new { ConsumerId = Id };
 
-            List<OrderModel> output = sql.LoadData<OrderModel, dynamic>("Customer.spConsumerById", p, "HandymanDB");
+            var output = sql.LoadData<OrderModel, dynamic>("Customer.spConsumerById", p, "HandymanDB");
 
             return output;
         }

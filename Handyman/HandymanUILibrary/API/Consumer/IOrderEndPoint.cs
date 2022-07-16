@@ -1,6 +1,6 @@
 ﻿using HandymanUILibrary.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-
 namespace HandymanUILibrary.API.Consumer
 {
     public interface IOrderEndPoint
@@ -9,7 +9,7 @@ namespace HandymanUILibrary.API.Consumer
 
         Task DeleteOrder(int id);
 
-        Task<OrderModel> GetOrder(string customerId);
+        Task<List<OrderModel>> GetOrders(string customerId);
         Task UpdateOrder(OrderModel order);
 
     }
