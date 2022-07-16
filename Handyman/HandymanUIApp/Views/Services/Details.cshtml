@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @model HandymanUIApp.Models.ServiceModel
 @inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
 
 @if (SignInManager.IsSignedIn(User))
@@ -42,11 +43,11 @@
       <div class="accordion-item">
         <h2 class="accordion-header" id="flush-headingThree">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-           <h5 class="card-title"> @Html.DisplayFor(modelItem => modelItem.Category.Name)</h5>
+           <h5 class="card-title"> @Html.DisplayFor(modelItem => modelItem.CategoryName)</h5>
           </button>
         </h2>
         <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
-          <div class="accordion-body">@Html.DisplayFor(modelItem => modelItem.Category.Description) <code>.Mahn!</code> </div>
+          <div class="accordion-body">@Html.DisplayFor(modelItem => modelItem.CategoryDescription) <code>.Mahn!</code> </div>
         </div>
       </div>
     </div>

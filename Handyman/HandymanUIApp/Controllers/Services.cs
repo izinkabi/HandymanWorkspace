@@ -36,9 +36,9 @@ namespace HandymanUIApp.Controllers
                 s.Decription = service.Description;
                 s.ImageUrl = service.ImageUrl;
                 s.Id = service.Id;
-                s.Category = new CategoryModel();
-                s.Category.Name = service.Name;
-                s.Category.Description = service.Description;
+                s.CategoryName = service.Name;
+                s.CategoryDescription = service.Description;
+                s.CategoryType = service.Type;
                 AllServices.Add(s);
             }
             return AllServices;
