@@ -4,6 +4,5 @@ AS
 BEGIN
 	SELECT s.Name, s.Description, c.CategoryName + ', ' + c.Type + ' ' + c.CategoryDescription AS Service
 FROM [Service].[Service] AS s, [Service].[Category] AS c
-WHERE s.Id=@Id AND s.CategoryId=c.Id;
-
+WHERE s.Id=@Id AND s.CategoryId=c.CategoryId;
 END

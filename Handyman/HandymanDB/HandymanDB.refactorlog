@@ -161,4 +161,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="CategoryDescription" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="0324d26f-e47c-4688-8822-64b8771e12da" ChangeDateTime="07/16/2022 03:17:15">
+    <Property Name="ElementName" Value="[Service].[Category].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Service].[Category]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CategoryId" />
+  </Operation>
 </Operations>
