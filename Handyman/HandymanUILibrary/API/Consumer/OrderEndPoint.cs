@@ -1,15 +1,13 @@
 ﻿using HandymanUILibrary.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HandymanUILibrary.API.Consumer
 {
-    internal class OrderEndPoint : IOrderEndPoint
+    public class OrderEndPoint : IOrderEndPoint
     {
         private IAPIHelper _aPIHelper;
 
@@ -17,10 +15,7 @@ namespace HandymanUILibrary.API.Consumer
         /// This method is used to construct a the API helper
         /// </summary>
         /// <param name="aPIHelper"></param>
-        public OrderEndPoint()
-        {
-
-        }
+       
         public OrderEndPoint(IAPIHelper aPIHelper)
         {
             _aPIHelper = aPIHelper;
@@ -54,12 +49,12 @@ namespace HandymanUILibrary.API.Consumer
         /// <param name="customerId"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<OrderModel> GetOrder(string customerId)
+        public async Task<List<OrderModel>> GetOrders(string customerId)
         {
 
 
-            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync($"/api/GetOrdersByCustomerId?providerId={customerId}"))
-            {
+            List<OrderModel> httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<List<OrderModel>>($"/api/Orders/GetOrdersByConsumerId?providerId={customerId}");
+            /*{
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
 
@@ -70,7 +65,8 @@ namespace HandymanUILibrary.API.Consumer
                 {
                     throw new Exception(httpResponseMessage.ReasonPhrase);
                 }
-            }
+            }*/
+            return httpResponseMessage;
 
         }
         /// <summary>
@@ -81,7 +77,7 @@ namespace HandymanUILibrary.API.Consumer
         /// <exception cref="Exception"></exception>
         public async Task UpdateOrder(OrderModel orderUpdate)
         {
-            HttpResponseMessage responseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync("api/UpdateOrder", orderUpdate);
+            HttpResponseMessage responseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync("api/Orders/UpdateOrder", orderUpdate);
 
             if (responseMessage.IsSuccessStatusCode)
             {

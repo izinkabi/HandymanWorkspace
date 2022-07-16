@@ -14,10 +14,7 @@ namespace HandymanUILibrary.API
 
 
         private IAPIHelper _aPIHelper;
-        public ConsumerEndPoint()
-        {
-
-        }
+       
         public ConsumerEndPoint(IAPIHelper aPIHelper)
         {
             _aPIHelper = aPIHelper;
@@ -47,8 +44,8 @@ namespace HandymanUILibrary.API
         {
 
 
-            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync($"/api/Consumer/GetConsumerById?Id={Id}"))
-            {
+            ConsumerModel httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<ConsumerModel>($"/api/Consumer/GetConsumerById?Id={Id}");
+           /* {
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
 
@@ -58,8 +55,9 @@ namespace HandymanUILibrary.API
                 else
                 {
                     throw new Exception(httpResponseMessage.ReasonPhrase);
-                }
+                }*/
+                return httpResponseMessage;
             }
         }
     }
-}
+

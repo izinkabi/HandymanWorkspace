@@ -13,7 +13,7 @@ namespace HandymanAPI.Controllers
     {
         private static OrderData orderData;
         // GET: api/Orders/Z
-        [Route("api/GetOrderByConsumerId")]
+        [Route("Orders/GetOrdersByConsumerId")]
         public IEnumerable<OrderModel> Get(string Id)
         {
             orderData = new OrderData();

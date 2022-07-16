@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using HandymanUIApp.Models;
+using HandymanUILibrary.Models;
 
 namespace HandymanUIApp.Data
 {
@@ -10,6 +11,7 @@ namespace HandymanUIApp.Data
             : base(options)
         {
         }
-        public DbSet<HandymanUIApp.Models.ServiceModel>? ServiceModel { get; set; }
+        
+       
     }
 }
