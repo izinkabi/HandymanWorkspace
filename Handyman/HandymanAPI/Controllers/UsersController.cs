@@ -1,6 +1,4 @@
-﻿using HandymanDataLibrary.Internal;
-using System.Web.Http;
-using Microsoft.AspNet.Identity;
+﻿using System.Web.Http;
 
 namespace HandymanAPI.Controllers
 {
