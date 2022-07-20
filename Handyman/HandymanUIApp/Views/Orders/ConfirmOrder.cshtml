@@ -1,0 +1,13 @@
+﻿@model HandymanUIApp.Models.OrderModel
+@{
+    ViewData["Title"] = "Providers List Loader";
+}
+
+<h1>Loading Provders List</h1>
+
+
+<div class="d-flex align-items-center">
+  <strong>Loaing...</strong>
+  <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+</div>
+<a asp-controller="Orders" asp-action="CancelOrder"  class="btn btn-outline-secondary">Cancel Order</a>

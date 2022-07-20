@@ -11,6 +11,7 @@ namespace HandymanUIApp.Data
             : base(options)
         {
         }
+        public DbSet<HandymanUIApp.Models.OrderModel>? OrderModel { get; set; }
         
        
     }

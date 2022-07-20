@@ -1,5 +1,5 @@
-﻿@using Microsoft.AspNetCore.Identity
-@model HandymanUIApp.Models.ServiceModel
+﻿@model HandymanUIApp.Models.ServiceModel
+@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
@@ -7,7 +7,7 @@
 @if (SignInManager.IsSignedIn(User))
 {
         <figure class="text-center">
-        <img src="/Images/@{@Html.DisplayFor(modelItem => modelItem.ImageUrl)}" class="figure-img img-fluid rounded" alt="...">
+        <img src="/Images/@{@Html.DisplayFor(modelItem => modelItem.ImageUrl)}" class="figure-img img-fluid rounded" alt="Service Image" style="max-width: fit-content; height:300px">
         <blockquote class="blockquote">
         <p>A well-known <strong>H</strong>andyman is in Town</p>
         </blockquote>
@@ -33,11 +33,11 @@
       <div class="accordion-item">
         <h2 class="accordion-header" id="flush-headingTwo">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-            <h5 class="card-title"> @Html.DisplayNameFor(modelItem => modelItem.Decription)</h5>
+            <h5 class="card-title"> @Html.DisplayNameFor(modelItem => modelItem.Description)</h5>
           </button>
         </h2>
         <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-          <div class="accordion-body">@Html.DisplayFor(modelItem => modelItem.Decription).</div>
+          <div class="accordion-body">@Html.DisplayFor(modelItem => modelItem.Description).</div>
         </div>
       </div>
       <div class="accordion-item">
@@ -52,7 +52,7 @@
       </div>
     </div>
     <hr />
-    <button type="button" class="btn btn-outline-success">What?!</button>
+    <a asp-action="TranfereServiceToOrder" asp-route-id="@Model.Id" class="btn btn-outline-success"> Order </a>
 }else{
     <div class="alert alert-danger" role="alert">
         Please Become our customer first

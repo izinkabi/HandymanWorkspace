@@ -10,6 +10,7 @@ namespace HandymanUIApp.Models
     {
         private string? status;
         private int orderId;
+        private int serviceId;
         //private DateTimeOffset dateModified;
         public event PropertyChangedEventHandler? PropertyChanged;  
 
@@ -19,6 +20,14 @@ namespace HandymanUIApp.Models
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")  
         {  
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+       
+
+        public int ServiceId
+        {
+            get { return serviceId; }
+            set { serviceId = value; }
         }
 
 
@@ -70,6 +79,8 @@ namespace HandymanUIApp.Models
                 orderId = value;
             }
         }
+
+        public string ServiceImageUrl { get; set; }
 
         //[DataType(DataType.DateTime)]
         //[Display(Name = "Date Modified")]
