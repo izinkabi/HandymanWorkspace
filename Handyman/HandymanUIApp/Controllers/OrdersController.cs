@@ -31,7 +31,7 @@ namespace HandymanUIApp.Controllers
                 try
                 {
                 //httpContextAccessor gets the loggedInUserId
-                AllOrders = await LoadOrders(_httpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+              //  AllOrders = await LoadOrders(_httpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
                 }catch(Exception ex)
                 {
@@ -47,21 +47,21 @@ namespace HandymanUIApp.Controllers
 
             return View(_order);
         }
-        private async Task<List<OrderModel>> LoadOrders(string userId)
-        {
-            //populate the order list 
-            List<HandymanUILibrary.Models.OrderModel> ordersData = new List<HandymanUILibrary.Models.OrderModel>();
-            AllOrders = new List<OrderModel>();
-            ordersData = await _orderEndPoint.GetOrders(userId);
-            foreach(var order in AllOrders)
-            {
-                var orderModel = new  OrderModel();
-                orderModel.Id =  order.Id;
-                orderModel.Description = orderModel.Description;
-                orderModel.ServiceName = orderModel.ServiceName;
-            }
-            return AllOrders;
-        }
+        //private async Task<List<OrderModel>> LoadOrders(string userId)
+        //{
+        ////    //populate the order list 
+        ////    List<HandymanUILibrary.Models.OrderModel> ordersData = new List<HandymanUILibrary.Models.OrderModel>();
+        ////    AllOrders = new List<OrderModel>();
+        ////    ordersData = await _orderEndPoint.GetOrders(userId);
+        ////    foreach(var order in AllOrders)
+        ////    {
+        ////        var orderModel = new  OrderModel();
+        ////        orderModel.Id =  order.Id;
+        ////        orderModel.Description = orderModel.Description;
+        ////        orderModel.ServiceName = orderModel.ServiceName;
+        ////    }
+        ////    return AllOrders;
+        ////}
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
