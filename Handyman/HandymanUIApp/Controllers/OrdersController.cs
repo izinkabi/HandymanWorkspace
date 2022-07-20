@@ -30,7 +30,7 @@ namespace HandymanUIApp.Controllers
                 try
                 {
                     //httpContextAccessor gets the loggedInUserId
-                    AllOrders = await LoadOrders(_UserManager.GetUserId(User));//LoadOrders(_httpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                    //AllOrders = await LoadOrders(_UserManager.GetUserId(User));//LoadOrders(_httpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
                 }catch(Exception ex)
                 {
@@ -74,22 +74,25 @@ namespace HandymanUIApp.Controllers
                     _order.Description = service.Description;
                     _order.ServiceImageUrl = service.ImageUrl;
                     _order.Date = DateTime.Now;//this is bound to change invirtue of the provider assignment time
-                                              //status is set after assigning a provider to a request irrelevent here
-                       //_order
+                    //status is set after assigning a provider to a request irrelevent here
+                       
                     //A call to SignalR End point and await a response of a provider found or not
                     //If found return the Order with provider details included
-                    //ViewData["LoadingActivator"] = "LoadingProviders";
+                    
                     return View(_order);
                 }
             
             return View();
         }
        
-        public async Task<IActionResult> Details()
+        //Order Details display after a request is accepted by provider
+        public IActionResult Details()
         {
 
             return View(_order);
         }
+
+        //This will load All the orders for the customer
         //private async Task<List<OrderModel>> LoadOrders(string userId)
         //{
         ////    //populate the order list 
