@@ -4,5 +4,5 @@ AS
 BEGIN
 Set nocount on
 	SELECT *
-	FROM [Service].[JobCategory]
+	FROM [Service].[Category]
 END

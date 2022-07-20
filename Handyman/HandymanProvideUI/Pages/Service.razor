@@ -14,25 +14,15 @@
 
         @foreach (var service in AllServices )
         {
-            <div class="col-6 card table-hover">
+            <div class="row row-cols-1 row-cols-md-3 g-4 col-6 card table-hover">
                 <img src="./Images/@service.ImageUrl" class="card-img-top" />
                 <div class="p-3 border bg-light card-body">
-
                     <h5 class="card-title">@service.Name</h5>
                     <br />
-
-
                     @service.Decription<br />
-
-
                     @service.CategoryName<br />
-
-
-                  @service.CategoryDescription<br />
-
+                    @service.CategoryDescription<br />
                     <br />
-
-
                     <p>
                         <a asp-action="Edit" asp-route-id="@service.Id">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tools" viewBox="0 0 16 16">
@@ -45,8 +35,6 @@
                     </div>
             </div>
         }
-
-
     </div>
 </div>
 <!--End of lists-->
