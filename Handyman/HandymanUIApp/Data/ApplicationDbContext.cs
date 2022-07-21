@@ -12,6 +12,7 @@ namespace HandymanUIApp.Data
         {
         }
         public DbSet<HandymanUIApp.Models.OrderModel>? OrderModel { get; set; }
+        public DbSet<HandymanUIApp.Models.ServiceModel>? ServiceModel { get; set; }
         
        
     }
