@@ -1,8 +1,5 @@
 ﻿@model IEnumerable<HandymanUIApp.Models.ServiceModel>
-
-
-
-    
+<!--Partial View Of services search results-->
     <div>  
         <h2>Service Search Results</h2>
     </div>
@@ -12,9 +9,10 @@
 
 <div class="container px-4">
   <div class="row gy-5">
+      <!--Loading alert-->
         @if(Model is null)
         {
-            <div class="h2">
+            <div class="h2 alert-dismissible">
                  <p class="placeholder-glow">
                  <span class="placeholder col-12">Loading...</span>
                  </p>

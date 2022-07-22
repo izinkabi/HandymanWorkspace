@@ -8,8 +8,12 @@ namespace HandymanUIApp.Controllers
     public class ServicesController : Controller
     {
         internal List<ServiceModel>? AllServices;
+        internal List<ServiceCategoryModel>? AllServiceCategories;  
         private IServiceEndPoint _serviceEndPoint;
         private List<HandymanUILibrary.Models.ServiceModel>? servicesData;
+        private List<HandymanUILibrary.Models.ServiceCategoryModel> serviceCategoriesData;
+
+
         //Constructing the IService service
         string? errorString;
         public ServicesController(IServiceEndPoint serviceEndPoint) 
@@ -48,8 +52,66 @@ namespace HandymanUIApp.Controllers
             return AllServices;
         }
 
-        //Display Services 
-       
+        //Load service categories and their services
+        private async Task<List<ServiceCategoryModel>> LoadServiceCategories()
+        {
+            AllServiceCategories = new List<ServiceCategoryModel>();
+            serviceCategoriesData = new();
+           
+
+            try
+            {
+                
+                serviceCategoriesData = await _serviceEndPoint.GetServiceCategories();//await the categories
+                //Populate the category
+                foreach(var serviceCategory in serviceCategoriesData)
+                {
+                    var Category = new ServiceCategoryModel();
+                    Category.CategoryDescription = serviceCategory.CategoryDescription;
+                    Category.CategoryId = serviceCategory.CategoryId;
+                    Category.CategoryName = serviceCategory.CategoryName;
+                    
+                    //IEnumerable<ServiceModel> searchResult;
+                   
+                    if (Category.Services != null )
+                    {
+                        AllServices = await LoadServices();
+                            //Category.Services = new List<ServiceModel>();
+                            //searchResult = AllServices.Where(s => s.Id.ToString()!.Equals(serviceCategory.CategoryId.ToString()));
+                            //Category.Services?.AddRange(searchResult);
+                        foreach(var service in AllServices)
+                        {
+                            if (service.CategoryId == serviceCategory.CategoryId)
+                            {
+                                Category.Services?.Add(service);
+                            }
+                        }
+
+
+                        AllServiceCategories.Add(Category);
+                    }
+
+                    errorString = null;
+                }
+            }
+            catch(Exception ex)
+            {
+                errorString = ex.Message;
+                AllServiceCategories = null;
+            }
+            return AllServiceCategories;
+        }
+
+        //Displaying the service categories
+        [HttpGet,Route("ServiceCategoriesDisplay")]
+        public async Task<ActionResult> ServiceCategoriesDisplay()
+        {
+            var cats = await LoadServiceCategories();
+            return View(cats);
+        }
+
+
+        //Display Services Default
         public async Task<ActionResult> ServiceHome()
         {
             if (AllServices == null)

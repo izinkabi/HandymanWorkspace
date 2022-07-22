@@ -7,9 +7,9 @@
 @{
     ViewData["Title"] = "Services Available";
 }
-<!---->
 
-<div>
+
+
 <!--The greeting / Welcome section-->
 <div class="text-center sticky-top  shadow-sm bg-light p-3 mb-5 rounded">
     <H2>Welcome To Handymen</H2> 
@@ -21,14 +21,9 @@
 <!--End Section-->
 
 
-    <!--SearchBar-->
-    
-         
+    <!--SearchBar-->     
             <form asp-controller="Services" asp-action="SearchServiceByName" class="position-sticky" method="get">
                 
-                    <!--Search: <input type="text" class="" name="SearchString" placeholder="Search..."/>-->
-                    @*<button type="submit" class="btn btn-outline-success">Filter</button> |
-                    <button type="reset" class="btn btn-outline-danger">Reset</button>*@
                     <div class="input-group">
                       <input type="text" class="form-control" name="SearchString" placeholder="Search here..." aria-label="Search for services">
                       <button class="btn btn-outline-success shadow-sm bg-light" type="submit">Filter</button>
@@ -36,12 +31,14 @@
                       <br/>
                       <hr/>
                     </div>
-            </form>
-    
+            </form>   
     <!--End SearchBar-->
 
-<!--right Menu-->
 
+
+
+
+<!--right Menu-->
 <br/> <hr/>
 
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
@@ -80,8 +77,12 @@
     </div>
   </div>
 </div>
-
 <!--end right menu-->
+
+
+
+
+
 
 <!--List of Services-->
 

@@ -46,8 +46,12 @@ namespace HandymanAPI.Controllers
         }
 
         // DELETE: api/Services/5
-        public void Delete(int id)
+        [Route("api/Services/GetServiceCategories")]
+        public List<ServiceCategoryModel> GetServiceCategories()
         {
+            serviceData = new ServiceData();
+
+            return serviceData.GetServiceCategories();
         }
     }
 }
