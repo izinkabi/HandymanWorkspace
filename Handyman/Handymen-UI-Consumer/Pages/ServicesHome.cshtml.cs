@@ -17,7 +17,7 @@ namespace Handymen_UI_Consumer.Pages
         private readonly ILogger<IndexModel> _logger;
         private IServiceEndPoint _serviceEndPoint;
         private List<Service> serviceDisplayList;
-        private string? ErrorMsg;
+        public string? ErrorMsg;
 
         public ServicesHomeModel(Handymen_UI_Consumer.Data.Handymen_UI_ConsumerContext context, IServiceEndPoint serviceEndPoint)
         {
@@ -30,6 +30,8 @@ namespace Handymen_UI_Consumer.Pages
                 return serviceDisplayList;
             }
         }
+
+        //Load the services from UILibrary then populate
         private async Task LoadServices()
         {
             serviceDisplayList = new List<Service>();

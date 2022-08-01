@@ -5,5 +5,9 @@ root = true
 indent_style = space
 
 # Xml files
+
+# CS8618: Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+dotnet_diagnostic.CS8618.severity = warning
+
 [*.xml]
 indent_size = 2
