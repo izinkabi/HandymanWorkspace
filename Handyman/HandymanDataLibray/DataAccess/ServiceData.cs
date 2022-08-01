@@ -42,7 +42,7 @@ namespace HandymanDataLibray.DataAccess
         public List<ServiceCategoryModel> GetServiceCategories()
         {
             SQLDataAccess sql = new SQLDataAccess();
-            var output = sql.LoadData<ServiceCategoryModel, dynamic>("Service.spServiceCategoriesLookUp", new { }, "HandymanDB");
+            var output = sql.LoadData<ServiceCategoryModel, dynamic>("Service.spCategoriesLookUp", new { }, "HandymanDB");
             return output;
         }
     }

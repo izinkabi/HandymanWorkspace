@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [Service].[spGetAllCategories]--Get All the Job Types/Categories
+﻿CREATE PROCEDURE [Service].[spCategoriesLookUp]--Get All the Job Types/Categories
               
 AS
 BEGIN

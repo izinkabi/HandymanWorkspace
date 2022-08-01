@@ -34,7 +34,6 @@ namespace HandymanUILibrary.API
             try
             {
 
-
                 List<ServiceModel> httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<List<ServiceModel>>("Services/GetServies");
                 return httpResponseMessage;
             }
@@ -42,19 +41,7 @@ namespace HandymanUILibrary.API
             {
                 throw  new Exception(ex.Message);  
             }
-                //{
-            //    if (httpResponseMessage.IsSuccessStatusCode)
-            //    {
-
-            //        var result = await httpResponseMessage.Content.ReadFromJsonAsync<List<ServiceModel>>();
-
-                  
-            //    }
-            //    else
-            //    {
-            //        throw new Exception(httpResponseMessage.ReasonPhrase);
-            //    }
-            //}
+        
 
         }
         /// <summary>
@@ -64,23 +51,17 @@ namespace HandymanUILibrary.API
         /// <exception cref="Exception"></exception>
         public async Task<List<ServiceCategoryModel>> GetServiceCategories()
         {
-
-
-            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync("/api/GetServiceCategory"))
+            try
             {
-                if (httpResponseMessage.IsSuccessStatusCode)
-                {
-
-                    var result = await httpResponseMessage.Content.ReadFromJsonAsync<List<ServiceCategoryModel>>();
-
-                    return result;
-                }
-                else
-                {
-                    throw new Exception(httpResponseMessage.ReasonPhrase);
-                }
+                List<ServiceCategoryModel> httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<List<ServiceCategoryModel>>("Services/GetServiceCategories");
+                return httpResponseMessage;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
 
+            
         }
         /// <summary>
         ///This method is used to Find a service using it's ID from the API

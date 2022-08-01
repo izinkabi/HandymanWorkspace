@@ -13,7 +13,8 @@ namespace HandymanUIApp.Models
         public string? Decription { get; set; }
         [DataType(DataType.Text)]
         [Display(Name = "Service Category")]
-        //public CategoryModel? Category { get; set; }
+
+        public int CategoryId { get; set; }
         public string? CategoryName { get; set; }
         public string? CategoryDescription { get; set; }
         public string? CategoryType { get; set; }
