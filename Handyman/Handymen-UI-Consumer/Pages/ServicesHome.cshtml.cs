@@ -1,35 +1,35 @@
-﻿using HandymanUILibrary.API;
-using HandymanUILibrary.Models;
-using Handymen_UI_Consumer.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using Handymen_UI_Consumer.Data;
+using Handymen_UI_Consumer.Models;
+using HandymanUILibrary.API;
 
 namespace Handymen_UI_Consumer.Pages
 {
-    public class IndexModel : PageModel
+    public class ServicesHomeModel : PageModel
     {
+        private readonly Handymen_UI_Consumer.Data.Handymen_UI_ConsumerContext _context;
         private readonly ILogger<IndexModel> _logger;
         private IServiceEndPoint _serviceEndPoint;
         private List<Service> serviceDisplayList;
         private string? ErrorMsg;
 
-        public IndexModel(ILogger<IndexModel> logger, IServiceEndPoint serviceEndPoint)
+        public ServicesHomeModel(Handymen_UI_Consumer.Data.Handymen_UI_ConsumerContext context, IServiceEndPoint serviceEndPoint)
         {
-            _logger = logger;
+            _context = context;
             _serviceEndPoint = serviceEndPoint;
         }
 
-        [BindProperty]
-        public List<Service> ServiceDisplayList
-        {
-            get
+        public IList<Service> ServiceList { get
             {
                 return serviceDisplayList;
             }
-
         }
-
-        //Populating the Library's model in the UI model
         private async Task LoadServices()
         {
             serviceDisplayList = new List<Service>();
@@ -52,20 +52,29 @@ namespace Handymen_UI_Consumer.Pages
                     service.CategoryName = s.CategoryName;
                     service.CategoryDescription = s.CategoryDescription;
                     service.CategoryType = s.Type;
+                    service.ImageUrl = s.ImageUrl;
 
                     serviceDisplayList.Add(service);
                 }
 
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 ErrorMsg = ex.Message;
             }
-           
-        }
 
-        public async Task OnGet()
+        }
+        public async Task OnGetAsync()
         {
-            await LoadServices();
+            if(ServiceList is null)
+            {
+                await LoadServices();
+            }
+           
+            //if (_context.Service != null)
+            //{
+            //    ServiceList = await _context.Service.ToListAsync();
+            //}
         }
     }
 }

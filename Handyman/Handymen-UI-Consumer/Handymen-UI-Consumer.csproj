@@ -8,6 +8,43 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pages\Chats\**" />
+    <Compile Remove="Pages\Email\**" />
+    <Compile Remove="Pages\Home\**" />
+    <Compile Remove="Pages\Orders\**" />
+    <Compile Remove="Pages\Services\**" />
+    <Content Remove="Pages\Chats\**" />
+    <Content Remove="Pages\Email\**" />
+    <Content Remove="Pages\Home\**" />
+    <Content Remove="Pages\Orders\**" />
+    <Content Remove="Pages\Services\**" />
+    <EmbeddedResource Remove="Pages\Chats\**" />
+    <EmbeddedResource Remove="Pages\Email\**" />
+    <EmbeddedResource Remove="Pages\Home\**" />
+    <EmbeddedResource Remove="Pages\Orders\**" />
+    <EmbeddedResource Remove="Pages\Services\**" />
+    <None Remove="Pages\Chats\**" />
+    <None Remove="Pages\Email\**" />
+    <None Remove="Pages\Home\**" />
+    <None Remove="Pages\Orders\**" />
+    <None Remove="Pages\Services\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\Images\ac.jpg" />
+    <Content Remove="wwwroot\Images\cleaning.jpg" />
+    <Content Remove="wwwroot\Images\oven.jpg" />
+    <Content Remove="wwwroot\Images\pipe.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Images\ac.jpg" />
+    <None Include="wwwroot\Images\cleaning.jpg" />
+    <None Include="wwwroot\Images\oven.jpg" />
+    <None Include="wwwroot\Images\pipe.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.7" />
@@ -20,14 +57,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HandymanUILibrary\HandymanUILibrary.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Pages\Chats\" />
-    <Folder Include="Pages\Email\" />
-    <Folder Include="Pages\Home\" />
-    <Folder Include="Pages\Orders\" />
-    <Folder Include="Pages\Services\" />
   </ItemGroup>
 
 </Project>

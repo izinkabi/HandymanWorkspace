@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Handymen_UI_Consumer.Models;
 
 namespace Handymen_UI_Consumer.Data;
 
@@ -19,4 +20,6 @@ public class Handymen_UI_ConsumerContext : IdentityDbContext<Handymen_UI_Consume
         // For example, you can rename the ASP.NET Identity table names and more.
         // Add your customizations after calling base.OnModelCreating(builder);
     }
+
+    public DbSet<Handymen_UI_Consumer.Models.Service>? Service { get; set; }
 }
