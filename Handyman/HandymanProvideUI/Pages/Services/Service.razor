@@ -1,0 +1,87 @@
+﻿@page "/services"
+
+@using HandymanProvideUI.Models
+@using HandymanProviderLibrary.Api.Service
+@using HandymanProviderLibrary.Models
+@using Microsoft.AspNetCore.Mvc
+
+@inject IServiceEndpoint _serviceEndpoint
+
+
+<!--List of Services-->
+<div class="container px-4">
+    <div class="row gy-5">
+        <h3>Services</h3>
+        @if (AllServices == null)
+        {
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border" role="status">
+                    <span class="visually">Loading...</span>
+                </div>
+            </div>
+        }
+        @foreach (var service in AllServices)
+        {
+            <div class="card mb-3 align-content-center" style="max-width: 480px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="./Images/@service.ImageUrl" style="max-width: 180px" class="img-fluid rounded" alt="@service.Decription">
+                    </div>
+                    <br/>
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <h5 class="card-title">@service.Name</h5>
+                            <p class="card-title">@service.Decription</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#myModal">Launch modal</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+<!--End of lists-->
+
+@code {
+    private List<ServiceDisplayModel>? AllServices;
+    private ServiceDisplayModel service = new();
+    private List<HandymanProviderLibrary.Models.ServiceModel>? servicesData;
+    string errorString;
+
+    protected override async Task OnInitializedAsync()
+    {
+        AllServices =  await LoadServices();
+    }
+    private async Task<List<ServiceDisplayModel>> LoadServices()
+    {
+        AllServices = new List<ServiceDisplayModel>();
+        servicesData = new List<ServiceModel>();
+        try
+        {
+            servicesData = await _serviceEndpoint.GetServices();
+        }
+        catch (Exception ex)
+        {
+            errorString = ex.Message;
+        }
+
+        foreach (var service in servicesData)
+        {
+            //populating a service to UI model
+            var s = new ServiceDisplayModel();
+            s.Name = service.Name;
+            s.Decription = service.Description;
+            s.ImageUrl = service.ImageUrl;
+            s.Id = service.Id;
+            s.CategoryName = service.Name;
+            s.CategoryDescription = service.Description;
+            s.CategoryType = service.Type;
+            AllServices.Add(s);
+        }
+        return AllServices;
+    }
+
+   }

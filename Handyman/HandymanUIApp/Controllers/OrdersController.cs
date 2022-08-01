@@ -30,7 +30,7 @@ namespace HandymanUIApp.Controllers
                 try
                 {
                     //httpContextAccessor gets the loggedInUserId
-                    AllOrders = await LoadOrders(_UserManager.GetUserId(User));//LoadOrders(_httpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                  //  AllOrders = await LoadOrders(_UserManager.GetUserId(User));//LoadOrders(_httpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
                 }catch(Exception ex)
                 {

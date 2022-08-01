@@ -10,7 +10,7 @@ namespace HandymanUIApp.Models
         public string? Name { get; set; }
         [DataType(DataType.Text)]
         [Display(Name = "Service Description")]
-        public string? Description { get; set; }
+        public string? Decription { get; set; }
         [DataType(DataType.Text)]
         [Display(Name = "Service Category")]
         //public CategoryModel? Category { get; set; }
@@ -20,5 +20,6 @@ namespace HandymanUIApp.Models
 
         [Display(Name = "Service Image")]
         public string? ImageUrl { get; set; }
+        public string? Description { get; internal set; }
     }
 }

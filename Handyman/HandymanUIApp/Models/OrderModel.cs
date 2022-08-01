@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;  
 using System.Runtime.CompilerServices;  
 
@@ -10,7 +10,6 @@ namespace HandymanUIApp.Models
     {
         private string? status;
         private int orderId;
-        private int serviceId;
         //private DateTimeOffset dateModified;
         public event PropertyChangedEventHandler? PropertyChanged;  
 
@@ -21,27 +20,14 @@ namespace HandymanUIApp.Models
         {  
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-       
-
-        public int ServiceId
-        {
-            get { return serviceId; }
-            set { serviceId = value; }
-        }
-
-
         [Required]
         [DataType(DataType.Text)]
         [Display(Name = "Service Name")]
          public string? ServiceName{ get; set; }
-
         [Required]
         [DataType(DataType.MultilineText)]
         [Display(Name = "Service Description")]
         public string? Description { get; set; }
-        
-
         //Inprogress / Delivered
         public string? Status
         {
@@ -59,15 +45,10 @@ namespace HandymanUIApp.Models
                 
             }
         }
-
-
         /*prone to change due to conversions*/
         [DataType(DataType.DateTime)]
         [Display(Name = "Date Created")]
         public DateTimeOffset Date { get; set; }
-
-        
-
         public int Id
         {
             get 
@@ -79,8 +60,8 @@ namespace HandymanUIApp.Models
                 orderId = value;
             }
         }
-
-        public string ServiceImageUrl { get; set; }
+        public int ServiceId { get; internal set; }
+        public string? ServiceImageUrl { get; internal set; }
 
         //[DataType(DataType.DateTime)]
         //[Display(Name = "Date Modified")]

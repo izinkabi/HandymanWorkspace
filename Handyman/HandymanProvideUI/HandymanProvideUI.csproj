@@ -27,10 +27,22 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.7" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.7" />
+    <PackageReference Include="Radzen.Blazor" Version="3.19.8" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\HandymanProviderLibrary\HandymanProviderLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="Pages\Invoices\" />
+    <Folder Include="Pages\Chats\" />
+    <Folder Include="Pages\Emails\" />
+    <Folder Include="Pages\Schedule\" />
+    <Folder Include="Pages\Requests\" />
+    <Folder Include="Pages\ServiceProvider\" />
   </ItemGroup>
 
 </Project>
