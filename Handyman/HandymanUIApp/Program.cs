@@ -11,8 +11,10 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IAPIHelper,APIHelper>();
@@ -47,12 +49,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Services}/{action=ServiceHome}/{id?}");
-//app.MapControllerRoute(
-//    name: "ordersRoute",
-//    pattern: "{controller=Orders}/{action=ConfirmOrder}/{id?}");
-//app.MapControllerRoute(
-//    name: "ordersCreateRoute",
-//    pattern: "{controller=Orders}/{action=CreateOrder}/{id?}");
+
 app.MapDefaultControllerRoute();
 app.MapRazorPages();
 

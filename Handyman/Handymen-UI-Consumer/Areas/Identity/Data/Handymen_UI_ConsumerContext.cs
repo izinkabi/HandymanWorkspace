@@ -22,4 +22,6 @@ public class Handymen_UI_ConsumerContext : IdentityDbContext<Handymen_UI_Consume
     }
 
     public DbSet<Handymen_UI_Consumer.Models.Service>? Service { get; set; }
+
+    public DbSet<Handymen_UI_Consumer.Models.Order>? Order { get; set; }
 }

@@ -1,0 +1,144 @@
+﻿@page
+@model Handymen_UI_Consumer.Pages.DetailsModel
+@inject SignInManager<Handymen_UI_ConsumerUser> SignInManager
+@inject UserManager<Handymen_UI_ConsumerUser> UserManager
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+
+@if (SignInManager.IsSignedIn(User))
+{
+        <figure class="text-center">
+        <img src="/Images/@Html.DisplayFor(model => model.Service.ImageUrl)" class="figure-img img-fluid rounded" alt="Service Image" style="max-width: fit-content; height:300px">
+        <blockquote class="blockquote">
+        <p>A well-known <strong>H</strong>andyman is in Town</p>
+        </blockquote>
+        <figcaption class="blockquote-footer">
+        She is here <cite title="Source Title">To solve everythin and every 1</cite>
+        </figcaption>
+        </figure>
+<br />
+
+
+    <hr />
+    <div class="accordion accordion-flush" id="accordionFlushExample">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingOne">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+           <h4 class="card-title"> @Html.DisplayFor(modelItem => modelItem.Service.Name)</h4>
+          </button>
+        </h2>
+        <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+          <div class="accordion-body">@Html.DisplayFor(modelItem => modelItem.Service.Name).</div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingTwo">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+            <h5 class="card-title"> @Html.DisplayNameFor(modelItem => modelItem.Service.Description)</h5>
+          </button>
+        </h2>
+        <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+          <div class="accordion-body">@Html.DisplayFor(modelItem => modelItem.Service.Description).</div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingThree">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+           <h5 class="card-title"> @Html.DisplayFor(modelItem => modelItem.Service.CategoryName)</h5>
+          </button>
+        </h2>
+        <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+          <div class="accordion-body">@Html.DisplayFor(modelItem => modelItem.Service.CategoryDescription) <code>.Mahn!</code> </div>
+        </div>
+      </div>
+    </div>
+    <hr />
+    <a asp-action="TranfereServiceToOrder" asp-route-id="@Model.Service.Id" class="btn btn-outline-success"> Order </a>
+}else{
+    <div class="alert alert-danger" role="alert">
+        Please Become our customer first
+</div>
+<div class="container-fluid d-flex p-2 bd-highlight">
+  <img src="/Images/handymanGIF.gif" />
+</div>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+@*
+
+
+<h1>Details</h1>
+
+<div>
+    <h4>Service</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Service.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Service.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Service.Decription)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Service.Decription)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Service.CategoryId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Service.CategoryId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Service.CategoryName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Service.CategoryName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Service.CategoryDescription)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Service.CategoryDescription)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Service.CategoryType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Service.CategoryType)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Service.ImageUrl)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Service.ImageUrl)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Service.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Service.Description)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Service?.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>
+*@

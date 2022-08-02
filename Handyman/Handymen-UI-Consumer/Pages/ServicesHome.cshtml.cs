@@ -33,7 +33,7 @@ namespace Handymen_UI_Consumer.Pages
             _serviceEndPoint = serviceEndPoint;
         }
 
-       
+       //The only method runing on ServicesHome soon to be index
         public async Task OnGetAsync()
         {
             if (serviceCategories == null || serviceDisplayList == null)
@@ -47,6 +47,7 @@ namespace Handymen_UI_Consumer.Pages
                 serviceDisplayList = serviceDisplayList.Where(s => s.Name.ToLower()!.Contains(searchString.ToLower())).ToList();
             }
 
+            //To enable the searchByCategory funtionality uncomment this below and same in HTML page
             //if (!string.IsNullOrEmpty(category))
             //{
             //    serviceDisplayList = serviceDisplayList.Where(x => x.CategoryName == category).ToList();
@@ -125,17 +126,7 @@ namespace Handymen_UI_Consumer.Pages
                 ErrorMsg = ex.Message;           
             }
         }
-        //public async Task OnGetAsync()
-        //{
-        //    if(ServiceList is null)
-        //    {
-        //        await LoadServices();
-        //        await LoadServiceCategories();
-        //    }
-        //    //if (searchString != null || category != null)
-        //    //{
-        //    //    await Search();
-        //    //}
-        //}
+
+      
     }
 }
