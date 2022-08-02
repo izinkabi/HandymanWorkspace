@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using Handymen_UI_Consumer.Data;
 using Handymen_UI_Consumer.Models;
 using HandymanUILibrary.API;
 
@@ -13,7 +7,7 @@ namespace Handymen_UI_Consumer.Pages
 {
     public class DetailsModel : PageModel
     {
-        private readonly Handymen_UI_Consumer.Data.Handymen_UI_ConsumerContext _context;
+       
         private IServiceEndPoint _serviceEndPoint;
         public DetailsModel(IServiceEndPoint serviceEndPoint)
         {

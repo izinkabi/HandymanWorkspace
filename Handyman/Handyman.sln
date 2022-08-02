@@ -29,7 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI-Web", "UI-Web", "{0E5ED1
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{5EA75F13-C269-412B-A920-2CDFEF32ECB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Handymen-UI-Consumer", "Handymen-UI-Consumer\Handymen-UI-Consumer.csproj", "{FCABE9C1-08AC-42F3-86DE-DE94D7BC06DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Handymen-UI-Consumer", "Handymen-UI-Consumer\Handymen-UI-Consumer.csproj", "{FCABE9C1-08AC-42F3-86DE-DE94D7BC06DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

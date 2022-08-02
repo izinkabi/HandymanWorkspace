@@ -8,6 +8,37 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\**" />
+    <Compile Remove="Pages\Chats\**" />
+    <Compile Remove="Pages\Emails\**" />
+    <Compile Remove="Pages\Invoices\**" />
+    <Compile Remove="Pages\Requests\**" />
+    <Compile Remove="Pages\Schedule\**" />
+    <Compile Remove="Pages\ServiceProvider\**" />
+    <Content Remove="Controllers\**" />
+    <Content Remove="Pages\Chats\**" />
+    <Content Remove="Pages\Emails\**" />
+    <Content Remove="Pages\Invoices\**" />
+    <Content Remove="Pages\Requests\**" />
+    <Content Remove="Pages\Schedule\**" />
+    <Content Remove="Pages\ServiceProvider\**" />
+    <EmbeddedResource Remove="Controllers\**" />
+    <EmbeddedResource Remove="Pages\Chats\**" />
+    <EmbeddedResource Remove="Pages\Emails\**" />
+    <EmbeddedResource Remove="Pages\Invoices\**" />
+    <EmbeddedResource Remove="Pages\Requests\**" />
+    <EmbeddedResource Remove="Pages\Schedule\**" />
+    <EmbeddedResource Remove="Pages\ServiceProvider\**" />
+    <None Remove="Controllers\**" />
+    <None Remove="Pages\Chats\**" />
+    <None Remove="Pages\Emails\**" />
+    <None Remove="Pages\Invoices\**" />
+    <None Remove="Pages\Requests\**" />
+    <None Remove="Pages\Schedule\**" />
+    <None Remove="Pages\ServiceProvider\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="wwwroot\Images\ac.jpg" />
     <Content Remove="wwwroot\Images\cleaning.jpg" />
     <Content Remove="wwwroot\Images\oven.jpg" />
@@ -33,16 +64,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HandymanProviderLibrary\HandymanProviderLibrary.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Pages\Invoices\" />
-    <Folder Include="Pages\Chats\" />
-    <Folder Include="Pages\Emails\" />
-    <Folder Include="Pages\Schedule\" />
-    <Folder Include="Pages\Requests\" />
-    <Folder Include="Pages\ServiceProvider\" />
   </ItemGroup>
 
 </Project>

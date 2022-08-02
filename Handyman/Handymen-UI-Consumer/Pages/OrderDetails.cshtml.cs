@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Handymen_UI_Consumer.Data;
@@ -15,6 +11,7 @@ namespace Handymen_UI_Consumer.Pages
     {
         private readonly Handymen_UI_Consumer.Data.Handymen_UI_ConsumerContext _context;
         private IOrderEndPoint _orderEndPoint;
+        private Order order;
         public OrderDetailsModel(Handymen_UI_Consumer.Data.Handymen_UI_ConsumerContext context, 
             IOrderEndPoint orderEndPoint)
         {
@@ -23,11 +20,18 @@ namespace Handymen_UI_Consumer.Pages
         }
 
         [BindProperty(SupportsGet =true)]
-        public Order Order { get; set; } 
+        public Order Order { get { return order; }  
+            set 
+            {
+                 order= value;
+              
+            }
+        } 
 
+        //This method displays the Order from the SignalR Hub direct method
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Order == null)
+            if (id == null || _orderEndPoint == null)
             {
                 return NotFound();
             }
@@ -42,6 +46,11 @@ namespace Handymen_UI_Consumer.Pages
                 Order = order;
             }
             return Page();
+        }
+
+        public async Task OnPostAsync()
+        {
+
         }
     }
 }
