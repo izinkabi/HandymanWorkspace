@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Handymen_UI_Consumer.Data;
 using Handymen_UI_Consumer.Models;
 using HandymanUILibrary.API;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Handymen_UI_Consumer.Pages
 {
@@ -16,16 +17,46 @@ namespace Handymen_UI_Consumer.Pages
         private readonly Handymen_UI_Consumer.Data.Handymen_UI_ConsumerContext _context;
         private readonly ILogger<IndexModel> _logger;
         private IServiceEndPoint _serviceEndPoint;
-        private List<Service> serviceDisplayList;
-        public string? ErrorMsg;
+        private List<Service>? serviceDisplayList;
+        internal string? ErrorMsg;
 
+        [BindProperty(SupportsGet = true)]
+        public string? searchString { get; set; }   
+        public SelectList? serviceCategorySelectList { get; set; }
+        public List<string> serviceCategories { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string? category { get; set; }
+       
         public ServicesHomeModel(Handymen_UI_Consumer.Data.Handymen_UI_ConsumerContext context, IServiceEndPoint serviceEndPoint)
         {
             _context = context;
             _serviceEndPoint = serviceEndPoint;
         }
 
-        public IList<Service> ServiceList { get
+       
+        public async Task OnGetAsync()
+        {
+            if (serviceCategories == null || serviceDisplayList == null)
+            {
+                await LoadServices();
+                await LoadServiceCategories();
+            }
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                serviceDisplayList = serviceDisplayList.Where(s => s.Name.ToLower()!.Contains(searchString.ToLower())).ToList();
+            }
+
+            //if (!string.IsNullOrEmpty(category))
+            //{
+            //    serviceDisplayList = serviceDisplayList.Where(x => x.CategoryName == category).ToList();
+            //}
+            //Populate the select list, could have been done so easily
+            serviceCategorySelectList = new SelectList(serviceCategories);
+        }
+
+        [BindProperty(SupportsGet =true)]
+        public List<Service> ServiceList { get
             {
                 return serviceDisplayList;
             }
@@ -57,6 +88,7 @@ namespace Handymen_UI_Consumer.Pages
                     service.ImageUrl = s.ImageUrl;
 
                     serviceDisplayList.Add(service);
+                    ErrorMsg = null;
                 }
 
             }
@@ -66,17 +98,44 @@ namespace Handymen_UI_Consumer.Pages
             }
 
         }
-        public async Task OnGetAsync()
+        
+        private async Task LoadServiceCategories()
         {
-            if(ServiceList is null)
+            try
             {
-                await LoadServices();
+                List<HandymanUILibrary.Models.ServiceCategoryModel> serviceCategoryModel = new();
+                serviceCategories = new List<string>();
+                serviceCategoryModel = await _serviceEndPoint.GetServiceCategories();
+                foreach (var serviceCategory in serviceCategoryModel)
+                {
+                    var uiCategory = new ServiceCategory();
+                    uiCategory.CategoryName = serviceCategory.CategoryName;
+                    uiCategory.CategoryDescription = serviceCategory.CategoryDescription;
+                    uiCategory.CategoryId = serviceCategory.CategoryId;
+                    if(serviceDisplayList.Count > 0)
+                    {
+                        uiCategory.Services = serviceDisplayList;
+                    }
+                   serviceCategories.Add(uiCategory.CategoryName);
+                }
+                serviceCategorySelectList = new SelectList(serviceCategories);
+                ErrorMsg = null;
+            }catch(Exception ex)
+            {
+                ErrorMsg = ex.Message;           
             }
-           
-            //if (_context.Service != null)
-            //{
-            //    ServiceList = await _context.Service.ToListAsync();
-            //}
         }
+        //public async Task OnGetAsync()
+        //{
+        //    if(ServiceList is null)
+        //    {
+        //        await LoadServices();
+        //        await LoadServiceCategories();
+        //    }
+        //    //if (searchString != null || category != null)
+        //    //{
+        //    //    await Search();
+        //    //}
+        //}
     }
 }

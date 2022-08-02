@@ -20,10 +20,14 @@
 
 
     <!--SearchBar-->     
-            <form asp-controller="Services" asp-action="SearchServiceByName" class="position-sticky" method="get">
+            <form class="position-sticky">
                 
+@*
+                <select asp-for="category" asp-items="Model.serviceCategorySelectList">
+                 <option value="default">All</option>
+                </select>*@
                     <div class="input-group">
-                      <input type="text" class="form-control" name="SearchString" placeholder="Search here..." aria-label="Search for services">
+                      <input type="text" class="form-control" asp-for="searchString" placeholder="Search here..." aria-label="Search for services">
                       <button class="btn btn-outline-success shadow-sm bg-light" type="submit">Filter</button>
                       <button class="btn btn-outline-danger shadow-sm bg-light" type="reset">Reset</button>
                       <br/>
