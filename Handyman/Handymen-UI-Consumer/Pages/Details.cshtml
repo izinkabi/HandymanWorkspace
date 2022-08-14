@@ -57,7 +57,7 @@
       </div>
     </div>
     <hr />
-    <a asp-action="TranfereServiceToOrder" asp-route-id="@Model.Service.Id" class="btn btn-outline-success"> Order </a>
+    <a  asp-page="./Order"  asp-route-id="@Model.Service.Id" class="btn btn-outline-success"> Order </a>
 }else{
     <div class="alert alert-danger" role="alert">
         Please Become our customer first
