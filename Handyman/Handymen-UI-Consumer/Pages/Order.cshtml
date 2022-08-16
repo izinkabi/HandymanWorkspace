@@ -1,93 +1,24 @@
 ﻿@page
 @model Handymen_UI_Consumer.Pages.OrderModel
-
 @{
     ViewData["Title"] = "Create Order";
 }
 
-<h1>Confirm Service Order</h1>
+<h1 class="text-capitalize text-center">Confirm Service Order</h1>
 
-<div>
-    <h4>Selected Order</h4>
-    <hr />
 
-    <dl class="row">
-        <div class="card mb-3" style="max-width: 540px;">
-          <div class="row g-0">
-            <div class="col-md-4">
-              <img src="./Images/@{@Model.OrderProperty.ServiceImageUrl}" class="img-fluid rounded-start" alt="...">
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h5 class="card-title">@Html.DisplayFor(model => model.OrderProperty.ServiceName)</h5>
-                <p class="card-text"> @Html.DisplayFor(model => model.OrderProperty.Description).</p>
-                <p class="card-text"><small class="text-muted"> @Html.DisplayFor(model => model.OrderProperty.Date)</small></p>
-              </div>
-            </div>
-          </div>
-        </div>
 
-    </dl>
+    @*OrderComponent Section*@
+    @if(@Model.OrderProperty!=null){
    
-</div>
-
-    <a  asp-page="./Details" asp-route-id="@Model.OrderProperty.ServiceId" class="btn btn-outline-secondary">Back Order</a> |
-     <a asp-action="ConfirmOrder" asp-route-id="@Model.OrderProperty.ServiceId" class="btn btn-outline-success">Confirm</a>
-
-
-
-
-
-
-@*
-
-
-<h1>Order</h1>
-
-<div>
-    <h4>Order</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Order.ServiceName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Order.ServiceName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Order.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Order.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Order.Status)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Order.Status)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Order.Date)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Order.Date)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Order.ServiceId)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Order.ServiceId)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Order.ServiceImageUrl)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Order.ServiceImageUrl)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.Order?.Id">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
-</div>
-*@
+            <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@Model.OrderProperty" />
+            
+            <a asp-page="./Details" asp-route-id="@Model.OrderProperty.ServiceId" class="btn-outline-secondary">Cancel</a>
+            
+           
+   
+    }else{
+        <div>
+            <p>Empty Order Created</p>
+        </div>
+    }

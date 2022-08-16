@@ -26,13 +26,23 @@ namespace Handymen_UI_Consumer.Pages
 
         //public Order Order { get; set; } = default!;
         [BindProperty(SupportsGet = true)]
-        internal Order OrderProperty {
-            get { return order; }
-
-
-            set { order = value; } 
+        public Order OrderProperty {
+            get
+            { 
+                return order; 
+            }
+            set 
+            { 
+                order = value; 
+            } 
         }
-      
+
+        //Referenced by the component
+        public List<Service> ServiceDisplayList
+        {
+            get { return serviceDisplayList; }
+        }
+        
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null || _serviceEndPoint == null)
@@ -100,5 +110,7 @@ namespace Handymen_UI_Consumer.Pages
             }
 
         }
+        
+       
     }
 }

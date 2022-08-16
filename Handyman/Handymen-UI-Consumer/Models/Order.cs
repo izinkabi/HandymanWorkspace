@@ -59,7 +59,7 @@ namespace Handymen_UI_Consumer.Models
         }
     }
     public int ServiceId { get; internal set; }
-    public string? ServiceImageUrl { get; internal set; }
+    public string? ServiceImageUrl { get;  set; }
 
     //[DataType(DataType.DateTime)]
     //[Display(Name = "Date Modified")]

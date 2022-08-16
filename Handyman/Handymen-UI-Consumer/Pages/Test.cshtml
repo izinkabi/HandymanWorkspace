@@ -1,0 +1,11 @@
+﻿@page
+@using Microsoft.AspNetCore.SignalR.Client;
+
+@model TestModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<component type="typeof(Counter)" render-mode="ServerPrerendered" />
+<hr />
+<component type="typeof(Chat)" render-mode="ServerPrerendered" />
