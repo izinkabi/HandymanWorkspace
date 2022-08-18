@@ -8,20 +8,26 @@ using Microsoft.EntityFrameworkCore;
 using Handymen_UI_Consumer.Data;
 using Handymen_UI_Consumer.Models;
 using HandymanUILibrary.API;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Handymen_UI_Consumer.Pages
 {
     public class OrderModel : PageModel
     {
         private readonly Handymen_UI_Consumer.Data.Handymen_UI_ConsumerContext _context;
+        private readonly IMemoryCache _cache;
         private Order order;
         private IServiceEndPoint _serviceEndPoint;
         private string ErrorMsg;
         private List<Service> serviceDisplayList;
-        public OrderModel(Handymen_UI_Consumer.Data.Handymen_UI_ConsumerContext context, IServiceEndPoint serviceEndPoint)
+        public OrderModel(Handymen_UI_Consumer.Data.Handymen_UI_ConsumerContext context,
+           IMemoryCache cache, IServiceEndPoint serviceEndPoint)
         {
             _context = context;
             _serviceEndPoint = serviceEndPoint;
+            _cache = cache;
+            var dt = DateTime.Now;
+            _cache.Set("Time", dt);
         }
 
         //public Order Order { get; set; } = default!;
