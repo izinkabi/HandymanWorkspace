@@ -15,8 +15,7 @@
 
 
 
-    <h4 class="text-center">Selected Order</h4>
-    <hr />
+
 
 <dl class="row justify-content-center">
         <div class="card mb-3 " style="max-width: 540px;">
@@ -26,13 +25,17 @@
             </div>
             <div class="col-md-8">
               <div class="card-body">
-                <h5 class="card-title">@order.ServiceName</h5>
-                <p class="card-text"> @order.Description.</p>
+                <h5 class="card-title" id="orderName">@order.ServiceName</h5>
+                <p class="card-text" id="orderDescriptio"> @order.Description.</p>
                 <p class="card-text"><small class="text-muted"> @order.Date</small></p>
               </div>
             </div>
-          </div>
-        <button @onclick="ConfirmOrder" class="btn btn-outline-success ">Confirm</button>
+           </div>
+           @if(!order.IsConfirmed)
+           {
+            <button @onclick="ConfirmOrder" class="btn btn-outline-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Confirm</button>
+           }
+            
         </div>
    
     </dl>
@@ -46,9 +49,7 @@
     private List<Service> serviceDisplayList;
     public Order? order;
     private HubConnection? hubConnection;
-    private List<string> messages = new();
-    private string? userInput;
-    private string? messageInput;
+
     string? ErrorMsg;
 
     [Parameter]
@@ -69,26 +70,26 @@
     protected override async Task OnInitializedAsync()
     {
 
-        hubConnection = new HubConnectionBuilder()
-        .WithUrl(NavManager.ToAbsoluteUri("/orderrequesthub"))
-        .WithAutomaticReconnect()
-        .Build();
+        //hubConnection = new HubConnectionBuilder()
+        //.WithUrl(NavManager.ToAbsoluteUri("/orderrequesthub"))
+        //.WithAutomaticReconnect()
+        //.Build();
 
         //Client Side / Receiver request    
-        hubConnection.On<string, Order>("ReceiveRequest", (user, _order) =>
-        {
-            order.Status = _order.Status;
-            InvokeAsync(StateHasChanged);
+        //hubConnection.On<string, Order>("ReceiveRequest", (user, _order) =>
+        //{
+        //    order.Status = _order.Status;
+        //    InvokeAsync(StateHasChanged);
 
-        });
+        //});
 
-        await hubConnection.StartAsync();
+        //await hubConnection.StartAsync();
         NavManager.LocationChanged += HandleLocationChanged;
 
     }
 
 
-  
+
 
 
 
@@ -100,7 +101,7 @@
     //{
     //    await hubConnection.SendAsync("SendMessage", userInput, messageInput);
     //}
-    private bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
+    //private bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
 
     public async ValueTask DisposeAsync()
     {
@@ -117,7 +118,9 @@
 
     private async Task ConfirmOrder()
     {
-
+        
+        order.IsConfirmed = true;
+        await InvokeAsync(StateHasChanged);
     }
 
 
@@ -125,7 +128,7 @@
     {
 
         await DisposeAsync();
-        this.NavManager.NavigateTo("Details",true);
+        //this.NavManager.NavigateTo("Details",true);
         //RedirectToPage("Details");
     }
 

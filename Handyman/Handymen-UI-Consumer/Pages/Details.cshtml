@@ -9,8 +9,8 @@
 
 
 
-@if (SignInManager.IsSignedIn(User))
-{
+@*@if (SignInManager.IsSignedIn(User))
+{*@
         <figure class="text-center">
         <img src="/Images/@Html.DisplayFor(model => model.Service.ImageUrl)" class="figure-img img-fluid rounded" alt="Service Image" style="max-width: fit-content; height:300px">
         <blockquote class="blockquote">
@@ -71,12 +71,12 @@
    
     
  
-}else{
-    <div class="alert alert-danger" role="alert">
-        Please Become our customer first
-</div>
-<div class="container-fluid d-flex p-2 bd-highlight">
-  <img src="/Images/handymanGIF.gif" />
-</div>
-}
+@*}*@
+
+
+
+    
+
+
+
 

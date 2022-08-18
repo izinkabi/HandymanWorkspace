@@ -5,6 +5,15 @@
     ViewData["Title"] = "Home";
 }
 
+<!--The greeting / Welcome section-->
+<div class="text-center shadow-sm bg-light p-3 mb-5 rounded">
+    <H2>Welcome To Handymen</H2>
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-boombox-fill" viewBox="0 0 16 16">
+        <path d="M14.5.5a.5.5 0 0 0-1 0V2H1a1 1 0 0 0-1 1v2h16V3a1 1 0 0 0-1-1h-.5V.5ZM2.5 4a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1Zm2 0a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1Zm7.5-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Zm1.5.5a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1Zm-7-1h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1 0-1Zm-2 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm.5-1.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Zm6.5 1.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm0-1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1Z" />
+        <path d="M16 6H0v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V6ZM4.5 13a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Zm7 0a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z" />
+    </svg>
+</div>
+<!--End Section-->
 
 
 
@@ -12,22 +21,68 @@
 
 
 
-
+<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+        
+        <div class="carousel-item active">
+            <div class="card bg-dark text-white text-center">
+            <img src="~/Images/grass.jpg" class="d-block w-100" alt="...">
+                <div class="carousel-caption card-img-overlay d-none d-md-block">
+                <h2>Garderning </h2>
+                <strong>I guess it's your surprice  50 but we can FixiTup</strong>
+            </div>
+            </div>
+          </div>
+        
+        <div class="carousel-item">
+            <div class="card bg-dark text-black text-center">
+            <img src="~/Images/ac.jpg" class="d-block w-100 " alt="...">
+                <div class="carousel-caption card-img-overlay d-none d-md-block">
+                <h2>Electronics</h2>
+                <strong>Eletronics Service  auto Description</strong>
+            </div>
+           </div>
+        </div>
+        <div class="carousel-item">
+            <div class="card bg-dark text-black text-center">
+            <img src="~/Images/oven.jpg" class="d-block w-100 "  alt="...">
+            <div class="carousel-caption card-img-overlay d-none d-md-block">
+                <h2>Electronics</h2>
+                <strong>Electronics  Service  25 Description</strong>
+            </div>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+<hr/>
 
 
 <!--End Carousel-->
 
-<!--The greeting / Welcome section-->
-<div class="text-center shadow-sm bg-light p-3 mb-5 rounded">
-    <H2>Welcome To Handymen</H2> 
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-boombox-fill" viewBox="0 0 16 16">
-      <path d="M14.5.5a.5.5 0 0 0-1 0V2H1a1 1 0 0 0-1 1v2h16V3a1 1 0 0 0-1-1h-.5V.5ZM2.5 4a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1Zm2 0a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1Zm7.5-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Zm1.5.5a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1Zm-7-1h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1 0-1Zm-2 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm.5-1.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Zm6.5 1.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm0-1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1Z"/>
-      <path d="M16 6H0v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V6ZM4.5 13a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Zm7 0a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z"/>
-    </svg>
+
+
+
+<div class="row justify-content-center alert-heading text-capitalize p-2 m-1 text-center">
+    <h4>
+        Available Services
+    </h4>
+
 </div>
-<!--End Section-->
 
-
+<div class="row p-3 m-1">
     <!--SearchBar-->     
             <form>
                 
@@ -44,15 +99,15 @@
                     </div>
             </form>   
     <!--End SearchBar-->
+</div>
 
 
 
 
+ 
 
 
-
-
-
+<hr/>
 
 <!--List of Services-->
 

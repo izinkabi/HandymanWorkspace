@@ -10,6 +10,7 @@ namespace Handymen_UI_Consumer.Models
     private int orderId;
     //private DateTimeOffset dateModified;
     public event PropertyChangedEventHandler? PropertyChanged;
+        private bool isConfirmed;
 
     // This method is called by the Set accessor of each property.  
     // The CallerMemberName attribute that is applied to the optional propertyName  
@@ -61,27 +62,31 @@ namespace Handymen_UI_Consumer.Models
     public int ServiceId { get; internal set; }
     public string? ServiceImageUrl { get;  set; }
 
-    //[DataType(DataType.DateTime)]
-    //[Display(Name = "Date Modified")]
+        //[DataType(DataType.DateTime)]
+        //[Display(Name = "Date Modified")]
 
 
-    //public DateTimeOffset DateModified
-    //{
-    //    get 
-    //    { 
-    //        return dateModified;
-    //    }
-    //    set 
-    //    {
-    //        if (value != this.dateModified)
-    //        {
-    //            dateModified = value;
-    //            NotifyPropertyChanged();
-    //        }
+        //public DateTimeOffset DateModified
+        //{
+        //    get 
+        //    { 
+        //        return dateModified;
+        //    }
+        //    set 
+        //    {
+        //        if (value != this.dateModified)
+        //        {
+        //            dateModified = value;
+        //            NotifyPropertyChanged();
+        //        }
 
-    //    }
-    //}
+        //    }
+        //}
 
-
-}
+        public bool IsConfirmed 
+        {
+            get { return isConfirmed; }
+            set { isConfirmed = value; }
+        }
+    }
 }
