@@ -12,6 +12,7 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace Handymen_UI_Consumer.Pages
 {
+ 
     public class OrderModel : PageModel
     {
         private readonly Handymen_UI_Consumer.Data.Handymen_UI_ConsumerContext _context;
@@ -28,6 +29,7 @@ namespace Handymen_UI_Consumer.Pages
             _cache = cache;
             var dt = DateTime.Now;
             _cache.Set("Time", dt);
+
         }
 
         //public Order Order { get; set; } = default!;
@@ -69,18 +71,32 @@ namespace Handymen_UI_Consumer.Pages
                     {
                         OrderProperty = new();
                         order = new Order();
+                        order.Id = service.Id;
                         order.Date = DateTime.Now;
                         order.Status = "Active";
                         order.ServiceId = service.Id;
                         order.ServiceName = service.Name;
                         order.ServiceImageUrl = service.ImageUrl;
                         order.Description = service.Description;
+                        //The cheat for tamplate display
+                        order.IsConfirmed = true;
+                        ViewData["order"] = order;
+                       
                         return Page();
                     }
                 }
             }
             return Page();
         }
+        //public void OnPostConfirmOrder()
+        //{
+            
+        //   order.IsConfirmed = true;
+        //    return;
+        //}
+
+       
+
         private async Task LoadServices()
         {
             serviceDisplayList = new List<Service>();

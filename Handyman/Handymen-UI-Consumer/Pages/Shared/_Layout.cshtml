@@ -1,8 +1,11 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using Handymen_UI_Consumer.Helpers
+@using Handymen_UI_Consumer.Models
+@using Microsoft.AspNetCore.Identity
 @using Handymen_UI_Consumer.Areas.Identity.Data
 @using Handymen_UI_Consumer.Pages
 @inject SignInManager<Handymen_UI_ConsumerUser> SignInManager
 @inject UserManager<Handymen_UI_ConsumerUser> UserManager
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -71,64 +74,37 @@
             <h5 id="offcanvasRightLabel">Orders </h5>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-        <div class="card bg-dark text-white">
-            <img src="/Images/handymanGIF.gif" class="card-img" alt="...">
-            <div class="alert alert-danger" role="alert">
-                Order is on its way
-            </div>
-        </div>
-                
-                        
         
-                    <div class="container-fluid">
-                    <!--Order Component-->
+        
+             <!--Order Component-->
+        @if (ViewData["order"]!=null)
+        {
 
-                        
-                        
-                            
-                       @* <OrderComponent/>*@
-            @*@inject OrderComponent? order
-                        @{
+        
 
-                              
-                        var newOrder = order?.OrderComponentModel;
+            var order = ViewData["order"];
+            
+       
+        
+            <div class="container-fluid">  
+                <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@order" />
+            </div>
+        
+        }else
+        {
+            <div class="card bg-dark text-white">
+                <img src="/Images/handymanGIF.gif" class="card-img" alt="gif image">
+                <div class="alert alert-danger" role="alert">
+                   You Have Not Made Any Orders As Yet
+                </div>
+            </div>
+        }    
 
-                        // var newOrder = DbContext.Order.FirstOrDefault();
-                                    while (newOrder != null)
-                                    {
-                                        <div class="card mb-3 " style="max-width: 540px;">
-                                            <div class="row g-0">
-                                                <div class="col-md-4">
-                                                    <img src="~/Images/@(newOrder?.ServiceImageUrl)" id="orderImage" class="img-fluid rounded-start" alt="...">
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <div class="card-body">
-                                                        <h5 class="card-title" id="orderTitle">@(
-                                                        newOrder?.ServiceName
-                                                        )</h5>
-                                                        <p class="card-text" id="orderDescription">@(
-                                                        newOrder?.Description
-                                                        ) </p>
-                                                        <p class="card-text" id="orderDate"><small class="text-muted">@(
-                                                            newOrder?.Date
-                                                            ) </small></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    }
-                                    }*@
-                       
-                                        
-                                 <!--End Order Component-->
+            <!--End Order Component-->
 
 
 
-                    </div>
-                             
-
-                      
+                  
    </div>
     <!--end right menu-->
 

@@ -1,5 +1,6 @@
 ﻿@page "/orderComponent"
 @using HandymanUILibrary.API
+@using Handymen_UI_Consumer.Helpers
 @using Handymen_UI_Consumer.Models
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.SignalR.Client
@@ -26,9 +27,9 @@
               </div>
             </div>
            </div>
-           @if(!order.IsConfirmed)
+           @if(order.IsConfirmed)
            {
-            <button @onclick="ConfirmOrder" class="btn btn-outline-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Confirm</button>
+            <button @onclick="TrackOrder" class="btn btn-outline-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Track Order</button>
            }
             
         </div>
@@ -110,21 +111,18 @@
 
 
 
-
-    private async Task ConfirmOrder()
+    private void TrackOrder()
     {
-        
-        order.IsConfirmed = true;
-        await InvokeAsync(StateHasChanged);
+        this.NavManager.NavigateTo("/OrderDetails",true);
     }
+    
 
 
     private async Task CancelOrder()
     {
 
         await DisposeAsync();
-        //this.NavManager.NavigateTo("Details",true);
-        //RedirectToPage("Details");
+       
     }
 
     private async Task FinishOrder()
