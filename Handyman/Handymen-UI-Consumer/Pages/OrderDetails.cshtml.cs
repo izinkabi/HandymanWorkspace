@@ -29,21 +29,15 @@ namespace Handymen_UI_Consumer.Pages
         } 
 
         //This method displays the Order from the SignalR Hub direct method
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public IActionResult OnGetAsync(Order _order)
         {
-            if (id == null || _orderEndPoint == null)
-            {
-                return NotFound();
-            }
-
-            var order = await _context.Order.FirstOrDefaultAsync(m => m.Id == id);
             if (order == null)
             {
                 return NotFound();
             }
             else 
             {
-                Order = order;
+                order = _order;
             }
             return Page();
         }

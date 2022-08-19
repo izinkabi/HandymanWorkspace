@@ -1,0 +1,132 @@
+﻿@page "/orderComponent"
+@using HandymanUILibrary.API
+@using Handymen_UI_Consumer.Helpers
+@using Handymen_UI_Consumer.Models
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.SignalR.Client
+@using Microsoft.AspNetCore.Components.Web
+@inject NavigationManager NavManager
+@inject ILogger<OrderComponent> Logger
+
+@inject IServiceEndPoint _serviceEndPoint
+@implements IAsyncDisposable
+
+
+
+<dl class="row justify-content-center">
+        <div class="card mb-3 " style="max-width: 540px;">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="/Images/@(order.ServiceImageUrl)" class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title" id="orderName">@order.ServiceName</h5>
+                <p class="card-text" id="orderDescriptio"> @order.Description.</p>
+                <p class="card-text"><small class="text-muted"> @order.Date</small></p>
+              </div>
+            </div>
+           </div>
+           @if(order.IsConfirmed)
+           {
+            <button @onclick="TrackOrder" class="btn btn-outline-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Track Order</button>
+           }
+            
+        </div>
+   
+    </dl>
+
+
+
+  
+
+
+@code {
+    private List<Service> serviceDisplayList;
+    public Order? order;
+    private HubConnection? hubConnection;
+
+    string? ErrorMsg;
+
+    [Parameter]
+    public Order? OrderComponentModel
+    {
+        get
+        {
+            return order;
+        }
+
+        set
+        {
+            order = value;
+        }
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        //hubConnection = new HubConnectionBuilder()
+        //.WithUrl(NavManager.ToAbsoluteUri("/orderrequesthub"))
+        //.WithAutomaticReconnect()
+        //.Build();
+
+        //Client Side / Receiver request    
+        //hubConnection.On<string, Order>("ReceiveRequest", (user, _order) =>
+        //{
+        //    order.Status = _order.Status;
+        //    InvokeAsync(StateHasChanged);
+
+        //});
+
+        //await hubConnection.StartAsync();
+        NavManager.LocationChanged += HandleLocationChanged;
+
+    }
+
+
+
+
+
+
+    private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        Logger.LogInformation("URL of new location: {Location}", e.Location);
+    }
+    //private async Task Send()
+    //{
+    //    await hubConnection.SendAsync("SendMessage", userInput, messageInput);
+    //}
+    //private bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
+
+    public async ValueTask DisposeAsync()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.DisposeAsync();   
+            NavManager.LocationChanged -= HandleLocationChanged;
+        }
+
+    }
+
+
+
+    private void TrackOrder()
+    {
+        this.NavManager.NavigateTo("/OrderDetails",true);
+    }
+    
+
+
+    private async Task CancelOrder()
+    {
+
+        await DisposeAsync();
+       
+    }
+
+    private async Task FinishOrder()
+    {
+
+    }
+}

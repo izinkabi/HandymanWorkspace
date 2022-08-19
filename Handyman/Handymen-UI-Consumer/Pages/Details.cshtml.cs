@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Handymen_UI_Consumer.Models;
 using HandymanUILibrary.API;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Handymen_UI_Consumer.Pages
 {
+    [Authorize]
     public class DetailsModel : PageModel
     {
        
