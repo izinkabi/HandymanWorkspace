@@ -54,16 +54,33 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.7" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.7" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.7" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.8">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.8" />
     <PackageReference Include="Radzen.Blazor" Version="3.19.8" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\HandymanProviderLibrary\HandymanProviderLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\MapsModels\" />
+    <Folder Include="Models\ChatModels\" />
+    <Folder Include="Models\RequestModels\" />
+    <Folder Include="Models\SchedulerModels\" />
+    <Folder Include="Pages\Chat\" />
+    <Folder Include="Pages\Maps\" />
+    <Folder Include="Pages\Scheduler\" />
   </ItemGroup>
 
 </Project>

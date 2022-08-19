@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 
-namespace HandymanProvideUI.Models;
+namespace HandymanProvideUI.Models.ServiceModels;
 
 public class ServiceDisplayModel
 {
@@ -9,7 +9,7 @@ public class ServiceDisplayModel
     public int Id { get; set; }
     [DataType(DataType.Text)]
     [Display(Name = "Service Name")]
-public string? Name { get; set; }
+    public string? Name { get; set; }
     [DataType(DataType.Text)]
     [Display(Name = "Service Description")]
     public string? Decription { get; set; }
