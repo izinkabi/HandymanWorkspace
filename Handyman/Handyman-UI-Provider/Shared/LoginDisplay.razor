@@ -1,6 +1,18 @@
 ﻿<CascadingAuthenticationState>
     <AuthorizeView>
     <Authorized>
+ <!--Profile Vie- Dropdown -->
+    <div class="dropdown">
+      <a class="btn" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <img src="./Images/Business-Man-Settings-01.png" class="rounded-circle" alt="..."/>
+      </a>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="#">Action</a></li>
+        <li><a class="dropdown-item" href="#">Another action</a></li>
+        <li><a class="dropdown-item" href="#">Something else here</a></li>
+      </ul>
+    </div>
+
         <a href="Identity/Account/Manage">Hello, @context.User.Identity?.Name!</a>
         <form method="post" action="Identity/Account/LogOut">
             <button type="submit" class="nav-link btn btn-link">Logout</button>
