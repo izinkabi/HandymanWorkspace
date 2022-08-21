@@ -11,7 +11,7 @@ namespace Handymen_UI_Consumer.Pages
     {
         private readonly Handymen_UI_Consumer.Data.Handymen_UI_ConsumerContext _context;
         private IOrderEndPoint _orderEndPoint;
-        private Order order;
+        private Order _order;
         public OrderDetailsModel(Handymen_UI_Consumer.Data.Handymen_UI_ConsumerContext context, 
             IOrderEndPoint orderEndPoint)
         {
@@ -20,25 +20,25 @@ namespace Handymen_UI_Consumer.Pages
         }
 
         [BindProperty(SupportsGet =true)]
-        public Order Order { get { return order; }  
+        public Order Order { get { return _order; }  
             set 
             {
-                 order= value;
+                 _order= value;
               
             }
         } 
 
-        //This method displays the Order from the SignalR Hub direct method
-        public IActionResult OnGetAsync(Order _order)
+        //This method displays the Order from the SignalR Hub method
+        public IActionResult OnGetAsync(int id)
         {
-            if (order == null)
+           
+            _order.Id = id;
+            if (_order == null)
             {
                 return NotFound();
             }
-            else 
-            {
-                order = _order;
-            }
+            ViewData["order"] = _order;
+
             return Page();
         }
 

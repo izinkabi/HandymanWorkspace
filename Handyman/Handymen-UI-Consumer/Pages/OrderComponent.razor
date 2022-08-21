@@ -1,18 +1,22 @@
 ﻿@page "/orderComponent"
 @using HandymanUILibrary.API
+@using HandymanUILibrary.API.Consumer
 @using Handymen_UI_Consumer.Helpers
 @using Handymen_UI_Consumer.Models
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.SignalR.Client
 @using Microsoft.AspNetCore.Components.Web
+@using Microsoft.Extensions.Caching.Memory
+
 @inject NavigationManager NavManager
 @inject ILogger<OrderComponent> Logger
+@inject PersistentComponentState ApplicationState
+@inject IOrderEndPoint _orderEndpointService
+@inject IMemoryCache _cache
 
-@inject IServiceEndPoint _serviceEndPoint
 @implements IAsyncDisposable
 
-
-
+<!--Order Component MarkUp-->
 <dl class="row justify-content-center">
         <div class="card mb-3 " style="max-width: 540px;">
           <div class="row g-0">
@@ -29,30 +33,40 @@
            </div>
            @if(order.IsConfirmed)
            {
-            <button @onclick="TrackOrder" class="btn btn-outline-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Track Order</button>
-           }
+               @if(!order.IsTracking)
+               {
+                    <button @onclick="TrackOrder" class="btn btn-outline-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Track Order</button>
+               }else
+               {
+
+                <div class="d-flex align-items-center">
+                    <strong>Connecting to provider..., if she/he does'nt respond in 1 min try again</strong>
+                    <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                </div>
+               }
+           }   
+
+
             
         </div>
    
     </dl>
-
-
-
-  
-
+    <!--End Component MarkUp-->
 
 @code {
     private List<Service> serviceDisplayList;
     public Order? order;
     private HubConnection? hubConnection;
-
+    private PersistingComponentStateSubscription persistingSubscription;
     string? ErrorMsg;
+
 
     [Parameter]
     public Order? OrderComponentModel
     {
         get
         {
+
             return order;
         }
 
@@ -80,12 +94,40 @@
         //});
 
         //await hubConnection.StartAsync();
+
+        //***Component persisting state setup****//
+        persistingSubscription =
+            ApplicationState.RegisterOnPersisting(PersistOrder);
+
+        if (!ApplicationState.TryTakeFromJson<Order>(
+            "fetchdata", out var restored))
+        {
+            //*The following code get the order from the IOrderEndPoint*//
+            //order =
+            // await _orderEndpointService.GetOrders();
+
+        }
+        else
+        {
+            order = restored!;
+        }
+
+        //Caching the order model
+        if (!_cache.TryGetValue("ordercomp", out Order cacheValue))
+        {
+            cacheValue = order;
+
+            var cacheEntryOptions = new MemoryCacheEntryOptions()
+                .SetSlidingExpiration(TimeSpan.FromSeconds(40));
+
+            _cache.Set<Order>("ordercomp", cacheValue, cacheEntryOptions);
+        }
+
+        order = cacheValue;
+
         NavManager.LocationChanged += HandleLocationChanged;
 
     }
-
-
-
 
 
 
@@ -103,6 +145,8 @@
     {
         if (hubConnection is not null)
         {
+            _cache.Remove("ordercomp");
+            _cache.Dispose();
             await hubConnection.DisposeAsync();   
             NavManager.LocationChanged -= HandleLocationChanged;
         }
@@ -110,23 +154,43 @@
     }
 
 
-
     private void TrackOrder()
     {
-        this.NavManager.NavigateTo("/OrderDetails",true);
+        if (!_cache.TryGetValue("ordercomp", out Order cacheValue))
+        {
+            cacheValue = order;
+
+            var cacheEntryOptions = new MemoryCacheEntryOptions()
+                .SetSlidingExpiration(TimeSpan.FromSeconds(40));
+
+            _cache.Set<Order>("ordercomp", cacheValue, cacheEntryOptions);
+        }
+
+        order = cacheValue;
+        order.IsTracking = true;
+        NavManager.NavigateTo("orderdetails", true);
     }
-    
+
 
 
     private async Task CancelOrder()
     {
 
+        order.IsTracking = false;
         await DisposeAsync();
+        persistingSubscription.Dispose();
        
     }
 
     private async Task FinishOrder()
     {
 
+    }
+
+    private Task PersistOrder()
+    {
+        ApplicationState.PersistAsJson("fetchdata", _orderEndpointService);
+
+        return Task.CompletedTask;
     }
 }

@@ -77,29 +77,37 @@
         
         
              <!--Order Component-->
-        @if (ViewData["order"]!=null)
+        
+    @if (SignInManager.IsSignedIn(User))
         {
 
-        
 
-            var order = ViewData["order"];
-            
-       
-        
-            <div class="container-fluid">  
-                <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@order" />
-            </div>
-        
-        }else
-        {
-            <div class="card bg-dark text-white">
-                <img src="/Images/handymanGIF.gif" class="card-img" alt="gif image">
-                <div class="alert alert-danger" role="alert">
-                   You Have Not Made Any Orders As Yet
+
+
+
+            @if (ViewData["order"] == null)
+            {
+                <div class="card bg-dark text-white">
+                    <img src="/Images/handymanGIF.gif" class="card-img" alt="gif image">
+                    <div class="alert alert-danger" role="alert">
+                        You Have Not Made Any Orders As Yet
+                    </div>
                 </div>
-            </div>
-        }    
+            }else {
 
+                <div class="container-fluid">
+                    <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@order" />
+                @functions
+                {
+                [BindProperty(SupportsGet = true)]
+                public Order order { get; set; }
+                }
+                </div>
+            }
+                
+
+            
+        }
             <!--End Order Component-->
 
 
