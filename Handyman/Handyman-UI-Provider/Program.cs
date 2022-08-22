@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Handyman_UI_Provider.Areas.Identity.Data;
+using HandymanProviderLibrary.Api.Service;
+using HandymanProviderLibrary.API;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("IdentityDataContextConnection") ?? throw new InvalidOperationException("Connection string 'IdentityDataContextConnection' not found.");
@@ -17,7 +19,11 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
+
+//Dependency Injection
+builder.Services.AddSingleton<IAPIHelper, APIHelper>();
+builder.Services.AddTransient<IServiceEndpoint, ServiceEndpoint>();
+
 //For identity token
 
 

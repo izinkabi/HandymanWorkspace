@@ -40,4 +40,16 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.8" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Chats\" />
+    <Folder Include="Pages\Home\" />
+    <Folder Include="Pages\Directions\" />
+    <Folder Include="Pages\Requests\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HandymanProviderLibrary\HandymanProviderLibrary.csproj" />
+    <ProjectReference Include="..\HandymanUILibrary\HandymanUILibrary.csproj" />
+  </ItemGroup>
+
 </Project>
