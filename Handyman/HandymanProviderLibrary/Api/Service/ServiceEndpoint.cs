@@ -93,4 +93,16 @@ public class ServiceEndpoint : IServiceEndpoint
             throw new Exception(ex.Message);
         }
     }
+    //Deleting the provider's service
+    public async Task DeleteProviderService(ProviderServiceModel providerService)
+    {
+        try
+        {
+            var httpResponseMessage = await _aPIHelper.ApiClient.DeleteAsync($"api/UpdateProvidersService?providerService={providerService}");
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
 }

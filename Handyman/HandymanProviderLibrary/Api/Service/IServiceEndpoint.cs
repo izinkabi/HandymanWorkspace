@@ -10,5 +10,6 @@ namespace HandymanProviderLibrary.Api.Service
         Task DeleteProviderService(ProviderServiceModel providerService);
         Task CreateProviderService(ProviderServiceModel providerService);
         Task<List<ProviderServiceModel>> GetProviderServicesByServiceId(int serviceId);
+        Task<List<ProviderServiceModel>> GetProviderServiceByProviderId();
     }
 }
