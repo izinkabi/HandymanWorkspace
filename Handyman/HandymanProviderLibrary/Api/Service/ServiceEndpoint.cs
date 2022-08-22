@@ -1,11 +1,7 @@
 ﻿using HandymanProviderLibrary.API;
 using HandymanProviderLibrary.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace HandymanProviderLibrary.Api.Service;
 
@@ -56,8 +52,9 @@ public class ServiceEndpoint : IServiceEndpoint
             throw new Exception(ex.Message);
         }
     }
-    
+
     //Identity shall be used in the api to get the userId and hence up security breach
+    //GET a list of provider's service (a list of providers that are providing a certaing service)
     public async Task<List<ProviderServiceModel>> GetProviderServiceByProviderId()
     {
         try
