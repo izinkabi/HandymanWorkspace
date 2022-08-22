@@ -42,4 +42,58 @@ public class ServiceEndpoint : IServiceEndpoint
 
     }
 
+
+    //Get the provider's service(s) by provider Id
+    public async Task<List<ProviderServiceModel>> GetProviderServicesByServiceId(int serviceId)
+    {
+        try
+        {
+            List<ProviderServiceModel>? httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<List<ProviderServiceModel>>($"api/GetProvidersServicesByServiceId?serviceId={serviceId}");
+            return httpResponseMessage;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+    
+    //Identity shall be used in the api to get the userId and hence up security breach
+    public async Task<List<ProviderServiceModel>> GetProviderServiceByProviderId()
+    {
+        try
+        {
+            List<ProviderServiceModel>? httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<List<ProviderServiceModel>>("api/GetProvidersServicesByProviderId");
+            return httpResponseMessage;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    //Create a new service provided by the give provider
+    public async Task CreateProviderService(ProviderServiceModel providerService)
+    {
+        try
+        {
+            var httpResponseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync<ProviderServiceModel>("api/GetProvidersServicesByProviderId", providerService);         
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    //Upadate the provider's service
+    public async Task UpdateProviderService(ProviderServiceModel providerService)
+    {
+        try
+        {
+            var httpResponseMessage = await _aPIHelper.ApiClient.PutAsJsonAsync<ProviderServiceModel>("api/UpdateProvidersService", providerService);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
 }
