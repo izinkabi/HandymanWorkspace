@@ -12,13 +12,15 @@ namespace Handymen_UI_Consumer.Pages
     {
         private readonly Handymen_UI_Consumer.Data.Handymen_UI_ConsumerContext _context;
         private readonly IMemoryCache _cache;
-
-        public DateTime CurrentDateTime { get; }
-
         private Order order;
         private IServiceEndPoint _serviceEndPoint;
         private string ErrorMsg;
         private List<Service> serviceDisplayList;
+
+
+        public DateTime CurrentDateTime { get; }
+      
+        //Injecting the IServiceEndPoint 
         public OrderModel(Handymen_UI_Consumer.Data.Handymen_UI_ConsumerContext context,
            IMemoryCache cache, IServiceEndPoint serviceEndPoint)
         {
@@ -47,7 +49,7 @@ namespace Handymen_UI_Consumer.Pages
         {
             get { return serviceDisplayList; }
         }
-
+        //Get the order for display (the default method on OrderPage redirect or call)
         public async Task<IActionResult> OnGetAsync(int? id)
         {
 
@@ -73,7 +75,7 @@ namespace Handymen_UI_Consumer.Pages
 
             return Page();
         }
-
+        //Confirming the order
         public async Task OnPostConfirmOrder()
         {
 
@@ -94,7 +96,7 @@ namespace Handymen_UI_Consumer.Pages
             ViewData["order"] = order;
 
         }
-
+        //Load / Create the Order 
         private async Task<Order> LoadOrder(int? id)
         {
 
@@ -120,6 +122,7 @@ namespace Handymen_UI_Consumer.Pages
             }
             return order;
         }
+        //Load Services from the IServiceEndPoint service
         private async Task LoadServices()
         {
             serviceDisplayList = new List<Service>();
@@ -155,7 +158,7 @@ namespace Handymen_UI_Consumer.Pages
             }
 
         }
-
+        //Cancelling the order 
         public void OnPostCancelOrder()
         {
             _cache.Remove("order");

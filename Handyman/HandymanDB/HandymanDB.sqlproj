@@ -66,6 +66,10 @@
     <Folder Include="Stored Procedures\Service" />
     <Folder Include="Scripts\" />
     <Folder Include="Schemas" />
+    <Folder Include="Stored Procedures\ServiceDelivery\Request" />
+    <Folder Include="Stored Procedures\ServiceDelivery\ServiceProvider" />
+    <Folder Include="Stored Procedures\Customer\Order" />
+    <Folder Include="Stored Procedures\Service\Category" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\ScriptsIgnoredOnImport.sql" />
@@ -79,25 +83,10 @@
     <Build Include="Tables\Request.sql" />
     <Build Include="Stored Procedures\Customer\spConsumerInsert.sql" />
     <Build Include="Stored Procedures\Customer\spConsumerLookUpById.sql" />
-    <Build Include="Stored Procedures\Service\spCategoryInsert.sql" />
-    <Build Include="Stored Procedures\Service\spCategoriesLookUp.sql" />
     <Build Include="Stored Procedures\Service\spServicesLookUp.sql" />
     <Build Include="Stored Procedures\Service\spServiceLookUpByCategoryId.sql" />
     <Build Include="Stored Procedures\Service\spServiceInsert.sql" />
     <Build Include="Stored Procedures\Service\spServiceUpdate.sql" />
-    <Build Include="Stored Procedures\ServiceDelivery\spRequestLookUpByProviderServiceId.sql" />
-    <Build Include="Stored Procedures\ServiceDelivery\spProviderServicesLookUp.sql" />
-    <Build Include="Stored Procedures\ServiceDelivery\spServiceProviderLookUpById.sql" />
-    <Build Include="Stored Procedures\ServiceDelivery\spProviderServiceInsert.sql" />
-    <Build Include="Stored Procedures\ServiceDelivery\spProviderServiceUpdate.sql" />
-    <Build Include="Stored Procedures\ServiceDelivery\spServiceProviderInsert.sql" />
-    <Build Include="Stored Procedures\ServiceDelivery\spRequestLookUpByProviderId.sql" />
-    <Build Include="Stored Procedures\ServiceDelivery\spRequestInsert.sql" />
-    <Build Include="Stored Procedures\ServiceDelivery\spServiceProviderUpdate.sql" />
-    <Build Include="Stored Procedures\ServiceDelivery\spRequestUpdate.sql" />
-    <Build Include="Stored Procedures\Customer\spOrderInsert.sql" />
-    <Build Include="Stored Procedures\Customer\OrderLookUpByConsumerID.sql" />
-    <Build Include="Stored Procedures\Customer\OrderUpdate.sql" />
     <None Include="Publish\HandymanDB.publish.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -107,5 +96,19 @@
     <Build Include="Tables\Service.sql" />
     <Build Include="Tables\Category.sql" />
     <Build Include="Stored Procedures\Service\spServiceLookUp.sql" />
+    <Build Include="Stored Procedures\ServiceDelivery\ServiceProvider\spProviderServiceInsert.sql" />
+    <Build Include="Stored Procedures\ServiceDelivery\ServiceProvider\spProviderServicesLookUp.sql" />
+    <Build Include="Stored Procedures\ServiceDelivery\ServiceProvider\spProviderServiceUpdate.sql" />
+    <Build Include="Stored Procedures\ServiceDelivery\Request\spRequestInsert.sql" />
+    <Build Include="Stored Procedures\ServiceDelivery\Request\spRequestLookUpByProviderId.sql" />
+    <Build Include="Stored Procedures\ServiceDelivery\Request\spRequestLookUpByProviderServiceId.sql" />
+    <Build Include="Stored Procedures\ServiceDelivery\Request\spRequestUpdate.sql" />
+    <Build Include="Stored Procedures\Customer\Order\OrderLookUpByConsumerID.sql" />
+    <Build Include="Stored Procedures\Customer\Order\OrderUpdate.sql" />
+    <Build Include="Stored Procedures\Customer\Order\spOrderInsert.sql" />
+    <Build Include="Stored Procedures\Service\Category\spCategoriesLookUp.sql" />
+    <Build Include="Stored Procedures\Service\Category\spCategoryInsert.sql" />
+    <Build Include="Stored Procedures\ServiceDelivery\ServiceProvider\spProviderServiceLookUpByServiceId.sql" />
+    <Build Include="Stored Procedures\ServiceDelivery\ServiceProvider\spProviderLookUpByProviderId.sql" />
   </ItemGroup>
 </Project>

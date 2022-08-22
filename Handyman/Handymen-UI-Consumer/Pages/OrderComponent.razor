@@ -131,66 +131,67 @@
 
 
 
-    private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
-    {
-        Logger.LogInformation("URL of new location: {Location}", e.Location);
-    }
-    //private async Task Send()
-    //{
-    //    await hubConnection.SendAsync("SendMessage", userInput, messageInput);
-    //}
-    //private bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
-
-    public async ValueTask DisposeAsync()
-    {
-        if (hubConnection is not null)
+        private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
         {
-            _cache.Remove("ordercomp");
-            _cache.Dispose();
-            await hubConnection.DisposeAsync();   
-            NavManager.LocationChanged -= HandleLocationChanged;
+            Logger.LogInformation("URL of new location: {Location}", e.Location);
         }
 
-    }
+        //private async Task Send()
+        //{
+        //    await hubConnection.SendAsync("SendMessage", userInput, messageInput);
+        //}
+        //private bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
 
-
-    private void TrackOrder()
-    {
-        if (!_cache.TryGetValue("ordercomp", out Order cacheValue))
+        public async ValueTask DisposeAsync()
         {
-            cacheValue = order;
+            if (hubConnection is not null)
+            {
+                //Dispose the cache
+                _cache.Remove("ordercomp");
+                _cache.Dispose();
+                await hubConnection.DisposeAsync();   
+                NavManager.LocationChanged -= HandleLocationChanged;
+            }
 
-            var cacheEntryOptions = new MemoryCacheEntryOptions()
-                .SetSlidingExpiration(TimeSpan.FromSeconds(40));
-
-            _cache.Set<Order>("ordercomp", cacheValue, cacheEntryOptions);
         }
 
-        order = cacheValue;
-        order.IsTracking = true;
-        NavManager.NavigateTo("orderdetails", true);
-    }
+        //Initiate the order 
+        private void TrackOrder()
+        {
+            if (!_cache.TryGetValue("ordercomp", out Order cacheValue))
+            {
+                cacheValue = order;
 
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromSeconds(40));
 
+                _cache.Set<Order>("ordercomp", cacheValue, cacheEntryOptions);
+            }
 
-    private async Task CancelOrder()
-    {
+            order = cacheValue;
+            order.IsTracking = true;
+            NavManager.NavigateTo("orderdetails", true);
+        }
 
-        order.IsTracking = false;
-        await DisposeAsync();
-        persistingSubscription.Dispose();
+        //Cancelling 
+        private async Task CancelOrder()
+        {
+
+            order.IsTracking = false;
+            await DisposeAsync();
+            persistingSubscription.Dispose();
        
-    }
+        }
+        //Completing the order on certain 
+        private async Task FinishOrder()
+        {
 
-    private async Task FinishOrder()
-    {
+        }
+        //Persisting the order  
+        private Task PersistOrder()
+        {
+            ApplicationState.PersistAsJson("fetchdata", _orderEndpointService);
 
-    }
-
-    private Task PersistOrder()
-    {
-        ApplicationState.PersistAsJson("fetchdata", _orderEndpointService);
-
-        return Task.CompletedTask;
-    }
+            return Task.CompletedTask;
+        }
 }

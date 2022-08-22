@@ -19,6 +19,7 @@ namespace Handymen_UI_Consumer.Pages
             _orderEndPoint = orderEndPoint; 
         }
 
+        //The OrderModel as a class property
         [BindProperty(SupportsGet =true)]
         public Order Order { get { return _order; }  
             set 
@@ -42,9 +43,5 @@ namespace Handymen_UI_Consumer.Pages
             return Page();
         }
 
-        public async Task OnPostAsync()
-        {
-
-        }
     }
 }

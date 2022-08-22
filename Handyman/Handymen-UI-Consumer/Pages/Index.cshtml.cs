@@ -37,9 +37,10 @@ namespace Handymen_UI_Consumer.Pages
             _cache = cache;
         }
 
-       //The only method runing on ServicesHome soon to be index
+        //The only method runing on ServicesHome soon to be index
         public async Task OnGetAsync()
         {
+            
             await LoadServices();
             await LoadServiceCategories();
 
@@ -67,11 +68,14 @@ namespace Handymen_UI_Consumer.Pages
             //    serviceDisplayList = serviceDisplayList.Where(x => x.CategoryName == category).ToList();
             //}
             //Populate the select list, could have been done so easily
+
             serviceCategorySelectList = new SelectList(serviceCategories);
         }
 
+        //A local service list variable
         [BindProperty(SupportsGet =true)]
-        public List<Service> ServiceList { get
+        public List<Service> ServiceList { 
+            get
             {
                 return serviceDisplayList;
             }
@@ -118,6 +122,7 @@ namespace Handymen_UI_Consumer.Pages
 
         }
         
+        //Loading the Service Categories from IServicesEndPoint service
         private async Task LoadServiceCategories()
         {
             try
@@ -145,6 +150,5 @@ namespace Handymen_UI_Consumer.Pages
             }
         }
 
-      
     }
 }
