@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿
 
+using Microsoft.AspNetCore.SignalR;
 
-namespace Handymen_UI_Consumer.Hubs
+namespace Handyman_UI_Provider.Hubs
 {
     public class ChatHub : Hub
     {

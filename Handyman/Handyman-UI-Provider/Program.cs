@@ -6,6 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using Handyman_UI_Provider.Areas.Identity.Data;
 using HandymanProviderLibrary.Api.Service;
 using HandymanProviderLibrary.API;
+using Microsoft.AspNetCore.ResponseCompression;
+using Handyman_UI_Provider.Hubs;
+using Handyman_UI_Provider.Hubs.Order;
+using Handyman_UI_Provider.Hubs.Request;
+using Handyman_UI_Provider.Hubs.ServiceDelivery;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("IdentityDataContextConnection") ?? throw new InvalidOperationException("Connection string 'IdentityDataContextConnection' not found.");
@@ -16,6 +21,8 @@ builder.Services.AddDbContext<IdentityDataContext>(options =>
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<IdentityDataContext>();
 
+
+
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
@@ -23,6 +30,14 @@ builder.Services.AddServerSideBlazor();
 //Dependency Injection
 builder.Services.AddSingleton<IAPIHelper, APIHelper>();
 builder.Services.AddTransient<IServiceEndpoint, ServiceEndpoint>();
+builder.Services.AddTransient<IServiceDelivery, ServiceDelivery>();//service delivery in Hubs
+
+builder.Services.AddResponseCompression(opts =>
+{
+    opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+        new[] { "application/octet-stream" });
+});
+
 
 //For identity token
 
@@ -44,6 +59,11 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.MapBlazorHub();
+//Mapping of Hub
+app.MapHub<ChatHub>("chathub");
+app.MapHub<OrderHub>("orderhub");
+app.MapHub<RequestHub>("requesthub");
+
 app.MapFallbackToPage("/_Host");
 app.UseAuthentication();
 app.UseAuthorization();
