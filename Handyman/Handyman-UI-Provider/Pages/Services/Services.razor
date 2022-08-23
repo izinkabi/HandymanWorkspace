@@ -11,43 +11,42 @@
 <!--List of Services-->
 <div class="container px-4">
     <div class="row gy-5">
-        <h3>Services</h3>
+
+
+
+        <!--Table of services -->
+         <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Category</th>
+            <th scope="col">Image</th>
+            <th scope="col">Options</th>
+        </tr>
+        </thead>
         @if (AllServices == null)
         {
-            <div class="d-flex justify-content-center">
-                <div class="spinner-border" role="status">
-                    <span class="visually">Loading...</span>
-                </div>
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="visually">Loading...</span>
             </div>
+        </div>
         }
         @foreach (var service in AllServices)
         {
-            <!--Table of services-->
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Description</th>
-                  <th scope="col">Category</th>
-                  <th scope="col">Image</th>
-                  <th scope="col">Options</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">@service.Id</th>
-                  <td>@service.Name</td>
-                  <td>@service.Decription</td>
-                  <td>@service.CategoryName / @service.CategoryType</td>
-                  <td><img src="./Images/@service.ImageUrl" style="max-width: 50px" class="img-fluid rounded" alt="@service.Decription"></td>
-                  <td></td>
-                </tr>
-              </tbody>
-            </table>
-
+        <tbody>
+        <tr>
+            <th scope="row">@service.Id</th>
+            <td>@service.Name</td>
+            <td>@service.Decription</td>
+            <td>@service.CategoryName / @service.CategoryType</td>
+            <td><img src="./Images/@service.ImageUrl" style="max-width: 50px" class="img-fluid rounded" alt="@service.Decription"></td>
+        </tr>
+        </tbody>
          }
-
+          </table>
     </div>
 </div>
 
