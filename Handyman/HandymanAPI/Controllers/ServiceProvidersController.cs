@@ -5,39 +5,16 @@ using System.Web.Http;
 
 namespace HandymanAPI.Controllers
 {
-  
+    
     public class ServiceProvidersController : ApiController
     {
 
        
         private ServiceProviderData providerData;
 
-       // GET: api/ServiceProviders
-       //[Route("api/GetServiceProviders")]
-       // public List<ServiceProviderModel> Get()
-       // {
-       //     providerData = new ServiceProviderData();
-       //     return providerData.GetServiceProviders();
-       // }
-
-        // GET: api/GetServiceProviderById/5
-        [Route("api/GetServiceProviderById")]
-        public ServiceProviderModel GetServiceProviderById(string Id)
-        {
-            providerData = new ServiceProviderData();
-            return providerData.GetProviderById(Id);
-        }
-
-        // POST: api/ServiceProviders
-       // [Authorize(Roles = "ServiceProvider")]
-        public void PostProvider(ServiceProviderModel serviceProviderModel)
-        {
-            providerData = new ServiceProviderData();
-            providerData.PostProvider(serviceProviderModel);
-        }
-
         //GET: api/GetProvidersServices
-        [Route("api/GetProvidersServiceByProviderId")]
+        //Getting the provider's service by service id
+        [Route("api/GetProvidersServicesByProviderId")]
         public List<ProviderServiceModel> GetProvidersServicesByProviderId(string providerId)
         {
             providerData = new ServiceProviderData();
@@ -45,7 +22,15 @@ namespace HandymanAPI.Controllers
             return providerService;
         }
 
-      
+        //Get all the providers of this service id
+        [Route("api/GetProvidersServicesByServiceId")]
+        public List<ProviderServiceModel> GetProvidersServicesByServiceId(int serviceId)
+        {
+            providerData = new ServiceProviderData();
+            var providerService = providerData.GetProvidersServiceByServiceId(serviceId);
+            return providerService;
+        }
+        //Updating the provider's service
         [Route("api/PutProvidersService")]
         public void PutProvidersService(ProviderServiceModel providersServiceModel)
         {
@@ -53,14 +38,7 @@ namespace HandymanAPI.Controllers
             providerData.PutProvidersService(providersServiceModel.ServiceProviderId, providersServiceModel.Id);
         }
 
-        [Route("api/UpdateServiceProvider")]
-        //Update the Service Provider
-        public void UpdateServiceProvider(ServiceProviderModel provider)
-        {
-            providerData = new ServiceProviderData();
-            providerData.UpdateServiceProvider(provider);
-        }
-
+        
         [Route("api/DeleteProvidersService")]
         // DELETE: api/ProvidersService/5
         public void DeleteProvidersService(int id)

@@ -12,33 +12,32 @@
     @*OrderComponent Section*@
     @if(@Model.OrderProperty!=null)
     {
-            
-                <dl class="row justify-content-center">
-                    <div class="card mb-3 " style="max-width: 540px;">
-                        <div class="row g-0">
-                            <div class="col-md-4">
-                                <img src="/Images/@(@Model.OrderProperty.ServiceImageUrl)" class="img-fluid rounded-start" alt="...">
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title" id="orderName">@Model.OrderProperty.ServiceName</h5>
-                                    <p class="card-text" id="orderDescriptio"> @Model.OrderProperty.Description.</p>
-                                    <p class="card-text"><small class="text-muted"> @Model.OrderProperty.Date</small></p>
-                                </div>
-                            </div>
-                        </div>
 
-                           @* <form asp-page-handler="ConfirmOrder">*@
-                            <button class="btn btn-outline-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Confirm</button>
-                            @*</form>*@
+                
+              <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@(@Model.OrderProperty)" />
+              <!--Buttons-->
+              <div class="row">
 
-                           
-                    </div>
+                    
+                @if(!Model.OrderProperty.IsConfirmed)
+                {
+                <div class="col-5 justify-content-start">
 
-                </dl>
 
-                <a asp-page="./Details" asp-route-id="@Model.OrderProperty.ServiceId" class="btn-outline-secondary">Cancel</a>
-    }
+                    <form asp-page-handler="CancelOrder">
+                        <a type="submit" asp-area="" asp-page="/Index" class="btn-outline-secondary">Cancel</a>
+                    </form>
+                </div>
+                <div class="col-7 ">
+                    <form asp-page-handler="ConfirmOrder">
+                    <button type="submit" class="btn btn-outline-success">Confirm</button> <!--data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"-->
+                    </form>
+                </div>
+                }
+              </div>
+            }
+
+    @*End OrderComponent Section*@
     else
     {
         <div class="text-center">

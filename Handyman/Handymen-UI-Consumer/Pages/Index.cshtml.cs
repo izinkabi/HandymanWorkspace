@@ -9,12 +9,14 @@ using Handymen_UI_Consumer.Data;
 using Handymen_UI_Consumer.Models;
 using HandymanUILibrary.API;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Handymen_UI_Consumer.Pages
 {
     public class IndexPageModel : PageModel
     {
         private readonly Handymen_UI_Consumer.Data.Handymen_UI_ConsumerContext _context;
+        private readonly IMemoryCache _cache;
         private readonly ILogger<TestModel> _logger;
         private IServiceEndPoint _serviceEndPoint;
         private List<Service>? serviceDisplayList;
@@ -27,20 +29,33 @@ namespace Handymen_UI_Consumer.Pages
         [BindProperty(SupportsGet = true)]
         public string? category { get; set; }
        
-        public IndexPageModel(Handymen_UI_Consumer.Data.Handymen_UI_ConsumerContext context, IServiceEndPoint serviceEndPoint)
+        public IndexPageModel(Handymen_UI_Consumer.Data.Handymen_UI_ConsumerContext context,
+            IServiceEndPoint serviceEndPoint,IMemoryCache cache)
         {
             _context = context;
             _serviceEndPoint = serviceEndPoint;
+            _cache = cache;
         }
 
-       //The only method runing on ServicesHome soon to be index
+        //The only method runing on ServicesHome soon to be index
         public async Task OnGetAsync()
         {
-            if (serviceCategories == null || serviceDisplayList == null)
+            
+            await LoadServices();
+            await LoadServiceCategories();
+
+            if (!_cache.TryGetValue("services", out List<Service> cacheValue))
             {
-                await LoadServices();
-                await LoadServiceCategories();
+                cacheValue = serviceDisplayList;
+
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromSeconds(60));
+
+                _cache.Set<List<Service>>("services", cacheValue, cacheEntryOptions);
             }
+
+            serviceDisplayList = cacheValue;
+
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -53,13 +68,20 @@ namespace Handymen_UI_Consumer.Pages
             //    serviceDisplayList = serviceDisplayList.Where(x => x.CategoryName == category).ToList();
             //}
             //Populate the select list, could have been done so easily
+
             serviceCategorySelectList = new SelectList(serviceCategories);
         }
 
+        //A local service list variable
         [BindProperty(SupportsGet =true)]
-        public List<Service> ServiceList { get
+        public List<Service> ServiceList { 
+            get
             {
                 return serviceDisplayList;
+            }
+            set
+            {
+                serviceDisplayList = value;
             }
         }
 
@@ -100,6 +122,7 @@ namespace Handymen_UI_Consumer.Pages
 
         }
         
+        //Loading the Service Categories from IServicesEndPoint service
         private async Task LoadServiceCategories()
         {
             try
@@ -127,6 +150,5 @@ namespace Handymen_UI_Consumer.Pages
             }
         }
 
-      
     }
 }

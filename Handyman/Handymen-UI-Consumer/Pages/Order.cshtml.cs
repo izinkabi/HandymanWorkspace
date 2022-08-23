@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using Handymen_UI_Consumer.Data;
 using Handymen_UI_Consumer.Models;
 using HandymanUILibrary.API;
 using Microsoft.Extensions.Caching.Memory;
 
+
 namespace Handymen_UI_Consumer.Pages
 {
- 
+
     public class OrderModel : PageModel
     {
         private readonly Handymen_UI_Consumer.Data.Handymen_UI_ConsumerContext _context;
@@ -21,28 +16,32 @@ namespace Handymen_UI_Consumer.Pages
         private IServiceEndPoint _serviceEndPoint;
         private string ErrorMsg;
         private List<Service> serviceDisplayList;
+
+
+        public DateTime CurrentDateTime { get; }
+      
+        //Injecting the IServiceEndPoint 
         public OrderModel(Handymen_UI_Consumer.Data.Handymen_UI_ConsumerContext context,
            IMemoryCache cache, IServiceEndPoint serviceEndPoint)
         {
             _context = context;
             _serviceEndPoint = serviceEndPoint;
             _cache = cache;
-            var dt = DateTime.Now;
-            _cache.Set("Time", dt);
 
         }
 
         //public Order Order { get; set; } = default!;
         [BindProperty(SupportsGet = true)]
-        public Order OrderProperty {
+        public Order OrderProperty
+        {
             get
-            { 
-                return order; 
+            {
+                return order;
             }
-            set 
-            { 
-                order = value; 
-            } 
+            set
+            {
+                order = value;
+            }
         }
 
         //Referenced by the component
@@ -50,53 +49,80 @@ namespace Handymen_UI_Consumer.Pages
         {
             get { return serviceDisplayList; }
         }
-        
+        //Get the order for display (the default method on OrderPage redirect or call)
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _serviceEndPoint == null)
-            {
-                return NotFound();
-            }
 
-             await LoadServices();
-            if (serviceDisplayList == null)
+            //****Caching ****//
+            
+            if (!_cache.TryGetValue("order", out Order cacheValue))
             {
-                return NotFound();
+                cacheValue = await LoadOrder(id);
+
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromSeconds(40));
+
+                _cache.Set<Order>("order", cacheValue, cacheEntryOptions);
             }
-            else 
+            order = cacheValue;
+            if (order.Id != id)
             {
-                foreach(var service in serviceDisplayList)
-                {
-                    if(service.Id == id)
-                    {
-                        OrderProperty = new();
-                        order = new Order();
-                        order.Id = service.Id;
-                        order.Date = DateTime.Now;
-                        order.Status = "Active";
-                        order.ServiceId = service.Id;
-                        order.ServiceName = service.Name;
-                        order.ServiceImageUrl = service.ImageUrl;
-                        order.Description = service.Description;
-                        //The cheat for tamplate display
-                        order.IsConfirmed = true;
-                        ViewData["order"] = order;
-                       
-                        return Page();
-                    }
-                }
+                return RedirectToPage("./OrderDetails");
             }
+            
+
+            //*****End Caching****//
+
             return Page();
         }
-        //public void OnPostConfirmOrder()
-        //{
-            
-        //   order.IsConfirmed = true;
-        //    return;
-        //}
+        //Confirming the order
+        public async Task OnPostConfirmOrder()
+        {
 
-       
+            //****Cache the order****//
+            if (!_cache.TryGetValue("order", out Order cacheValue))
+            {
+                cacheValue = await LoadOrder(order.ServiceId);
 
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromSeconds(40));
+
+                _cache.Set<Order>("order", cacheValue, cacheEntryOptions);
+            }
+
+            order = cacheValue;
+
+            order.IsConfirmed = true;
+            ViewData["order"] = order;
+
+        }
+        //Load / Create the Order 
+        private async Task<Order> LoadOrder(int? id)
+        {
+
+            await LoadServices();
+
+            foreach (var service in serviceDisplayList)
+            {
+                if (service.Id == id)
+                {
+                    
+                    order = new Order();
+                    order.Id = service.Id;
+                    order.Date = DateTime.Now;
+                    order.Status = "Active";
+                    order.ServiceId = service.Id;
+                    order.ServiceName = service.Name;
+                    order.ServiceImageUrl = service.ImageUrl;
+                    order.Description = service.Description;
+
+                    return order;
+
+                }
+            }
+            return order;
+        }
+        //Load Services from the IServiceEndPoint service
         private async Task LoadServices()
         {
             serviceDisplayList = new List<Service>();
@@ -132,7 +158,12 @@ namespace Handymen_UI_Consumer.Pages
             }
 
         }
-        
-       
+        //Cancelling the order 
+        public void OnPostCancelOrder()
+        {
+            _cache.Remove("order");
+            _cache.Dispose();
+              
+        }
     }
 }
