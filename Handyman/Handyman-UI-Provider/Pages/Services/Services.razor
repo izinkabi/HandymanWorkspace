@@ -22,23 +22,31 @@
         }
         @foreach (var service in AllServices)
         {
-            <div class="card mb-3 align-content-center" style="max-width: 480px;">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img src="./Images/@service.ImageUrl" style="max-width: 180px" class="img-fluid rounded" alt="@service.Decription">
-                    </div>
-                    <br/>
-                    <div class="col-md-6">
-                        <div class="card-body">
-                            <h5 class="card-title">@service.Name</h5>
-                            <p class="card-title">@service.Decription</p>
-                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                            <button type="button" data-bs-toggle="modal" data-bs-target="#myModal">Launch modal</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
+            <!--Table of services-->
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Category</th>
+                  <th scope="col">Image</th>
+                  <th scope="col">Options</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">@service.Id</th>
+                  <td>@service.Name</td>
+                  <td>@service.Decription</td>
+                  <td>@service.CategoryName / @service.CategoryType</td>
+                  <td><img src="./Images/@service.ImageUrl" style="max-width: 50px" class="img-fluid rounded" alt="@service.Decription"></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+
+         }
 
     </div>
 </div>
@@ -55,6 +63,7 @@
     {
         AllServices =  await LoadServices();
     }
+
     private async Task<List<DisplayServiceModel>> LoadServices()
     {
         AllServices = new List<DisplayServiceModel>();
