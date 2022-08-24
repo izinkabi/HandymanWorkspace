@@ -54,46 +54,85 @@
     <!--End Component MarkUp-->
 
 @code {
-    private List<Service> serviceDisplayList;
-    public Order? order;
-    private HubConnection? hubConnection;
-    private PersistingComponentStateSubscription persistingSubscription;
-    string? ErrorMsg;
+        private List<Service>? serviceDisplayList;
+        public Order? order;
+        private HubConnection? hubConnection;
+        private PersistingComponentStateSubscription persistingSubscription;
+        string? ErrorMsg;
+        string? IsAvailableMsg;
+        bool IsProviderAvailable;
+        bool OpenConnection;
+        string? user;
 
 
-    [Parameter]
-    public Order? OrderComponentModel
-    {
-        get
+
+        [Parameter]
+        public Order? OrderComponentModel
         {
+            get
+            {
 
-            return order;
+                return order;
+            }
+
+            set
+            {
+                order = value;
+            }
         }
 
-        set
-        {
-            order = value;
-        }
-    }
 
-
-    protected override async Task OnInitializedAsync()
+        protected override async Task OnInitializedAsync()
     {
 
-        //hubConnection = new HubConnectionBuilder()
-        //.WithUrl(NavManager.ToAbsoluteUri("/orderrequesthub"))
-        //.WithAutomaticReconnect()
-        //.Build();
+        hubConnection = new HubConnectionBuilder()
+        .WithUrl("https://localhost:7168/orderhub")
+        .WithAutomaticReconnect()
+        .Build();
+
+        hubConnection.Reconnecting += (sender) =>
+        {
+            this.InvokeAsync(() =>
+            {
+                var newMessage = "Trying to reconnect...";
+
+            });
+
+            return Task.CompletedTask;
+        };
+
+        hubConnection.Reconnected += (sender) =>
+        {
+            this.InvokeAsync(() =>
+        {
+                 var newMessage = "Connected to the server";
+                 IsAvailableMsg = newMessage;
+             });
+
+            return Task.CompletedTask;
+        };
+
+        hubConnection.Closed += (sender) =>
+        {
+            this.InvokeAsync(() =>
+            {
+                var newMessage = "Connection Closed";
+                IsAvailableMsg = newMessage;
+                IsProviderAvailable = false;
+            });
+
+            return Task.CompletedTask;
+        };
 
         //Client Side / Receiver request    
-        //hubConnection.On<string, Order>("ReceiveRequest", (user, _order) =>
-        //{
-        //    order.Status = _order.Status;
-        //    InvokeAsync(StateHasChanged);
+        hubConnection.On<string, string>("ReceiveAvailableBroadcast", (user, isavailable) =>
+        {
+            IsAvailableMsg = isavailable;
+            InvokeAsync(StateHasChanged);
 
-        //});
+        });
 
-        //await hubConnection.StartAsync();
+        await hubConnection.StartAsync();
 
         //***Component persisting state setup****//
         persistingSubscription =
@@ -131,17 +170,23 @@
 
 
 
+        //Send the Order to signalr request
+        //User must be from Identity
+        public async Task Send()
+        {
+            if(hubConnection is not null)
+            {
+                await hubConnection.SendAsync("SendOrder", user, order);
+            }
+        }
+
+        //Rediction in blazor
         private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
         {
             Logger.LogInformation("URL of new location: {Location}", e.Location);
         }
 
-        //private async Task Send()
-        //{
-        //    await hubConnection.SendAsync("SendMessage", userInput, messageInput);
-        //}
-        //private bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
-
+        //Disposing the component
         public async ValueTask DisposeAsync()
         {
             if (hubConnection is not null)
@@ -182,11 +227,13 @@
             persistingSubscription.Dispose();
        
         }
+
         //Completing the order on certain 
         private async Task FinishOrder()
         {
 
         }
+
         //Persisting the order  
         private Task PersistOrder()
         {

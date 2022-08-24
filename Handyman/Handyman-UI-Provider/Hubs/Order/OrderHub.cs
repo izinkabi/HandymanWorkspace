@@ -1,4 +1,5 @@
-﻿using Handyman_UI_Provider.Hubs.ServiceDelivery;
+﻿using Handyman_UI_Provider.Hubs.Models;
+using Handyman_UI_Provider.Hubs.ServiceDelivery;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Handyman_UI_Provider.Hubs.Order
@@ -14,13 +15,18 @@ namespace Handyman_UI_Provider.Hubs.Order
             _serviceDelivery = serviceDelivery;
         }
 
-       // public async Task SendOrder(string user, OrderModel order)
-       //=> await Clients.All.ReceiveOrder(user, order);
+        public async Task SendOrder(string user, OrderModel order)
+            => await Clients.All.ReceiveOrder(user, order);
 
-       // public async Task SendOrderToCaller(string user, OrderModel order)
-       //  => await Clients.Caller.ReceiveOrder(user, order);
+        public async Task SendOrderToCaller(string user, OrderModel order)
+        {
+            await Clients.Caller.ReceiveOrder(user, order);
+        }
 
-       // public async Task SendOrderToGroup(string user, OrderModel order)
-       //  => await Clients.Group("Service Providers").ReceiveOrder(user, order);
+        public async Task SendOrderToGroup(string user, OrderModel order)
+        {
+             await Clients.Group("Service Providers").ReceiveOrder(user, order);
+        }
+
     }
 }
