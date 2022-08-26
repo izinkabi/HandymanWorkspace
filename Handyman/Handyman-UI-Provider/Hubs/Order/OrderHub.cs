@@ -15,18 +15,24 @@ namespace Handyman_UI_Provider.Hubs.Order
             _serviceDelivery = serviceDelivery;
         }
 
-        public async Task SendOrder(string user, OrderModel order)
-            => await Clients.All.ReceiveOrder(user, order);
-
-        public async Task SendOrderToCaller(string user, OrderModel order)
+        //[HubMethodName("SendOrder")]
+        public async Task SendOrderToProvider(string user, OrderModel order)
         {
-            await Clients.Caller.ReceiveOrder(user, order);
+            RequestModel request = new();
+            request.OrderProperty = order;
+            await Clients.User(user).ReceiveRequest(request);
         }
 
-        public async Task SendOrderToGroup(string user, OrderModel order)
-        {
-             await Clients.Group("Service Providers").ReceiveOrder(user, order);
-        }
+        //[HubMethodName("SendOrderToCaller")]
+        //public async Task SendOrderToCaller(string user, OrderModel order)
+        //{
+        //    await Clients.Caller.ReceiveOrder(user, order);
+        //}
+        ////[HubMethodName("SendOrderToGroup")]
+        //public async Task SendOrderToGroup(string user, OrderModel order)
+        //{
+        //     await Clients.Group("Service Providers").ReceiveOrder(user, order);
+        //}
 
     }
 }

@@ -5,10 +5,14 @@ namespace Handyman_UI_Provider.Hubs.Request
     //A strongly typed Hub
     public interface IRequestClient
     {
-        Task ReceiveAvailableBroadcast(string user, string broadcast);
+        //Task ReceiveAvailableBroadcast(string user, string broadcast);
 
-        Task ReceiveRequestUpdate(string user, RequestModel requestUpdate);
-        
-        Task ReceiveRequest(string user, RequestModel broadcast);
+        //Provider's method to listen
+        Task ReceiveRequestUpdate(RequestModel order);
+        //Consumer's method to listen
+        Task ReceiveOrder(string status);
+
+        //Task ReceiveRequest(string user, RequestModel broadcast);
+
     }
 }

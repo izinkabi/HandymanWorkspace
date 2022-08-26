@@ -1,10 +1,14 @@
-﻿@using Handymen_UI_Consumer.Helpers
+﻿@using HandymanUILibrary.API.Consumer
+@using Handymen_UI_Consumer.Helpers
 @using Handymen_UI_Consumer.Models
 @using Microsoft.AspNetCore.Identity
 @using Handymen_UI_Consumer.Areas.Identity.Data
 @using Handymen_UI_Consumer.Pages
+
+
 @inject SignInManager<Handymen_UI_ConsumerUser> SignInManager
 @inject UserManager<Handymen_UI_ConsumerUser> UserManager
+@inject IOrderHelper _orderHelper;
 
 
 <!DOCTYPE html>
@@ -51,10 +55,11 @@
                     </ul>
                     @if (SignInManager.IsSignedIn(User))
                     {
+                        var orders = await _orderHelper.LoadUserOrders();
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end sticky-top">
                             <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                0 <!--Total value of Orders-->
+                                @orders.Count() <!--Total value of Orders-->
                                 <span class="visually-hidden">unread messages</span>
                               </span>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-basket" viewBox="0 0 16 16">
@@ -70,6 +75,8 @@
             </div>
         </nav>
     </header>
+
+
     <!--right Menu-->
    
 
@@ -80,16 +87,12 @@
         </div>
         
         
-             <!--Order Component-->
+             <!--Order Components list scrollable-->
         
     @if (SignInManager.IsSignedIn(User))
         {
 
-
-
-
-
-            @if (ViewData["order"] == null)
+            @if (_orderHelper == null)
             {
                 <div class="card bg-dark text-white">
                     <img src="/Images/handymanGIF.gif" class="card-img" alt="gif image">
@@ -99,20 +102,42 @@
                 </div>
             }else {
 
-                <div class="container-fluid">
-                    <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@order" />
-                @functions
+                var orders = await _orderHelper.LoadUserOrders();
+                <div class="offcanvas-body" heightoverflow-y:scroll>
+                 <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" class="scrollspy-example bg-light p-3 rounded-2" tabindex="0">
+                        
+
+                     @if(orders.Count==0)
+                     {
+                            <div class="card bg-dark text-white">
+                                <img src="/Images/handymanGIF.gif" class="card-img" alt="gif image">
+                                <div class="alert alert-danger" role="alert">
+                                    You Have Not Made Any Orders As Yet
+                                </div>
+                            </div>
+
+                     }
+
+                @foreach (Order order in orders)
                 {
-                [BindProperty(SupportsGet = true)]
-                public Order order { get; set; }
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@order" />
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                    
+                            
+                    
+
+                    <hr />
                 }
                 </div>
+             </div>
             }
                 
 
             
         }
-            <!--End Order Component-->
+            <!--End Order Components list scrollabe-->
 
 
 
@@ -120,6 +145,35 @@
    </div>
     <!--end right menu-->
 
+
+
+
+
+
+
+    <!--Modal-->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Order-Confirmation</h5>
+                    <button asp-page="/Index" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body alert-success">
+                    <h2>
+                        Someone is working on your order, be chilled
+                    </h2>
+                    <img src="~/Images/handymanGIF.gif" class="img-thumbnail" alt="...">
+                </div>
+                <div class="modal-footer">
+
+                    <button asp-page="/Index" class="btn btn-primary">Understood</button>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End Modal-->
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

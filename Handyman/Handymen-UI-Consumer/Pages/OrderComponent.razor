@@ -1,244 +1,376 @@
 ﻿@page "/orderComponent"
 @using HandymanUILibrary.API
 @using HandymanUILibrary.API.Consumer
+@using Handymen_UI_Consumer.Areas.Identity.Data
 @using Handymen_UI_Consumer.Helpers
 @using Handymen_UI_Consumer.Models
+@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.SignalR.Client
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.Extensions.Caching.Memory
+@using System.Security.Claims
 
 @inject NavigationManager NavManager
 @inject ILogger<OrderComponent> Logger
 @inject PersistentComponentState ApplicationState
 @inject IOrderEndPoint _orderEndpointService
 @inject IMemoryCache _cache
-
-@implements IAsyncDisposable
+@inject AuthenticationStateProvider _authenticationStateProvider
+@inject IOrderEndPoint _orderEndPoint
 
 <!--Order Component MarkUp-->
 <dl class="row justify-content-center">
         <div class="card mb-3 " style="max-width: 540px;">
           <div class="row g-0">
             <div class="col-md-4">
-              <img src="/Images/@(order.ServiceImageUrl)" class="img-fluid rounded-start" alt="...">
+                <img src="/Images/@(order.ServiceProperty.ImageUrl)" class="img-fluid rounded-start" alt="...">
             </div>
             <div class="col-md-8">
               <div class="card-body">
-                <h5 class="card-title" id="orderName">@order.ServiceName</h5>
-                <p class="card-text" id="orderDescriptio"> @order.Description.</p>
-                <p class="card-text"><small class="text-muted"> @order.Date</small></p>
+                    <h5 class="card-title" id="orderName">@order.ServiceProperty.Name</h5>
+                    <p class="card-text" id="orderDescription"> @order.ServiceProperty.Description</p>
+                <p class="card-text"><small class="text-muted"> @order.DateCreated</small></p>
               </div>
             </div>
-           </div>
-           @if(order.IsConfirmed)
-           {
-               @if(!order.IsTracking)
-               {
-                    <button @onclick="TrackOrder" class="btn btn-outline-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Track Order</button>
-               }else
-               {
+          </div>
 
-                <div class="d-flex align-items-center">
-                    <strong>Connecting to provider..., if she/he does'nt respond in 1 min try again</strong>
-                    <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
-                </div>
-               }
-           }   
+            @if(!(order.IsAccepted==0))
+            {
+                <button @onclick="TrackOrder" class="btn btn-outline-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Track Order</button>
+            }
 
-
+            @if (!order.IsConfirmed && (order.IsAccepted==0))
+            {
+                <button @onclick="ConfirmOrder" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"> Confirm </button>
+            
+            }
+           
             
         </div>
    
-    </dl>
+</dl>
     <!--End Component MarkUp-->
+<!-- Modal -->
+
+
+@*<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">@order.ServiceProperty.Name Order is Confirmed</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card" style="width: 18rem;">
+                    <img src="./Images/@order.ServiceProperty.ImageUrl" class="card-img-top" alt="..."/>
+                    <div class="card-body">
+                        <p class="card-text">@order.ServiceProperty.Description 
+                            @order.ServiceProperty.CategoryDescription</p>
+                    </div>
+                </div>
+            </div>
+          
+        </div>
+    </div>
+</div>*@
+<!--End Modal-->
 
 @code {
-        private List<Service>? serviceDisplayList;
-        public Order? order;
-        private HubConnection? hubConnection;
-        private PersistingComponentStateSubscription persistingSubscription;
-        string? ErrorMsg;
-        string? IsAvailableMsg;
-        bool IsProviderAvailable;
-        bool OpenConnection;
-        string? user;
+    private List<Service>? serviceDisplayList;
+    public Order? order;
+    private HubConnection? orderHubConnection;
+    private HubConnection? requestHubConnection;
+    private PersistingComponentStateSubscription persistingSubscription;
+    string? ErrorMsg;
+    string? IsAvailableMsg;
+    bool IsProviderAvailable;
+    bool OpenConnection;
+    string? user;
 
 
 
-        [Parameter]
-        public Order? OrderComponentModel
-        {
-            get
-            {
-
-                return order;
-            }
-
-            set
-            {
-                order = value;
-            }
-        }
-
-
-        protected override async Task OnInitializedAsync()
+    [Parameter]
+    public Order? OrderComponentModel
     {
-
-        hubConnection = new HubConnectionBuilder()
-        .WithUrl("https://localhost:7168/orderhub")
-        .WithAutomaticReconnect()
-        .Build();
-
-        hubConnection.Reconnecting += (sender) =>
+        get
         {
-            this.InvokeAsync(() =>
-            {
-                var newMessage = "Trying to reconnect...";
-
-            });
-
-            return Task.CompletedTask;
-        };
-
-        hubConnection.Reconnected += (sender) =>
-        {
-            this.InvokeAsync(() =>
-        {
-                 var newMessage = "Connected to the server";
-                 IsAvailableMsg = newMessage;
-             });
-
-            return Task.CompletedTask;
-        };
-
-        hubConnection.Closed += (sender) =>
-        {
-            this.InvokeAsync(() =>
-            {
-                var newMessage = "Connection Closed";
-                IsAvailableMsg = newMessage;
-                IsProviderAvailable = false;
-            });
-
-            return Task.CompletedTask;
-        };
-
-        //Client Side / Receiver request    
-        hubConnection.On<string, string>("ReceiveAvailableBroadcast", (user, isavailable) =>
-        {
-            IsAvailableMsg = isavailable;
-            InvokeAsync(StateHasChanged);
-
-        });
-
-        await hubConnection.StartAsync();
-
-        //***Component persisting state setup****//
-        persistingSubscription =
-            ApplicationState.RegisterOnPersisting(PersistOrder);
-
-        if (!ApplicationState.TryTakeFromJson<Order>(
-            "fetchdata", out var restored))
-        {
-            //*The following code get the order from the IOrderEndPoint*//
-            //order =
-            // await _orderEndpointService.GetOrders();
-
-        }
-        else
-        {
-            order = restored!;
+            return order; 
         }
 
-        //Caching the order model
-        if (!_cache.TryGetValue("ordercomp", out Order cacheValue))
+        set
         {
-            cacheValue = order;
-
-            var cacheEntryOptions = new MemoryCacheEntryOptions()
-                .SetSlidingExpiration(TimeSpan.FromSeconds(40));
-
-            _cache.Set<Order>("ordercomp", cacheValue, cacheEntryOptions);
+            order = value;
         }
-
-        order = cacheValue;
-
-        NavManager.LocationChanged += HandleLocationChanged;
-
     }
 
 
 
-        //Send the Order to signalr request
-        //User must be from Identity
-        public async Task Send()
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        try
         {
-            if(hubConnection is not null)
+
+            //orderHubConnection = new HubConnectionBuilder()
+            //.WithUrl("https://localhost:7168/orderhub")
+            //.WithAutomaticReconnect()
+            //.Build();
+
+
+            //requestHubConnection = new HubConnectionBuilder()
+            //.WithUrl("https://localhost:7168/requesthub")
+            //.WithAutomaticReconnect()
+            //.Build();
+
+            ////Trying to connect
+            //orderHubConnection.Reconnecting += (sender) =>
+            //{
+            //    this.InvokeAsync(() =>
+            //    {
+            //        var newMessage = "Trying to reconnect...";
+
+            //    });
+
+            //    return Task.CompletedTask;
+            //};
+
+            //requestHubConnection.Reconnecting += (sender) =>
+            //{
+            //    this.InvokeAsync(() =>
+            //    {
+            //        var newMessage = "Trying to reconnect...";
+
+            //    });
+
+            //    return Task.CompletedTask;
+            //};
+
+            ////Connected to server
+            //orderHubConnection.Reconnected += (sender) =>
+            //{
+            //    this.InvokeAsync(() =>
+            //{
+            //    var newMessage = "Connected to the server";
+            //    IsAvailableMsg = newMessage;
+            //});
+
+            //    return Task.CompletedTask;
+            //};
+
+            //requestHubConnection.Reconnected += (sender) =>
+            //{
+            //    this.InvokeAsync(() =>
+            //{
+            //    var newMessage = "Connected to the server";
+            //    IsAvailableMsg = newMessage;
+            //});
+
+            //    return Task.CompletedTask;
+            //};
+
+            ////Closing connections
+            //orderHubConnection.Closed += (sender) =>
+            //{
+            //    this.InvokeAsync(() =>
+            //    {
+            //        var newMessage = "Connection Closed";
+            //        IsAvailableMsg = newMessage;
+            //        IsProviderAvailable = false;
+            //    });
+
+            //    return Task.CompletedTask;
+            //};
+
+            //orderHubConnection.Closed += (sender) =>
+            //{
+            //    this.InvokeAsync(() =>
+            //    {
+            //        var newMessage = "Connection Closed";
+            //        IsAvailableMsg = newMessage;
+            //        IsProviderAvailable = false;
+            //    });
+
+            //    return Task.CompletedTask;
+            //};
+
+            ////Listening Client Side for available provider  
+            //orderHubConnection.On<string>("ReceiveOrder", (status) =>
+            //{
+            //    order.Status = status;
+            //    InvokeAsync(StateHasChanged);
+
+            //});
+
+
+
+            //await orderHubConnection.StartAsync();
+            //await requestHubConnection.StartAsync();
+
+            //***Component persisting state setup****//
+            //persistingSubscription =
+            //    ApplicationState.RegisterOnPersisting(PersistOrder);
+
+            //if (!ApplicationState.TryTakeFromJson<Order>(
+            //    "fetchdata", out var restored))
+            //{
+            //    //*The following code get the order from the IOrderEndPoint*//
+            //    //order =
+            //    // await _orderEndpointService.GetOrders();
+
+            //}
+            //else
+            //{
+            //    order = restored!;
+            //}
+
+            ////Caching the order model
+            //if (!_cache.TryGetValue("ordercomp", out Order cacheValue))
+            //{
+            //    cacheValue = order;
+
+            //    var cacheEntryOptions = new MemoryCacheEntryOptions()
+            //        .SetSlidingExpiration(TimeSpan.FromSeconds(40));
+
+            //    _cache.Set<Order>("ordercomp", cacheValue, cacheEntryOptions);
+            //}
+
+            //order = cacheValue;
+
+            //NavManager.LocationChanged += HandleLocationChanged;
+        }catch(Exception ex)
+        {
+            ErrorMsg = ex.Message;
+        }
+        NavManager.LocationChanged += HandleLocationChanged;
+    }
+
+
+
+    //Send the Order to signalr request
+    //User must be from Identity
+    public async Task Send()
+    {
+        if(orderHubConnection is not null)
+        {
+            try
             {
-                await hubConnection.SendAsync("SendOrder", user, order);
+                await orderHubConnection.SendAsync("SendOrder", user, order);
+            }catch(Exception ex)
+            {
+                ErrorMsg = ex.Message;
             }
         }
+    }
 
-        //Rediction in blazor
-        private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
-        {
-            Logger.LogInformation("URL of new location: {Location}", e.Location);
-        }
+    //Redirection in razor component
+    private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        Logger.LogInformation("URL of new location: {Location}", e.Location);
+    }
 
-        //Disposing the component
-        public async ValueTask DisposeAsync()
+    //Disposing the component
+    public async ValueTask DisposeAsync()
+    {
+        if (orderHubConnection is not null)
         {
-            if (hubConnection is not null)
+            //Dispose the cache
+            _cache.Remove("ordercomp");
+            _cache.Dispose();
+            try
             {
-                //Dispose the cache
-                _cache.Remove("ordercomp");
-                _cache.Dispose();
-                await hubConnection.DisposeAsync();   
-                NavManager.LocationChanged -= HandleLocationChanged;
-            }
 
-        }
 
-        //Initiate the order 
-        private void TrackOrder()
-        {
-            if (!_cache.TryGetValue("ordercomp", out Order cacheValue))
+                await orderHubConnection.DisposeAsync();
+                ErrorMsg = null;
+
+            }catch(Exception ex)
             {
-                cacheValue = order;
-
-                var cacheEntryOptions = new MemoryCacheEntryOptions()
-                    .SetSlidingExpiration(TimeSpan.FromSeconds(40));
-
-                _cache.Set<Order>("ordercomp", cacheValue, cacheEntryOptions);
+                ErrorMsg = ex.Message;
             }
-
-            order = cacheValue;
-            order.IsTracking = true;
-            NavManager.NavigateTo("orderdetails", true);
+            NavManager.LocationChanged -= HandleLocationChanged;
         }
 
-        //Cancelling 
-        private async Task CancelOrder()
+    }
+
+    //Initiate the order 
+    private void TrackOrder()
+    {
+
+        //if (!_cache.TryGetValue("ordercomp", out Order cacheValue))
+        //{
+        //    cacheValue = order;
+
+        //    var cacheEntryOptions = new MemoryCacheEntryOptions()
+        //        .SetSlidingExpiration(TimeSpan.FromSeconds(40));
+
+        //    _cache.Set<Order>("ordercomp", cacheValue, cacheEntryOptions);
+        //}
+
+        //order = cacheValue;
+        order.IsTracking = true;
+        NavManager.NavigateTo("orderdetails", true);
+    }
+
+    //Cancelling 
+    private async Task CancelOrder()
+    {
+
+        order.IsTracking = false;
+        await DisposeAsync();
+        persistingSubscription.Dispose();
+
+    }
+
+    //Completing the order on certain 
+    private async Task FinishOrder()
+    {
+
+    }
+
+    //Persisting the order  
+    private Task PersistOrder()
+    {
+        ApplicationState.PersistAsJson("fetorder", _orderEndpointService);
+
+        return Task.CompletedTask;
+    }
+
+
+    public async Task ConfirmOrder()
+    {
+
+        HandymanUILibrary.Models.OrderModel libOrder = new();
+        //libOrder.Service = new HandymanUILibrary.Models.ServiceModel();
+
+
+        try
         {
+            var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
+            var UserId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+            //Populate the order before posting it to db
+            libOrder.ConsumerID = UserId.ToString();
+            libOrder.IsAccepted = 0;//not accepted as yet, this is a new order
+            libOrder.DateCreated =  DateTime.Now;
+            //Service population
 
-            order.IsTracking = false;
-            await DisposeAsync();
-            persistingSubscription.Dispose();
-       
+            //libOrder.Service.Name = order.ServiceProperty.Name;
+            //libOrder.Service.Description = order.ServiceProperty.Description;
+            //libOrder.Service.CategoryId = order.ServiceProperty.CategoryId;
+            libOrder.ServiceId = order.ServiceProperty.Id;
+            order.IsConfirmed = true;
+            await _orderEndPoint.PostOrder(libOrder);
+            NavManager.NavigateTo("index", true);
         }
-
-        //Completing the order on certain 
-        private async Task FinishOrder()
+        catch (Exception ex)
         {
-
+            ErrorMsg = ex.Message;
         }
+        
+        //ViewData["order"] = order;
 
-        //Persisting the order  
-        private Task PersistOrder()
-        {
-            ApplicationState.PersistAsJson("fetchdata", _orderEndpointService);
+    }
 
-            return Task.CompletedTask;
-        }
 }

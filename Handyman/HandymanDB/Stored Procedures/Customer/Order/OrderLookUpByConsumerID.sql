@@ -1,9 +1,9 @@
 ﻿CREATE PROCEDURE [Customer].[OrderLookUpByConsumerID]
-	@ConsumerID VARCHAR 
+	@ConsumerID NVARCHAR(450) 
 
 AS
 BEGIN
-	SELECT DateCreated,Stage,ServiceId      
+	SELECT *    
 	FROM [Customer].[Order]
 	WHERE ConsumerID = @ConsumerID
 END

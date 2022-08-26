@@ -1,5 +1,7 @@
-﻿using Handyman_UI_Provider.Hubs.ServiceDelivery;
+﻿using Handyman_UI_Provider.Hubs.Models;
+using Handyman_UI_Provider.Hubs.ServiceDelivery;
 using Microsoft.AspNetCore.SignalR;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Handyman_UI_Provider.Hubs.Request
 {
@@ -17,23 +19,30 @@ namespace Handyman_UI_Provider.Hubs.Request
 
         //Broadcasting the availability of the provider and listenin for the response
 
-        public async Task SendAvailBroadcast(string user, string broadcast)
-        => await Clients.All.ReceiveAvailableBroadcast(user, broadcast);
+        //[HubMethodName("SendAvailBroadcast")]
+        //public async Task SendAvailBroadcast(string user, string broadcast)
+        //=> await Clients.All.ReceiveAvailableBroadcast(user, broadcast);
 
-        public async Task SendAvailBroadcastCaller(string user, string broadcast)
-         => await Clients.Caller.ReceiveAvailableBroadcast(user, broadcast);
+        // [HubMethodName("SendAvailBroadcastCaller")]
+        //public async Task SendAvailBroadcastToCaller(string user, string broadcast)
+        //{
 
-        public async Task SendBroadcastToGroup(string user, string broadcast)
-         => await Clients.Group("Service Providers").ReceiveAvailableBroadcast(user, broadcast);
+        //    await Clients.Caller.ReceiveAvailableBroadcast(user, broadcast);
+        //}
+        //[HubMethodName("SendBroadcastToGroup")]
+        //public async Task SendBroadcastToGroup(string user, string broadcast)
+        // => await Clients.Group("Consumer").ReceiveAvailableBroadcast(user, broadcast);
 
         //Direct communication
         // [HubMethodName("SendUpdatedRequestToConsumer")] named hub methods
-        //public async Task UpdateRequest(string user, string message)
-        // => await Clients.User(user).ReceiveUpdatedOrder(user, message);
-
+        public async Task SendRequestToConsumer(string user, string status)
+        {
+            
+            await Clients.User(user).ReceiveOrder(status);
+        }
         //public async Task SendRequestToConsumer(string user, string broadcast)
         //=> await Clients.Caller.ReceiveAvailableBroadcast(user, broadcast);
 
-       
+
     }
 }

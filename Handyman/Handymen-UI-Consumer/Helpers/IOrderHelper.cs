@@ -5,6 +5,6 @@ namespace Handymen_UI_Consumer.Helpers
     public interface IOrderHelper
     {
 
-        Order ConfirmOrder(Order order);
+        Task<List<Order>> LoadUserOrders();
     }
 }

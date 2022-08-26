@@ -8,10 +8,6 @@ namespace Handymen_UI_Consumer.Models
         [DataType(DataType.Text)]
         [Display(Name = "Service Name")]
         public string? Name { get; set; }
-        [DataType(DataType.Text)]
-        [Display(Name = "Service Description")]
-        public string? Decription { get; set; }
-
         public int CategoryId { get; set; }
         [DataType(DataType.Text)]
         [Display(Name = "Category Name")]
@@ -23,6 +19,10 @@ namespace Handymen_UI_Consumer.Models
 
         [Display(Name = "Service Image")]
         public string? ImageUrl { get; set; }
-        public string? Description { get; internal set; }
+
+        [DataType(DataType.Text)]
+        [Display(Name = "Service Description")]
+
+        public string? Description { get; set; }
     }
 }

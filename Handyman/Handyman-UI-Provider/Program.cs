@@ -11,6 +11,7 @@ using Handyman_UI_Provider.Hubs;
 using Handyman_UI_Provider.Hubs.Order;
 using Handyman_UI_Provider.Hubs.Request;
 using Handyman_UI_Provider.Hubs.ServiceDelivery;
+using Handyman_UI_Provider.Worker;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("IdentityDataContextConnection") ?? throw new InvalidOperationException("Connection string 'IdentityDataContextConnection' not found.");
@@ -24,6 +25,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 
 
 // Add services to the container.
+builder.Services.AddSignalR();
+builder.Services.AddHostedService<Worker>();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 

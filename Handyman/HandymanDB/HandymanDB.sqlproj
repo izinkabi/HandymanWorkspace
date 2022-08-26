@@ -76,7 +76,6 @@
     <Build Include="Schemas\Service.sql" />
     <Build Include="Schemas\ServiceDelivery.sql" />
     <Build Include="Schemas\Customer.sql" />
-    <Build Include="Tables\Consumer.sql" />
     <Build Include="Tables\Order.sql" />
     <Build Include="Tables\ServiceProvider.sql" />
     <Build Include="Tables\ProviderService.sql" />

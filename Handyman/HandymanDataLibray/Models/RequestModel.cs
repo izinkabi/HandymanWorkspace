@@ -12,6 +12,7 @@ namespace HandymanDataLibray.Models
         public int OrderId { get; set; }
         public int ProviderServiceID { get; set; }
         public int IsDelivered { get; set; }
-       
+        public DateTimeOffset DateAcceted { get; set; }
+
     }
 }
