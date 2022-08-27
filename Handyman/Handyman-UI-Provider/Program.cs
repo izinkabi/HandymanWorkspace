@@ -11,6 +11,8 @@ using Handyman_UI_Provider.Hubs;
 using Handyman_UI_Provider.Hubs.Order;
 using Handyman_UI_Provider.Hubs.Request;
 using Handyman_UI_Provider.Hubs.ServiceDelivery;
+using HandymanUILibrary.API.Consumer;
+using HandymanUILibrary.API.ServiceProvider;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("IdentityDataContextConnection") ?? throw new InvalidOperationException("Connection string 'IdentityDataContextConnection' not found.");
@@ -29,8 +31,8 @@ builder.Services.AddServerSideBlazor();
 
 //Dependency Injection
 builder.Services.AddSingleton<IAPIHelper, APIHelper>();
-builder.Services.AddTransient<IServiceEndpoint, ServiceEndpoint>();
-builder.Services.AddTransient<IServiceDelivery, ServiceDelivery>();//service delivery in Hubs
+builder.Services.AddScoped<IServiceEndpoint, ServiceEndpoint>();
+
 
 builder.Services.AddResponseCompression(opts =>
 {
@@ -60,9 +62,9 @@ app.UseRouting();
 
 app.MapBlazorHub();
 //Mapping of Hub
-app.MapHub<ChatHub>("chathub");
-app.MapHub<OrderHub>("orderhub");
-app.MapHub<RequestHub>("requesthub");
+app.MapHub<ChatHub>("/chathub");
+app.MapHub<OrderHub>("/orderhub");
+app.MapHub<RequestHub>("/requesthub");
 
 app.MapFallbackToPage("/_Host");
 app.UseAuthentication();

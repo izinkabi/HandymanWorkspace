@@ -22,7 +22,7 @@ namespace Handyman_UI_Provider.Hubs.ServiceDelivery
         }
 
         //API call to filter the service providers by a service  they provide
-        internal async Task<List<ProviderServiceModel>> FilterServiceProvidersByService(int id)
+        public async Task<List<ProviderServiceModel>> FilterServiceProvidersByService(int id)
         {
             var provider = await _serviceEndPoint.GetProviderServicesByServiceId(id);
             return provider;
