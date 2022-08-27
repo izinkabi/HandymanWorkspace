@@ -15,7 +15,7 @@
 @inject NavigationManager NavManager
 @inject ILogger<OrderComponent> Logger
 @inject PersistentComponentState ApplicationState
-@inject IOrderEndPoint _orderEndpointService
+@inject IOrderHelper _orderHelper
 @inject IMemoryCache _cache
 @inject AuthenticationStateProvider _authenticationStateProvider
 @inject IOrderEndPoint _orderEndPoint
@@ -31,14 +31,14 @@
               <div class="card-body">
                     <h5 class="card-title" id="orderName">@order.ServiceProperty.Name</h5>
                     <p class="card-text" id="orderDescription"> @order.ServiceProperty.Description</p>
-                <p class="card-text"><small class="text-muted"> @order.DateCreated</small></p>
+                    <p class="card-text"><small class="text-muted"> @order.DateCreated.ToString("MMMM dd, yyyy")</small></p>
               </div>
             </div>
           </div>
 
-            @if(!(order.IsAccepted==0))
+            @if(((order.IsAccepted==0) && (order.IsConfirmed)) || order.IsTracking)
             {
-                <button @onclick="TrackOrder" class="btn btn-outline-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Track Order</button>
+                <button @onclick="TrackOrder" class="btn btn-outline-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">View</button>
             }
 
             @if (!order.IsConfirmed && (order.IsAccepted==0))
@@ -88,7 +88,7 @@
     bool IsProviderAvailable;
     bool OpenConnection;
     string? user;
-
+    List<Order> userOrders;
 
 
     [Parameter]
@@ -209,22 +209,7 @@
             //await orderHubConnection.StartAsync();
             //await requestHubConnection.StartAsync();
 
-            //***Component persisting state setup****//
-            //persistingSubscription =
-            //    ApplicationState.RegisterOnPersisting(PersistOrder);
 
-            //if (!ApplicationState.TryTakeFromJson<Order>(
-            //    "fetchdata", out var restored))
-            //{
-            //    //*The following code get the order from the IOrderEndPoint*//
-            //    //order =
-            //    // await _orderEndpointService.GetOrders();
-
-            //}
-            //else
-            //{
-            //    order = restored!;
-            //}
 
             ////Caching the order model
             //if (!_cache.TryGetValue("ordercomp", out Order cacheValue))
@@ -244,6 +229,25 @@
         {
             ErrorMsg = ex.Message;
         }
+
+        //***Component persisting state setup****//
+        persistingSubscription =
+            ApplicationState.RegisterOnPersisting(PersistOrder);
+
+        if (!ApplicationState.TryTakeFromJson<Order>(
+            "fetchdata", out var restored))
+        {
+            //*The following code get the order from the IOrderEndPoint*//
+            //order =
+            await _orderHelper.LoadUserOrders();
+
+        }
+        else
+        {
+            order = restored!;
+        }
+
+
         NavManager.LocationChanged += HandleLocationChanged;
     }
 
@@ -311,7 +315,14 @@
 
         //order = cacheValue;
         order.IsTracking = true;
-        NavManager.NavigateTo("orderdetails", true);
+        NavManager.NavigateTo($"orderdetails?id={@order.Id}", true);
+
+        //NavManager.NavigateTo(NavManager.GetUriWithQueryParameters("orderdetails",
+        //            new Dictionary<string, object>
+        //                {
+        //                    ["id"] = order.Id
+
+        //            }));
     }
 
     //Cancelling 
@@ -333,7 +344,7 @@
     //Persisting the order  
     private Task PersistOrder()
     {
-        ApplicationState.PersistAsJson("fetorder", _orderEndpointService);
+        ApplicationState.PersistAsJson("fetorder", order);
 
         return Task.CompletedTask;
     }

@@ -4,7 +4,8 @@ namespace Handymen_UI_Consumer.Helpers
 {
     public interface IOrderHelper
     {
-
+        Task<List<Service>> LoadServices();
         Task<List<Order>> LoadUserOrders();
+        Task<Order> GetOrderById(int id);
     }
 }

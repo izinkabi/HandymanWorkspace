@@ -57,7 +57,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapRazorPages();
 app.MapBlazorHub();
-app.MapFallbackToPage("/_Host");
+app.MapFallbackToFile("/example/{param?}", "index.cshtml");
 
 
 app.Run();

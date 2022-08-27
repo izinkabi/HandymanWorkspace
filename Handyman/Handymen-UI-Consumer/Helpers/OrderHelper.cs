@@ -1,78 +1,104 @@
 ﻿using HandymanUILibrary.API;
 using HandymanUILibrary.API.Consumer;
 using Handymen_UI_Consumer.Areas.Identity.Data;
+using Handymen_UI_Consumer.Data;
 using Handymen_UI_Consumer.Models;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
 namespace Handymen_UI_Consumer.Helpers
 {
-    public class OrderHelper: IOrderHelper
+    public class OrderHelper:  IOrderHelper
     {
        
         AuthenticationStateProvider? _authenticationStateProvider;
         IServiceEndPoint _serviceEndPoint;
         IOrderEndPoint? _orderEndpoint;
         private List<Service>? serviceDisplayList;
-        private Order order;
-        private List<Order> ordersDisplayList;
+  
+        private Order? order;
+        private List<Order>? ordersDisplayList;
         public SelectList? serviceCategorySelectList { get; set; }
-        public List<string> serviceCategories { get; set; }
-        string ErrorMsg;
-        public OrderHelper(AuthenticationStateProvider authenticationStateProvider,
-            IOrderEndPoint orderEndPoint,IServiceEndPoint serviceEndPoint)
+        public List<string>? serviceCategories { get; set; }
+        string? ErrorMsg;
+        private readonly Handymen_UI_ConsumerContext _context;
+        public OrderHelper(Handymen_UI_ConsumerContext contex,
+            IOrderEndPoint orderEndPoint,IServiceEndPoint serviceEndPoint, AuthenticationStateProvider authenticationState)
         {
-            _authenticationStateProvider = authenticationStateProvider; 
+            _context = contex; 
             _orderEndpoint = orderEndPoint; 
-            _serviceEndPoint = serviceEndPoint; 
+            _serviceEndPoint = serviceEndPoint;
+            _authenticationStateProvider = authenticationState;
+           
+            
         }
 
+
+        public async Task<Order> GetOrderById(int id)
+        {
+            if(ordersDisplayList == null)
+            {
+                await LoadUserOrders();
+            }
+            foreach(Order o in ordersDisplayList)
+            {
+                if(o.Id == id)
+                {
+                    order = o;
+                    
+                }
+            }
+            return order;
+        }
 
         public async Task<List<Order>> LoadUserOrders()
         {
             ordersDisplayList = new();
-            var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
-            var UserId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
-
-            var orders = await _orderEndpoint.GetOrders(UserId);
-            await LoadServices();
-
-            foreach (HandymanUILibrary.Models.OrderModel o in orders)
+            if(_authenticationStateProvider !=null)
             {
-                
-                foreach(var service in serviceDisplayList)
+                var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
+                var UserId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+
+                var orders = await _orderEndpoint.GetOrders(UserId);
+                await LoadServices();
+                //dirty work
+                foreach (HandymanUILibrary.Models.OrderModel o in orders)
                 {
-                    if (o.ServiceId == service.Id)
+
+                    foreach (var service in serviceDisplayList)
                     {
-                        order = new();
-                        HandymanUILibrary.Models.OrderModel libryOrder = new();
+                        if (o.ServiceId == service.Id)
+                        {
+                            order = new();
+                          
+                            order.DateCreated = o.DateCreated;
+                            order.IsConfirmed = true;
+                            order.IsAccepted = o.IsAccepted;
+                            order.Id = o.Id;
 
-                        libryOrder.ServiceId = service.Id;
-                        order.DateCreated = libryOrder.DateCreated;
-                        order.IsConfirmed = true;
-                        order.IsAccepted = libryOrder.IsAccepted;
-                        order.Id = libryOrder.Id;
 
+                            order.ServiceProperty = new();
+                            order.ServiceProperty.Name = service.Name;
+                            order.ServiceProperty.CategoryName = service.CategoryName;
+                            order.ServiceProperty.CategoryDescription = service.CategoryDescription;
+                            order.ServiceProperty.Description = service.Description;
+                            order.ServiceProperty.ImageUrl = service.ImageUrl;
+                            order.IsTracking = false;
+                            ordersDisplayList.Add(order);
 
-                        order.ServiceProperty = new();
-                        order.ServiceProperty.Name = service.Name;
-                        order.ServiceProperty.CategoryName = service.CategoryName;
-                        order.ServiceProperty.CategoryDescription = service.CategoryDescription;
-                        order.ServiceProperty.Description = service.Description;
-                        order.ServiceProperty.ImageUrl = service.ImageUrl;
-                        order.IsTracking = false;
-                        ordersDisplayList.Add(order);
-                        
+                        }
                     }
+
                 }
-                
             }
-            return ordersDisplayList;
+                return ordersDisplayList;
+            
         }
 
         //Loading Services
-        public async Task LoadServices()
+        public async Task<List<Service>> LoadServices()
         {
             serviceDisplayList = new List<Service>();
             List<HandymanUILibrary.Models.ServiceModel> services = new List<HandymanUILibrary.Models.ServiceModel>();
@@ -105,7 +131,7 @@ namespace Handymen_UI_Consumer.Helpers
             {
                 ErrorMsg = ex.Message;
             }
-
+            return serviceDisplayList;
         }
 
         //Loading the Service Categories from IServicesEndPoint service

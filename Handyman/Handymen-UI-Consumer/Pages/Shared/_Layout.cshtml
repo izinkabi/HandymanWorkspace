@@ -7,7 +7,7 @@
 
 
 @inject SignInManager<Handymen_UI_ConsumerUser> SignInManager
-@inject UserManager<Handymen_UI_ConsumerUser> UserManager
+
 @inject IOrderHelper _orderHelper;
 
 
@@ -26,6 +26,9 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Handymen_UI_Consumer.styles.css" asp-append-version="true" />
 </head>
+
+
+<!--NavBar-->
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 sticky-lg-top">
@@ -75,11 +78,10 @@
             </div>
         </nav>
     </header>
-
+    <!--End NavBar-->
 
     <!--right Menu-->
    
-
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header">
             <h5 id="offcanvasRightLabel">Orders </h5>
@@ -87,7 +89,7 @@
         </div>
         
         
-             <!--Order Components list scrollable-->
+       <!--Order Components list scrollable-->
         
     @if (SignInManager.IsSignedIn(User))
         {
@@ -100,9 +102,13 @@
                         You Have Not Made Any Orders As Yet
                     </div>
                 </div>
-            }else {
+            }else 
+                {
 
-                var orders = await _orderHelper.LoadUserOrders();
+                    
+                     var orders = await _orderHelper.LoadUserOrders();
+                   
+                
                 <div class="offcanvas-body" heightoverflow-y:scroll>
                  <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" class="scrollspy-example bg-light p-3 rounded-2" tabindex="0">
                         
@@ -120,14 +126,18 @@
 
                 @foreach (Order order in orders)
                 {
-                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@order" />
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                    
-                            
-                    
 
+                           
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@order" />
+                                    @*<div class="row justify-content-center">
+                                        <a href="/OrderDetails?order=@{@order}"  class="btn btn-info">View</a>
+                                    </div>*@
+                                </div>
+                           
+                            
+                           
                     <hr />
                 }
                 </div>
@@ -136,7 +146,7 @@
                 
 
             
-        }
+    }
             <!--End Order Components list scrollabe-->
 
 
@@ -157,7 +167,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="staticBackdropLabel">Order-Confirmation</h5>
-                    <button asp-page="/Index" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <a asp-page="/Index" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a>
                 </div>
                 <div class="modal-body alert-success">
                     <h2>
@@ -167,7 +177,7 @@
                 </div>
                 <div class="modal-footer">
 
-                    <button asp-page="/Index" class="btn btn-primary">Understood</button>
+                    <a asp-page="/Index"  class="btn btn-primary">Understood</a>
                     
                 </div>
             </div>
