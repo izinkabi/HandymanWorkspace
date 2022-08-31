@@ -1,9 +1,10 @@
 ﻿CREATE PROCEDURE [ServiceDelivery].[spRequestLookUpByProviderServiceId]
-	@ProviderServiceID int = 0
+
+	@ServiceProviderId NVARCHAR(450)
 	
 AS
 BEGIN
 	SELECT *
 	FROM	[ServiceDelivery].[Request]
-	WHERE	ProviderServiceID = @ProviderServiceID;
+	WHERE	[ServiceProviderId] = @ServiceProviderId;
 END

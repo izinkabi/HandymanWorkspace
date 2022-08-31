@@ -70,6 +70,7 @@
     <Folder Include="Stored Procedures\ServiceDelivery\ServiceProvider" />
     <Folder Include="Stored Procedures\Customer\Order" />
     <Folder Include="Stored Procedures\Service\Category" />
+    <Folder Include="Stored Procedures\ServiceDelivery\Request\Order" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\ScriptsIgnoredOnImport.sql" />
@@ -77,7 +78,6 @@
     <Build Include="Schemas\ServiceDelivery.sql" />
     <Build Include="Schemas\Customer.sql" />
     <Build Include="Tables\Order.sql" />
-    <Build Include="Tables\ServiceProvider.sql" />
     <Build Include="Tables\ProviderService.sql" />
     <Build Include="Tables\Request.sql" />
     <Build Include="Stored Procedures\Customer\spConsumerInsert.sql" />
@@ -109,5 +109,6 @@
     <Build Include="Stored Procedures\Service\Category\spCategoryInsert.sql" />
     <Build Include="Stored Procedures\ServiceDelivery\ServiceProvider\spProviderServiceLookUpByServiceId.sql" />
     <Build Include="Stored Procedures\ServiceDelivery\ServiceProvider\spProviderLookUpByProviderId.sql" />
+    <Build Include="Stored Procedures\ServiceDelivery\Request\Order\spOrdersLookUpByServiceId.sql" />
   </ItemGroup>
 </Project>

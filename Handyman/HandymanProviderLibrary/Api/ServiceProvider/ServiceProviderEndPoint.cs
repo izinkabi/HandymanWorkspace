@@ -28,7 +28,7 @@ namespace HandymanProviderLibrary.Api.ServiceProvider
             try
             {
                 List<ProviderServiceModel>? httpResponseMessage = await _apiHelper.ApiClient
-                    .GetFromJsonAsync<List<ProviderServiceModel>>($"api/GetProvidersServicesByServiceId?serviceId={serviceId}");
+                    .GetFromJsonAsync<List<ProviderServiceModel>>($"/api/GetProvidersServicesByProviderId?providerId={serviceId}");
                 return httpResponseMessage;
             }
             catch (Exception ex)
@@ -36,5 +36,8 @@ namespace HandymanProviderLibrary.Api.ServiceProvider
                 throw new Exception(ex.Message);
             }
         }
+
+
+       
     }
 }

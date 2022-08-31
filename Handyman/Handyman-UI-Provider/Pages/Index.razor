@@ -1,22 +1,50 @@
 ﻿@page "/"
+@using HandymanProviderLibrary.Api.Request
+@using HandymanProviderLibrary.Api.Service
+@using HandymanProviderLibrary.Api.ServiceProvider
+@using HandymanProviderLibrary.Models
+@using Handyman_UI_Provider.Models
+@using Handyman_UI_Provider.Models.Services
+@inject IRequestEndPoint _requestEndPoint
+@inject NavigationManager NavManager
+@inject IServiceEndpoint _serviceEndPoint 
+@inject IServiceProviderEndPoint? _serviceProviderEndPoint
+@inject AuthenticationStateProvider _authenticationStateProvider
 
 <PageTitle>Index</PageTitle>
 
 <div class="container-fluid">
      <h3>Dashboard</h3>
+     <!--New Requests Cards-->
          <div class="container text-start">
           <div class="row g-2">
-            <div class="col-3">
-              <div class="p-3 border bg-light">
-                 <div class="card text-bg-dark">
-                  <img src="./Images/bg/Statue of liberty_Monochromatic.png" class="card-img shadow p-3 rounded" alt="..." width="75">
-                  <div class="card-img-overlay">
-                    <h5 class="card-title">Popularity</h5>
+
+              @foreach(var r in @newRequests)
+              {
+                  //Requests as a list
+               
+                <div class="col-3" >
+                    <a href="/RequestComponent?Id=@(@r.order.Id)">
+                  <div class="p-3 border bg-light">
+                     <div class="card text-bg-dark">
+                      
+                          
+                      <img src="./Images/@(@r.Service.ImageUrl)" class="card-img shadow p-3 rounded" alt="..." width="75"/>
+                      
+                      <div class="card-img-overlay">
+                            <h5 class="card-title" >@r.Service.Name Request</h5>
+                      </div>
+                      <div class="card-footer">
+                                <h4 class="text-center"><strong>Date Requested :</strong> @r.order.DateCreated.ToString("MM/dd/yyyy HH:mm")</h4>
+                      </div>
+                    </div>
                   </div>
+                  </a>
                 </div>
-              </div>
-            </div>
-             <div class="col-3">
+             
+              }
+            <!--------End New Request Cards-------->
+             @*<div class="col-3">
               <div class="p-3 border bg-light">
                  <div class="card text-bg-dark">
                   <img src="./Images/bg/Money motivation _Monochromatic.png" class="card-img shadow p-3 rounded" alt="..." width="75">
@@ -47,7 +75,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div>*@
           </div>
         </div>
 </div>
@@ -58,23 +86,41 @@
       
       <div class="col-7 align-content-start g-4"><table class="table">
   <thead>
+      <!--Provider's services list-->
     <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
+      
+      <th scope="col">Providing service name</th>
+      <th scope="col">Providing service description</th>
+      <th scope="col">ServiceImage</th>
       <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>mdo</td>
-      <td><button>Edit</button></td>
-    </tr>
-    <tr>
+     
+                @if (providerServices!=null)
+                {
+
+                
+                foreach (var ps in providerServices)
+                {
+                    foreach(var s in services)
+                    {
+                        if(ps.ServiceId==s.Id)
+                        {
+
+                    
+                            <tr>
+
+                                <th scope="row">@s.Name</th>
+                                  <td>@s.Decription</td>
+                                  <td><img src="./Images/@s.ImageUrl" class="shadow p-3 rounded" alt="..." width="75" /></td>        
+                                  <td><button>Edit</button></td>
+                            </tr>
+                        }
+                    }
+                }
+               }
+   @* <tr>
       <th scope="row">2</th>
       <td>Jacob</td>
       <td>Thornton</td>
@@ -86,7 +132,7 @@
       <td colspan="2">Larry the Bird</td>
       <td>twitter</td>
       <td><button>Edit</button></td>
-    </tr>
+    </tr>*@
   </tbody>
 </table>
 </div>
@@ -108,3 +154,114 @@
       </div>
     </div>
     <hr/>
+
+@code{
+
+    private RequestDisplayModel? request;
+    private List<RequestDisplayModel>? requsts;
+    private List<RequestDisplayModel>? newRequests;
+    private List<DisplayServiceModel>? services;
+    private List<ProviderServiceModel>? providerServices;
+    private RequestDisplayModel? newRequest;
+
+
+    string? ErrorMsg;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        //await the orders
+        await LoadOrders();
+
+    }
+
+    private async Task LoadServices()
+    {
+        services = new List<DisplayServiceModel>();
+        List<ServiceModel>? servicesData = new ()!;
+        try
+        {
+            servicesData = await _serviceEndPoint.GetServices();
+        }
+        catch (Exception ex)
+        {
+            ErrorMsg = ex.Message;
+        }
+
+        foreach (var service in servicesData)
+        {
+            //populating a service to UI model
+            var s = new DisplayServiceModel();
+            s.Name = service.Name;
+            s.Decription = service.Description;
+            s.ImageUrl = service.ImageUrl;
+            s.Id = service.Id;
+            s.CategoryName = service.Name;
+            s.CategoryDescription = service.Description;
+            s.CategoryType = service.Type;
+            services.Add(s);
+        }
+
+    }
+
+
+    private async Task LoadRequests()
+    {
+        try
+        {
+
+
+        }
+        catch(Exception ex)
+        {
+
+        }
+    }
+
+    private void DisplayRequestDetails(RequestDisplayModel btnRequest)
+    {
+        NavManager.NavigateTo(NavManager.GetUriWithQueryParameter("requests/requst", btnRequest.order.Id));//not yet there
+    }
+    private async Task LoadOrders()
+    {
+        List<OrderModel>? libOrders = new()!;
+        newRequests = new()!;
+        try
+        {
+            await LoadServices();
+           
+
+            var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
+            var UserId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+            providerServices = await _serviceEndPoint.GetProviderServiceByProviderId(UserId);
+            
+           
+            foreach(var ps in providerServices)
+            {
+                var os = await _requestEndPoint.GetAllOrdersByService(ps.ServiceId);
+                libOrders.AddRange(os);
+            }
+            ErrorMsg = string.Empty;
+
+            foreach(var odr in libOrders)
+            {
+                var req = new RequestDisplayModel()!;
+                req.order = odr;
+                foreach (DisplayServiceModel dsm in services)
+                {
+                    if (odr.ServiceId == dsm.Id)
+                    {
+                        req.Service = dsm;
+                    }
+                    
+                }
+                newRequests.Add(req);
+            }
+            
+        }catch(Exception ex)
+        {
+            ErrorMsg = ex.Message;
+        }
+        
+    }
+}

@@ -1,19 +1,28 @@
 ﻿@page "/Services"
 
+@using HandymanProviderLibrary.Api.ServiceProvider
 @using HandymanProviderLibrary.Models
+@using HandymanProviderLibrary.API
 @using Handyman_UI_Provider.Models.Services
 @using HandymanProviderLibrary.Api.Service
 
 @inject IServiceEndpoint _serviceEndpoint
+@inject IServiceProviderEndPoint _serviceProviderEndPoint
+@inject AuthenticationStateProvider _authenticationStateProvider
+@inject NavigationManager NavManager
 
-<h3>Services</h3>
+<h5 class="text-center">Available Services</h5>
 
 <!--List of Services-->
 <div class="container px-4">
     <div class="row gy-5">
-
-
-
+        @if (isNewAdded)
+        {
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>You're are a Handymen for reals!</strong> You just added @newlyAddedService as a new Service on your profile.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
         <!--Table of services -->
          <table class="table">
         <thead>
@@ -34,15 +43,26 @@
             </div>
         </div>
         }
-        @foreach (var service in AllServices)
+        @foreach (var s in AllServices)
         {
-        <tbody>
-        <tr>
-            <th scope="row">@service.Id</th>
-            <td>@service.Name</td>
-            <td>@service.Decription</td>
-            <td>@service.CategoryName / @service.CategoryType</td>
-            <td><img src="./Images/@service.ImageUrl" style="max-width: 50px" class="img-fluid rounded" alt="@service.Decription"></td>
+                <tbody>
+                    <tr>
+
+                       
+                        <th scope="row">@s.Id</th>
+                        @{
+                            //getting the selected service
+                            newlyAddedService = new();
+                            newlyAddedService = s;
+                            //providerService = new();
+                            //providerService.ServiceId = s.Id;
+                        }
+                        <td>@s.Name</td>
+                        <td>@s.Decription</td>
+                        <td>@s.CategoryName / @s.CategoryType</td>
+                        <td><img src="./Images/@s.ImageUrl" style="max-width: 50px" class="img-fluid rounded" alt="@s.Decription"></td>
+                        <td><button  @onclick="() => AddToProviderServices(s)" class="btn btn-primary">Add to my services</button></td>
+                        
         </tr>
         </tbody>
          }
@@ -54,9 +74,11 @@
 
 @code {
     private List<DisplayServiceModel>? AllServices;
-    private DisplayServiceModel service = new();
+    private DisplayServiceModel newlyAddedService = new();
     private List<ServiceModel>? servicesData;
-    string errorString;
+    private ProviderServiceModel? providerService;
+    string? errorString;
+    bool isNewAdded;
 
     protected override async Task OnInitializedAsync()
     {
@@ -92,4 +114,32 @@
         return AllServices;
     }
 
-   }
+    //This method get the user Id and creates the provider's service
+    public async Task AddToProviderServices(DisplayServiceModel btnService)
+    {
+        if( (btnService!=null) && ( _authenticationStateProvider is not null))
+        {
+            newlyAddedService = btnService;//Newly added service
+
+            var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
+            var UserId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+
+            try
+            {
+                providerService = new();
+                providerService.ServiceProviderId = UserId;
+                providerService.ServiceId = btnService.Id;
+
+                
+                var result = await _serviceEndpoint.CreateProviderService(providerService);
+
+                isNewAdded = true;
+                //NavManager.NavigateTo()
+            }
+            catch (Exception ex)
+            {
+                errorString = ex.Message;
+            }
+        }
+    }
+}

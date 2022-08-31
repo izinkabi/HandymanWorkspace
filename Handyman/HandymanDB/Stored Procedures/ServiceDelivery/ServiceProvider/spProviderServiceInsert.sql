@@ -1,10 +1,9 @@
 ﻿CREATE PROCEDURE [ServiceDelivery].[spProviderServiceInsert]
-	@Id                INT,
-    @ServiceProviderId NVARCHAR,
-    @ServiceId             INT
+    @ServiceProviderId NVARCHAR(450),
+    @ServiceId   INT
 AS
 BEGIN
 Set nocount on
-	INSERT INTO [ServiceDelivery].[ProviderService] (Id,ServiceProviderId,ServiceId)
-	VALUES (@Id,@ServiceProviderId,@ServiceId)	
+	INSERT INTO [ServiceDelivery].[ProviderService] (ServiceProviderId,ServiceId)
+	VALUES (@ServiceProviderId,@ServiceId)	
 END

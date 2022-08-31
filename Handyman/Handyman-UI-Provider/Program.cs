@@ -1,6 +1,3 @@
-using Handyman_UI_Provider.Data;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Handyman_UI_Provider.Areas.Identity.Data;
@@ -10,8 +7,8 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Handyman_UI_Provider.Hubs;
 using Handyman_UI_Provider.Hubs.Order;
 using Handyman_UI_Provider.Hubs.Request;
-using Handyman_UI_Provider.Hubs.ServiceDelivery;
-using Handyman_UI_Provider.Worker;
+using HandymanProviderLibrary.Api.Request;
+using HandymanProviderLibrary.Api.ServiceProvider;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("IdentityDataContextConnection") ?? throw new InvalidOperationException("Connection string 'IdentityDataContextConnection' not found.");
@@ -26,14 +23,15 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 
 // Add services to the container.
 builder.Services.AddSignalR();
-builder.Services.AddHostedService<Worker>();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
 //Dependency Injection
 builder.Services.AddSingleton<IAPIHelper, APIHelper>();
 builder.Services.AddTransient<IServiceEndpoint, ServiceEndpoint>();
-builder.Services.AddTransient<IServiceDelivery, ServiceDelivery>();//service delivery in Hubs
+builder.Services.AddTransient<IRequestEndPoint, RequestEndPoint>();
+builder.Services.AddTransient<IServiceProviderEndPoint, ServiceProviderEndPoint>();
+//builder.Services.AddTransient<IServiceDelivery, ServiceDelivery>();//service delivery in Hubs
 
 builder.Services.AddResponseCompression(opts =>
 {

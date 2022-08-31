@@ -1,10 +1,10 @@
 ﻿CREATE PROCEDURE [ServiceDelivery].[spRequestInsert]
 	
     @OrderId           INT,
-    @ProviderServiceID INT,
+    @ServiceId INT,
     @IsDelivered      INT 
 AS
 BEGIN
-	INSERT INTO [ServiceDelivery].[Request] (OrderId,ProviderServiceID,IsDelivered  )
-    VALUES  (@OrderId,@ProviderServiceID,@IsDelivered)
+	INSERT INTO [ServiceDelivery].[Request] (OrderId,ServiceId,IsDelivered  )
+    VALUES  (@OrderId,@ServiceId,@IsDelivered)
 END

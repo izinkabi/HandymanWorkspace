@@ -10,6 +10,16 @@ namespace HandymanAPI.Controllers
         private RequestData requestData;
 
 
+        //Return the orders the provider is related to by service
+        [Route("api/GetAllOrdersByService")]
+        public List<OrderModel> GetAllOrdersByService(int serviceId)
+        {
+            requestData = new RequestData();
+            
+            return requestData.GetAllOrdersByService(serviceId);
+        }
+
+
         //GET 
         //api/Request/@ConsumerId
         [Route("api/GetRequestsByProviderId")]

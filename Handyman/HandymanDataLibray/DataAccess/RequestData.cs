@@ -10,6 +10,16 @@ namespace HandymanDataLibray.DataAccess
 {
     public class RequestData
     {
+        //Get the relevant orders for the provider to accept or decline
+        public List<OrderModel> GetAllOrdersByService(int serviceId)
+        {
+            SQLDataAccess sql = new SQLDataAccess();
+
+            var output = sql.LoadData<OrderModel, dynamic>("ServiceDelivery.spOrdersLookUpByServiceId", new { ServiceId = serviceId }, "HandymanDB");
+
+            return output;
+        }
+
         ////Get a list of request by provider's id
         public List<RequestModel> GetRequestsByProviderId(string providerId)
         {

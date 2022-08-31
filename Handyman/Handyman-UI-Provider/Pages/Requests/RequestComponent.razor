@@ -1,0 +1,19 @@
+﻿@page "/requestcomponent"
+
+
+@using Handyman_UI_Provider.Models
+
+    <div>
+       @* <img src="./images/@request.Service.ImageUrl"/>
+        <strong>@request.Service.Name</strong>*@
+    <h6>@Id</h6>
+    </div>
+
+
+@code {
+
+    [Parameter]
+   
+    public int? Id { get; set; }
+
+}
