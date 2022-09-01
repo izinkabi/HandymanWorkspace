@@ -1,4 +1,6 @@
 ﻿@page
+
+@using Handyman_UI_Provider.Pages.Services
 @model ConfirmEmailModel
 @{
     ViewData["Title"] = "Confirm email";
@@ -6,3 +8,6 @@
 
 <h1>@ViewData["Title"]</h1>
 <partial name="_StatusMessage" model="Model.StatusMessage" />
+<div class="container-fluid active">
+<component type="typeof(Services)" render-mode="ServerPrerendered" />
+</div>

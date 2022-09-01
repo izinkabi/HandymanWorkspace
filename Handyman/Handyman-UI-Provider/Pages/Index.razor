@@ -18,7 +18,7 @@
 <PageTitle>Home</PageTitle>
 
 <div class="container-fluid">
-     <h3>Dashboard</h3>
+     <h3 class="text-center">Dashboard</h3>
      <!--New Request Cards-->
          <div class="container text-start">
           <div class="row g-2">
@@ -47,7 +47,7 @@
               }
             @if (newRequests.Count.Equals(0))
             {
-                <div class="call-out">
+                <div class="alert alert-dismissible alert-dark">
                     No New Request yet
                     </div>
             }
@@ -57,10 +57,10 @@
         </div>
 </div>
 <hr/>
-<h3>Business</h3>
-<h>My Services</h>
+
   <div class="row">
-      
+    <h3 class="text-center">Business</h3>
+  
       <div class="col-7 align-content-start g-4"><table class="table">
   <thead>
       <!--Provider's services list-->
@@ -72,7 +72,8 @@
       <th scope="col"></th>
     </tr>
   </thead>
-  <tbody>   
+  <tbody>
+                
                @if (providerServices!=null)
                 {
 
@@ -95,10 +96,16 @@
                         }
                     }
                 }
+                    
                }
+                 
                <!--End List-->
   </tbody>
 </table>
+        @if (providerServices !=null && providerServices.Count.Equals(0))
+        {
+        <div class="alert alert-info"> <p>You haven't added any services on your profile</p></div>
+        }
 </div>
       <div class="col-5 align-content-end g-4">
           <div class="d-flex position-relative">
