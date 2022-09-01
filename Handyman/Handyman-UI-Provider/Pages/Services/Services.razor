@@ -19,7 +19,7 @@
         @if (isNewAdded)
         {
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <strong>You're are a Handymen for reals!</strong> You just added @newlyAddedService as a new Service on your profile.
+                <strong>You're are a Handymen for reals!</strong> You just added @newlyAddedService.Name as a new Service on your profile.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         }
@@ -35,6 +35,7 @@
             <th scope="col">Options</th>
         </tr>
         </thead>
+
         @if (AllServices == null)
         {
         <div class="d-flex justify-content-center">
@@ -43,12 +44,11 @@
             </div>
         </div>
         }
+
         @foreach (var s in AllServices)
         {
                 <tbody>
                     <tr>
-
-                       
                         <th scope="row">@s.Id</th>
                         @{
                             //getting the selected service
@@ -58,13 +58,13 @@
                             //providerService.ServiceId = s.Id;
                         }
                         <td>@s.Name</td>
-                        <td>@s.Decription</td>
+                        <td>@s.Description</td>
                         <td>@s.CategoryName / @s.CategoryType</td>
-                        <td><img src="./Images/@s.ImageUrl" style="max-width: 50px" class="img-fluid rounded" alt="@s.Decription"></td>
+                        <td><img src="./Images/@s.ImageUrl" style="max-width: 50px" class="img-fluid rounded" alt="@s.Description"></td>
                         <td><button  @onclick="() => AddToProviderServices(s)" class="btn btn-primary">Add to my services</button></td>
                         
-        </tr>
-        </tbody>
+                    </tr>
+                </tbody>
          }
           </table>
     </div>
@@ -103,7 +103,7 @@
             //populating a service to UI model
             var s = new DisplayServiceModel();
             s.Name = service.Name;
-            s.Decription = service.Description;
+            s.Description = service.Description;
             s.ImageUrl = service.ImageUrl;
             s.Id = service.Id;
             s.CategoryName = service.Name;

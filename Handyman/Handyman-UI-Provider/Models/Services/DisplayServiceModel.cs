@@ -10,7 +10,7 @@ namespace Handyman_UI_Provider.Models.Services
             public string? Name { get; set; }
             [DataType(DataType.Text)]
             [Display(Name = "Service Description")]
-            public string? Decription { get; set; }
+            public string? Description { get; set; }
             [DataType(DataType.Text)]
             [Display(Name = "Service Category")]
             //public CategoryModel? Category { get; set; }

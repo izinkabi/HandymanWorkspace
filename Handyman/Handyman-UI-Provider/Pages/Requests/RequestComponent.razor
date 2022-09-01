@@ -1,19 +1,65 @@
 ﻿@page "/requestcomponent"
 
-
+@using HandymanProviderLibrary.Api.Request
+@using HandymanProviderLibrary.Models
 @using Handyman_UI_Provider.Models
+@inject IRequestEndPoint _requestEndPoint
 
-    <div>
-       @* <img src="./images/@request.Service.ImageUrl"/>
-        <strong>@request.Service.Name</strong>*@
-    <h6>@Id</h6>
+@if (OrderId != null)
+{
+
+    <div class="card text-center">
+        <div class="card-header">
+            New Request
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Service Name</h5>
+            <p class="card-text"><img src="./Images/@(ImageUrl)" class="img-thumbnail active" width="200"/></p>
+            <a href="#" class="btn btn-primary">Accept</a>
+        </div>
+        <div class="card-footer text-muted">
+            @OrderDate
+        </div>
     </div>
-
+}else{
+    <div class="call-out"> Selected Request is no longer available</div>
+}
 
 @code {
+    private List<OrderModel>? orders;
 
     [Parameter]
-   
-    public int? Id { get; set; }
+    [SupplyParameterFromQuery(Name = "Id")]
+    public int? OrderId 
+    { 
+        get;
+        set; 
+    }
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "sid")]
+    public int ServiceId { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "img")]
+    public string ImageUrl { get; set; }
+
+    //[Parameter]
+    //[SupplyParameterFromQuery(Name = "sn")]
+    //public int ServiceName { get; set; }
+
+    //[Parameter]
+    //[SupplyParameterFromQuery(Name = "sd")]
+    //public int ServiceDescription { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "ord")]
+    public string OrderDate { get; set; }
+
+    protected async Task OnInitialisedAsync()
+    {
+        orders = await _requestEndPoint.GetAllOrdersByService(ServiceId);
+    }
+
+
 
 }

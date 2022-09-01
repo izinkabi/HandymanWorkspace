@@ -1,41 +1,43 @@
 ﻿@page "/"
+
 @using HandymanProviderLibrary.Api.Request
 @using HandymanProviderLibrary.Api.Service
 @using HandymanProviderLibrary.Api.ServiceProvider
 @using HandymanProviderLibrary.Models
 @using Handyman_UI_Provider.Models
 @using Handyman_UI_Provider.Models.Services
+@using Microsoft.Extensions.Logging
+@implements IDisposable
 @inject IRequestEndPoint _requestEndPoint
 @inject NavigationManager NavManager
 @inject IServiceEndpoint _serviceEndPoint 
 @inject IServiceProviderEndPoint? _serviceProviderEndPoint
 @inject AuthenticationStateProvider _authenticationStateProvider
+@inject ILogger<Index> Logger
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Home</PageTitle>
 
 <div class="container-fluid">
      <h3>Dashboard</h3>
-     <!--New Requests Cards-->
+     <!--New Request Cards-->
          <div class="container text-start">
           <div class="row g-2">
-
+              
               @foreach(var r in @newRequests)
               {
-                  //Requests as a list
-               
+                //Requests as a thumb-nails
                 <div class="col-3" >
-                    <a href="/RequestComponent?Id=@(@r.order.Id)">
+                  <a @onclick="() => DisplayRequestDetails(r)">
                   <div class="p-3 border bg-light">
                      <div class="card text-bg-dark">
                       
-                          
                       <img src="./Images/@(@r.Service.ImageUrl)" class="card-img shadow p-3 rounded" alt="..." width="75"/>
                       
                       <div class="card-img-overlay">
                             <h5 class="card-title" >@r.Service.Name Request</h5>
                       </div>
                       <div class="card-footer">
-                                <h4 class="text-center"><strong>Date Requested :</strong> @r.order.DateCreated.ToString("MM/dd/yyyy HH:mm")</h4>
+                                <p class="text-center"><strong>Date Requested </strong> @r.order.DateCreated.ToString("MM/dd/yyyy HH:mm")</p>
                       </div>
                     </div>
                   </div>
@@ -43,39 +45,14 @@
                 </div>
              
               }
+            @if (newRequests.Count.Equals(0))
+            {
+                <div class="call-out">
+                    No New Request yet
+                    </div>
+            }
             <!--------End New Request Cards-------->
-             @*<div class="col-3">
-              <div class="p-3 border bg-light">
-                 <div class="card text-bg-dark">
-                  <img src="./Images/bg/Money motivation _Monochromatic.png" class="card-img shadow p-3 rounded" alt="..." width="75">
-                  <div class="card-img-overlay">
-                    <h5 class="card-title">Revenue</h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-               <div class="col-3">
-              <div class="p-3 border bg-light">
-                 <div class="card text-bg-dark">
-                  <img src="./Images/bg/Checklist_Monochromatic.png" class="card-img shadow p-3 rounded" alt="..." width="75">
-                  <div class="card-img-overlay">
-                    <h5 class="card-title">Jobs</h5>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-               <div class="col-3">
-              <div class="p-3 border bg-light">
-                 <div class="card text-bg-dark">
-                  <img src="./Images/bg/Card Payment_Monochromatic.png" class="card-img shadow p-3 rounded" alt="..." width="75">
-                  <div class="card-img-overlay">
-                    <h5 class="card-title">Transactions</h5>
-                    
-                  </div>
-                </div>
-              </div>
-            </div>*@
+    
           </div>
         </div>
 </div>
@@ -95,44 +72,31 @@
       <th scope="col"></th>
     </tr>
   </thead>
-  <tbody>
-     
-                @if (providerServices!=null)
+  <tbody>   
+               @if (providerServices!=null)
                 {
 
-                
                 foreach (var ps in providerServices)
                 {
                     foreach(var s in services)
                     {
                         if(ps.ServiceId==s.Id)
                         {
-
-                    
                             <tr>
-
                                 <th scope="row">@s.Name</th>
-                                  <td>@s.Decription</td>
-                                  <td><img src="./Images/@s.ImageUrl" class="shadow p-3 rounded" alt="..." width="75" /></td>        
-                                  <td><button>Edit</button></td>
+                                  <td>@s.Description</td>
+                                  <td><img src="./Images/@s.ImageUrl" class="shadow p-3 rounded" alt="..." width="75" /></td>
+                                    <td><a ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-recycle" viewBox="0 0 16 16">
+                                      <path d="M9.302 1.256a1.5 1.5 0 0 0-2.604 0l-1.704 2.98a.5.5 0 0 0 .869.497l1.703-2.981a.5.5 0 0 1 .868 0l2.54 4.444-1.256-.337a.5.5 0 1 0-.26.966l2.415.647a.5.5 0 0 0 .613-.353l.647-2.415a.5.5 0 1 0-.966-.259l-.333 1.242-2.532-4.431zM2.973 7.773l-1.255.337a.5.5 0 1 1-.26-.966l2.416-.647a.5.5 0 0 1 .612.353l.647 2.415a.5.5 0 0 1-.966.259l-.333-1.242-2.545 4.454a.5.5 0 0 0 .434.748H5a.5.5 0 0 1 0 1H1.723A1.5 1.5 0 0 1 .421 12.24l2.552-4.467zm10.89 1.463a.5.5 0 1 0-.868.496l1.716 3.004a.5.5 0 0 1-.434.748h-5.57l.647-.646a.5.5 0 1 0-.708-.707l-1.5 1.5a.498.498 0 0 0 0 .707l1.5 1.5a.5.5 0 1 0 .708-.707l-.647-.647h5.57a1.5 1.5 0 0 0 1.302-2.244l-1.716-3.004z"/>
+                                            </svg>
+                                        </a>
+                                    </td>
                             </tr>
                         }
                     }
                 }
                }
-   @* <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>fat</td>
-      <td><button>Edit</button></td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td colspan="2">Larry the Bird</td>
-      <td>twitter</td>
-      <td><button>Edit</button></td>
-    </tr>*@
+               <!--End List-->
   </tbody>
 </table>
 </div>
@@ -165,16 +129,17 @@
     private RequestDisplayModel? newRequest;
 
 
+
     string? ErrorMsg;
-
-
     protected override async Task OnInitializedAsync()
     {
         //await the orders
+        NavManager.LocationChanged += HandleLocationChanged;
         await LoadOrders();
 
     }
 
+    //Redandency -- should be in an injected service / an instance of this class
     private async Task LoadServices()
     {
         services = new List<DisplayServiceModel>();
@@ -193,7 +158,7 @@
             //populating a service to UI model
             var s = new DisplayServiceModel();
             s.Name = service.Name;
-            s.Decription = service.Description;
+            s.Description = service.Description;
             s.ImageUrl = service.ImageUrl;
             s.Id = service.Id;
             s.CategoryName = service.Name;
@@ -204,7 +169,7 @@
 
     }
 
-
+    //Same with the previous comment
     private async Task LoadRequests()
     {
         try
@@ -218,10 +183,19 @@
         }
     }
 
+    //Navigating to the request detail's component and passing the required parameters
     private void DisplayRequestDetails(RequestDisplayModel btnRequest)
     {
-        NavManager.NavigateTo(NavManager.GetUriWithQueryParameter("requests/requst", btnRequest.order.Id));//not yet there
+        NavManager.NavigateTo(NavManager.GetUriWithQueryParameters("requestcomponent", new Dictionary<string, object>()
+        {
+            ["Id"] = btnRequest?.order?.Id,
+            ["sid"] = btnRequest?.order?.ServiceId,
+            ["img"] = btnRequest?.Service.ImageUrl,
+            ["ord"] = btnRequest?.order?.DateCreated.ToString("MM/dd/yyyy HH:mm")
+        }), true);//not yet there
     }
+
+    //Should be an injected service
     private async Task LoadOrders()
     {
         List<OrderModel>? libOrders = new()!;
@@ -264,4 +238,15 @@
         }
         
     }
+
+    private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        Logger.LogInformation("URL of new location: {Location}", e.Location);
+    }
+
+    public void Dispose()
+    {
+        NavManager.LocationChanged -= HandleLocationChanged;
+    }
+
 }
