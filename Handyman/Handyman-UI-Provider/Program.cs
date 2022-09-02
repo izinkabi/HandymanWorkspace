@@ -29,7 +29,8 @@ builder.Services.AddServerSideBlazor();
 //Dependency Injection
 builder.Services.AddSingleton<IAPIHelper, APIHelper>();
 builder.Services.AddTransient<IServiceEndpoint, ServiceEndpoint>();
-builder.Services.AddTransient<IServiceDelivery, ServiceDelivery>();//service delivery in Hubs
+builder.Services.AddSingleton<IRequestEndPoint,RequestEndPoint>();
+builder.Services.AddTransient<IServiceProviderEndPoint, ServiceProviderEndPoint>();
 
 
 builder.Services.AddResponseCompression(opts =>

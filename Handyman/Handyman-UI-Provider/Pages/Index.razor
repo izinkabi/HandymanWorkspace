@@ -127,3 +127,134 @@
       </div>
     </div>
     <hr/>
+    @code{
+
+    private RequestDisplayModel? request;
+    private List<RequestDisplayModel>? requsts;
+    private List<RequestDisplayModel>? newRequests;
+    private List<DisplayServiceModel>? services;
+    private List<ProviderServiceModel>? providerServices;
+    private RequestDisplayModel? newRequest;
+
+
+
+    string? ErrorMsg;
+    protected override async Task OnInitializedAsync()
+    {
+        //await the orders
+        NavManager.LocationChanged += HandleLocationChanged;
+        await LoadOrders();
+
+    }
+
+    //Redandency -- should be in an injected service / an instance of this class
+    private async Task LoadServices()
+    {
+        services = new List<DisplayServiceModel>();
+        List<ServiceModel>? servicesData = new ()!;
+        try
+        {
+            servicesData = await _serviceEndPoint.GetServices();
+        }
+        catch (Exception ex)
+        {
+            ErrorMsg = ex.Message;
+        }
+
+        foreach (var service in servicesData)
+        {
+            //populating a service to UI model
+            var s = new DisplayServiceModel();
+            s.Name = service.Name;
+            s.Description = service.Description;
+            s.ImageUrl = service.ImageUrl;
+            s.Id = service.Id;
+            s.CategoryName = service.Name;
+            s.CategoryDescription = service.Description;
+            s.CategoryType = service.Type;
+            services.Add(s);
+        }
+
+    }
+
+    //Same with the previous comment
+    private async Task LoadRequests()
+    {
+        try
+        {
+
+
+        }
+        catch(Exception ex)
+        {
+
+        }
+    }
+
+    //Navigating to the request detail's component and passing the required parameters
+    private void DisplayRequestDetails(RequestDisplayModel btnRequest)
+    {
+        NavManager.NavigateTo(NavManager.GetUriWithQueryParameters("requestcomponent", new Dictionary<string, object>()
+        {
+            ["Id"] = btnRequest?.order?.Id,
+            ["sid"] = btnRequest?.order?.ServiceId,
+            ["img"] = btnRequest?.Service.ImageUrl,
+            ["ord"] = btnRequest?.order?.DateCreated.ToString("MM/dd/yyyy HH:mm")
+        }), true);//not yet there
+    }
+
+    //Should be an injected service
+    private async Task LoadOrders()
+    {
+        List<OrderModel>? libOrders = new()!;
+        newRequests = new()!;
+        try
+        {
+            await LoadServices();
+           
+
+            var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
+            var UserId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+            providerServices = await _serviceEndPoint.GetProviderServiceByProviderId(UserId);
+            
+           
+            foreach(var ps in providerServices)
+            {
+                var os = await _requestEndPoint.GetAllOrdersByService(ps.ServiceId);
+                libOrders.AddRange(os);
+            }
+            ErrorMsg = string.Empty;
+
+            foreach(var odr in libOrders)
+            {
+                var req = new RequestDisplayModel()!;
+                req.order = odr;
+                foreach (DisplayServiceModel dsm in services)
+                {
+                    if (odr.ServiceId == dsm.Id)
+                    {
+                        req.Service = dsm;
+                    }
+                    
+                }
+                newRequests.Add(req);
+            }
+            
+        }catch(Exception ex)
+        {
+            ErrorMsg = ex.Message;
+        }
+        
+    }
+
+    private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        Logger.LogInformation("URL of new location: {Location}", e.Location);
+    }
+
+    public void Dispose()
+    {
+        NavManager.LocationChanged -= HandleLocationChanged;
+    }
+
+}

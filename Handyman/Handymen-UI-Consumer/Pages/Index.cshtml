@@ -4,7 +4,54 @@
 @{
     ViewData["Title"] = "Home";
 }
+<link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      .b-example-divider {
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+      }
+
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+    </style>
 <!--The greeting / Welcome section-->
 <div class="text-center shadow-sm bg-light p-3 mb-5 rounded">
     <H2>Welcome To Handymen</H2>
@@ -14,6 +61,69 @@
     </svg>
 </div>
 <!--End Section-->
+
+<div class="row p-3 m-1">
+    <!--SearchBar-->     
+            <form>
+                
+<!--<select asp-for="category" asp-items="Model.serviceCategorySelectList">
+                 <option value="default">All</option>
+                </select>-->
+
+                    <div class="input-group">
+                      <input type="text" class="form-control" asp-for="searchString" placeholder="Search here..." aria-label="Search for services">
+                      <button class="btn btn-outline-success shadow-sm bg-light" type="submit">Filter</button>
+                      <button class="btn btn-outline-danger shadow-sm bg-light" type="reset">Reset</button>
+                      <br/>
+                      <hr/>
+                    </div>
+            </form>   
+    <!--End SearchBar-->
+</div>
+
+<div class="row justify-content-center alert-heading text-capitalize p-2 m-1 text-center">
+    <h4>
+        Available Services
+    </h4>
+
+</div>
+<!--lIST OF SERVICES-->
+  <div class="album py-5 bg-light">
+    <div class="container">
+
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        @if(Model is null)
+        {
+            <div class="h2">
+                 <p class="placeholder-glow">
+                 <span class="placeholder col-12">@Model?.ErrorMsg...</span>
+                 </p>
+                </div>
+            }
+            else
+            {
+                @foreach (var item in Model.ServiceList)
+                {
+                    
+        <div class="col">
+            <div class="card shadow-sm">
+            <img src="~/Images/@item.ImageUrl"  class="bd-placeholder-img card-img-top" width="100%" height="225"/><title>@item.Name</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">@item.CategoryName</text>
+            <div class="card-body">
+              <p class="card-text">@item.Description</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                    <a  asp-page="./Details" class="btn btn-sm btn-outline-secondary" asp-route-id="@item.Id">Details</a>
+                </div>
+                <small class="text-muted">9 mins</small>
+              </div>
+            </div>
+          </div>
+        </div>
+            }
+        }
+      </div>
+    </div>
+  </div>
 
 
 
@@ -72,94 +182,3 @@
 
 
 <!--End Carousel-->
-
-
-
-
-<div class="row justify-content-center alert-heading text-capitalize p-2 m-1 text-center">
-    <h4>
-        Available Services
-    </h4>
-
-</div>
-
-<div class="row p-3 m-1">
-    <!--SearchBar-->     
-            <form>
-                
-<!--<select asp-for="category" asp-items="Model.serviceCategorySelectList">
-                 <option value="default">All</option>
-                </select>-->
-
-                    <div class="input-group">
-                      <input type="text" class="form-control" asp-for="searchString" placeholder="Search here..." aria-label="Search for services">
-                      <button class="btn btn-outline-success shadow-sm bg-light" type="submit">Filter</button>
-                      <button class="btn btn-outline-danger shadow-sm bg-light" type="reset">Reset</button>
-                      <br/>
-                      <hr/>
-                    </div>
-            </form>   
-    <!--End SearchBar-->
-</div>
-
-
-<hr/>
-
-<!--List of Services-->
-
-<div class="container px-4">
-  <div class="row gy-5">
-        @if(Model is null)
-        {
-            <div class="h2">
-                 <p class="placeholder-glow">
-                 <span class="placeholder col-12">@Model?.ErrorMsg...</span>
-                 </p>
-            </div>
-        }
-        else
-        {
-            
-       
-      @foreach (var item in Model.ServiceList)
-      {
-        <div class="col-6 card table-hover" >
-             <img src="~/Images/@item.ImageUrl"  class="card-img-top" style="max-width: 580px; height:400px" alt="image"/>
-            <div class="p-3 border bg-light card-body">
-
-            <h5 class="card-title">@Html.DisplayFor(model => item.Name)</h5>     
-           <br/>
-
-            
-           @Html.DisplayFor(modelItem => item.Description)<br/>
-
-            
-            @Html.DisplayFor(modelItem => item.CategoryName)<br/>
-
-            
-            @Html.DisplayFor(modelItem => item.CategoryDescription)<br/>
-
-           <br/>
-            
-                  
-                    @*<p><a asp-action="Edit" asp-route-id="@item.Id">  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tools" viewBox="0 0 16 16">
-                    <path d="M1 0 0 1l2.2 3.081a1 1 0 0 0 .815.419h.07a1 1 0 0 1 .708.293l2.675 2.675-2.617 2.654A3.003 3.003 0 0 0 0 13a3 3 0 1 0 5.878-.851l2.654-2.617.968.968-.305.914a1 1 0 0 0 .242 1.023l3.27 3.27a.997.997 0 0 0 1.414 0l1.586-1.586a.997.997 0 0 0 0-1.414l-3.27-3.27a1 1 0 0 0-1.023-.242L10.5 9.5l-.96-.96 2.68-2.643A3.005 3.005 0 0 0 16 3c0-.269-.035-.53-.102-.777l-2.14 2.141L12 4l-.364-1.757L13.777.102a3 3 0 0 0-3.675 3.68L7.462 6.46 4.793 3.793a1 1 0 0 1-.293-.707v-.071a1 1 0 0 0-.419-.814L1 0Zm9.646 10.646a.5.5 0 0 1 .708 0l2.914 2.915a.5.5 0 0 1-.707.707l-2.915-2.914a.5.5 0 0 1 0-.708ZM3 11l.471.242.529.026.287.445.445.287.026.529L5 13l-.242.471-.026.529-.445.287-.287.445-.529.026L3 15l-.471-.242L2 14.732l-.287-.445L1.268 14l-.026-.529L1 13l.242-.471.026-.529.445-.287.287-.445.529-.026L3 11Z"/>
-                    </svg></a> |*@
-                    <a  asp-page="./Details" class="btn btn-info align-content-center" asp-route-id="@item.Id">Details</a> @*|
-                    <a asp-action="Delete" asp-route-id="@item.Id"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                      <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                      <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                    </svg> </a></p>*@
-                   
-           </div>
-        </div>
-      }
-    }
-    
-  </div>
-</div> 
-      <!--End of lists-->
-   
-
-
-

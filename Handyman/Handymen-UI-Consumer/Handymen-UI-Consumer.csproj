@@ -52,6 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Handyman-UI-Provider\Handyman-UI-Provider.csproj" />
     <ProjectReference Include="..\HandymanUILibrary\HandymanUILibrary.csproj" />
   </ItemGroup>
 

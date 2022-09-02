@@ -5,6 +5,7 @@ using HandymanUILibrary.API;
 using HandymanUILibrary.API.Consumer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Handymen_UI_Consumer.Helpers;
+using Handyman_UI_Provider.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("Handymen_UI_ConsumerContextConnection") ?? throw new InvalidOperationException("Connection string 'Handymen_UI_ConsumerContextConnection' not found.");
@@ -58,7 +59,6 @@ app.UseAuthorization();
 app.MapRazorPages();
 app.MapBlazorHub();
 app.MapHub<ChatHub>("/chathub");
-app.MapHub<OrderRequestHub>("/orderrequesthub");
 app.MapFallbackToPage("/_Host");
 
 
