@@ -14,9 +14,9 @@
     </div>
 
         <a href="Identity/Account/Manage">Hello, @context.User.Identity?.Name!</a>
-        <form method="post" action="Identity/Account/LogOut">
-            <button type="submit" class="nav-link btn btn-link">Logout</button>
-        </form>
+            @*<form method="post" action="Identity/Account/Manage/LogOut">*@
+            <a href="Identity/Account/Logout" class="nav-link btn btn-link">Logout</a>
+            @*</form>*@
     </Authorized>
     <NotAuthorized>
         <a href="Identity/Account/Register">Register</a>

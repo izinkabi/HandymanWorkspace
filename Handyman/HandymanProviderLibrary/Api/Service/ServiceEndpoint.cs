@@ -28,7 +28,7 @@ public class ServiceEndpoint : IServiceEndpoint
     {
         try
         {
-            List<ServiceModel> httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<List<ServiceModel>>("Services/GetServies");
+            List<ServiceModel>? httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<List<ServiceModel>>("Services/GetServies");
             return httpResponseMessage;
         }
         catch (Exception ex)
@@ -55,11 +55,11 @@ public class ServiceEndpoint : IServiceEndpoint
 
     //Identity shall be used in the api to get the userId and hence up security breach
     //GET a list of provider's service (a list of providers that are providing a certaing service)
-    public async Task<List<ProviderServiceModel>> GetProviderServiceByProviderId()
+    public async Task<List<ProviderServiceModel>> GetProviderServiceByProviderId(string providerId)
     {
         try
         {
-            List<ProviderServiceModel>? httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<List<ProviderServiceModel>>("api/GetProvidersServicesByProviderId");
+            List<ProviderServiceModel>? httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<List<ProviderServiceModel>>($"/api/GetProvidersServicesByProviderId?providerId={providerId}");
             return httpResponseMessage;
         }
         catch (Exception ex)
@@ -69,16 +69,32 @@ public class ServiceEndpoint : IServiceEndpoint
     }
 
     //Create a new service provided by the give provider
-    public async Task CreateProviderService(ProviderServiceModel providerService)
+    public async Task<string> CreateProviderService(ProviderServiceModel providerService)
     {
+        string? result = null;
+        var ps = new 
+        {
+            ServiceId = providerService.ServiceId,
+            ServiceProviderId = providerService.ServiceProviderId,
+            Id = providerService.Id 
+        };
+
         try
         {
-            var httpResponseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync<ProviderServiceModel>("api/GetProvidersServicesByProviderId", providerService);         
+            var httpResponseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync("/api/PostProvidersService", ps);
+            if (httpResponseMessage.IsSuccessStatusCode)
+            {
+                result =  httpResponseMessage.ReasonPhrase;
+                return result;
+            }
+            
         }
         catch (Exception ex)
         {
             throw new Exception(ex.Message);
+            return ex.Message;
         }
+        return null;
     }
 
     //Upadate the provider's service

@@ -1,5 +1,5 @@
 ﻿CREATE PROCEDURE [ServiceDelivery].[spProviderLookUpByProviderId]
-	@ProviderId VARCHAR
+	@ProviderId NVARCHAR(450)
 AS
 BEGIN
 	SELECT *

@@ -1,7 +1,10 @@
-﻿namespace Handyman_UI_Provider.Hubs.Order
+﻿using Handyman_UI_Provider.Hubs.Models;
+
+namespace Handyman_UI_Provider.Hubs.Order
 {
     public interface IOrderClient
     {
-        //Task ReceiveOrder(OrderModel order);
+        Task ReceiveRequest(RequestModel request);
+        
     }
 }

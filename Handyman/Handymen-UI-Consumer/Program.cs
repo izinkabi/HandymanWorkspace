@@ -4,6 +4,7 @@ using Handymen_UI_Consumer.Areas.Identity.Data;
 using HandymanUILibrary.API;
 using HandymanUILibrary.API.Consumer;
 using Microsoft.AspNetCore.ResponseCompression;
+using Handymen_UI_Consumer.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("Handymen_UI_ConsumerContextConnection") ?? throw new InvalidOperationException("Connection string 'Handymen_UI_ConsumerContextConnection' not found.");
@@ -19,7 +20,7 @@ builder.Services.AddDefaultIdentity<Handymen_UI_ConsumerUser>(options => options
 builder.Services.AddSingleton<IAPIHelper, APIHelper>();
 builder.Services.AddTransient<IServiceEndPoint,ServiceEndPoint>();
 builder.Services.AddTransient<IOrderEndPoint, OrderEndPoint>();
-
+builder.Services.AddTransient<IOrderHelper, OrderHelper>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -56,6 +57,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapRazorPages();
 app.MapBlazorHub();
+app.MapHub<ChatHub>("/chathub");
+app.MapHub<OrderRequestHub>("/orderrequesthub");
 app.MapFallbackToPage("/_Host");
 
 

@@ -3,6 +3,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Handymen_UI_Consumer.Models;
 using HandymanUILibrary.API;
 using Microsoft.Extensions.Caching.Memory;
+using HandymanUILibrary.API.Consumer;
+using Microsoft.AspNetCore.Identity;
+using System;
+using Handymen_UI_Consumer.Areas.Identity.Data;
 
 
 namespace Handymen_UI_Consumer.Pages
@@ -12,22 +16,26 @@ namespace Handymen_UI_Consumer.Pages
     {
         private readonly Handymen_UI_Consumer.Data.Handymen_UI_ConsumerContext _context;
         private readonly IMemoryCache _cache;
+        private IOrderEndPoint _orderEndPoint;
         private Order order;
         private IServiceEndPoint _serviceEndPoint;
         private string ErrorMsg;
         private List<Service> serviceDisplayList;
-
+       
+     
 
         public DateTime CurrentDateTime { get; }
       
         //Injecting the IServiceEndPoint 
         public OrderModel(Handymen_UI_Consumer.Data.Handymen_UI_ConsumerContext context,
-           IMemoryCache cache, IServiceEndPoint serviceEndPoint)
+           IMemoryCache cache, IServiceEndPoint serviceEndPoint,
+           IOrderEndPoint orderEndPoint)
         {
             _context = context;
             _serviceEndPoint = serviceEndPoint;
+            _orderEndPoint = orderEndPoint;
             _cache = cache;
-
+         
         }
 
         //public Order Order { get; set; } = default!;
@@ -55,16 +63,16 @@ namespace Handymen_UI_Consumer.Pages
 
             //****Caching ****//
             
-            if (!_cache.TryGetValue("order", out Order cacheValue))
-            {
-                cacheValue = await LoadOrder(id);
+            //if (!_cache.TryGetValue("order", out Order cacheValue))
+            //{
+             await LoadOrder(id);
 
-                var cacheEntryOptions = new MemoryCacheEntryOptions()
-                    .SetSlidingExpiration(TimeSpan.FromSeconds(40));
+            //    var cacheEntryOptions = new MemoryCacheEntryOptions()
+            //        .SetSlidingExpiration(TimeSpan.FromSeconds(40));
 
-                _cache.Set<Order>("order", cacheValue, cacheEntryOptions);
-            }
-            order = cacheValue;
+            //    _cache.Set<Order>("order", cacheValue, cacheEntryOptions);
+            //}
+            //order = cacheValue;
             if (order.Id != id)
             {
                 return RedirectToPage("./OrderDetails");
@@ -76,28 +84,9 @@ namespace Handymen_UI_Consumer.Pages
             return Page();
         }
         //Confirming the order
-        public async Task OnPostConfirmOrder()
-        {
-
-            //****Cache the order****//
-            if (!_cache.TryGetValue("order", out Order cacheValue))
-            {
-                cacheValue = await LoadOrder(order.ServiceId);
-
-                var cacheEntryOptions = new MemoryCacheEntryOptions()
-                    .SetSlidingExpiration(TimeSpan.FromSeconds(40));
-
-                _cache.Set<Order>("order", cacheValue, cacheEntryOptions);
-            }
-
-            order = cacheValue;
-
-            order.IsConfirmed = true;
-            ViewData["order"] = order;
-
-        }
+       
         //Load / Create the Order 
-        private async Task<Order> LoadOrder(int? id)
+        private async Task LoadOrder(int? id)
         {
 
             await LoadServices();
@@ -108,19 +97,19 @@ namespace Handymen_UI_Consumer.Pages
                 {
                     
                     order = new Order();
-                    order.Id = service.Id;
-                    order.Date = DateTime.Now;
-                    order.Status = "Active";
-                    order.ServiceId = service.Id;
-                    order.ServiceName = service.Name;
-                    order.ServiceImageUrl = service.ImageUrl;
-                    order.Description = service.Description;
+                    order.ServiceProperty = new Service();
 
-                    return order;
+                    order.ServiceProperty = service;
+                    order.DateCreated = DateTime.Now;
+                    order.Status = "Active";
+                    order.Id = service.Id;
+                   
+
+
 
                 }
             }
-            return order;
+            
         }
         //Load Services from the IServiceEndPoint service
         private async Task LoadServices()

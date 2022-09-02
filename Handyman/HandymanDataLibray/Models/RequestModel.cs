@@ -10,8 +10,10 @@ namespace HandymanDataLibray.Models
     {
         public int Id { get; set; }
         public int OrderId { get; set; }
-        public int ProviderServiceID { get; set; }
+        public string ProviderId { get; set; }
+        public int ServiceId { get; set; }
         public int IsDelivered { get; set; }
-       
+        public string Status { get; set; }
+        public DateTime DateAccepted { get; set; }
     }
 }

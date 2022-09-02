@@ -1,179 +1,131 @@
 ﻿@page "/"
 
-@using Microsoft.AspNetCore.SignalR.Client
+@using HandymanProviderLibrary.Api.Request
+@using HandymanProviderLibrary.Api.Service
+@using HandymanProviderLibrary.Api.ServiceProvider
+@using HandymanProviderLibrary.Models
+@using Handyman_UI_Provider.Models
+@using Handyman_UI_Provider.Models.Services
+@using Microsoft.Extensions.Logging
+@implements IDisposable
+@inject IRequestEndPoint _requestEndPoint
 @inject NavigationManager NavManager
-@implements IAsyncDisposable
+@inject IServiceEndpoint _serviceEndPoint 
+@inject IServiceProviderEndPoint? _serviceProviderEndPoint
+@inject AuthenticationStateProvider _authenticationStateProvider
+@inject ILogger<Index> Logger
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Home</PageTitle>
 
 <div class="container-fluid">
-     <h3>Dashboard</h3>
+     <h3 class="text-center">Dashboard</h3>
+     <!--New Request Cards-->
          <div class="container text-start">
           <div class="row g-2">
-            <div class="col-3">
-              <div class="p-3 border bg-light">
-                 <div class="card text-bg-dark">
-                  <img src="./Images/bg/Statue of liberty_Monochromatic.png" class="card-img shadow p-3 rounded" alt="..." width="75">
-                  <div class="card-img-overlay">
-                    <h5 class="card-title">Popularity</h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-             <div class="col-3">
-              <div class="p-3 border bg-light">
-                 <div class="card text-bg-dark">
-                  <img src="./Images/bg/Money motivation _Monochromatic.png" class="card-img shadow p-3 rounded" alt="..." width="75">
-                  <div class="card-img-overlay">
-                    <h5 class="card-title">Revenue</h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-               <div class="col-3">
-              <div class="p-3 border bg-light">
-                 <div class="card text-bg-dark">
-                  <img src="./Images/bg/Checklist_Monochromatic.png" class="card-img shadow p-3 rounded" alt="..." width="75">
-                  <div class="card-img-overlay">
-                    <h5 class="card-title">Jobs</h5>
+              
+              @foreach(var r in @newRequests)
+              {
+                if (r.order.IsAccepted.Equals(0))
+                {
 
+
+                    //Requests as a thumb-nails
+                  <div class="col-3" >
+                        <a @onclick="() => DisplayRequestDetails(r)">
+                  <div class="p-3 border bg-light">
+                     <div class="card text-bg-dark">
+                      
+                      <img src="./Images/@(@r.Service.ImageUrl)" class="card-img shadow p-3 rounded" alt="..." width="75"/>
+                      
+                      <div class="card-img-overlay">
+                            <h5 class="card-title" >@r.Service.Name Request</h5>
+                      </div>
+                      <div class="card-footer">
+                                <p class="text-center"><strong>Date Requested </strong> @r.order.DateCreated.ToString("MM/dd/yyyy HH:mm")</p>
+                      </div>
+                    </div>
                   </div>
+                  </a>
                 </div>
-              </div>
-            </div>
-               <div class="col-3">
-              <div class="p-3 border bg-light">
-                 <div class="card text-bg-dark">
-                  <img src="./Images/bg/Card Payment_Monochromatic.png" class="card-img shadow p-3 rounded" alt="..." width="75">
-                  <div class="card-img-overlay">
-                    <h5 class="card-title">Transactions</h5>
-                    
-                  </div>
-                </div>
-              </div>
-            </div>
+                }
+              }
+            @if (newRequests.Count.Equals(0))
+            {
+                <div class="alert alert-dismissible alert-dark">
+                    No New Request yet
+                    </div>
+            }
+            <!--------End New Request Cards-------->
+    
           </div>
         </div>
 </div>
 <hr/>
-<h3>Business</h3>
-<h>My Services</h>
+
   <div class="row">
-      
+    <h3 class="text-center">Business</h3>
+  
       <div class="col-7 align-content-start g-4"><table class="table">
   <thead>
+      <!--Provider's services list-->
     <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
+      
+      <th scope="col">Providing service name</th>
+      <th scope="col">Providing service description</th>
+      <th scope="col">ServiceImage</th>
       <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>mdo</td>
-      <td><button>Edit</button></td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>fat</td>
-      <td><button>Edit</button></td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td colspan="2">Larry the Bird</td>
-      <td>twitter</td>
-      <td><button>Edit</button></td>
-    </tr>
+                
+               @if (providerServices!=null)
+                {
+
+                foreach (var ps in providerServices)
+                {
+                    foreach(var s in services)
+                    {
+                        if(ps.ServiceId==s.Id)
+                        {
+                            <tr>
+                                <th scope="row">@s.Name</th>
+                                  <td>@s.Description</td>
+                                  <td><img src="./Images/@s.ImageUrl" class="shadow p-3 rounded" alt="..." width="75" /></td>
+                                    <td><a ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-recycle" viewBox="0 0 16 16">
+                                      <path d="M9.302 1.256a1.5 1.5 0 0 0-2.604 0l-1.704 2.98a.5.5 0 0 0 .869.497l1.703-2.981a.5.5 0 0 1 .868 0l2.54 4.444-1.256-.337a.5.5 0 1 0-.26.966l2.415.647a.5.5 0 0 0 .613-.353l.647-2.415a.5.5 0 1 0-.966-.259l-.333 1.242-2.532-4.431zM2.973 7.773l-1.255.337a.5.5 0 1 1-.26-.966l2.416-.647a.5.5 0 0 1 .612.353l.647 2.415a.5.5 0 0 1-.966.259l-.333-1.242-2.545 4.454a.5.5 0 0 0 .434.748H5a.5.5 0 0 1 0 1H1.723A1.5 1.5 0 0 1 .421 12.24l2.552-4.467zm10.89 1.463a.5.5 0 1 0-.868.496l1.716 3.004a.5.5 0 0 1-.434.748h-5.57l.647-.646a.5.5 0 1 0-.708-.707l-1.5 1.5a.498.498 0 0 0 0 .707l1.5 1.5a.5.5 0 1 0 .708-.707l-.647-.647h5.57a1.5 1.5 0 0 0 1.302-2.244l-1.716-3.004z"/>
+                                            </svg>
+                                        </a>
+                                    </td>
+                            </tr>
+                        }
+                    }
+                }
+                    
+               }
+                 
+               <!--End List-->
   </tbody>
 </table>
+        @if (providerServices !=null && providerServices.Count.Equals(0))
+        {
+        <div class="alert alert-info"> <p>You haven't added any services on your profile</p></div>
+        }
 </div>
-    <div class="col-5 align-content-end g-4">
-        <div class="d-flex position-relative">
-        <img src="./Images/bg/Card Payment_Monochromatic.png" class="flex-shrink-0 me-3" alt="..." width="120px" height="120px">
-        <div>
-            <figure class="text-center">
-                <blockquote class="blockquote">
-                <p>A well-known quote, contained in a blockquote element.</p>
-                </blockquote>
-                <figcaption class="blockquote-footer">
-                Someone famous in <cite title="Source Title">Source Title</cite>
-                </figcaption>
-            </figure>
-        <a href="#" class="stretched-link">Go somewhere</a>
+      <div class="col-5 align-content-end g-4">
+          <div class="d-flex position-relative">
+          <img src="./Images/bg/Card Payment_Monochromatic.png" class="flex-shrink-0 me-3" alt="..." width="120px" height="120px">
+          <div>
+                <figure class="text-center">
+                  <blockquote class="blockquote">
+                    <p>A well-known quote, contained in a blockquote element.</p>
+                  </blockquote>
+                  <figcaption class="blockquote-footer">
+                    Someone famous in <cite title="Source Title">Source Title</cite>
+                  </figcaption>
+                </figure>
+            <a href="#" class="stretched-link">Go somewhere</a>
+          </div>
         </div>
+      </div>
     </div>
-    </div>
-</div>
-<hr/>
-<!--Chat HUB-SIGNALR-->
-<div class="form-group">
-    <label>
-        User: <input @bind="userInput"/>
-    </label>
-</div>
-<div class="form-group">
-    <label>
-        Message: <input @bind="messageInput"/>
-    </label>
-</div>
-<button @onclick="Send" disabled="@(IsConnected == false)">Send</button>
-<hr/>
-
-<ul>
-    @foreach (string message in messages)
-    {
-        <li>@message</li>
-    }
-</ul>
-@code{
-    //connect to the hub
-    private HubConnection? hubConnection;
-    private List<string> messages = new();
-    private string? userInput;
-    private string? messageInput;
-
-    protected override async Task OnInitializedAsync()
-    {
-        //Configuring a connection to the hub
-        hubConnection = new HubConnectionBuilder()
-        .WithUrl(NavManager.ToAbsoluteUri("/chathub"))
-        .WithAutomaticReconnect()
-        .Build();
-
-        //Triggers the Chat hub to get broadcasted content or messafe
-        hubConnection.On<string,string>("ReceiveMessage",(user,message) =>
-        {
-            var formattedMessage = $"{user}: {message}";
-            messages.Add(formattedMessage);
-            InvokeAsync(StateHasChanged);
-        });
-
-        //Connection to the Hub
-        await hubConnection.StartAsync();
-    }
-    //Method to send content to Hub
-    private async Task Send()
-    {
-        if(hubConnection is not null)
-        {
-            await hubConnection.SendAsync("SendMessage", userInput, messageInput);
-        }
-    }
-
-    public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
-
-    public async ValueTask DisposeAsync()
-    {
-        if(hubConnection is not null)
-        {
-            await hubConnection.DisposeAsync();
-        }
-    }
-}
+    <hr/>

@@ -27,20 +27,26 @@ namespace HandymanUILibrary.API.Consumer
         /// <param name="order"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<OrderModel> PostOrder(OrderModel request)
+        public async Task<OrderModel> PostOrder(OrderModel order)
         {
+            var httpResponseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync("/api/PostOrder", new {
+                ConsumerID = order.ConsumerID,
+                ServiceId = order.ServiceId,
+                Stage = order.Stage,
+                IsAccepted = order.IsAccepted,
 
 
-            HttpResponseMessage responseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync("/api/PostOrder", request);
-
-            if (responseMessage.IsSuccessStatusCode)
+            }) ;
+            
+           
+            if (httpResponseMessage.IsSuccessStatusCode)
             {
-                var result = await responseMessage.Content.ReadFromJsonAsync<OrderModel>();
+                var result = await httpResponseMessage.Content.ReadFromJsonAsync<OrderModel>();
                 return result;
             }
             else
             {
-                throw new Exception(responseMessage.ReasonPhrase);
+                throw new Exception(httpResponseMessage.ReasonPhrase);
             }
         }
         /// <summary>
@@ -51,24 +57,19 @@ namespace HandymanUILibrary.API.Consumer
         /// <exception cref="Exception"></exception>
         public async Task<List<OrderModel>> GetOrders(string customerId)
         {
+            try
+            {
+                List<OrderModel> httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<List<OrderModel>>($"/api/GetOrdersByConsumerId?Id={customerId}");
 
 
-            List<OrderModel> httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<List<OrderModel>>($"/api/Orders/GetOrdersByConsumerId?providerId={customerId}");
-            /*{
-                if (httpResponseMessage.IsSuccessStatusCode)
-                {
-
-                    var result = await httpResponseMessage.Content.ReadFromJsonAsync<OrderModel>();
-                    return result;
-                }
-                else
-                {
-                    throw new Exception(httpResponseMessage.ReasonPhrase);
-                }
-            }*/
-            return httpResponseMessage;
-
+                return httpResponseMessage;
+               
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
+
         /// <summary>
         /// This method is used to update a request from the API
         /// </summary>

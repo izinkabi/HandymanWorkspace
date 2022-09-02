@@ -10,17 +10,17 @@ namespace HandymanDataLibray.DataAccess
     {
 
         //Update the Provider's Service
-        public void PutProvidersService(string providerId,int jobId)
+        public void PutProvidersService(string providerId,int serviceId)
         {
             SQLDataAccess sql = new SQLDataAccess();
-            var providersService = new {JobId = jobId, ServiceProviderId = providerId};
-            var output = sql.SaveData("dbo.spProvidersServiceInsert", providersService, "HandymanDB");
+            var providersService = new {ServiceId = serviceId, ServiceProviderId = providerId};
+            var output = sql.SaveData("ServiceDelivery.spProviderServiceInsert", providersService, "HandymanDB");
         }
         //Getting Provider's Services By the provider ID
         public List<ProviderServiceModel> GetProvidersServiceByProviderId(string providerId)
         {
             SQLDataAccess sql = new SQLDataAccess();
-            var output = sql.LoadData<ProviderServiceModel, dynamic>("ServiceDelivery.spProviderLookUpByProviderId",new { ServiceProviderId = providerId}, "HandymanDB");
+            var output = sql.LoadData<ProviderServiceModel, dynamic>("ServiceDelivery.spProviderLookUpByProviderId",new { ProviderId = providerId}, "HandymanDB");
             return output;
         }
         //Get the provider's service by the service ID

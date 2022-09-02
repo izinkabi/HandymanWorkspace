@@ -8,8 +8,8 @@ namespace HandymanProviderLibrary.Api.Service
 
         Task UpdateProviderService(ProviderServiceModel providerService);
         Task DeleteProviderService(ProviderServiceModel providerService);
-        Task CreateProviderService(ProviderServiceModel providerService);
+        Task<string> CreateProviderService(ProviderServiceModel providerService);
         Task<List<ProviderServiceModel>> GetProviderServicesByServiceId(int serviceId);
-        Task<List<ProviderServiceModel>> GetProviderServiceByProviderId();
+        Task<List<ProviderServiceModel>> GetProviderServiceByProviderId(string providerId);
     }
 }

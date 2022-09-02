@@ -1,4 +1,9 @@
-﻿@page "/orderdetails"
+﻿@page "/orderdetails/{Id?}"
+@using Handymen_UI_Consumer.Helpers
+@using Handymen_UI_Consumer.Models
+@using Microsoft.AspNetCore.Components
+@inject SignInManager<Handymen_UI_ConsumerUser> SignInManager
+@inject IOrderHelper orderHelper;
 @model Handymen_UI_Consumer.Pages.OrderDetailsModel
 
 @{
@@ -14,8 +19,13 @@
     </div>
     <div class="card-body">
     <hr />
-        <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@(Model.Order)" />@*param-OrderComponentModel="@(@Model.OrderProperty)"*@
-       
+        
+            <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@(Model.Order)" />@*param-OrderComponentModel="@(@Model.OrderProperty)"*@
+            @functions
+            {
+                [Parameter]
+                public int? Id { get; set; }
+            }
         
     </div>
 </div>

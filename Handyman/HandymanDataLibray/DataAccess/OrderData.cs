@@ -13,23 +13,30 @@ namespace HandymanDataLibray.DataAccess
         public IEnumerable<OrderModel> GetOrdersByConsumerId(string Id)
         {
             SQLDataAccess sql = new SQLDataAccess();
-            ///*Getting Job by Id*
+           
 
             var p = new { ConsumerId = Id };
 
-            var output = sql.LoadData<OrderModel, dynamic>("Customer.spConsumerById", p, "HandymanDB");
+            var output = sql.LoadData<OrderModel, dynamic>("Customer.OrderLookUpByConsumerID", p, "HandymanDB");
 
             return output;
         }
 
-        //Get the Job Offers assigned to a service provider Id
+        
        
 
         //Post an Order
         public void PostOrder(OrderModel order)
         {
             SQLDataAccess sql = new SQLDataAccess();
-            sql.SaveData("ServiceDelivery.spRequestInsert", order, "HandymanDB");
+
+            sql.SaveData("Customer.spOrderInsert", new
+            {
+                ConsumerID = order.ConsumerID,
+                DateCreated = DateTime.Now,
+                Stage = order.Stage,
+                ServiceId = order.ServiceId//the ordered service because sql wont take a model inside a model
+            }, "HandymanDB");
         }
 
         ////Updating the order

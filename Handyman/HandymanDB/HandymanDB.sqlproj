@@ -70,15 +70,14 @@
     <Folder Include="Stored Procedures\ServiceDelivery\ServiceProvider" />
     <Folder Include="Stored Procedures\Customer\Order" />
     <Folder Include="Stored Procedures\Service\Category" />
+    <Folder Include="Stored Procedures\ServiceDelivery\Request\Order" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\ScriptsIgnoredOnImport.sql" />
     <Build Include="Schemas\Service.sql" />
     <Build Include="Schemas\ServiceDelivery.sql" />
     <Build Include="Schemas\Customer.sql" />
-    <Build Include="Tables\Consumer.sql" />
     <Build Include="Tables\Order.sql" />
-    <Build Include="Tables\ServiceProvider.sql" />
     <Build Include="Tables\ProviderService.sql" />
     <Build Include="Tables\Request.sql" />
     <Build Include="Stored Procedures\Customer\spConsumerInsert.sql" />
@@ -101,14 +100,15 @@
     <Build Include="Stored Procedures\ServiceDelivery\ServiceProvider\spProviderServiceUpdate.sql" />
     <Build Include="Stored Procedures\ServiceDelivery\Request\spRequestInsert.sql" />
     <Build Include="Stored Procedures\ServiceDelivery\Request\spRequestLookUpByProviderId.sql" />
-    <Build Include="Stored Procedures\ServiceDelivery\Request\spRequestLookUpByProviderServiceId.sql" />
     <Build Include="Stored Procedures\ServiceDelivery\Request\spRequestUpdate.sql" />
-    <Build Include="Stored Procedures\Customer\Order\OrderLookUpByConsumerID.sql" />
-    <Build Include="Stored Procedures\Customer\Order\OrderUpdate.sql" />
+    <Build Include="Stored Procedures\Customer\Order\spOrderLookUpByConsumerID.sql" />
+    <Build Include="Stored Procedures\Customer\Order\spOrderUpdate.sql" />
     <Build Include="Stored Procedures\Customer\Order\spOrderInsert.sql" />
     <Build Include="Stored Procedures\Service\Category\spCategoriesLookUp.sql" />
     <Build Include="Stored Procedures\Service\Category\spCategoryInsert.sql" />
     <Build Include="Stored Procedures\ServiceDelivery\ServiceProvider\spProviderServiceLookUpByServiceId.sql" />
     <Build Include="Stored Procedures\ServiceDelivery\ServiceProvider\spProviderLookUpByProviderId.sql" />
+    <Build Include="Stored Procedures\ServiceDelivery\Request\Order\spOrdersLookUpByServiceId.sql" />
+    <Build Include="Stored Procedures\ServiceDelivery\Request\Order\spOrderLookUpById.sql" />
   </ItemGroup>
 </Project>

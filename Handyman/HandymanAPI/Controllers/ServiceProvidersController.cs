@@ -1,6 +1,8 @@
 ﻿using HandymanDataLibray.DataAccess;
 using HandymanDataLibray.Models;
+using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Web.Http;
 
 namespace HandymanAPI.Controllers
@@ -18,8 +20,18 @@ namespace HandymanAPI.Controllers
         public List<ProviderServiceModel> GetProvidersServicesByProviderId(string providerId)
         {
             providerData = new ServiceProviderData();
-            var providerService = providerData.GetProvidersServiceByProviderId(providerId);
-            return providerService;
+            try
+            {
+
+
+                var providerService = providerData.GetProvidersServiceByProviderId(providerId);
+                return providerService;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         //Get all the providers of this service id
@@ -27,24 +39,53 @@ namespace HandymanAPI.Controllers
         public List<ProviderServiceModel> GetProvidersServicesByServiceId(int serviceId)
         {
             providerData = new ServiceProviderData();
-            var providerService = providerData.GetProvidersServiceByServiceId(serviceId);
-            return providerService;
+            try
+            {
+
+                var providerService = providerData.GetProvidersServiceByServiceId(serviceId);
+                return providerService;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
         }
-        //Updating the provider's service
-        [Route("api/PutProvidersService")]
-        public void PutProvidersService(ProviderServiceModel providersServiceModel)
+        //Create the provider's service
+        [Route("api/PostProvidersService")]
+        public void Post(ProviderServiceModel providersServiceModel)
         {
             providerData = new ServiceProviderData();
-            providerData.PutProvidersService(providersServiceModel.ServiceProviderId, providersServiceModel.Id);
+            try
+            {
+                providerData.PutProvidersService(providersServiceModel.ServiceProviderId, providersServiceModel.ServiceId);
+
+            } catch (SqlException ex)
+            {
+                if(ex.Errors.Equals(2627))//Duplicate primary key
+                {
+                    return;
+                }
+                
+            }
         }
 
-        
-        [Route("api/DeleteProvidersService")]
+
+
         // DELETE: api/ProvidersService/5
+        [Route("api/DeleteProvidersService")]
         public void DeleteProvidersService(int id)
         {
-            providerData = new ServiceProviderData();
-            providerData.DeleteProvidersService(id);
+            try
+            {
+                providerData = new ServiceProviderData();
+                providerData.DeleteProvidersService(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);    
+            }
+
         }
     }
 }

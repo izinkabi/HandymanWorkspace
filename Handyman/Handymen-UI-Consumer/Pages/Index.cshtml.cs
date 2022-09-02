@@ -44,17 +44,17 @@ namespace Handymen_UI_Consumer.Pages
             await LoadServices();
             await LoadServiceCategories();
 
-            if (!_cache.TryGetValue("services", out List<Service> cacheValue))
-            {
-                cacheValue = serviceDisplayList;
+            //if (!_cache.TryGetValue("services", out List<Service> cacheValue))
+            //{
+            //    cacheValue = serviceDisplayList;
 
-                var cacheEntryOptions = new MemoryCacheEntryOptions()
-                    .SetSlidingExpiration(TimeSpan.FromSeconds(60));
+            //    var cacheEntryOptions = new MemoryCacheEntryOptions()
+            //        .SetSlidingExpiration(TimeSpan.FromSeconds(60));
 
-                _cache.Set<List<Service>>("services", cacheValue, cacheEntryOptions);
-            }
+            //    _cache.Set<List<Service>>("services", cacheValue, cacheEntryOptions);
+            //}
 
-            serviceDisplayList = cacheValue;
+            //serviceDisplayList = cacheValue;
 
 
             if (!string.IsNullOrEmpty(searchString))
