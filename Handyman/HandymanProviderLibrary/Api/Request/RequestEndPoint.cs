@@ -31,5 +31,63 @@ namespace HandymanProviderLibrary.Api.Request;
             
         }
 
+    public async Task<string> PostRequest(RequestModel request)
+    {
+        string? result = string.Empty;
+        var req = new
+        {
+            ServiceId = request.ServiceId,
+            ProviderId = request.ProviderId,
+            OrderId = request.OrderId,
+            DateCreated = request.DateAccepted,
+
+        };
+
+        try
+        {
+            var httpResponseMessage = await _apiHelper.ApiClient.PostAsJsonAsync("/api/Request/Post", req);
+            if (httpResponseMessage.IsSuccessStatusCode)
+            {
+                result = httpResponseMessage.ReasonPhrase;
+                return result;
+            }
+
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+            return ex.Message;
+        }
+        return null;
     }
+
+
+    public async Task<string> UpdateRequest(RequestModel updateRequest)
+    {
+        string? result;
+        var req = new
+        {
+            Id = updateRequest.Id,
+            ProviderId = updateRequest.ProviderId,
+            Status = updateRequest.Status
+        };
+
+        try
+        {
+            var httpResponseMessage = await _apiHelper.ApiClient.PostAsJsonAsync("/api/Request/Update", req);
+            if (httpResponseMessage.IsSuccessStatusCode)
+            {
+                result = httpResponseMessage.ReasonPhrase;
+                return result;
+            }
+
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+           
+        }
+        return null;
+    }
+}
 

@@ -25,7 +25,7 @@ namespace HandymanDataLibray.DataAccess
         {
             SQLDataAccess sql = new SQLDataAccess();
 
-            var output = sql.LoadData<RequestModel, dynamic>("dbo.spRequestLookUpByProviderId", new { Id = providerId }, "HandymanDB");
+            var output = sql.LoadData<RequestModel, dynamic>("ServiceDelivery.spRequestLookUpByProviderServiceId?ServiceProviderId", new { ServiceProviderId = providerId }, "HandymanDB");
 
             return output;
         }
@@ -36,12 +36,38 @@ namespace HandymanDataLibray.DataAccess
         {
             var req = new
             {
-                ProviderServiceID = request.ProviderServiceID,
+                ServiceProviderId = request.ProviderId,
                 IsDelivered = request.IsDelivered,
-                OrderId = request.OrderId
+                OrderId = request.OrderId,
+                ServiceId = request.ServiceId,
+                DateAccepted = DateTime.Now
             };
             SQLDataAccess sql = new SQLDataAccess();
-            sql.SaveData("dbo.spRequestInsert", req, "HandymanDB");
+           
+            try
+            {
+                //Create request and update order
+                sql.StartTransaction("HandymanDB");
+                sql.SaveDataTransaction("ServiceDelivery.spRequestInsert", req);
+
+                var order = sql.LoadDataTransaction<OrderModel, dynamic>("ServiceDelivery.spOrderLookUpById", new { Id  = request.OrderId }).FirstOrDefault();
+
+                //let the consumer know the orderis accepted
+                var orderUpdate = new
+                {
+                    Id = order.Id,
+                    Stage = "Started",
+                    ServiceId = order.ServiceId,
+                    DateAccepted = DateTime.Now,
+                    IsAccepted = 1
+                };
+                sql.SaveDataTransaction("Customer.spOrderUpdate", orderUpdate);
+
+                sql.CommitTransation();
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
 
@@ -50,9 +76,12 @@ namespace HandymanDataLibray.DataAccess
         {
             var reqUpdate = new
             {
-                ProviderServiceID = update.ProviderServiceID,
+                ServiceProviderId = update.ProviderId,
                 IsDelivered = update.IsDelivered,
-                OrderId = update.OrderId
+                OrderId = update.OrderId,
+                ServiceId = update.ServiceId,
+                Status = update.Status
+
 
             };
             SQLDataAccess sql = new SQLDataAccess();

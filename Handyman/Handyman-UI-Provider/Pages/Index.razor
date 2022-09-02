@@ -25,9 +25,13 @@
               
               @foreach(var r in @newRequests)
               {
-                //Requests as a thumb-nails
-                <div class="col-3" >
-                  <a @onclick="() => DisplayRequestDetails(r)">
+                if (r.order.IsAccepted.Equals(0))
+                {
+
+
+                    //Requests as a thumb-nails
+                  <div class="col-3" >
+                        <a @onclick="() => DisplayRequestDetails(r)">
                   <div class="p-3 border bg-light">
                      <div class="card text-bg-dark">
                       
@@ -43,7 +47,7 @@
                   </div>
                   </a>
                 </div>
-             
+                }
               }
             @if (newRequests.Count.Equals(0))
             {

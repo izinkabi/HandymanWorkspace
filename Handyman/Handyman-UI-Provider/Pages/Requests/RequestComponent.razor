@@ -4,6 +4,7 @@
 @using HandymanProviderLibrary.Models
 @using Handyman_UI_Provider.Models
 @inject IRequestEndPoint _requestEndPoint
+@inject AuthenticationStateProvider _authenticationStateProvider
 
 @if (OrderId != null)
 {
@@ -15,7 +16,7 @@
         <div class="card-body">
             <h5 class="card-title">Service Name</h5>
             <p class="card-text"><img src="./Images/@(ImageUrl)" class="img-thumbnail active" width="200"/></p>
-            <a href="#" class="btn btn-primary">Accept</a>
+            <a @onclick="()=> AcceptRequest()" class="btn btn-primary">Accept</a>
         </div>
         <div class="card-footer text-muted">
             @OrderDate
@@ -27,6 +28,8 @@
 
 @code {
     private List<OrderModel>? orders;
+    private RequestModel? newRequest;
+    string? ErrorMsg;
 
     [Parameter]
     [SupplyParameterFromQuery(Name = "Id")]
@@ -41,7 +44,7 @@
 
     [Parameter]
     [SupplyParameterFromQuery(Name = "img")]
-    public string ImageUrl { get; set; }
+    public string? ImageUrl { get; set; }
 
     //[Parameter]
     //[SupplyParameterFromQuery(Name = "sn")]
@@ -53,13 +56,32 @@
 
     [Parameter]
     [SupplyParameterFromQuery(Name = "ord")]
-    public string OrderDate { get; set; }
+    public string? OrderDate { get; set; }
 
     protected async Task OnInitialisedAsync()
     {
         orders = await _requestEndPoint.GetAllOrdersByService(ServiceId);
     }
 
+    public async Task AcceptRequest()
+    {
+        newRequest = new();
+        var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
+        var UserId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
 
+        newRequest.ProviderId = UserId;
+        newRequest.ServiceId = ServiceId;
+        newRequest.OrderId = OrderId.Value;
+        newRequest.DateAccepted = DateTime.Now;
+
+        try
+        {
+            await _requestEndPoint.PostRequest(newRequest);
+        }catch(Exception ex)
+        {
+            ErrorMsg = ex.Message;
+        }
+        
+    }
 
 }

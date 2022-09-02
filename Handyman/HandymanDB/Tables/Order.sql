@@ -6,6 +6,7 @@
     [ServiceId]       INT            NOT NULL,
     [DateFinished] DATETIME2 NULL DEFAULT CURRENT_TIMESTAMP , 
     [IsAccepted] INT NULL DEFAULT 0, 
+    [DateAccepted] DATETIME2 NULL, 
     CONSTRAINT [PK_Customer.Order] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_Customer.Order_Service.Job] FOREIGN KEY ([ServiceId]) REFERENCES [Service].[Service] ([Id])
 );

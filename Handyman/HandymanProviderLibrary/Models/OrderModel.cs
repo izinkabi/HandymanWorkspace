@@ -15,6 +15,7 @@ namespace HandymanProviderLibrary.Models
         //public string? ConsumerID { get; set; }//This will be used for signalr where the customer gets a direct notification of any changes      
         public string? Stage { get; set; }
         public DateTime DateCreated { get; set; }
+        public int IsAccepted { get; set; }
         public DateTime DateFinished { get; set; }
         
     }

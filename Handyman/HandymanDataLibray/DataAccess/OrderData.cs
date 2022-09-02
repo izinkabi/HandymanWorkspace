@@ -13,7 +13,7 @@ namespace HandymanDataLibray.DataAccess
         public IEnumerable<OrderModel> GetOrdersByConsumerId(string Id)
         {
             SQLDataAccess sql = new SQLDataAccess();
-            ///*Getting Job by Id*
+           
 
             var p = new { ConsumerId = Id };
 
@@ -22,7 +22,7 @@ namespace HandymanDataLibray.DataAccess
             return output;
         }
 
-        //Get the Job Offers assigned to a service provider Id
+        
        
 
         //Post an Order
