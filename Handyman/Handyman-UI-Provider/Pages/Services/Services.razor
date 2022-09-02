@@ -19,7 +19,9 @@
         @if (isNewAdded)
         {
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <strong>You're are a Handymen for reals!</strong> You just added @newlyAddedService.Name as a new Service on your profile.
+                <strong>You're are a Handymen for reals!</strong> You just added <strong>
+                    @newlyAddedService.Name
+                </strong> as a new Service on your profile.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         }

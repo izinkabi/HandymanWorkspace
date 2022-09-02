@@ -25,7 +25,7 @@ namespace HandymanDataLibray.DataAccess
         {
             SQLDataAccess sql = new SQLDataAccess();
 
-            var output = sql.LoadData<RequestModel, dynamic>("ServiceDelivery.spRequestLookUpByProviderServiceId?ServiceProviderId", new { ServiceProviderId = providerId }, "HandymanDB");
+            var output = sql.LoadData<RequestModel, dynamic>("ServiceDelivery.spRequestLookUpByServiceProviderId?ServiceProviderId", new { ServiceProviderId = providerId }, "HandymanDB");
 
             return output;
         }
