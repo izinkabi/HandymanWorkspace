@@ -2,25 +2,27 @@
     <AuthorizeView>
     <Authorized>
  <!--Profile Vie- Dropdown -->
-    <div class="dropdown">
-      <a class="btn" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-      <img src="./Images/Business-Man-Settings-01.png" class="rounded-circle" alt="..."/>
-      </a>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">Action</a></li>
-        <li><a class="dropdown-item" href="#">Another action</a></li>
-        <li><a class="dropdown-item" href="#">Something else here</a></li>
-      </ul>
-    </div>
-
-        <a href="Identity/Account/Manage">Hello, @context.User.Identity?.Name!</a>
+  <div class="dropdown text-end m-3">
+          <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+          </a>
+          <ul class="dropdown-menu text-small">
+            <li><p class="dropdown-header text-muted"> @context.User.Identity?.Name!</p></li>
+            <li><a id="manage" class="dropdown-item text-dark"  href="/Account/Manage/Index" title="Manage">Profile</a></li>
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li><hr class="dropdown-divider"></li>
+             @*<form id="logoutForm" class="dropdown-itemform-inline" href="/Account/Logout">*@
+                <a id="logout" href="/Account/Logout" type="submit" class="dropdown-item btn btn-link text-dark">Logout</a>
+           @* </form>*@
+          </ul>
+        </div>
+  @*      <a href="Identity/Account/Manage">Hello, @context.User.Identity?.Name!</a>
             @*<form method="post" action="Identity/Account/Manage/LogOut">*@
-            <a href="Identity/Account/Logout" class="nav-link btn btn-link">Logout</a>
+            @*<a href="Identity/Account/Logout" class="nav-link btn btn-link">Logout</a>*@
             @*</form>*@
     </Authorized>
     <NotAuthorized>
-        <a href="Identity/Account/Register">Register</a>
-        <a href="Identity/Account/Login">Log in</a>
+        <a href="Identity/Account/Login" class="nav-link text-dark">Log in</a>
     </NotAuthorized>
 </AuthorizeView>
 </CascadingAuthenticationState>
