@@ -4,8 +4,19 @@
 @inject SignInManager<Handymen_UI_ConsumerUser> SignInManager
 @inject UserManager<Handymen_UI_ConsumerUser> UserManager
 
-
+<ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
+{
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
+          <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
+        </a>
+
+      </div>
+    </div>
+}
+else
     {
                 <div class="dropdown text-end m-3">
           <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -29,4 +40,4 @@
         <a  class="nav-link link-dark px-2" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
     </li>
 }
-
+</ul>
