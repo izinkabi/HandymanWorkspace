@@ -80,19 +80,21 @@
 
 <!--NavBar-->
 <body>
-  <header class="p-3 border-bottom">
+  <header class="p-3">
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
        <a class="navbar-brand" asp-area="" asp-page="/Index">
-                   <svg xmlns="http://www.w3.org/2000/svg" width="60px" height="60px" fill="currentColor" class="bi bi-wrench-adjustable-circle-fill" viewBox="0 0 16 16">
-                        <path d="M6.705 8.139a.25.25 0 0 0-.288-.376l-1.5.5.159.474.808-.27-.595.894a.25.25 0 0 0 .287.376l.808-.27-.595.894a.25.25 0 0 0 .287.376l1.5-.5-.159-.474-.808.27.596-.894a.25.25 0 0 0-.288-.376l-.808.27.596-.894Z" />
-                        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16Zm-6.202-4.751 1.988-1.657a4.5 4.5 0 0 1 7.537-4.623L7.497 6.5l1 2.5 1.333 3.11c-.56.251-1.18.39-1.833.39a4.49 4.49 0 0 1-1.592-.29L4.747 14.2a7.031 7.031 0 0 1-2.949-2.951ZM12.496 8a4.491 4.491 0 0 1-1.703 3.526L9.497 8.5l2.959-1.11c.027.2.04.403.04.61Z" />
-                    </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="45px" height="45px" fill="currentColor" class="bi bi-wrench-adjustable-circle-fill" viewBox="0 0 16 16">
+                <path d="M6.705 8.139a.25.25 0 0 0-.288-.376l-1.5.5.159.474.808-.27-.595.894a.25.25 0 0 0 .287.376l.808-.27-.595.894a.25.25 0 0 0 .287.376l1.5-.5-.159-.474-.808.27.596-.894a.25.25 0 0 0-.288-.376l-.808.27.596-.894Z" />
+                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16Zm-6.202-4.751 1.988-1.657a4.5 4.5 0 0 1 7.537-4.623L7.497 6.5l1 2.5 1.333 3.11c-.56.251-1.18.39-1.833.39a4.49 4.49 0 0 1-1.592-.29L4.747 14.2a7.031 7.031 0 0 1-2.949-2.951ZM12.496 8a4.491 4.491 0 0 1-1.703 3.526L9.497 8.5l2.959-1.11c.027.2.04.403.04.61Z" />
+            </svg>
                     
-                    </a>
-
+        </a>
+        <a href="/" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
+        <span class="fs-4">Handyman</span>
+      </a>
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="#" class="nav-link px-2 link-secondary">Handyman</a></li>
+          <li><a href="#" class="nav-link px-2 link-secondary">Overview</a></li>
           <li><a href="#" class="nav-link px-2 link-dark">Inventory</a></li>
           <li><a href="#" class="nav-link px-2 link-dark">Customers</a></li>
           <li><a href="#" class="nav-link px-2 link-dark">Products</a></li>
@@ -100,30 +102,36 @@
             @if (SignInManager.IsSignedIn(User))
             {
                 var orders = await _orderHelper.LoadUserOrders();
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end sticky-top">
-                    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        @orders.Count() <!--Total value of Orders-->
-                        <span class="visually-hidden">unread messages</span>
-                        </span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-basket" viewBox="0 0 16 16">
-                            <path d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1v4.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 13.5V9a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h1.217L5.07 1.243a.5.5 0 0 1 .686-.172zM2 9v4.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V9H2zM1 7v1h14V7H1zm3 3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 4 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 6 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 8 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5z" />
-                        </svg>
-                    </button>
-                </div>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end sticky-top">
+                            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    @orders.Count() <!--Total value of Orders-->
+                                    <span class="visually-hidden">unread messages</span>
+                                </span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-basket" viewBox="0 0 16 16">
+                                    <path d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1v4.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 13.5V9a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h1.217L5.07 1.243a.5.5 0 0 1 .686-.172zM2 9v4.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V9H2zM1 7v1h14V7H1zm3 3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 4 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 6 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 8 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5z" />
+                                </svg>
+                            </button>
+                        </div>
+
+
                         
-            }
-        <partial name="_LoginPartial" />
-      </div>
-    </div>
+
+                    }
+                    <partial name="_LoginPartial" />
+                </div>
     </header>
+    <!--End NavBar-->
       <div class="b-example-divider"></div>
-              <!--right Menu-->
+    <!--right Menu-->
+   
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header">
             <h5 id="offcanvasRightLabel">Orders </h5>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
+        
+        
        <!--Order Components list scrollable-->
         
     @if (SignInManager.IsSignedIn(User))
@@ -139,10 +147,15 @@
                 </div>
             }else 
                 {
-                     var orders = await _orderHelper.LoadUserOrders();            
+
+                    
+                     var orders = await _orderHelper.LoadUserOrders();
+                   
+                
                 <div class="offcanvas-body" heightoverflow-y:scroll>
                  <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" class="scrollspy-example bg-light p-3 rounded-2" tabindex="0">
                         
+
                      @if(orders.Count==0)
                      {
                             <div class="card bg-dark text-white">
@@ -153,32 +166,43 @@
                             </div>
 
                      }
+
                 @foreach (Order order in orders)
                 {
+
+                           
                                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
                                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                     <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@order" />
+                                    @*<div class="row justify-content-center">
+                                        <a href="/OrderDetails?order=@{@order}"  class="btn btn-info">View</a>
+                                    </div>*@
                                 </div>
+                           
+                            
+                           
                     <hr />
                 }
                 </div>
              </div>
             }
     }
-            <!--End Order Components list scrollabe-->     
+            <!--End Order Components list scrollabe-->
+
+
+
+                  
    </div>
     <!--end right menu-->
-    <header class="py-3 mb-4">
+    <header class="py-3 mb-4 boarder-bottom">
     <div class="container d-flex flex-wrap justify-content-center">
-      <a href="/" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
-        <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
-        <span class="fs-4">Handyman</span>
-      </a>
+  
       <form class="col-12 col-lg-auto mb-3 mb-lg-0" role="search">
         <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
       </form>
     </div>
   </header>
+
     <!--End NavBar-->
 
     <!--Modal-->
