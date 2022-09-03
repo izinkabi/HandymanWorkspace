@@ -8,76 +8,49 @@
     ViewData["Title"] = "Details";
 }
 
+    <!-- Custom styles for this template -->
+    <link href="features.css" rel="stylesheet">
+<hr/>
+<div class="container px-4 py-5" id="custom-cards">
+    <a asp-page="./ServicesHome" class="btn-outline-secondary">Go back</a>
+    <h2 class="pb-2 border-bottom">New Order</h2>
 
-
-@*@if (SignInManager.IsSignedIn(User))
-{*@
-        <figure class="text-center">
-        <img src="/Images/@Html.DisplayFor(model => model.Service.ImageUrl)" class="figure-img img-fluid rounded" alt="Service Image" style="max-width: fit-content; height:300px">
-        <blockquote class="blockquote">
-        <p>A well-known <strong>H</strong>andyman is in Town</p>
-        </blockquote>
-        <figcaption class="blockquote-footer">
-        She is here <cite title="Source Title">To solve everythin and every 1</cite>
-        </figcaption>
-        </figure>
-<br />
-
-
-    <hr />
-    <div class="accordion accordion-flush" id="accordionFlushExample">
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="flush-headingOne">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-           <h4 class="card-title"> @Html.DisplayFor(modelItem => modelItem.Service.Name)</h4>
-          </button>
-        </h2>
-        <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-          <div class="accordion-body">@Html.DisplayFor(modelItem => modelItem.Service.Name).</div>
+    <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
+      <div class="col">
+        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('~/Images/unsplash-photo-3.jpg'));">
+          <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+            <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">@Html.DisplayFor(modelItem => modelItem.Service.Name)</h2>
+            <ul class="d-flex list-unstyled mt-auto">
+              <li class="me-auto">
+                <img src="https://github.com/twbs.png" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white">
+              </li>
+              <li class="d-flex align-items-center me-3">
+                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#geo-fill"/></svg>
+                <small>@UserManager.GetUserName(User)!</small>
+              </li>
+              <li class="d-flex align-items-center">
+                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"/></svg>
+                <small>New</small>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="flush-headingTwo">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-            <h5 class="card-title"> @Html.DisplayNameFor(modelItem => modelItem.Service.Description)</h5>
-          </button>
-        </h2>
-        <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-          <div class="accordion-body">@Html.DisplayFor(modelItem => modelItem.Service.Description).</div>
+ <div class="col d-flex align-items-start">
+        <svg class="bi text-muted flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#home"/></svg>
+        <div>
+          <h4 class="fw-bold mb-0"> Agree</h4>
+          <p>@Html.DisplayFor(modelItem => modelItem.Service.Description).</p>
+          <a asp-page="./Order" asp-route-id="@Model.Service.Id" class="btn btn-outline-success justify-content-c"> Order </a>
         </div>
       </div>
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="flush-headingThree">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-           <h5 class="card-title"> @Html.DisplayFor(modelItem => modelItem.Service.CategoryName)</h5>
-          </button>
-        </h2>
-        <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
-          <div class="accordion-body">@Html.DisplayFor(modelItem => modelItem.Service.CategoryDescription) <code>.Mahn!</code> </div>
+      <div class="col d-flex align-items-start">
+        <svg class="bi text-muted flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#speedometer2"/></svg>
+        <div>
+          <h4 class="fw-bold mb-0">T's & C's</h4>
+          <p>Please note the following</p>
         </div>
       </div>
     </div>
-    <div class="row justify-content-center">
-        <div class="col-5">
-            
-        </div>
-        <div class="col-7">
-            <a asp-page="/Orders/Order" asp-route-id="@Model.Service.Id" class="btn btn-outline-success justify-content-end"> Order </a>
-        </div>
-       
-    </div>
-    <a asp-page="./Index" class="btn-outline-secondary">Go back</a>
-    <hr/>
-   
-   
-    
- 
-@*}*@
-
-
-
-    
-
-
-
+  </div>
 

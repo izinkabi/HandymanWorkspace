@@ -34,6 +34,9 @@
     <None Include="wwwroot\assets\dist\js\bootstrap.bundle.min.js.map" />
     <None Include="wwwroot\Images\ac.jpg" />
     <None Include="wwwroot\Images\cleaning.jpg" />
+    <None Include="wwwroot\Images\hand.jpg" />
+    <None Include="wwwroot\Images\handy.jpg" />
+    <None Include="wwwroot\Images\handyman.jpg" />
     <None Include="wwwroot\Images\oven.jpg" />
     <None Include="wwwroot\Images\pipe.jpg" />
   </ItemGroup>
