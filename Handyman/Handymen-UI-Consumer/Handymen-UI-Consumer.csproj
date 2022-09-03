@@ -38,6 +38,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\assets\brand\bootstrap-logo-white.svg" />
+    <None Include="wwwroot\assets\brand\bootstrap-logo.svg" />
+    <None Include="wwwroot\assets\dist\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\assets\dist\css\bootstrap.rtl.min.css.map" />
+    <None Include="wwwroot\assets\dist\js\bootstrap.bundle.min.js" />
+    <None Include="wwwroot\assets\dist\js\bootstrap.bundle.min.js.map" />
     <None Include="wwwroot\Images\ac.jpg" />
     <None Include="wwwroot\Images\cleaning.jpg" />
     <None Include="wwwroot\Images\oven.jpg" />

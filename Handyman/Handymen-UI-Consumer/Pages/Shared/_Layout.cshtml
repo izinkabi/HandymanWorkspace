@@ -10,6 +10,7 @@
 
 @inject IOrderHelper _orderHelper;
 
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 <!DOCTYPE html>
 <html lang="en">
@@ -17,16 +18,16 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
-        @ViewData["Title"] - FixiTup
+        @ViewData["Title"] - Handyman
     </title>
     <base href="~/" />
     <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Handymen_UI_Consumer.styles.css" asp-append-version="true" />
+            <link rel="stylesheet" href="~/Identity/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/Identity/css/site.css" />
 
-    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet"/>
 
     <style>
       .bd-placeholder-img {
@@ -91,7 +92,7 @@
                     </a>
 
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="#" class="nav-link px-2 link-secondary">Overview</a></li>
+          <li><a href="#" class="nav-link px-2 link-secondary">Handyman</a></li>
           <li><a href="#" class="nav-link px-2 link-dark">Inventory</a></li>
           <li><a href="#" class="nav-link px-2 link-dark">Customers</a></li>
           <li><a href="#" class="nav-link px-2 link-dark">Products</a></li>
@@ -171,14 +172,13 @@
     <div class="container d-flex flex-wrap justify-content-center">
       <a href="/" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
         <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
-        <span class="fs-4">Double header</span>
+        <span class="fs-4">Handyman</span>
       </a>
       <form class="col-12 col-lg-auto mb-3 mb-lg-0" role="search">
         <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
       </form>
     </div>
   </header>
-
     <!--End NavBar-->
 
     <!--Modal-->
@@ -220,7 +220,7 @@
       <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">FAQs</a></li>
       <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
     </ul>
-    <p class="text-center text-muted">&copy; 2022 Company, Inc</p>
+    <p class="text-center text-muted">&copy; 2022 Handyman, Inc</p>
   </footer>
 </div>
 
