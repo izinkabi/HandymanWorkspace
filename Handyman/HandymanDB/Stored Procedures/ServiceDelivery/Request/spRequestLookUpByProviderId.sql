@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [ServiceDelivery].[spRequestLookUpByProviderServiceId]
+﻿CREATE PROCEDURE [ServiceDelivery].[spRequestLookUpByProviderId]
 
 	@ServiceProviderId NVARCHAR(450)
 	

@@ -25,7 +25,7 @@ namespace HandymanDataLibray.DataAccess
         {
             SQLDataAccess sql = new SQLDataAccess();
 
-            var output = sql.LoadData<RequestModel, dynamic>("ServiceDelivery.spRequestLookUpByServiceProviderId?ServiceProviderId", new { ServiceProviderId = providerId }, "HandymanDB");
+            var output = sql.LoadData<RequestModel, dynamic>("ServiceDelivery.spRequestLookUpByProviderId", new { ServiceProviderId = providerId }, "HandymanDB");
 
             return output;
         }
@@ -86,10 +86,35 @@ namespace HandymanDataLibray.DataAccess
             };
             SQLDataAccess sql = new SQLDataAccess();
 
-            var output = sql.SaveData("dbo.spRequestUpdate", reqUpdate, "HandymanDB");
+            try
+            {
+                //Create request and update order
+                sql.StartTransaction("HandymanDB");
+                sql.SaveDataTransaction("ServiceDelivery.spRequestUpdate", reqUpdate);
 
+                var order = sql.LoadDataTransaction<OrderModel, dynamic>("ServiceDelivery.spOrderLookUpById", new { Id = reqUpdate.OrderId }).FirstOrDefault();
+
+                //let the consumer know the orderis accepted
+                var orderUpdate = new
+                {
+                    Id = order.Id,
+                    Stage = "Started",
+                    ServiceId = order.ServiceId,
+                    DateAccepted = DateTime.Now,
+                    IsAccepted = 1
+                };
+                sql.SaveDataTransaction("Customer.spOrderUpdate", orderUpdate);
+
+                sql.CommitTransation();
+
+                //var output = sql.SaveData("ServiceDelivery.spRequestUpdate", reqUpdate, "HandymanDB");
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception();
+            }
         }
-
 
         public void DeleteRequest(int Id)
         {

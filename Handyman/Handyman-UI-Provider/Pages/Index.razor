@@ -7,7 +7,9 @@
 @using Handyman_UI_Provider.Models
 @using Handyman_UI_Provider.Models.Services
 @using Microsoft.Extensions.Logging
+
 @implements IDisposable
+
 @inject IRequestEndPoint _requestEndPoint
 @inject NavigationManager NavManager
 @inject IServiceEndpoint _serviceEndPoint 
@@ -109,7 +111,29 @@
         <div class="alert alert-info"> <p>You haven't added any services on your profile</p></div>
         }
 </div>
-      <div class="col-5 align-content-end g-4">
+
+<!--List of requests-->
+    
+        @*<a href="#" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">List group item heading</h5>
+                <small class="text-muted">3 days ago</small>
+            </div>
+            <p class="mb-1">Some placeholder content in a paragraph.</p>
+            <small class="text-muted">And some muted small print.</small>
+        </a>
+        <a href="#" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">List group item heading</h5>
+                <small class="text-muted">3 days ago</small>
+            </div>
+            <p class="mb-1">Some placeholder content in a paragraph.</p>
+            <small class="text-muted">And some muted small print.</small>
+        </a>*@
+ 
+    <!--End List-->
+    
+      @*<div class="col-5 align-content-end g-4">
           <div class="d-flex position-relative">
           <img src="./Images/bg/Card Payment_Monochromatic.png" class="flex-shrink-0 me-3" alt="..." width="120px" height="120px">
           <div>
@@ -124,10 +148,32 @@
             <a href="#" class="stretched-link">Go somewhere</a>
           </div>
         </div>
-      </div>
-    </div>
+      </div>*@
+   </div>
     <hr/>
-    @code{
+    <h3>Your requests</h3>
+    <div class="list-group">
+
+        @if (@ownRequests != null)
+        {
+
+
+            foreach (var r in @ownRequests)
+            {
+                <a @onclick="() => DisplayRequestDetails(r)" class="list-group-item list-group-item-action" aria-current="true">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">@r.Service.Name</h5>
+                        <small>@r.DateAccepted.ToString("MM/dd/yyyy HH:mm")</small>
+                    </div>
+                    <p class="mb-1">@r.Service.Description</p>
+                    <small>@r.Stage</small>
+                </a>
+            }
+        }
+
+        </div>
+
+@code{
 
     private RequestDisplayModel? request;
     private List<RequestDisplayModel>? requsts;
@@ -135,7 +181,7 @@
     private List<DisplayServiceModel>? services;
     private List<ProviderServiceModel>? providerServices;
     private RequestDisplayModel? newRequest;
-
+    private List<RequestDisplayModel>? ownRequests = new()!; 
 
 
     string? ErrorMsg;
@@ -144,6 +190,7 @@
         //await the orders
         NavManager.LocationChanged += HandleLocationChanged;
         await LoadOrders();
+        await LoadRequests();
 
     }
 
@@ -180,14 +227,43 @@
     //Same with the previous comment
     private async Task LoadRequests()
     {
+        List<RequestModel>? libRequests;
         try
         {
+            var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
+            var UserId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+            libRequests = await _requestEndPoint.GetRequestsByProvider(UserId);
+
+            if (libRequests != null)
+            {
 
 
+                foreach (var req in libRequests)
+                {
+                    var reqDisplay = new RequestDisplayModel();
+                    foreach (var servDisplay in services)
+                    {
+                        if (req.ServiceId == servDisplay.Id)
+                        {
+                            reqDisplay.Service = servDisplay;
+                            reqDisplay.DateAccepted = req.DateAccepted;
+                            reqDisplay.Id = req.Id;
+                            reqDisplay.Stage = req.Status;
+                            reqDisplay.order = new();
+                            reqDisplay.order.Id = req.OrderId;
+                            reqDisplay.order.DateCreated = req.DateAccepted;
+                            reqDisplay.order.IsAccepted = 1;
+
+                        }
+                    }
+                    ownRequests.Add(reqDisplay);
+                }
+            }
+            ErrorMsg = string.Empty;
         }
         catch(Exception ex)
         {
-
+            ErrorMsg = ex.Message;
         }
     }
 
@@ -199,7 +275,8 @@
             ["Id"] = btnRequest?.order?.Id,
             ["sid"] = btnRequest?.order?.ServiceId,
             ["img"] = btnRequest?.Service.ImageUrl,
-            ["ord"] = btnRequest?.order?.DateCreated.ToString("MM/dd/yyyy HH:mm")
+            ["ord"] = btnRequest?.order?.DateCreated.ToString("MM/dd/yyyy HH:mm"),
+            ["ia"] = btnRequest?.order?.IsAccepted
         }), true);//not yet there
     }
 
@@ -247,6 +324,7 @@
         
     }
 
+   
     private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
     {
         Logger.LogInformation("URL of new location: {Location}", e.Location);

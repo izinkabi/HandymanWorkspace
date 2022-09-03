@@ -31,6 +31,22 @@ namespace HandymanProviderLibrary.Api.Request;
             
         }
 
+    public async Task<List<RequestModel>> GetRequestsByProvider(string? providerId)
+    {
+        List<RequestModel>? httpResponseMessage = new();
+
+        try
+        {
+            httpResponseMessage = await _apiHelper.ApiClient.GetFromJsonAsync<List<RequestModel>>($"/api/GetRequestsByProviderId?providerId={providerId}");
+            return httpResponseMessage;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+
+    }
+
     public async Task<string> PostRequest(RequestModel request)
     {
         string? result = string.Empty;
@@ -74,7 +90,7 @@ namespace HandymanProviderLibrary.Api.Request;
 
         try
         {
-            var httpResponseMessage = await _apiHelper.ApiClient.PostAsJsonAsync("/api/Request/Update", req);
+            var httpResponseMessage = await _apiHelper.ApiClient.PutAsJsonAsync("/api/Request/Update", req);
             if (httpResponseMessage.IsSuccessStatusCode)
             {
                 result = httpResponseMessage.ReasonPhrase;

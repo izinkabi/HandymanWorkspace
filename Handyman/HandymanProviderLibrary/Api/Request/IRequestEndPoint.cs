@@ -7,5 +7,6 @@ namespace HandymanProviderLibrary.Api.Request
         Task<List<OrderModel>> GetAllOrdersByService(int serviceId);
         Task<string> PostRequest(RequestModel request);
         Task<string> UpdateRequest(RequestModel updateRequest);
+        Task<List<RequestModel>> GetRequestsByProvider(string? providerId);
     }
 }
