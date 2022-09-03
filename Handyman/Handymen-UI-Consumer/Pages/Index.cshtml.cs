@@ -17,7 +17,7 @@ namespace Handymen_UI_Consumer.Pages
     {
         private readonly Handymen_UI_Consumer.Data.Handymen_UI_ConsumerContext _context;
         private readonly IMemoryCache _cache;
-        private readonly ILogger<TestModel> _logger;
+     
         private IServiceEndPoint _serviceEndPoint;
         private List<Service>? serviceDisplayList;
         internal string? ErrorMsg;

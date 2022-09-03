@@ -11,7 +11,52 @@
 
     <div class="card text-center">
         <div class="card-header">
-            New Request
+            <!--Status -->
+            @if (!(@IsAccepted.Equals(0) && !(@RequestStage.Contains("Started")) && (@RequestStage.Contains("Finished"))))
+                {
+
+                    <div  class="form-check form-check-inline">
+                        <input  class="form-check-input" @onclick="StartRequest" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                        <label class="form-check-label" for="inlineRadio2">@RequestStage</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3" disabled>
+                    <label class="form-check-label" for="inlineRadio3">@RequestStage</label>
+                    </div>
+                }
+                 @if (@RequestStage.Contains("Started"))
+                {
+
+                   @* <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" disabled>
+                        <label class="form-check-label" for="inlineRadio1">@RequestStage</label>
+                    </div>*@
+                    @*<div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" disabled>
+                        <label class="form-check-label" for="inlineRadio2">@RequestStage</label>
+                    </div>*@
+                    <div @onclick="FinishRequest" class="form-check form-check-inline">
+                        <input  class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="@isStarted">
+                    <label class="form-check-label" for="inlineRadio3">Finish</label>
+                    </div>
+                }
+                @if (@RequestStage.Contains("Finished"))
+                {
+                    @*<div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1" disabled>
+                        <label class="form-check-label" for="inlineRadio1">Accepted</label>
+                    </div>*@
+                   @* <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="2" disabled>
+                        <label class="form-check-label" for="inlineRadio2">@RequestStage</label>
+                    </div>*@
+                    <div class="form-check form-check-inline">
+                    <input  class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="3" disabled >
+                        <label class="form-check-label" for="inlineRadio3">@RequestStage</label>
+                    </div>
+                }
+            
+            <!--End Status-->
         </div>
         <div class="card-body">
             <h5 class="card-title">Service Name</h5>
@@ -33,7 +78,11 @@
     private List<OrderModel>? orders;
     private RequestModel? newRequest;
     string? ErrorMsg;
-    RequestDisplayModel? request;
+    bool isStarted;
+    bool isFinished;
+    RequestDisplayModel? request = new()!;
+
+    private string RequestStage = "New";
 
     [Parameter]
     [SupplyParameterFromQuery(Name = "Id")]
@@ -65,7 +114,7 @@
     protected async Task OnInitialisedAsync()
     {
         orders = await _requestEndPoint.GetAllOrdersByService(ServiceId);
-
+        isStarted = true;
     }
 
     //Create a new request
@@ -92,15 +141,15 @@
 
 
     //This method has the mechanism for starting the request
-    public async Task StartRequest()
+    public void StartRequest()
     {
-        try
-        {
-
-        }catch(Exception ex)
-        {
-            throw new Exception(ex.Message);
-        }
+       
+            RequestStage = "Started";            
+            //request.Stage = "started";
+            //isStarted = true;
+            //IsAccepted = 1;
+            //InvokeAsync(StateHasChanged);
+       
     }
 
     //This method encapsulates the mechanism for processing the requesst
@@ -110,9 +159,12 @@
     }
 
     //Completing the request method
-    public async Task FinishRequest()
+    public void FinishRequest()
     {
-
+        RequestStage = "Finished";
+        //isFinished = true;
+        //IsAccepted = 1;
+        //InvokeAsync(StateHasChanged);
     }
 
     //public async Task<RequestDisplayModel> GetRequest()

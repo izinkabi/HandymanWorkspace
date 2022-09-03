@@ -10,24 +10,12 @@
   <ItemGroup>
     <Compile Remove="Pages\Chats\**" />
     <Compile Remove="Pages\Email\**" />
-    <Compile Remove="Pages\Home\**" />
-    <Compile Remove="Pages\Orders\**" />
-    <Compile Remove="Pages\Services\**" />
     <Content Remove="Pages\Chats\**" />
     <Content Remove="Pages\Email\**" />
-    <Content Remove="Pages\Home\**" />
-    <Content Remove="Pages\Orders\**" />
-    <Content Remove="Pages\Services\**" />
     <EmbeddedResource Remove="Pages\Chats\**" />
     <EmbeddedResource Remove="Pages\Email\**" />
-    <EmbeddedResource Remove="Pages\Home\**" />
-    <EmbeddedResource Remove="Pages\Orders\**" />
-    <EmbeddedResource Remove="Pages\Services\**" />
     <None Remove="Pages\Chats\**" />
     <None Remove="Pages\Email\**" />
-    <None Remove="Pages\Home\**" />
-    <None Remove="Pages\Orders\**" />
-    <None Remove="Pages\Services\**" />
   </ItemGroup>
 
   <ItemGroup>
