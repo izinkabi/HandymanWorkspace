@@ -81,20 +81,19 @@ namespace HandymanDataLibray.DataAccess
                 OrderId = update.OrderId,
                 ServiceId = update.ServiceId,
                 Status = update.Status
-
-
             };
+
             SQLDataAccess sql = new SQLDataAccess();
 
             try
             {
-                //Create request and update order
+                //Update the request 
                 sql.StartTransaction("HandymanDB");
                 sql.SaveDataTransaction("ServiceDelivery.spRequestUpdate", reqUpdate);
 
                 var order = sql.LoadDataTransaction<OrderModel, dynamic>("ServiceDelivery.spOrderLookUpById", new { Id = reqUpdate.OrderId }).FirstOrDefault();
 
-                //let the consumer know the orderis accepted
+                //Update the order 
                 var orderUpdate = new
                 {
                     Id = order.Id,

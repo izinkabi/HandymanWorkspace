@@ -33,6 +33,7 @@
     private List<OrderModel>? orders;
     private RequestModel? newRequest;
     string? ErrorMsg;
+    RequestDisplayModel? request;
 
     [Parameter]
     [SupplyParameterFromQuery(Name = "Id")]
@@ -64,6 +65,7 @@
     protected async Task OnInitialisedAsync()
     {
         orders = await _requestEndPoint.GetAllOrdersByService(ServiceId);
+
     }
 
     //Create a new request
@@ -88,11 +90,36 @@
 
     }
 
+
+    //This method has the mechanism for starting the request
+    public async Task StartRequest()
+    {
+        try
+        {
+
+        }catch(Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    //This method encapsulates the mechanism for processing the requesst
+    public async Task ProcessRequest()
+    {
+
+    }
+
+    //Completing the request method
+    public async Task FinishRequest()
+    {
+
+    }
+
     //public async Task<RequestDisplayModel> GetRequest()
     //{
     //    try
     //    {
-            
+    
     //    }catch(Exception ex)
     //    {
     //        ErrorMsg = ex.Message;
