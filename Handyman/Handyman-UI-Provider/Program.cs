@@ -29,9 +29,9 @@ builder.Services.AddServerSideBlazor();
 //Dependency Injection
 builder.Services.AddSingleton<IAPIHelper, APIHelper>();
 builder.Services.AddTransient<IServiceEndpoint, ServiceEndpoint>();
-builder.Services.AddTransient<IRequestEndPoint, RequestEndPoint>();
+builder.Services.AddSingleton<IRequestEndPoint,RequestEndPoint>();
 builder.Services.AddTransient<IServiceProviderEndPoint, ServiceProviderEndPoint>();
-//builder.Services.AddTransient<IServiceDelivery, ServiceDelivery>();//service delivery in Hubs
+
 
 builder.Services.AddResponseCompression(opts =>
 {
@@ -61,9 +61,9 @@ app.UseRouting();
 
 app.MapBlazorHub();
 //Mapping of Hub
-app.MapHub<ChatHub>("chathub");
-app.MapHub<OrderHub>("orderhub");
-app.MapHub<RequestHub>("requesthub");
+app.MapHub<ChatHub>("/chathub");
+app.MapHub<OrderHub>("/orderhub");
+app.MapHub<RequestHub>("/requesthub");
 
 app.MapFallbackToPage("/_Host");
 app.UseAuthentication();

@@ -17,7 +17,7 @@ namespace HandymanDataLibray.DataAccess
 
             var p = new { ConsumerId = Id };
 
-            var output = sql.LoadData<OrderModel, dynamic>("Customer.OrderLookUpByConsumerID", p, "HandymanDB");
+            var output = sql.LoadData<OrderModel, dynamic>("Customer.spOrderLookUpByConsumerID", p, "HandymanDB");
 
             return output;
         }
