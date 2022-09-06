@@ -8,7 +8,6 @@
 
 
 @inject SignInManager<Handymen_UI_ConsumerUser> SignInManager
-
 @inject IOrderHelper _orderHelper;
 
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
@@ -116,8 +115,6 @@
                         </div>
 
 
-                        
-
                     }
                     <partial name="_LoginPartial" />
                 </div>
@@ -148,11 +145,8 @@
                 </div>
             }else 
                 {
-
-                    
                      var orders = await _orderHelper.LoadUserOrders();
                    
-                
                 <div class="offcanvas-body" heightoverflow-y:scroll>
                  <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" class="scrollspy-example bg-light p-3 rounded-2" tabindex="0">
                         
@@ -171,28 +165,23 @@
                 @foreach (Order order in orders)
                 {
 
-                           
-                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@order" />
-                                    @*<div class="row justify-content-center">
-                                        <a href="/OrderDetails?order=@{@order}"  class="btn btn-info">View</a>
-                                    </div>*@
-                                </div>
-                           
-                            
-                           
-                    <hr />
-                }
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert" id="@order.Id">
+                                <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(order.Id)" aria-label="Close"></button>
+                            <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@order" />
+                            @*<div class="row justify-content-center">
+                                <a href="/OrderDetails?order=@{@order}"  class="btn btn-info">View</a>
+                            </div>*@
+                            </div>
+                            ViewData["oid"] = order.Id;
+                            ViewData[$"name{order.Id}"] = order.ServiceProperty.Name;
+                            ViewData[$"id{order.Id}"] = order.Id;
+                        }
                 </div>
              </div>
             }
     }
             <!--End Order Components list scrollabe-->
 
-
-
-                  
    </div>
     <!--end right menu-->
     <header class="py-3 mb-4 boarder-bottom">
@@ -206,8 +195,36 @@
 
     <!--End NavBar-->
 
-    <!--Modal-->
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+    <!--Delete order Confirmation Modal-->
+    <!-- Button trigger modal -->
+    @*<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder">
+    Launch static backdrop modal
+    </button>*@
+
+    <!-- Modal -->
+
+   @{
+    var ods = await _orderHelper.LoadUserOrders();
+    @foreach(var order in ods)
+    {
+        <div>
+           
+                @await Component.InvokeAsync("Order",
+                    new {
+                        Id =  order.Id
+                    })
+        </div>
+        
+    }
+      
+    }
+   
+    <!--End Delete order Modal-->
+
+
+    <!--Order Confirmation Modal-->
+    <div class="modal fade" id="staticBackdropConfirmorder" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -228,7 +245,7 @@
             </div>
         </div>
     </div>
-    <!--End Modal-->
+    <!--End Order Confirmation Modal-->
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

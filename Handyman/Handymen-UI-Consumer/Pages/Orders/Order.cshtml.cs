@@ -4,10 +4,10 @@ using Handymen_UI_Consumer.Models;
 using HandymanUILibrary.API;
 using Microsoft.Extensions.Caching.Memory;
 using HandymanUILibrary.API.Consumer;
+using Microsoft.AspNetCore.Authorization;
+using Handymen_UI_Consumer.Helpers;
 using Microsoft.AspNetCore.Identity;
-using System;
 using Handymen_UI_Consumer.Areas.Identity.Data;
-
 
 namespace Handymen_UI_Consumer.Pages
 {
@@ -16,26 +16,24 @@ namespace Handymen_UI_Consumer.Pages
     {
         private readonly Handymen_UI_Consumer.Data.Handymen_UI_ConsumerContext _context;
         private readonly IMemoryCache _cache;
-        private IOrderEndPoint _orderEndPoint;
+        private IOrderHelper _orderHelper;
         private Order order;
         private IServiceEndPoint _serviceEndPoint;
         private string ErrorMsg;
         private List<Service> serviceDisplayList;
-       
-     
+        private SignInManager<Handymen_UI_ConsumerUser> SignInManager;
+
 
         public DateTime CurrentDateTime { get; }
       
         //Injecting the IServiceEndPoint 
         public OrderModel(Handymen_UI_Consumer.Data.Handymen_UI_ConsumerContext context,
            IMemoryCache cache, IServiceEndPoint serviceEndPoint,
-           IOrderEndPoint orderEndPoint)
+           IOrderHelper orderHelper, SignInManager<Handymen_UI_ConsumerUser> signInManager)
         {
             _context = context;
             _serviceEndPoint = serviceEndPoint;
-            _orderEndPoint = orderEndPoint;
-            _cache = cache;
-         
+            _orderHelper = orderHelper;
         }
 
         //public Order Order { get; set; } = default!;
@@ -53,10 +51,10 @@ namespace Handymen_UI_Consumer.Pages
         }
 
         //Referenced by the component
-        public List<Service> ServiceDisplayList
-        {
-            get { return serviceDisplayList; }
-        }
+         List<Service> ServiceDisplayList
+            {
+                get { return serviceDisplayList; }
+            }
         //Get the order for display (the default method on OrderPage redirect or call)
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -75,7 +73,7 @@ namespace Handymen_UI_Consumer.Pages
             //order = cacheValue;
             if (order.Id != id)
             {
-                return RedirectToPage("./OrderDetails");
+                return RedirectToPage("./Orders/OrderDetails");
             }
             
 
@@ -104,8 +102,6 @@ namespace Handymen_UI_Consumer.Pages
                     order.Status = "Active";
                     order.Id = service.Id;
                    
-
-
 
                 }
             }
@@ -148,11 +144,21 @@ namespace Handymen_UI_Consumer.Pages
 
         }
         //Cancelling the order 
-        public void OnPostCancelOrder()
+        private void CancelOrder()
         {
             _cache.Remove("order");
             _cache.Dispose();
               
+        }
+
+        [Authorize]
+        public IActionResult OnPostAsync(int Id)
+        {
+            if (SignInManager.IsSignedIn(User))
+            {
+                return ViewComponent("DeleteOrder", new { Id = Id });
+            }
+            return RedirectToPage(nameof(Index));
         }
     }
 }

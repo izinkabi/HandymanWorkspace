@@ -49,13 +49,28 @@ namespace HandymanDataLibray.DataAccess
 
         }
 
+        //Here we delete using a transaction due to constraint between Order and Request
+        public void DeleteOrder(int Id)
+        {
+            SQLDataAccess sql = new SQLDataAccess();
 
-        //public void DeleteOrder(int Id)
-        //{
-        //    SQLDataAccess sql = new SQLDataAccess();
+            try
+            {
+                sql.StartTransaction("HandymanDB");
+                
+                //Delete the request first
+                sql.SaveDataTransaction("ServiceDelivery.spRequestDelete", new { OrderId = Id });
 
-        //    var output = sql.SaveData("Customer.spOrderDelete", new { Id = Id }, "HandymanDB");
-        //}
-        //}
+                //Go on and delete the order
+                sql.SaveDataTransaction("Customer.spOrderDelete", new {Id = Id});
+
+                sql.CommitTransation();
+            }
+            catch (Exception ex)
+            {
+               throw new Exception( ex.Message );
+            }
+        }
     }
 }
+

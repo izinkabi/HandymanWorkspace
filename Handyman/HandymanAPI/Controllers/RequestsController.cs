@@ -54,10 +54,10 @@ namespace HandymanAPI.Controllers
 
         //DELETE
         //api/Requests/delete/5
-        public void Delete(int Id)
-        {
-            requestData = new RequestData();
-            requestData.DeleteRequest(Id);
-        }
+        //public void Delete(int Id)
+        //{
+        //    requestData = new RequestData();
+        //    requestData.DeleteRequest(Id);
+        //}
     }
 }

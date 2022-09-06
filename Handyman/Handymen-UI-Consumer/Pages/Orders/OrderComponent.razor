@@ -20,6 +20,8 @@
 @inject AuthenticationStateProvider _authenticationStateProvider
 @inject IOrderEndPoint _orderEndPoint
 
+
+
 <!--Order Component MarkUp-->
 <dl class="row justify-content-center">
         <div class="card mb-3 " style="max-width: 540px;">
@@ -43,8 +45,8 @@
 
             @if (!order.IsConfirmed && (order.IsAccepted==0))
             {
-                <button @onclick="ConfirmOrder" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"> Confirm </button>
-            
+
+            <button @onclick="ConfirmOrder" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdropConfirmorder"> Confirm </button>
             }
            
             
@@ -255,7 +257,7 @@
         if (orderHubConnection is not null)
         {
             //Dispose the cache
-            _cache.Remove("ordercomp");
+            //_cache.Remove("ordercomp");
             _cache.Dispose();
             try
             {
@@ -273,7 +275,7 @@
 
     }
 
-    //Initiate the order 
+    //Initiate the order track --soon to be in load orders
     private void TrackOrder()
     {
 
@@ -299,7 +301,7 @@
         //            }));
     }
 
-    //Cancelling 
+    //Cancelling --soon to be in load orders
     private async Task CancelOrder()
     {
 
@@ -309,13 +311,13 @@
 
     }
 
-    //Completing the order on certain 
+    //Completing the order on certain --loaders class 
     private async Task FinishOrder()
     {
 
     }
 
-    //Persisting the order  
+    //Persisting the order 
     private Task PersistOrder()
     {
         ApplicationState.PersistAsJson("fetorder", order);
@@ -323,14 +325,11 @@
         return Task.CompletedTask;
     }
 
-
+    //Confirming the order placement--soon to be in ordershelper by all means
     public async Task ConfirmOrder()
     {
-
         HandymanUILibrary.Models.OrderModel libOrder = new();
-        //libOrder.Service = new HandymanUILibrary.Models.ServiceModel();
-
-
+    
         try
         {
             var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
@@ -354,7 +353,7 @@
             ErrorMsg = ex.Message;
         }
         
-        //ViewData["order"] = order;
+       
 
     }
 

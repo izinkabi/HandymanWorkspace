@@ -41,8 +41,15 @@ namespace HandymanAPI.Controllers
         [Route("api/DeleteOrder")]
         public void Delete(int id)
         {
-            //orderData = new OrderData();
-            
+            orderData = new OrderData();
+            try
+            {
+            orderData.DeleteOrder(id);
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+           
         }
     }
 }

@@ -90,13 +90,6 @@ namespace Handymen_UI_Consumer.Pages
                 ErrMsg = ex.Message;
             }
             
-            
-         
-
-            //_order = order;
-            
-            
-            //ViewData["order"] = _order;
 
             return Page();
         }
