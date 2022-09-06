@@ -262,15 +262,15 @@
             try
             {
 
-
-                await orderHubConnection.DisposeAsync();
+                NavManager.LocationChanged -= HandleLocationChanged;
+               
                 ErrorMsg = null;
 
             }catch(Exception ex)
             {
                 ErrorMsg = ex.Message;
             }
-            NavManager.LocationChanged -= HandleLocationChanged;
+            
         }
 
     }

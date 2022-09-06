@@ -21,7 +21,7 @@ builder.Services.AddDefaultIdentity<Handymen_UI_ConsumerUser>(options => options
 builder.Services.AddSingleton<IAPIHelper, APIHelper>();
 builder.Services.AddTransient<IServiceEndPoint,ServiceEndPoint>();
 builder.Services.AddTransient<IOrderEndPoint, OrderEndPoint>();
-builder.Services.AddTransient<IOrderHelper, OrderHelper>();
+builder.Services.AddScoped<IOrderHelper, OrderHelper>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {

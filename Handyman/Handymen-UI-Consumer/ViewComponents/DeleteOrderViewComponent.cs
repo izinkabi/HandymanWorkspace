@@ -8,7 +8,7 @@ namespace Handymen_UI_Consumer.ViewComponents
     public class DeleteOrderViewComponent : ViewComponent
     {
         private IOrderHelper _orderHelper;
-       
+        private string? ErrorMsg;
         public DeleteOrderViewComponent(IOrderHelper orderHelper)
         {
             _orderHelper = orderHelper; 
@@ -18,9 +18,19 @@ namespace Handymen_UI_Consumer.ViewComponents
         //Displaying the deleted order
         public async Task<IViewComponentResult> InvokeAsync(int Id)
         {
-            var od =  await _orderHelper.GetOrderById(Id);
-            await _orderHelper.DeleteOrder(Id);
-            return View(od);
+            try
+            {
+               
+            }
+            catch (Exception ex)
+            {
+                ErrorMsg = ex.Message;
+                ViewData["err"] = ex.Message;
+            }
+            
+      
+           
+            return View();
         }
     }
 }

@@ -13,12 +13,12 @@
                 </div>
                 <div class="modal-body">
                     Are you sure you want to delete @ViewData[$"name{@Model.Id}"] order?
-                
                 </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <form method="post" asp-page-handler="Order" asp-route-id="@Model.Id">
-                     <button type="submit" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button" class="btn btn-primary">Understood</button>
+                    <form method="post">
+                    <button asp-page="./Orders/Order" asp-route-id="@Model.Id" type="submit" class="btn btn-primary">Save</button>
                     </form>
                 </div>
             </div>

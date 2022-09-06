@@ -99,7 +99,7 @@ namespace HandymanUILibrary.API.Consumer
         {
             try
             {
-                HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.DeleteAsync($"/api/Delete?Id={Id}");
+                HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.DeleteAsync($"/api/DeleteOrder?Id={Id}");
             
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {

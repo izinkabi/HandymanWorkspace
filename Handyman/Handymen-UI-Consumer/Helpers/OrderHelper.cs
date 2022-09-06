@@ -167,21 +167,14 @@ namespace Handymen_UI_Consumer.Helpers
         //Load all orders then select the one you want to delete
         public async Task DeleteOrder(int Id)
         {
-            if (ordersDisplayList == null)
-            {
-                await LoadUserOrders();
-            }
+           
             if (_orderEndpoint != null)
             {
                 try
                 {
-                    foreach (var o in ordersDisplayList)
-                    {
-                        if (o.Id == Id)
-                        {
-                            await _orderEndpoint.DeleteOrder(o.Id);
-                        }
-                    }
+                   
+                  await _orderEndpoint.DeleteOrder(Id);
+                     
                 }catch(Exception ex)
                 {
                     ErrorMsg = ex.Message;

@@ -14,8 +14,7 @@ namespace Handymen_UI_Consumer.Pages
 
     public class OrderModel : PageModel
     {
-        private readonly Handymen_UI_Consumer.Data.Handymen_UI_ConsumerContext _context;
-        private readonly IMemoryCache _cache;
+       
         private IOrderHelper _orderHelper;
         private Order order;
         private IServiceEndPoint _serviceEndPoint;
@@ -26,14 +25,13 @@ namespace Handymen_UI_Consumer.Pages
 
         public DateTime CurrentDateTime { get; }
       
-        //Injecting the IServiceEndPoint 
-        public OrderModel(Handymen_UI_Consumer.Data.Handymen_UI_ConsumerContext context,
-           IMemoryCache cache, IServiceEndPoint serviceEndPoint,
-           IOrderHelper orderHelper, SignInManager<Handymen_UI_ConsumerUser> signInManager)
+        //Injecting the services 
+        public OrderModel(IServiceEndPoint serviceEndPoint, IOrderHelper orderHelper)
         {
-            _context = context;
+            
             _serviceEndPoint = serviceEndPoint;
             _orderHelper = orderHelper;
+           
         }
 
         //public Order Order { get; set; } = default!;
@@ -102,7 +100,6 @@ namespace Handymen_UI_Consumer.Pages
                     order.Status = "Active";
                     order.Id = service.Id;
                    
-
                 }
             }
             
@@ -146,19 +143,21 @@ namespace Handymen_UI_Consumer.Pages
         //Cancelling the order 
         private void CancelOrder()
         {
-            _cache.Remove("order");
-            _cache.Dispose();
-              
+           
         }
 
         [Authorize]
-        public IActionResult OnPostAsync(int Id)
+        public async Task<IActionResult> OnPostAsync(int Id)
         {
-            if (SignInManager.IsSignedIn(User))
+            try
             {
-                return ViewComponent("DeleteOrder", new { Id = Id });
+                await _orderHelper.DeleteOrder(Id);
+            }catch(Exception ex)
+            {
+                ErrorMsg = ex.Message;
+                
             }
-            return RedirectToPage(nameof(Index));
+           return RedirectToPagePermanent("/Index");
         }
     }
 }
