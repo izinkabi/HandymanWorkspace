@@ -10,6 +10,7 @@ using Handymen_UI_Consumer.Models;
 using HandymanUILibrary.API;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Handymen_UI_Consumer.Pages
 {
@@ -19,6 +20,7 @@ namespace Handymen_UI_Consumer.Pages
         private readonly IMemoryCache _cache;
      
         private IServiceEndPoint _serviceEndPoint;
+      
         private List<Service>? serviceDisplayList;
         internal string? ErrorMsg;
 
@@ -86,7 +88,7 @@ namespace Handymen_UI_Consumer.Pages
         }
 
         //Load the services from UILibrary then populate
-        public async Task LoadServices()
+        private async Task LoadServices()
         {
             serviceDisplayList = new List<Service>();
             List<HandymanUILibrary.Models.ServiceModel> services = new List<HandymanUILibrary.Models.ServiceModel>();
@@ -150,5 +152,6 @@ namespace Handymen_UI_Consumer.Pages
             }
         }
 
+        
     }
 }

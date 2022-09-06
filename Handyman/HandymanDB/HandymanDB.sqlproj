@@ -110,5 +110,7 @@
     <Build Include="Stored Procedures\ServiceDelivery\ServiceProvider\spProviderLookUpByProviderId.sql" />
     <Build Include="Stored Procedures\ServiceDelivery\Request\Order\spOrdersLookUpByServiceId.sql" />
     <Build Include="Stored Procedures\ServiceDelivery\Request\Order\spOrderLookUpById.sql" />
+    <Build Include="Stored Procedures\ServiceDelivery\Request\spRequestDelete.sql" />
+    <Build Include="Stored Procedures\Customer\Order\spOrderDelete.sql" />
   </ItemGroup>
 </Project>

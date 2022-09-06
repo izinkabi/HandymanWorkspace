@@ -10,13 +10,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 namespace Handymen_UI_Consumer.Helpers
 {
-    public class OrderHelper:  IOrderHelper
+    public class OrderHelper: PageModel,  IOrderHelper
     {
        
         AuthenticationStateProvider? _authenticationStateProvider;
         IServiceEndPoint _serviceEndPoint;
         IOrderEndPoint? _orderEndpoint;
         private List<Service>? serviceDisplayList;
+        
   
         private Order? order;
         private List<Order>? ordersDisplayList;
@@ -163,6 +164,31 @@ namespace Handymen_UI_Consumer.Helpers
             }
         }
 
+        //Load all orders then select the one you want to delete
+        public async Task DeleteOrder(int Id)
+        {
+            if (ordersDisplayList == null)
+            {
+                await LoadUserOrders();
+            }
+            if (_orderEndpoint != null)
+            {
+                try
+                {
+                    foreach (var o in ordersDisplayList)
+                    {
+                        if (o.Id == Id)
+                        {
+                            await _orderEndpoint.DeleteOrder(o.Id);
+                        }
+                    }
+                }catch(Exception ex)
+                {
+                    ErrorMsg = ex.Message;
+                    throw new Exception(ex.Message);
+                }
 
+            }
+        }
     }
 }

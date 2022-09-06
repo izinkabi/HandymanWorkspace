@@ -115,11 +115,12 @@ namespace HandymanDataLibray.DataAccess
             }
         }
 
-        public void DeleteRequest(int Id)
-        {
-            SQLDataAccess sql = new SQLDataAccess();
+        ////Delete the request
+        //public void DeleteRequest(int Id)
+        //{
+        //    SQLDataAccess sql = new SQLDataAccess();
 
-            var output = sql.SaveData("dbo.spRequestDelete", new { Id = Id }, "HandymanDB");
-        }
+        //    var output = sql.SaveData("ServiceDelivery.spRequestDelete", new { Id = Id }, "HandymanDB");
+        //}
     }
 }

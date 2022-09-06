@@ -97,8 +97,10 @@ namespace HandymanUILibrary.API.Consumer
         /// <exception cref="Exception"></exception>
         public async Task DeleteOrder(int Id)
         {
-            using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.DeleteAsync($"/api/Orders/Delete?Id={Id}"))//Deleting the order of the parameterized request id 
+            try
             {
+                HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.DeleteAsync($"/api/Delete?Id={Id}");
+            
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
                     var result = await httpResponseMessage.Content.ReadFromJsonAsync<OrderModel>();
@@ -107,6 +109,9 @@ namespace HandymanUILibrary.API.Consumer
                 {
                     throw new Exception(httpResponseMessage.ReasonPhrase);
                 }
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
     }
