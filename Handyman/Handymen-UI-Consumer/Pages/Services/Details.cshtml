@@ -41,7 +41,7 @@
         <div>
           <h4 class="fw-bold mb-0"> Agree</h4>
           <p>@Html.DisplayFor(modelItem => modelItem.Service.Description).</p>
-          <a asp-page="./Order" asp-route-id="@Model.Service.Id" class="btn btn-outline-success justify-content-c"> Order </a>
+          <a asp-page="./Orders/Order" asp-route-id="@Model.Service.Id" class="btn btn-outline-success justify-content-c"> Order </a>
         </div>
       </div>
       <div class="col d-flex align-items-start">
