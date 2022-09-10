@@ -7,7 +7,7 @@ using HandymanUILibrary.API.Consumer;
 using Handymen_UI_Consumer.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Handymen_UI_Consumer.Areas.Identity.Data;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace Handymen_UI_Consumer.Pages
 {
@@ -18,25 +18,27 @@ namespace Handymen_UI_Consumer.Pages
         private Order _order;
         private IOrderEndPoint _endPoint;
         private IOrderHelper _orderHelper;
-        string? ErrMsg;
+        string? ErrorMsg;
         public OrderDetailsModel(Handymen_UI_ConsumerContext context, IHttpContextAccessor httpContextAccessor,
             IOrderEndPoint orderEndPoint, IOrderHelper orderHelper)
         {
             _context = context;
             _orderHelper = orderHelper;
-             _endPoint = orderEndPoint;
+            _endPoint = orderEndPoint;
             _httpContextAccessor = httpContextAccessor;
         }
 
         //The OrderModel as a class property
-        [BindProperty(SupportsGet =true)]
-        public Order Order { get { return _order; }  
-            set 
+        [BindProperty(SupportsGet = true)]
+        public Order Order
+        {
+            get { return _order; }
+            set
             {
-                 _order= value;
-              
+                _order = value;
+
             }
-        } 
+        }
 
         //This method displays the Order from the SignalR Hub method
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -49,7 +51,7 @@ namespace Handymen_UI_Consumer.Pages
             }
             try
             {
-               var userId = _httpContextAccessor.HttpContext.User.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+                var userId = _httpContextAccessor.HttpContext.User.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
                 var orders = await _endPoint.GetOrders(userId);
 
                 var serviceDisplayList = await _orderHelper.LoadServices();
@@ -61,38 +63,50 @@ namespace Handymen_UI_Consumer.Pages
                     {
                         if (o.ServiceId == service.Id && o.Id == id)
                         {
-                            order = new();
+                            _order = new();
 
-                            order.DateCreated = o.DateCreated;
-                            order.IsConfirmed = true;
-                            order.IsAccepted = o.IsAccepted;
-                            order.Id = o.Id;
+                            _order.DateCreated = o.DateCreated;
+                            _order.IsConfirmed = true;
+                            _order.IsAccepted = o.IsAccepted;//this should be a constant but im lazy
+                            _order.Id = o.Id;
 
 
-                            order.ServiceProperty = new();
-                            order.ServiceProperty.Name = service.Name;
-                            order.ServiceProperty.CategoryName = service.CategoryName;
-                            order.ServiceProperty.CategoryDescription = service.CategoryDescription;
-                            order.ServiceProperty.Description = service.Description;
-                            order.ServiceProperty.ImageUrl = service.ImageUrl;
-                            order.IsTracking = false;
+                            _order.ServiceProperty = new();
+                            _order.ServiceProperty.Name = service.Name;
+                            _order.ServiceProperty.CategoryName = service.CategoryName;
+                            _order.ServiceProperty.CategoryDescription = service.CategoryDescription;
+                            _order.ServiceProperty.Description = service.Description;
+                            _order.ServiceProperty.ImageUrl = service.ImageUrl;
 
-                            order.IsAccepted = 1;
-                                order.IsConfirmed =false;
-                            order.IsTracking = false;
-                            _order = order;
 
                         }
                     }
-            }   }
+                }
+            }
             catch (Exception ex)
             {
-                ErrMsg = ex.Message;
+                ErrorMsg = ex.Message;
             }
-            
+
 
             return Page();
         }
 
+        [Authorize]
+        public async Task<RedirectResult> OnPostAsync(int Id)
+        {
+            try
+            {
+                await _orderHelper.DeleteOrder(Id);
+
+            }
+            catch (Exception ex)
+            {
+                ErrorMsg = ex.Message;
+
+            }
+            return Redirect("/Index");
+
+        }
     }
 }

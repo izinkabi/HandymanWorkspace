@@ -4,6 +4,7 @@
 @using Handymen_UI_Consumer.Areas.Identity.Data
 @using Handymen_UI_Consumer.Helpers
 @using Handymen_UI_Consumer.Models
+@using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Identity
@@ -23,6 +24,7 @@
 
 
 <!--Order Component MarkUp-->
+
 <dl class="row justify-content-center">
         <div class="card mb-3 " style="max-width: 540px;">
           <div class="row g-0">
@@ -33,23 +35,29 @@
               <div class="card-body">
                     <h5 class="card-title" id="orderName">@order.ServiceProperty.Name</h5>
                     <p class="card-text" id="orderDescription"> @order.ServiceProperty.Description</p>
-                    <p class="card-text"><small class="text-muted"> @order.DateCreated.ToString("MMMM dd, yyyy")</small></p>
+                    <p class="card-text"><small class="text-muted">@order.DateCreated.ToString("MMMM dd, yyyy")</small></p>
               </div>
             </div>
           </div>
+           
+            @*
+                ### Button display logic in a re-usable component###
+                If the order is confirmed by the consumer and by the service provider accepted --display tracking button
+                If the order is not confirmed by the consumer (and ofcourse by default cannot be accepted by a service provider) --display confirm button
+            *@
 
-            @if(((order.IsAccepted==0) && (order.IsConfirmed)) || order.IsTracking)
+            @if(order.IsAccepted==1)
             {
-                <button @onclick="TrackOrder" class="btn btn-outline-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">View</button>
+                <button @onclick="TrackOrder" class="btn btn-outline-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Track Order</button>
+            
             }
-
-            @if (!order.IsConfirmed && (order.IsAccepted==0))
+            
+            @if (!order.IsConfirmed)
             {
-
-            <button @onclick="ConfirmOrder" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdropConfirmorder"> Confirm </button>
+                <button @onclick="ConfirmOrder" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdropConfirmorder"> Confirm </button>
             }
            
-            
+       
         </div>
    
 </dl>
@@ -59,7 +67,7 @@
 
 @code {
     private List<Service>? serviceDisplayList;
-    public Order? order;
+    public Order? order = new Order()!;
     private HubConnection? orderHubConnection;
     private HubConnection? requestHubConnection;
     private PersistingComponentStateSubscription persistingSubscription;
@@ -90,139 +98,26 @@
 
         try
         {
+            //Component persisting state setup****//
+            persistingSubscription =
+            ApplicationState.RegisterOnPersisting(PersistOrder);
 
-            //orderHubConnection = new HubConnectionBuilder()
-            //.WithUrl("https://localhost:7168/orderhub")
-            //.WithAutomaticReconnect()
-            //.Build();
+            if (!ApplicationState.TryTakeFromJson<Order>(
+                "fetchdata", out var restored))
+            {
+                //*The following code get the order from the IOrderEndPoint*//
+                //order =
+                await _orderHelper.LoadUserOrders();
 
-
-            //requestHubConnection = new HubConnectionBuilder()
-            //.WithUrl("https://localhost:7168/requesthub")
-            //.WithAutomaticReconnect()
-            //.Build();
-
-            ////Trying to connect
-            //orderHubConnection.Reconnecting += (sender) =>
-            //{
-            //    this.InvokeAsync(() =>
-            //    {
-            //        var newMessage = "Trying to reconnect...";
-
-            //    });
-
-            //    return Task.CompletedTask;
-            //};
-
-            //requestHubConnection.Reconnecting += (sender) =>
-            //{
-            //    this.InvokeAsync(() =>
-            //    {
-            //        var newMessage = "Trying to reconnect...";
-
-            //    });
-
-            //    return Task.CompletedTask;
-            //};
-
-            ////Connected to server
-            //orderHubConnection.Reconnected += (sender) =>
-            //{
-            //    this.InvokeAsync(() =>
-            //{
-            //    var newMessage = "Connected to the server";
-            //    IsAvailableMsg = newMessage;
-            //});
-
-            //    return Task.CompletedTask;
-            //};
-
-            //requestHubConnection.Reconnected += (sender) =>
-            //{
-            //    this.InvokeAsync(() =>
-            //{
-            //    var newMessage = "Connected to the server";
-            //    IsAvailableMsg = newMessage;
-            //});
-
-            //    return Task.CompletedTask;
-            //};
-
-            ////Closing connections
-            //orderHubConnection.Closed += (sender) =>
-            //{
-            //    this.InvokeAsync(() =>
-            //    {
-            //        var newMessage = "Connection Closed";
-            //        IsAvailableMsg = newMessage;
-            //        IsProviderAvailable = false;
-            //    });
-
-            //    return Task.CompletedTask;
-            //};
-
-            //orderHubConnection.Closed += (sender) =>
-            //{
-            //    this.InvokeAsync(() =>
-            //    {
-            //        var newMessage = "Connection Closed";
-            //        IsAvailableMsg = newMessage;
-            //        IsProviderAvailable = false;
-            //    });
-
-            //    return Task.CompletedTask;
-            //};
-
-            ////Listening Client Side for available provider  
-            //orderHubConnection.On<string>("ReceiveOrder", (status) =>
-            //{
-            //    order.Status = status;
-            //    InvokeAsync(StateHasChanged);
-
-            //});
-
-
-
-            //await orderHubConnection.StartAsync();
-            //await requestHubConnection.StartAsync();
-
-
-
-            ////Caching the order model
-            //if (!_cache.TryGetValue("ordercomp", out Order cacheValue))
-            //{
-            //    cacheValue = order;
-
-            //    var cacheEntryOptions = new MemoryCacheEntryOptions()
-            //        .SetSlidingExpiration(TimeSpan.FromSeconds(40));
-
-            //    _cache.Set<Order>("ordercomp", cacheValue, cacheEntryOptions);
-            //}
-
-            //order = cacheValue;
-
-            //NavManager.LocationChanged += HandleLocationChanged;
+            }else
+            {
+                order = restored!;
+            }
         }catch(Exception ex)
         {
             ErrorMsg = ex.Message;
         }
 
-        //***Component persisting state setup****//
-        persistingSubscription =
-            ApplicationState.RegisterOnPersisting(PersistOrder);
-
-        if (!ApplicationState.TryTakeFromJson<Order>(
-            "fetchdata", out var restored))
-        {
-            //*The following code get the order from the IOrderEndPoint*//
-            //order =
-            await _orderHelper.LoadUserOrders();
-
-        }
-        else
-        {
-            order = restored!;
-        }
 
 
         NavManager.LocationChanged += HandleLocationChanged;
@@ -231,7 +126,7 @@
 
     //Send the Order to signalr request
     //User must be from Identity
-    public async Task Send()
+    async Task Send()
     {
         if(orderHubConnection is not null)
         {
@@ -246,79 +141,51 @@
     }
 
     //Redirection in razor component
-    private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
+    void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
     {
         Logger.LogInformation("URL of new location: {Location}", e.Location);
     }
 
     //Disposing the component
-    public async ValueTask DisposeAsync()
+    async ValueTask DisposeAsync()
     {
-        if (orderHubConnection is not null)
-        {
-            //Dispose the cache
-            //_cache.Remove("ordercomp");
-            _cache.Dispose();
-            try
-            {
 
-                NavManager.LocationChanged -= HandleLocationChanged;
-               
-                ErrorMsg = null;
-
-            }catch(Exception ex)
-            {
-                ErrorMsg = ex.Message;
-            }
-            
-        }
+        NavManager.LocationChanged -= HandleLocationChanged;
+        await this.DisposeAsync();
 
     }
 
     //Initiate the order track --soon to be in load orders
-    private void TrackOrder()
+    void TrackOrder()
     {
 
-        //if (!_cache.TryGetValue("ordercomp", out Order cacheValue))
-        //{
-        //    cacheValue = order;
 
-        //    var cacheEntryOptions = new MemoryCacheEntryOptions()
-        //        .SetSlidingExpiration(TimeSpan.FromSeconds(40));
-
-        //    _cache.Set<Order>("ordercomp", cacheValue, cacheEntryOptions);
-        //}
-
-        //order = cacheValue;
         order.IsTracking = true;
-        NavManager.NavigateTo($"/orderdetails?id={@order.Id}", true);
-
-        //NavManager.NavigateTo(NavManager.GetUriWithQueryParameters("orderdetails",
-        //            new Dictionary<string, object>
-        //                {
-        //                    ["id"] = order.Id
-
-        //            }));
+        // NavManager.NavigateTo($"/orderdetails?id={@order.Id}", true);
+        NavManager.NavigateTo("/orders/ordertracker",true);
     }
 
-    //Cancelling --soon to be in load orders
-    private async Task CancelOrder()
-    {
 
+    //Cancelling --soon to be in load orders
+    async Task CancelOrder()
+    {
         order.IsTracking = false;
         await DisposeAsync();
         persistingSubscription.Dispose();
-
     }
 
     //Completing the order on certain --loaders class 
-    private async Task FinishOrder()
+    async Task FinishOrder()
     {
 
     }
 
+    async Task UpateOrder()
+    {
+
+    }
     //Persisting the order 
-    private Task PersistOrder()
+    Task PersistOrder()
     {
         ApplicationState.PersistAsJson("fetorder", order);
 
@@ -326,10 +193,10 @@
     }
 
     //Confirming the order placement--soon to be in ordershelper by all means
-    public async Task ConfirmOrder()
+    async Task ConfirmOrder()
     {
         HandymanUILibrary.Models.OrderModel libOrder = new();
-    
+
         try
         {
             var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
@@ -338,11 +205,6 @@
             libOrder.ConsumerID = UserId.ToString();
             libOrder.IsAccepted = 0;//not accepted as yet, this is a new order
             libOrder.DateCreated =  DateTime.Now;
-            //Service population
-
-            //libOrder.Service.Name = order.ServiceProperty.Name;
-            //libOrder.Service.Description = order.ServiceProperty.Description;
-            //libOrder.Service.CategoryId = order.ServiceProperty.CategoryId;
             libOrder.ServiceId = order.ServiceProperty.Id;
             order.IsConfirmed = true;
             await _orderEndPoint.PostOrder(libOrder);
@@ -352,9 +214,25 @@
         {
             ErrorMsg = ex.Message;
         }
-        
-       
 
     }
 
+
+    //[Authorize]
+    //public async Task DeleteOrder(int Id)
+    //{
+    //    try
+    //    {
+
+    //        await _orderHelper.DeleteOrder(Id);
+    //        NavManager.ToAbsoluteUri("/index");
+    //        await InvokeAsync(StateHasChanged);
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        ErrorMsg = ex.Message;
+
+    //    }
+
+    //}
 }

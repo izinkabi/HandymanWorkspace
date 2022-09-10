@@ -8,29 +8,36 @@ using Microsoft.AspNetCore.Authorization;
 using Handymen_UI_Consumer.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Handymen_UI_Consumer.Areas.Identity.Data;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.AspNetCore.Components;
+using Handymen_UI_Consumer.Pages.Orders;
+using Handymen_UI_Consumer.Worker;
 
 namespace Handymen_UI_Consumer.Pages
 {
 
     public class OrderModel : PageModel
     {
-       
+        NavigationManager NavManager;
         private IOrderHelper _orderHelper;
         private Order order;
         private IServiceEndPoint _serviceEndPoint;
         private string ErrorMsg;
         private List<Service> serviceDisplayList;
         private SignInManager<Handymen_UI_ConsumerUser> SignInManager;
+       
 
 
         public DateTime CurrentDateTime { get; }
       
         //Injecting the services 
-        public OrderModel(IServiceEndPoint serviceEndPoint, IOrderHelper orderHelper)
+        public OrderModel(IServiceEndPoint serviceEndPoint, IOrderHelper orderHelper,
+            NavigationManager navigationManager)
         {
             
             _serviceEndPoint = serviceEndPoint;
             _orderHelper = orderHelper;
+            NavManager = navigationManager;
            
         }
 
@@ -143,21 +150,9 @@ namespace Handymen_UI_Consumer.Pages
         //Cancelling the order 
         private void CancelOrder()
         {
-           
-        }
 
-        [Authorize]
-        public async Task<IActionResult> OnPostAsync(int Id)
-        {
-            try
-            {
-                await _orderHelper.DeleteOrder(Id);
-            }catch(Exception ex)
-            {
-                ErrorMsg = ex.Message;
-                
-            }
-           return RedirectToPagePermanent("/Index");
         }
+        
+        
     }
 }

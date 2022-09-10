@@ -164,18 +164,30 @@
 
                 @foreach (Order order in orders)
                 {
-
-                    <div class="alert alert-warning alert-dismissible fade show" role="alert" id="@order.Id">
+                    @if (order.IsAccepted==0)
+                    {
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert" id="@order.Id">
                                 <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(order.Id)" aria-label="Close"></button>
                             <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@order" />
-                            @*<div class="row justify-content-center">
-                                <a href="/OrderDetails?order=@{@order}"  class="btn btn-info">View</a>
-                            </div>*@
+                            <div class="row justify-content-center">
+                                <a href="/OrderDetails?Id=@{@order.Id}"  class="btn btn-info">View</a>
                             </div>
+                     </div>
+                    }else
+                    {
+                         <div class="alert alert-success alert-dismissible fade show" role="alert" id="@order.Id">
+                                <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(order.Id)" aria-label="Close"></button>
+                            <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@order" />
+                           @* <div class="row justify-content-center">
+                                <a href="/OrderDetails?Id=@{@order.Id}"  class="btn btn-info">View</a>
+                            </div>*@
+                     </div>
+                    }
+                   
                             ViewData["oid"] = order.Id;
                             ViewData[$"name{order.Id}"] = order.ServiceProperty.Name;
                             ViewData[$"id{order.Id}"] = order.Id;
-                        }
+                  }
                 </div>
              </div>
             }
@@ -209,7 +221,7 @@
     @foreach(var order in ods)
     {
         <div>
-           
+           <!--invoking the orderviewComponent-->
                 @await Component.InvokeAsync("Order",
                     new {
                         Id =  order.Id

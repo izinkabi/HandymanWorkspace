@@ -23,8 +23,6 @@ namespace Handymen_UI_Consumer.ViewComponents
 
                 ViewData["oid"] = Id ;
                 
-                
-            
                 return View(o);
              }
 
