@@ -80,7 +80,7 @@
 
 <!--NavBar-->
 <body>
-  <header class="p-3">
+    <header class="p-3 sticky-top bg-light bg-opacity-75">
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
        <a class="navbar-brand" asp-area="" asp-page="/Index">
@@ -218,7 +218,7 @@
 
    @{
     var ods = await _orderHelper.LoadUserOrders();
-    @foreach(var order in ods)
+    foreach(var order in ods)
     {
         <div>
            <!--invoking the orderviewComponent-->
@@ -230,34 +230,16 @@
         
     }
       
+  }
+
+
+    @{
+        @await Component.InvokeAsync("OrderConfirmation")
     }
-   
     <!--End Delete order Modal-->
 
 
-    <!--Order Confirmation Modal-->
-    <div class="modal fade" id="staticBackdropConfirmorder" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Order-Confirmation</h5>
-                    <a asp-page="/Index" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a>
-                </div>
-                <div class="modal-body alert-success">
-                    <h2>
-                        Someone is working on your order, be chilled
-                    </h2>
-                    <img src="~/Images/handymanGIF.gif" class="img-thumbnail" alt="...">
-                </div>
-                <div class="modal-footer">
-
-                    <a asp-page="/Index"  class="btn btn-primary">Understood</a>
-                    
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--End Order Confirmation Modal-->
+   
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

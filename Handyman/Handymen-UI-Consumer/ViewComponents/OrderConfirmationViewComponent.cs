@@ -5,30 +5,20 @@ using System.Threading.Tasks;
 
 namespace Handymen_UI_Consumer.ViewComponents
 {
-    public class DeleteOrderViewComponent : ViewComponent
+    public class OrderConfirmationViewComponent : ViewComponent
     {
         private IOrderHelper _orderHelper;
         private string? ErrorMsg;
-        public DeleteOrderViewComponent(IOrderHelper orderHelper)
+        private int OrderId;
+        public OrderConfirmationViewComponent(IOrderHelper orderHelper)
         {
             _orderHelper = orderHelper; 
         }
-       
+
 
         //Displaying the deleted order
-        public async Task<IViewComponentResult> InvokeAsync(int Id)
+        public async Task<IViewComponentResult> InvokeAsync()
         {
-            try
-            {
-               
-            }
-            catch (Exception ex)
-            {
-                ErrorMsg = ex.Message;
-                ViewData["err"] = ex.Message;
-            }
-            
-      
            
             return View();
         }

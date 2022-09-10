@@ -1,0 +1,29 @@
+﻿  
+<!-- Button trigger modal -->
+@*<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Launch demo modal
+</button>*@
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdropConfirmorder" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Order-Confirmation</h5>
+                <a asp-page="/Index" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a>
+            </div>
+            <div class="modal-body alert-success">
+                <h2>
+                    Someone is working on your order, be chilled
+                </h2>
+                <img src="~/Images/handymanGIF.gif" class="img-thumbnail" alt="...">
+            </div>
+            <div class="modal-footer">
+                <form method="post">
+                    <a asp-page="./Index" class="btn btn-primary">Understood</a>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>

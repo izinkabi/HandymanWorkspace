@@ -62,7 +62,7 @@
    
 </dl>
     <!--End Component MarkUp-->
-
+   
 
 
 @code {
@@ -208,13 +208,13 @@
             libOrder.ServiceId = order.ServiceProperty.Id;
             order.IsConfirmed = true;
             await _orderEndPoint.PostOrder(libOrder);
-            NavManager.NavigateTo("index", true);
+           
         }
         catch (Exception ex)
         {
             ErrorMsg = ex.Message;
         }
-
+    
     }
 
 

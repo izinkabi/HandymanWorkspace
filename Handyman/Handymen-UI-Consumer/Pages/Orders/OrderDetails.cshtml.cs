@@ -41,11 +41,11 @@ namespace Handymen_UI_Consumer.Pages
         }
 
         //This method displays the Order from the SignalR Hub method
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int? Id)
         {
             List<Order> ordersDisplayList = new List<Order>();
 
-            if (id == null)
+            if (Id == null)
             {
                 return NotFound();
             }
@@ -61,7 +61,7 @@ namespace Handymen_UI_Consumer.Pages
 
                     foreach (var service in serviceDisplayList)
                     {
-                        if (o.ServiceId == service.Id && o.Id == id)
+                        if (o.ServiceId == service.Id && o.Id == Id)
                         {
                             _order = new();
 
