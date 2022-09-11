@@ -128,10 +128,11 @@
         newRequest.ServiceId = ServiceId;
         newRequest.OrderId = OrderId.Value;
         newRequest.DateAccepted = DateTime.Now;
-        IsAccepted = 0;
+        
         try
         {
             await _requestEndPoint.PostRequest(newRequest);
+            IsAccepted = 1;
         }catch(Exception ex)
         {
             ErrorMsg = ex.Message;
