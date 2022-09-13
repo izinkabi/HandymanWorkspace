@@ -99,20 +99,16 @@
     <Compile Include="DataAccess\OrderData.cs" />
     <Compile Include="DataAccess\RequestData.cs" />
     <Compile Include="DataAccess\ServiceData.cs" />
+    <Compile Include="DataAccess\TodoData.cs" />
     <Compile Include="Internal\DataAccess\SQLDataAccess.cs" />
     <Compile Include="DataAccess\ServiceProviderData.cs" />
     <Compile Include="DataAccess\UserData.cs" />
-    <Compile Include="Models\ConsumerModel.cs" />
-    <Compile Include="Models\JobModel.cs" />
     <Compile Include="Models\ServiceCategoryModel.cs" />
-    <Compile Include="Models\JobOfferModel.cs" />
     <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Models\ProviderServiceModel.cs" />
     <Compile Include="Models\RequestModel.cs" />
-    <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\ServiceModel.cs" />
-    <Compile Include="Models\ServiceProviderModel.cs" />
-    <Compile Include="Models\UserRoleModel.cs" />
+    <Compile Include="Models\TodoModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
