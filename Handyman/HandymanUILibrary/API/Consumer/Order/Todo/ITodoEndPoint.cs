@@ -6,8 +6,8 @@ namespace HandymanUILibrary.API.Consumer.Todo
 {
     public interface ITodoEndPoint
     {
-        Task<TodoModel> PostTodo(TodoModel todo);
-        Task<List<TodoModel>> GetTodoListByOrderId(string Id);
+        Task PostTodo(List<TodoModel> todoList);
+        Task<List<TodoModel>> GetTodoListByOrderId(int Id);
         Task UpdateTodo(TodoModel todoUpdate);
     }
 }

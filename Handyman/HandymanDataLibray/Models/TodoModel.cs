@@ -8,6 +8,7 @@ namespace HandymanDataLibray.Models
 {
     public  class TodoModel
     {
+        public int Id { get; set; }
         public string ItemName { get; set; }
         public int OrderId { get; set; }
         public int Type { get; set; }

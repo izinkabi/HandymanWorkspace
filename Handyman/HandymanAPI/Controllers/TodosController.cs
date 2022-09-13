@@ -24,11 +24,11 @@ namespace HandymanAPI.Controllers
 
 
         // POST: api/TodoList
-        [Route("api/PostTodo")]
-        public void PostTodo(TodoModel todo)
+        [Route("api/PostTodoList")]
+        public void PostTodoList(List<TodoModel> todoList)
         {
             todoData = new TodoData();
-            todoData.PostTodo(todo);
+            todoData.PostTodo(todoList);
         }
 
         // PUT: api/Todo/5

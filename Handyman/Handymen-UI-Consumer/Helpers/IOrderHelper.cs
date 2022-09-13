@@ -8,5 +8,6 @@ namespace Handymen_UI_Consumer.Helpers
         Task<List<Order>> LoadUserOrders();
         Task<Order> GetOrderById(int id);
         Task DeleteOrder(int Id);
+        Task<List<TodoModel>> GetOrderTodoList(int id);
     }
 }

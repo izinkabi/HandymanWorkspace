@@ -2,10 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using Handymen_UI_Consumer.Data;
 using Handymen_UI_Consumer.Areas.Identity.Data;
 using HandymanUILibrary.API;
-using HandymanUILibrary.API.Consumer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Handymen_UI_Consumer.Helpers;
 using Handyman_UI_Provider.Hubs;
+using HandymanUILibrary.API.Consumer.Order;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("Handymen_UI_ConsumerContextConnection") ?? throw new InvalidOperationException("Connection string 'Handymen_UI_ConsumerContextConnection' not found.");

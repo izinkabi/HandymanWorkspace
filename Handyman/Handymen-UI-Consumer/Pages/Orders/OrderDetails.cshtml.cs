@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Handymen_UI_Consumer.Data;
 using Handymen_UI_Consumer.Models;
-using HandymanUILibrary.API.Consumer;
 using Handymen_UI_Consumer.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Handymen_UI_Consumer.Areas.Identity.Data;
 using Microsoft.AspNetCore.Authorization;
+using HandymanUILibrary.API.Consumer.Order;
 
 namespace Handymen_UI_Consumer.Pages
 {

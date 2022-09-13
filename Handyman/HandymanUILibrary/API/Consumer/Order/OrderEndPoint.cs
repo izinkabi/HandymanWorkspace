@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-namespace HandymanUILibrary.API.Consumer
+namespace HandymanUILibrary.API.Consumer.Order
 {
     public class OrderEndPoint : IOrderEndPoint
     {
@@ -15,7 +15,7 @@ namespace HandymanUILibrary.API.Consumer
         /// This method is used to construct a the API helper
         /// </summary>
         /// <param name="aPIHelper"></param>
-       
+
         public OrderEndPoint(IAPIHelper aPIHelper)
         {
             _aPIHelper = aPIHelper;
@@ -29,16 +29,17 @@ namespace HandymanUILibrary.API.Consumer
         /// <exception cref="Exception"></exception>
         public async Task<OrderModel> PostOrder(OrderModel order)
         {
-            var httpResponseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync("/api/PostOrder", new {
-                ConsumerID = order.ConsumerID,
-                ServiceId = order.ServiceId,
-                Stage = order.Stage,
-                IsAccepted = order.IsAccepted,
+            var httpResponseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync("/api/PostOrder", new
+            {
+                order.ConsumerID,
+                order.ServiceId,
+                order.Stage,
+                order.IsAccepted,
 
 
-            }) ;
-            
-           
+            });
+
+
             if (httpResponseMessage.IsSuccessStatusCode)
             {
                 var result = await httpResponseMessage.Content.ReadFromJsonAsync<OrderModel>();
@@ -63,8 +64,9 @@ namespace HandymanUILibrary.API.Consumer
 
 
                 return httpResponseMessage;
-               
-            }catch(Exception ex)
+
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -100,7 +102,7 @@ namespace HandymanUILibrary.API.Consumer
             try
             {
                 HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.DeleteAsync($"/api/DeleteOrder?Id={Id}");
-            
+
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
                     var result = await httpResponseMessage.Content.ReadFromJsonAsync<OrderModel>();
@@ -109,7 +111,8 @@ namespace HandymanUILibrary.API.Consumer
                 {
                     throw new Exception(httpResponseMessage.ReasonPhrase);
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }

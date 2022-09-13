@@ -1,6 +1,6 @@
 ﻿using HandymanProviderLibrary.Api.Service;
 using HandymanProviderLibrary.Models;
-using HandymanUILibrary.API.Consumer;
+using HandymanUILibrary.API.Consumer.Order;
 using HandymanUILibrary.API.ServiceProvider;
 
 namespace Handyman_UI_Provider.Hubs.ServiceDelivery

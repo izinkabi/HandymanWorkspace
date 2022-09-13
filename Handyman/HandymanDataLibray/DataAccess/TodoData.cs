@@ -26,21 +26,33 @@ namespace HandymanDataLibray.DataAccess
 
 
 
-        //Post an Order
-        public void PostTodo(TodoModel todo)
+        //Post each todo-item in the doto-list of an Order
+        public void PostTodo(List<TodoModel> todoList)
         {
             SQLDataAccess sql = new SQLDataAccess();
-
-            sql.SaveData("Customer.spTodoInsert", new
+            try 
+            { 
+            sql.StartTransaction("HandymanDB");
+            foreach (TodoModel todo in todoList)
             {
-                      ItemName = todo.ItemName,
-                      OrderId  = todo.OrderId,
-                      Type = todo.Type  ,
-                      Status = todo.Status,
-                      Description  = todo.Description
+                sql.SaveDataTransaction("Customer.spTodoInsert", new
+                {
+                    ItemName = todo.ItemName,
+                    OrderId = todo.OrderId,
+                    Type = todo.Type,
+                    Status = todo.Status,
+                    Description = todo.Description
 
-            }, "HandymanDB");
-        }
+                });
+            }
+                sql.CommitTransation();
+            }catch (Exception ex)
+            {
+                sql.RollBackTransaction();
+               throw new Exception(ex.Message);
+            }
+
+}
 
         ////Updating the order
         public void UpdateTodo(TodoModel todoUpdate)

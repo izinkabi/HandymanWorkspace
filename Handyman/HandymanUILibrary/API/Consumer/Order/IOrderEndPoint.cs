@@ -1,7 +1,7 @@
 ﻿using HandymanUILibrary.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-namespace HandymanUILibrary.API.Consumer
+namespace HandymanUILibrary.API.Consumer.Order
 {
     public interface IOrderEndPoint
     {

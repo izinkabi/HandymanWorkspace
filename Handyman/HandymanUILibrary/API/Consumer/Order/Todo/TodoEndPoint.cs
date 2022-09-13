@@ -18,32 +18,24 @@ namespace HandymanUILibrary.API.Consumer.Todo
         }
 
         //Post the todo and this should pass a list of TodoModels
-        public async Task<TodoModel> PostTodo(TodoModel todo)
+        public async Task PostTodo(List<TodoModel> todoList)
         {
-
-
-            HttpResponseMessage responseMessage = await _apiHelper.ApiClient.PostAsJsonAsync("/api/PostTodo", 
-                new { 
-                    OrderId = todo.OrderId,
-                    ItemName = todo.ItemName,
-                    Type = todo.Type,
-                    Description = todo.Description,
-                    Status = todo.Status
-                });
-
-            if (responseMessage.IsSuccessStatusCode)
+            HttpResponseMessage responseMessage = new()!;
+            try
             {
-                var result = await responseMessage.Content.ReadFromJsonAsync<TodoModel>();
-                return result;
+                responseMessage = await _apiHelper.ApiClient.PostAsJsonAsync<List<TodoModel>>("/api/PostTodoList", todoList );
+                 
             }
-            else
+            catch(Exception ex)
             {
                 throw new Exception(responseMessage.ReasonPhrase);
+
             }
+           
         }
 
         //Get the todoList by the order Id
-        public async Task<List<TodoModel>> GetTodoListByOrderId(string Id)
+        public async Task<List<TodoModel>> GetTodoListByOrderId(int Id)
         {
 
 
