@@ -1,17 +1,19 @@
 ﻿@page "/orderComponent"
-@    using HandymanUILibrary.API
-@    using HandymanUILibrary.API.Consumer
-@    using Handymen_UI_Consumer.Areas.Identity.Data
-@    using Handymen_UI_Consumer.Helpers
-@    using Handymen_UI_Consumer.Models
-@    using Microsoft.AspNetCore.Authorization
-@    using Microsoft.AspNetCore.Components.Authorization
-@    using Microsoft.AspNetCore.Components.Routing
-@    using Microsoft.AspNetCore.Identity
-@    using Microsoft.AspNetCore.SignalR.Client
-@    using Microsoft.AspNetCore.Components.Web
-@    using Microsoft.Extensions.Caching.Memory
-@    using System.Security.Claims
+@using HandymanUILibrary.API
+@using HandymanUILibrary.API.Consumer
+@using HandymanUILibrary.API.Consumer.Order
+@using Handymen_UI_Consumer.Areas.Identity.Data
+@using Handymen_UI_Consumer.Helpers
+@using Handymen_UI_Consumer.Models
+@using Handymen_UI_Consumer.Pages.Orders.Tasks
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.SignalR.Client
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.Extensions.Caching.Memory
+@using System.Security.Claims
 
 @inject NavigationManager NavManager
 @inject ILogger<OrderComponent> Logger
@@ -55,6 +57,8 @@
             @if (!order.IsConfirmed)
             {
                 <button @onclick="ConfirmOrder" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdropConfirmorder"> Confirm </button>
+                <DynamicComponent Type="@typeof(OrderTasksComponent)" @ref="orderTaskComponent" Parameters="orderIdParam" />
+            
             }
            
        
@@ -67,7 +71,7 @@
 
 @code {
     private List<Service>? serviceDisplayList;
-    public Order? order = new Order()!;
+    private Order? order = new Order()!;
     private HubConnection? orderHubConnection;
     private HubConnection? requestHubConnection;
     private PersistingComponentStateSubscription persistingSubscription;
@@ -76,9 +80,9 @@
     bool IsProviderAvailable;
     bool OpenConnection;
     string? user;
-    List<Order> userOrders;
-
-
+    List<Order>? userOrders;
+    DynamicComponent? orderTaskComponent;
+    private IDictionary<string, object>? orderIdParam;
     [Parameter]
     public Order? OrderComponentModel
     {
@@ -90,6 +94,11 @@
         set
         {
             order = value;
+            orderIdParam = new Dictionary<string, object>()
+                {
+                    ["OrderId"] = order.Id,
+                    ["IsNewOrder"] = true
+        };
         }
     }
 
@@ -118,7 +127,7 @@
             ErrorMsg = ex.Message;
         }
 
-
+        
 
         NavManager.LocationChanged += HandleLocationChanged;
     }

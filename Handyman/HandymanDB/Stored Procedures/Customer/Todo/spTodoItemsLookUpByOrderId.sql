@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [Service].[spTodoItemsLookUpByOrderId]
+﻿CREATE PROCEDURE [Customer].[spTodoItemsLookUpByOrderId]
 	@OrderId int
 AS
 BEGIN

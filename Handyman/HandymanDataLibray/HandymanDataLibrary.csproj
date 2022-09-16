@@ -95,7 +95,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataAccess\ConsumerData.cs" />
     <Compile Include="DataAccess\OrderData.cs" />
     <Compile Include="DataAccess\RequestData.cs" />
     <Compile Include="DataAccess\ServiceData.cs" />

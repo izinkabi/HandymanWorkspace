@@ -11,7 +11,7 @@ namespace HandymanUILibrary.API
 
         private IAPIHelper _aPIHelper;
         
-        private List<ProviderAddress> addresses;
+       // private List<ProviderAddress> addresses;
        
         
         public ProfileEndPoint(IAPIHelper aPIHelper)
