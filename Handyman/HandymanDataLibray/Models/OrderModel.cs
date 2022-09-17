@@ -13,6 +13,7 @@ namespace HandymanDataLibray.Models
         public string ConsumerID { get; set; }
         public DateTime DateCreated { get; set; }
         public string Stage { get; set; }
+        public LinkedList<TodoModel> TodoItems { get; set; }   
         public DateTime DateFinished { get; set; }
         public int IsAccepted { get; set; }
 

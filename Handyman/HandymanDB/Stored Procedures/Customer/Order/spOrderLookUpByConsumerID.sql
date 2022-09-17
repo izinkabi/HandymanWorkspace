@@ -1,5 +1,6 @@
 ﻿CREATE PROCEDURE [Customer].[spOrderLookUpByConsumerID]
-	@ConsumerID NVARCHAR(450) 
+	--Getting the consumer's order(s)
+    @ConsumerID NVARCHAR(450) 
 
 AS
 BEGIN

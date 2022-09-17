@@ -12,6 +12,7 @@ namespace HandymanAPI.Controllers
     public class OrdersController : ApiController
     {
         private static OrderData orderData;
+      
         // GET: api/Orders/Z
         [Route("api/GetOrdersByConsumerId")]
         public IEnumerable<OrderModel> Get(string Id)
@@ -22,11 +23,19 @@ namespace HandymanAPI.Controllers
 
 
         // POST: api/Orders
-        [Route("api/PostOrder")]
+        //[Route("api/PostOrder")]
+        //public void Post(OrderModel order)
+        //{
+        //    orderData = new OrderData();
+        //    orderData.PostOrder(order);
+        //}
+
+        //Save the order and its todolist
+        [Route("api/SaveOrder")]
         public void Post(OrderModel order)
         {
             orderData = new OrderData();
-            orderData.PostOrder(order);
+            orderData.SaveOrder(order, order.TodoItems.ToList());
         }
 
         // PUT: api/Orders/5

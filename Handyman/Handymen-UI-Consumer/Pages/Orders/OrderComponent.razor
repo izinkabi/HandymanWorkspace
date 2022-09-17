@@ -26,8 +26,8 @@
 
 
 <!--Order Component MarkUp-->
-
-<dl class="row justify-content-center">
+<div class="row">
+<dl class="col justify-content-center">
         <div class="card mb-3 " style="max-width: 540px;">
           <div class="row g-0">
             <div class="col-md-4">
@@ -56,18 +56,23 @@
             
             @if (!order.IsConfirmed)
             {
-                <button @onclick="ConfirmOrder" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdropConfirmorder"> Confirm </button>
-                <DynamicComponent Type="@typeof(OrderTasksComponent)" @ref="orderTaskComponent" Parameters="orderIdParam" />
+                <button @onclick="ConfirmOrder" type="button" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#staticBackdropConfirmorder"> Confirm </button>
+               
             
             }
            
        
         </div>
    
+        
 </dl>
-    <!--End Component MarkUp-->
-   
-
+<div class="col justify-content-end m-3 flex-column">
+    @if (!order.IsConfirmed)
+    {
+        <DynamicComponent Type="@typeof(OrderTasksComponent)" @ref="orderTasksComponent" Parameters="orderIdParam" />
+    }
+</div>
+</div>
 
 @code {
     private List<Service>? serviceDisplayList;
@@ -81,7 +86,7 @@
     bool OpenConnection;
     string? user;
     List<Order>? userOrders;
-    DynamicComponent? orderTaskComponent;
+    DynamicComponent? orderTasksComponent;
     private IDictionary<string, object>? orderIdParam;
     [Parameter]
     public Order? OrderComponentModel
@@ -127,7 +132,7 @@
             ErrorMsg = ex.Message;
         }
 
-        
+
 
         NavManager.LocationChanged += HandleLocationChanged;
     }
@@ -216,7 +221,8 @@
             libOrder.DateCreated =  DateTime.Now;
             libOrder.ServiceId = order.ServiceProperty.Id;
             order.IsConfirmed = true;
-            await _orderEndPoint.PostOrder(libOrder);
+            var tasks = (OrderTasksComponent)orderTasksComponent.Instance;//cast the dynamic component...finders cross x
+            await _orderEndPoint.PostOrder(libOrder,tasks.OrderTodoListProperty);
            
         }
         catch (Exception ex)

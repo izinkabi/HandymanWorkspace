@@ -27,7 +27,7 @@ namespace HandymanUILibrary.API.Consumer.Order
         /// <param name="order"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<OrderModel> PostOrder(OrderModel order)
+        public async Task<OrderModel> PostOrder(OrderModel order, List<TodoModel> todoList)
         {
             var httpResponseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync("/api/PostOrder", new
             {
@@ -35,7 +35,7 @@ namespace HandymanUILibrary.API.Consumer.Order
                 order.ServiceId,
                 order.Stage,
                 order.IsAccepted,
-
+                TodoItems = todoList
 
             });
 

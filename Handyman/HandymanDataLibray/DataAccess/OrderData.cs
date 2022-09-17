@@ -25,7 +25,7 @@ namespace HandymanDataLibray.DataAccess
         
        
 
-        //Post an Order
+        //Post an Order--transaction
         public void PostOrder(OrderModel order)
         {
             SQLDataAccess sql = new SQLDataAccess();
@@ -37,9 +37,11 @@ namespace HandymanDataLibray.DataAccess
                 Stage = order.Stage,
                 ServiceId = order.ServiceId//the ordered service because sql wont take a model inside a model
             }, "HandymanDB");
+
+
         }
 
-        ////Updating the order
+        ////Updating the order---transaction
         public void UpdateOrder(OrderModel orderUpdate)
         {
 
@@ -70,6 +72,39 @@ namespace HandymanDataLibray.DataAccess
             {
                throw new Exception( ex.Message );
             }
+        }
+
+        public void SaveOrder(OrderModel order, List<TodoModel> todoList)
+        {
+
+            using (SQLDataAccess sql = new SQLDataAccess())
+            {
+                try
+                {
+                    //Save order
+                    sql.StartTransaction("HandymanDB");
+                    sql.SaveDataTransaction("Customer.spNewOrderLookUp", order);
+
+                    //Get Id from the order model
+
+                    order.Id = sql.LoadDataTransaction<int, dynamic>("Customer.spNewOrderLookUp", new { ConsumerID = order.ConsumerID, DateCreated = order.DateCreated, ServiceId = order.ServiceId }).FirstOrDefault();
+                    //Fill in the todo-item's order-id
+
+                    foreach (var item in todoList)
+                    {
+                        item.OrderId = order.Id;
+                        //Save the todo item
+                        sql.SaveDataTransaction("Customer.spTodoInsert", item);
+                    }
+                    sql.CommitTransation();
+                }
+                catch
+                {
+                    sql.RollBackTransaction();
+                    throw;
+                }
+            }
+
         }
     }
 }

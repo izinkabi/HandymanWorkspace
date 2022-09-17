@@ -116,5 +116,6 @@
     <Build Include="Stored Procedures\Customer\Todo\spTodoInsert.sql" />
     <Build Include="Stored Procedures\Customer\Todo\spTodoItemsLookUpByOrderId.sql" />
     <Build Include="Stored Procedures\Customer\Todo\spTodoUpDate.sql" />
+    <Build Include="Stored Procedures\Customer\Order\spNewOrderLookUp.sql" />
   </ItemGroup>
 </Project>

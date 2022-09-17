@@ -5,7 +5,7 @@ namespace HandymanUILibrary.API.Consumer.Order
 {
     public interface IOrderEndPoint
     {
-        Task<OrderModel> PostOrder(OrderModel order);
+        Task<OrderModel> PostOrder(OrderModel order, List<TodoModel> todoList);
         Task DeleteOrder(int id);
         Task<List<OrderModel>> GetOrders(string customerId);
         Task UpdateOrder(OrderModel order);

@@ -4,7 +4,7 @@
 @using Handymen_UI_Consumer.Models
 @inject ITodoEndPoint _todoEndPoint
 @inject IOrderHelper _orderHelper
-<h3>OrderTasksComponent</h3>
+
 
 
 @if (!IsNewOrder)
@@ -50,8 +50,8 @@
 <!--New Task/Todo-item form-->
 
 <!--New task button-->
-  <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-    New Todo-item
+  <button class="btn-sm btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    Todo items
   </button>
 
 <!--End New task button-->
@@ -150,7 +150,7 @@
                                         <a href="#!" data-mdb-toggle="tooltip" title="Due on date">
                                             <i class="fas fa-hourglass-half me-2 text-warning"></i>
                                         </a>
-                                        28th Jun 2020
+                                        28th Jun 2023
                                     </p>
                                 </div>
                             </li>
@@ -208,7 +208,7 @@
 <!--End Todo-item -->
 @code {
 
-    
+
     List<TodoModel> OrderTodoList = new();//Local display list
     TodoModel? todoItem = new()!;
     string? ErrorMsg;
@@ -218,6 +218,12 @@
     public int? OrderId { get; set; }
     [Parameter]
     public bool IsNewOrder { get; set; }
+
+    public List<HandymanUILibrary.Models.TodoModel>? OrderTodoListProperty
+    {
+        get { return newTodoList; }
+        
+    }
 
     protected override async Task OnInitializedAsync()
     {
