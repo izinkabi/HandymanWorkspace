@@ -72,7 +72,9 @@
         <DynamicComponent Type="@typeof(OrderTasksComponent)" @ref="orderTasksComponent" Parameters="orderIdParam" />
     }
 </div>
+
 </div>
+
 
 @code {
     private List<Service>? serviceDisplayList;
@@ -88,6 +90,7 @@
     List<Order>? userOrders;
     DynamicComponent? orderTasksComponent;
     private IDictionary<string, object>? orderIdParam;
+    private List<TodoModel>? todoList = new List<TodoModel>()!;
     [Parameter]
     public Order? OrderComponentModel
     {
@@ -222,6 +225,7 @@
             libOrder.ServiceId = order.ServiceProperty.Id;
             order.IsConfirmed = true;
             var tasks = (OrderTasksComponent)orderTasksComponent.Instance;//cast the dynamic component...finders cross x
+            this.todoList = tasks.TodoDisplayList;
             await _orderEndPoint.PostOrder(libOrder,tasks.OrderTodoListProperty);
            
         }
