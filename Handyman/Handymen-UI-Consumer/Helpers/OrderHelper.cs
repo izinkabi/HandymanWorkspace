@@ -49,20 +49,22 @@ namespace Handymen_UI_Consumer.Helpers
             try
             {
                 dotoList = await _todoEndPoint.GetTodoListByOrderId(id);
-                if(dotoList.Count > 0 && dotoList is not null)
+                if(dotoList.Count > 0)
                 {
                     foreach (var item in dotoList)
                     {
+                        
+                            var todoItem = new TodoModel();
+                            todoItem.Id = item.Id;
+                            todoItem.OrderId = item.OrderId;
+                            todoItem.ItemName = item.ItemName;
+                            todoItem.Status = item.Status;
+                            todoItem.Description = item.Description;
+                            todoItem.StartDate = item.StartDate;
+                            todoItem.EndDate = item.EndDate;
+                            orderTodoList.Add(todoItem);
+                        
 
-                        var todoItem = new TodoModel();
-                        todoItem.Id = item.Id;
-                        todoItem.OrderId = item.OrderId;
-                        todoItem.ItemName = item.ItemName;
-                        todoItem.Status = item.Status;
-                        todoItem.Description = item.Description;
-                        todoItem.StartDate = item.StartDate;
-                        todoItem.EndDate = item.EndDate;
-                        orderTodoList.Add(todoItem);
                     }
                     return orderTodoList;
                 }

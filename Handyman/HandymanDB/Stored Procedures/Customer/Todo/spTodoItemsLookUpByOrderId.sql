@@ -3,6 +3,6 @@
 AS
 BEGIN
 	SELECT *
-    FROM [Service].[ToDo]
-    WHERE Id = @OrderId
+    FROM [Customer].[ToDo]
+    WHERE OrderId = @OrderId
 END

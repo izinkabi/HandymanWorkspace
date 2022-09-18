@@ -80,6 +80,8 @@ namespace Handymen_UI_Consumer.Pages
 
 
                         }
+
+                       
                     }
                 }
             }
@@ -105,7 +107,7 @@ namespace Handymen_UI_Consumer.Pages
                 ErrorMsg = ex.Message;
 
             }
-            return Redirect("/Index");
+            return Redirect("./Index");
 
         }
     }

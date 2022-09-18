@@ -25,7 +25,7 @@ namespace Handymen_UI_Consumer.Models
         public Service? ServiceProperty { get; set; } 
 
         public string? ConsumerID { get; set; }
-        
+        public bool IsOnNavDisplay { get; set; }
         public string? Stage { get; set; }
         public DateTimeOffset DateFinished { get; set; }
         public int IsAccepted

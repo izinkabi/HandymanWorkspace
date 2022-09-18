@@ -9,67 +9,64 @@
 
 
 <div class="row d-inline-flex m-0">
+   
 
-<div class="col m-3"
-<!--New Task/Todo-item form-->
 
-<!--New task button-->
-  <button class="btn-sm btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-    Todo items
-  </button>
+        <div class="col m-3"
+        <!--New Task/Todo-item form-->
 
-<!--End New task button-->
+            <!--New task button-->
+            <button class="btn-sm btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                Todo items
+            </button>
 
-<div class="collapse" id="collapseExample">
-  <div class="card card-body">
-<!--The following code can be found in the this address https://mdbootstrap.com/docs/standard/extended/to-do-list/#!-->
+            <!--End New task button-->
 
-    
-            <div class="col">
-                <div class="card" id="list1" style="border-radius: .75rem; background-color: #eff1f2;">
-                    <div class="card-body py-4 px-4 px-md-5">
+            <div class="collapse" id="collapseExample">
+                <div class="card card-body">
+                    <!--The following code can be found in the this address https://mdbootstrap.com/docs/standard/extended/to-do-list/#!-->
 
-                        <p class="h2 text-center mt-3 mb-4 pb-3 text-primary">
-                            <i class="fas fa-check-square me-1"></i>
-                            <u>Add Todo item</u>
-                        </p>
 
-                        <div class="pb-2">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="d-flex">
-                                       <div class="row"> 
-                                           <input @bind="@todoItem.ItemName" type="text" class="form-control form-control" id="exampleFormControlInput1"
-                                               placeholder="Add new...">
-                                            <a href="#!" data-mdb-toggle="tooltip" title="Set due date">
-                                                <i class="fas fa-calendar-alt fa-lg me-3"></i>
-                                            </a>
-                                       </div>
-                                       
-                                                
-                                        <div class="mb-3 m-3">
-                                          <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                                          <textarea @bind="@todoItem.Description" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    <div class="col">
+                        <div class="card" id="list1" style="border-radius: .75rem; background-color: #eff1f2;">
+                            <div class="card-body py-4 px-4 px-md-5">
+
+                                <p class="h2 text-center mt-3 mb-4 pb-3 text-primary">
+                                    <i class="fas fa-check-square me-1"></i>
+                                    <u>Add Todo item</u>
+                                </p>
+
+                                <div class="pb-2">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex">
+                                                <div class="row"> 
+                                                    <input @bind="@todoItem.ItemName" type="text" class="form-control form-control" id="exampleFormControlInput1"
+                                                        placeholder="Add new...">
+                                                </div>
+                                                <div class="mb-3 row m-3">
+                                                    <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+                                                    <textarea @bind="@todoItem.Description" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                </div>
+
+                                            </div>
                                         </div>
-                                       
+                                        <div class="card-footer">
+                                            <button @onclick="AddNewTodoItem" class="btn btn-primary m-3">Add</button>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="card-footer">
-                                  <button @onclick="AddNewTodoItem" class="btn btn-primary m-3">Add</button>
-                             </div>
-                            </div>
-                             
-                        </div>
 
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
+
+
                 </div>
             </div>
-        
-
-    </div>
-</div>
-</div>
-
+        </div>
+    
 
 
     <div class="m-3 col ">

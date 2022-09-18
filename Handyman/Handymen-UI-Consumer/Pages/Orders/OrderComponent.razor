@@ -66,13 +66,42 @@
    
         
 </dl>
-<div class="col justify-content-end m-3 flex-column">
     @if (!order.IsConfirmed)
     {
-        <DynamicComponent Type="@typeof(OrderTasksComponent)" @ref="orderTasksComponent" Parameters="orderIdParam" />
-    }
-</div>
+        <div class="col">
 
+
+            <DynamicComponent Type="@typeof(OrderTasksComponent)" @ref="orderTasksComponent" Parameters="orderIdParam" />
+        </div>
+    }
+    else if (order.IsConfirmed && !order.IsOnNavDisplay)
+    {
+        <!--List of Todo-items in the confirmed order-->
+        <div class="list-group m-3">
+            @*<a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">List group item heading</h5>
+                    <small>3 days ago</small>
+                </div>
+                <p class="mb-1">Some placeholder content in a paragraph.</p>
+                <small>And some small print.</small>
+            </a>*@
+
+           @foreach(var item in @todoList)
+           {
+
+            <a href="#" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">@item.ItemName</h5>
+                    <small class="text-muted">@item.StartDate</small>
+                </div>
+                <p class="mb-1">@item.Description</p>
+                <small class="text-muted">Adhoc/LongTerm</small>
+            </a>
+           }
+        </div>
+        <!--End List-->
+    }
 </div>
 
 
@@ -84,7 +113,7 @@
     private PersistingComponentStateSubscription persistingSubscription;
     string? ErrorMsg;
     string? IsAvailableMsg;
-    bool IsProviderAvailable;
+    
     bool OpenConnection;
     string? user;
     List<Order>? userOrders;
@@ -104,32 +133,37 @@
             order = value;
             orderIdParam = new Dictionary<string, object>()
                 {
-                    ["OrderId"] = order.Id,
+                    ["OrderId"] = OrderComponentModel.Id,
                     ["IsNewOrder"] = true
         };
         }
     }
-
+    
     protected override async Task OnInitializedAsync()
     {
 
         try
         {
             //Component persisting state setup****//
-            persistingSubscription =
-            ApplicationState.RegisterOnPersisting(PersistOrder);
+            //persistingSubscription =
+            //ApplicationState.RegisterOnPersisting(PersistOrder);
 
-            if (!ApplicationState.TryTakeFromJson<Order>(
-                "fetchdata", out var restored))
-            {
+            //if (!ApplicationState.TryTakeFromJson<Order>(
+            //    "fetchdata", out var restored))
+            //{
                 //*The following code get the order from the IOrderEndPoint*//
                 //order =
-                await _orderHelper.LoadUserOrders();
-
-            }else
+               // await _orderHelper.LoadUserOrders();
+                todoList = new List<TodoModel>();
+            if (OrderComponentModel.Id!=0)
             {
-                order = restored!;
+                todoList = await _orderHelper.GetOrderTodoList(OrderComponentModel.Id);
             }
+               
+            //}else
+            //{
+            //    order = restored!;
+            //}
         }catch(Exception ex)
         {
             ErrorMsg = ex.Message;
@@ -141,21 +175,7 @@
     }
 
 
-    //Send the Order to signalr request
-    //User must be from Identity
-    async Task Send()
-    {
-        if(orderHubConnection is not null)
-        {
-            try
-            {
-                await orderHubConnection.SendAsync("SendOrder", user, order);
-            }catch(Exception ex)
-            {
-                ErrorMsg = ex.Message;
-            }
-        }
-    }
+   
 
     //Redirection in razor component
     void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
@@ -202,12 +222,12 @@
 
     }
     //Persisting the order 
-    Task PersistOrder()
-    {
-        ApplicationState.PersistAsJson("fetorder", order);
+    //Task PersistOrder()
+    //{
+    //    ApplicationState.PersistAsJson("fetorder", order);
 
-        return Task.CompletedTask;
-    }
+    //    return Task.CompletedTask;
+    //}
 
     //Confirming the order placement--soon to be in ordershelper by all means
     async Task ConfirmOrder()
@@ -225,7 +245,7 @@
             libOrder.ServiceId = order.ServiceProperty.Id;
             order.IsConfirmed = true;
             var tasks = (OrderTasksComponent)orderTasksComponent.Instance;//cast the dynamic component...finders cross x
-            this.todoList = tasks.TodoDisplayList;
+            //this.todoList.AddRange(tasks.TodoDisplayList);
             await _orderEndPoint.PostOrder(libOrder,tasks.OrderTodoListProperty);
            
         }

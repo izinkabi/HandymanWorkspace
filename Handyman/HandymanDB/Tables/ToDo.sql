@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [Customer].[ToDo]
 (
-	[Id] INT NOT NULL , 
+	[Id] INT IDENTITY(1,1) NOT NULL , 
     [ItemName] VARCHAR(150) NOT NULL, 
     [Description] VARCHAR(250) NOT NULL, 
     [OrderId] INT NOT NULL, 
