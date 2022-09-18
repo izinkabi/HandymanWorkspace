@@ -1,7 +1,8 @@
-﻿@page "/ordertaskscomponent"
+﻿@page "/order-tasks-component"
 @using HandymanUILibrary.API.Consumer.Todo
 @using Handymen_UI_Consumer.Helpers
 @using Handymen_UI_Consumer.Models
+@using Microsoft.AspNetCore.Components.Web
 @inject ITodoEndPoint _todoEndPoint
 @inject IOrderHelper _orderHelper
 
@@ -22,7 +23,7 @@
 <div class="collapse" id="collapseExample">
   <div class="card card-body">
 <!--The following code can be found in the this address https://mdbootstrap.com/docs/standard/extended/to-do-list/#!-->
-<section>
+
     
             <div class="col">
                 <div class="card" id="list1" style="border-radius: .75rem; background-color: #eff1f2;">
@@ -36,26 +37,35 @@
                         <div class="pb-2">
                             <div class="card">
                                 <div class="card-body">
-                                    <div class="d-flex flex-row align-items-center">
-                                        <input type="text" class="form-control form-control" id="exampleFormControlInput1"
+                                    <div class="d-flex">
+                                       <div class="row"> 
+                                           <input @bind="@todoItem.ItemName" type="text" class="form-control form-control" id="exampleFormControlInput1"
                                                placeholder="Add new...">
-                                        <a href="#!" data-mdb-toggle="tooltip" title="Set due date">
-                                            <i class="fas fa-calendar-alt fa-lg me-3"></i>
-                                        </a>
-                                        <div>
-                                             <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Add</button>
+                                            <a href="#!" data-mdb-toggle="tooltip" title="Set due date">
+                                                <i class="fas fa-calendar-alt fa-lg me-3"></i>
+                                            </a>
+                                       </div>
+                                       
+                                                
+                                        <div class="mb-3 m-3">
+                                          <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+                                          <textarea @bind="@todoItem.Description" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                                         </div>
+                                       
                                     </div>
                                 </div>
+                                <div class="card-footer">
+                                  <button @onclick="AddNewTodoItem" class="btn btn-primary m-3">Add</button>
+                             </div>
                             </div>
+                             
                         </div>
 
-                      
                     </div>
                 </div>
             </div>
         
-</section>
+
     </div>
 </div>
 </div>
@@ -103,14 +113,13 @@
                             <a href="#!" class="text-info" data-mdb-toggle="tooltip" title="Edit todo">
                                 <i class="fas fa-pencil-alt me-3"></i>
                             </a>
-                            <a href="#!" class="text-danger" data-mdb-toggle="tooltip" title="Delete todo">
+                            <button @onclick="@(()=> DeleteTask(@item))" class="text-danger" data-mdb-toggle="tooltip" title="Delete todo">
                                 <i class="fas fa-trash-alt"></i>
-                            </a>
+                            </button>
                         </div>
                         <div class="text-end text-muted">
-                            <a href="#!" class="text-muted" data-mdb-toggle="tooltip" title="Created date">
-                                <p class="small mb-0"><i class="fas fa-info-circle me-2"></i>@DateTime.Now.ToShortTimeString</p>
-                            </a>
+                             <p class="small mb-0"><i class="fas fa-info-circle me-2"></i>@DateTime.UtcNow</p>
+                            
                         </div>
                     </li>
                 </ul>
@@ -123,68 +132,7 @@
             </p>
         }
         
-        @*<ul class="list-group list-group-horizontal rounded-0">
-            <li class="list-group-item d-flex align-items-center ps-0 pe-3 py-1 rounded-0 border-0 bg-transparent">
-                <div class="form-check">
-                    <input class="form-check-input me-0" type="checkbox" value="" id="flexCheckChecked2"
-                           aria-label="..." />
-                </div>
-            </li>
-            <li class="list-group-item px-3 py-1 d-flex align-items-center flex-grow-1 border-0 bg-transparent">
-                <p class="lead fw-normal mb-0">Renew car insurance</p>
-            </li>
-            <li class="list-group-item px-3 py-1 d-flex align-items-center border-0 bg-transparent">
-                <div class="py-2 px-3 me-2 border border-warning rounded-3 d-flex align-items-center bg-light">
-                    <p class="small mb-0">
-                        <a href="#!" data-mdb-toggle="tooltip" title="Due on date">
-                            <i class="fas fa-hourglass-half me-2 text-warning"></i>
-                        </a>
-                        28th Jun 2023
-                    </p>
-                </div>
-            </li>
-            <li class="list-group-item ps-3 pe-0 py-1 rounded-0 border-0 bg-transparent">
-                <div class="d-flex flex-row justify-content-end mb-1">
-                    <a href="#!" class="text-info" data-mdb-toggle="tooltip" title="Edit todo">
-                        <i class="fas fa-pencil-alt me-3"></i>
-                    </a>
-                    <a href="#!" class="text-danger" data-mdb-toggle="tooltip" title="Delete todo">
-                        <i class="fas fa-trash-alt"></i>
-                    </a>
-                </div>
-                <div class="text-end text-muted">
-                    <a href="#!" class="text-muted" data-mdb-toggle="tooltip" title="Created date">
-                        <p class="small mb-0"><i class="fas fa-info-circle me-2"></i>28th Jun 2020</p>
-                    </a>
-                </div>
-            </li>
-        </ul>
-        <ul class="list-group list-group-horizontal rounded-0 mb-2">
-            <li class="list-group-item d-flex align-items-center ps-0 pe-3 py-1 rounded-0 border-0 bg-transparent">
-                <div class="form-check">
-                    <input class="form-check-input me-0" type="checkbox" value="" id="flexCheckChecked3"
-                           aria-label="..." />
-                </div>
-            </li>
-            <li class="list-group-item px-3 py-1 d-flex align-items-center flex-grow-1 border-0 bg-transparent">
-                <p class="lead fw-normal mb-0 bg-light w-100 ms-n2 ps-2 py-1 rounded">
-                    Sign up for online
-                    course
-                </p>
-            </li>
-            <li class="list-group-item ps-3 pe-0 py-1 rounded-0 border-0 bg-transparent">
-                <div class="d-flex flex-row justify-content-end mb-1">
-                    <a href="#!" class="text-danger" data-mdb-toggle="tooltip" title="Delete todo">
-                        <i class="fas fa-trash-alt"></i>
-                    </a>
-                </div>
-                <div class="text-end text-muted">
-                    <a href="#!" class="text-muted" data-mdb-toggle="tooltip" title="Created date">
-                        <p class="small mb-0"><i class="fas fa-info-circle me-2"></i>28th Jun 2020</p>
-                    </a>
-                </div>
-            </li>
-        </ul>*@
+       
 
     </div>
 
@@ -194,7 +142,7 @@
 @code {
 
 
-    List<TodoModel> OrderTodoList = new();//Local display list
+    List<TodoModel> OrderTodoList = new()!;//Local display list
     TodoModel? todoItem = new()!;
     string? ErrorMsg;
     List<HandymanUILibrary.Models.TodoModel>? newTodoList = new()!;
@@ -249,6 +197,15 @@
         }
     }
 
+
+    void DeleteTask(TodoModel todoitem)
+    {
+        if (todoitem is not null)
+        {
+           OrderTodoList.Remove(todoitem);
+        }
+    }
+
     //Adding todo-item in the new list
     void AddNewTodoItem()
     {
@@ -256,15 +213,22 @@
         {
             newTodoList.Add(new HandymanUILibrary.Models.TodoModel
                 {
-                    ItemName = todoItem.ItemName, //this can be a combination of a constant & user input
-                    Description = todoItem.Description,
-                    OrderId = todoItem.OrderId,
+                    ItemName = todoItem?.ItemName, //this can be a combination of a constant & user input
+                    Description = todoItem?.Description,
+                    OrderId = todoItem.OrderId,//this will be zero here since the order is new
                     Type = 0,//this should be a constant to add logic
-                    Status = 0
+                    Status = 0//constant!
                 });
 
-                OrderTodoList.Add(todoItem);
-       }
+            OrderTodoList.Add(new TodoModel()
+                {
+                    ItemName = todoItem?.ItemName, //this can be a combination of a constant & user input
+                    Description = todoItem?.Description,
+                    OrderId = todoItem.OrderId,//this will be zero here since the order is new
+                    Type = 0,//this should be a constant to add logic
+                    Status = 0//constant!
+                });
+        }
     }
 
 
