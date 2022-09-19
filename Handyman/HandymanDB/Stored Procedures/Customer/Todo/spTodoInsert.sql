@@ -4,6 +4,7 @@
     @OrderId INT, 
     @Type INT, 
     @Status INT 
+    
 AS
 BEGIN
 	INSERT INTO [Customer].[Todo] (ItemName, Description, OrderId, Type, Status)

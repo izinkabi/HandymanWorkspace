@@ -38,22 +38,20 @@
 
                                 <div class="pb-2">
                                     <div class="card">
+                                        
                                         <div class="card-body">
-                                            <div class="d-flex">
-                                                <div class="row"> 
+                                                <div class="mb-1">
                                                     <input @bind="@todoItem.ItemName" type="text" class="form-control form-control" id="exampleFormControlInput1"
-                                                        placeholder="Add new...">
+                                                        placeholder="TodoItem Title...">
                                                 </div>
-                                                <div class="mb-3 row m-3">
-                                                    <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                                                    <textarea @bind="@todoItem.Description" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                <div class="mb-1">
+                                                    <textarea @bind="@todoItem.Description" class="form-control" id="exampleFormControlTextarea1" rows="3"  placeholder="Description..."></textarea>
                                                 </div>
-
-                                            </div>
                                         </div>
                                         <div class="card-footer">
-                                            <button @onclick="AddNewTodoItem" class="btn btn-primary m-3">Add</button>
+                                            <button  @onclick="AddNewTodoItem" class="btn btn-primary m-3">Add</button>
                                         </div>
+                                       
                                     </div>
 
                                 </div>
@@ -155,51 +153,17 @@
 
     }
 
-    public List<TodoModel>? TodoDisplayList 
-    { 
-        get 
-        {
-            return OrderTodoList;
-        }
+    public List<TodoModel> TodoDisplayList { get { return OrderTodoList; }  }
 
-    }
 
-    protected override async Task OnInitializedAsync()
-    {
-        try
-        {
-            OrderTodoList = await _orderHelper.GetOrderTodoList(OrderId.Value);
-        }catch(Exception ex)
-        {
-            ErrorMsg = ex.Message;
-        }
 
-    }
-
-    //Add new order list
-    public async Task CreateNewOrderList()
-    {
-        try
-        {
-
-            if((newTodoList != null) && (newTodoList.Count > 0))
-            {
-                await _todoEndPoint.PostTodo(newTodoList);
-
-            }
-
-        }catch(Exception ex)
-        {
-            ErrorMsg = ex.Message;
-        }
-    }
 
 
     void DeleteTask(TodoModel todoitem)
     {
         if (todoitem is not null)
         {
-           OrderTodoList.Remove(todoitem);
+            OrderTodoList.Remove(todoitem);
         }
     }
 
@@ -225,6 +189,7 @@
                     Type = 0,//this should be a constant to add logic
                     Status = 0//constant!
                 });
+            todoItem = new()!;
         }
     }
 
