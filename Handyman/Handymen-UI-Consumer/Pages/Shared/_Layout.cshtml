@@ -164,9 +164,10 @@
 
                 @foreach (var order in @orders)
                 {
+                            order.IsOnNavDisplay = true;
                     if (@order.IsAccepted==0)
                     {
-                       order.IsOnNavDisplay = true;
+                       
                        <div class="alert alert-warning alert-dismissible fade show" role="alert" id="@order.Id">
                                 <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(order.Id)" aria-label="Close"></button>
                             <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@order" >
