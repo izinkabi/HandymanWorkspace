@@ -5,59 +5,72 @@
 @using Handyman_UI_Provider.Models
 @inject IRequestEndPoint _requestEndPoint
 @inject AuthenticationStateProvider _authenticationStateProvider
+<html>
+<link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/list-groups/">
+<link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+<head>
 
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .b-example-divider {
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+      }
+
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+    </style>
+    <link href="list-groups.css" rel="stylesheet">
+</head>
+<body>
 @if (OrderId != null)
 {
 
     <div class="card text-center">
-        <div class="card-header">
-            <!--Status -->
-            @if (!(@IsAccepted.Equals(0) && !(@RequestStage.Contains("Started")) && (@RequestStage.Contains("Finished"))))
-                {
-
-                    <div  class="form-check form-check-inline">
-                        <input  class="form-check-input" @onclick="StartRequest" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                        <label class="form-check-label" for="inlineRadio2">@RequestStage</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3" disabled>
-                    <label class="form-check-label" for="inlineRadio3">@RequestStage</label>
-                    </div>
-                }
-                 @if (@RequestStage.Contains("Started"))
-                {
-
-                   @* <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" disabled>
-                        <label class="form-check-label" for="inlineRadio1">@RequestStage</label>
-                    </div>*@
-                    @*<div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" disabled>
-                        <label class="form-check-label" for="inlineRadio2">@RequestStage</label>
-                    </div>*@
-                    <div @onclick="FinishRequest" class="form-check form-check-inline">
-                        <input  class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="@isStarted">
-                    <label class="form-check-label" for="inlineRadio3">Finish</label>
-                    </div>
-                }
-                @if (@RequestStage.Contains("Finished"))
-                {
-                    @*<div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1" disabled>
-                        <label class="form-check-label" for="inlineRadio1">Accepted</label>
-                    </div>*@
-                   @* <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="2" disabled>
-                        <label class="form-check-label" for="inlineRadio2">@RequestStage</label>
-                    </div>*@
-                    <div class="form-check form-check-inline">
-                    <input  class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="3" disabled >
-                        <label class="form-check-label" for="inlineRadio3">@RequestStage</label>
-                    </div>
-                }
-            
-            <!--End Status-->
-        </div>
+       
         <div class="card-body">
             <h5 class="card-title">Service Name</h5>
             <p class="card-text"><img src="./Images/@(ImageUrl)" class="img-thumbnail active" width="200"/></p>
@@ -69,17 +82,42 @@
         <div class="card-footer text-muted">
             @OrderDate
         </div>
+            <div class="list-group list-group-radio d-grid gap-2 border-0 w-auto">
+            @foreach (var item in orderTodoList)
+            {
+                if (!IsAccepted.Equals(0))//order is just started
+                {
+                  
+
+                        <div class="position-relative">
+                            <input class="form-check-input position-absolute top-50 end-0 me-3 fs-5" type="radio" name="listGroupRadioGrid" id="listGroupRadioGrid1" value="">
+                            <label class="list-group-item py-3 pe-5" for="listGroupRadioGrid1">
+                                <strong class="fw-semibold"> @item.ItemName</strong>
+                                <span class="d-block small opacity-75">@item.Description</span>
+                            </label>
+                        </div>
+                }
+
+            }
+        </div>
     </div>
+   
 }else{
     <div class="call-out"> Selected Request is no longer available</div>
 }
+   
 
+      
+  </body>
+   
+</html>
 @code {
     private List<OrderModel>? orders;
     private RequestModel? newRequest;
     string? ErrorMsg;
     bool isStarted;
     bool isFinished;
+    List<TodoModel>? orderTodoList;
     RequestDisplayModel? request = new()!;
 
     private string RequestStage = "New";
@@ -99,10 +137,6 @@
     [SupplyParameterFromQuery(Name = "img")]
     public string? ImageUrl { get; set; }
 
-    //[Parameter]
-    //[SupplyParameterFromQuery(Name = "sn")]
-    //public int ServiceName { get; set; }
-
     [Parameter]
     [SupplyParameterFromQuery(Name = "ia")]
     public int IsAccepted { get; set; }
@@ -111,10 +145,12 @@
     [SupplyParameterFromQuery(Name = "ord")]
     public string? OrderDate { get; set; }
 
-    protected async Task OnInitialisedAsync()
+    protected override async Task OnInitializedAsync()
     {
+        orderTodoList = new()!;
         orders = await _requestEndPoint.GetAllOrdersByService(ServiceId);
-        isStarted = true;
+        orderTodoList = await _requestEndPoint.GetOrderTodoList(OrderId.Value);
+        
     }
 
     //Create a new request
@@ -146,11 +182,7 @@
     {
        
             RequestStage = "Started";            
-            //request.Stage = "started";
-            //isStarted = true;
-            //IsAccepted = 1;
-            //InvokeAsync(StateHasChanged);
-       
+            
     }
 
     //This method encapsulates the mechanism for processing the requesst
@@ -163,20 +195,9 @@
     public void FinishRequest()
     {
         RequestStage = "Finished";
-        //isFinished = true;
-        //IsAccepted = 1;
-        //InvokeAsync(StateHasChanged);
+        
     }
 
-    //public async Task<RequestDisplayModel> GetRequest()
-    //{
-    //    try
-    //    {
     
-    //    }catch(Exception ex)
-    //    {
-    //        ErrorMsg = ex.Message;
-    //    }
-    //}
 
 }

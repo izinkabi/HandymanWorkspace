@@ -1,5 +1,6 @@
 ﻿using HandymanProviderLibrary.API;
 using HandymanProviderLibrary.Models;
+using System.Net.Http;
 using System.Net.Http.Json;
 
 
@@ -103,6 +104,19 @@ namespace HandymanProviderLibrary.Api.Request;
             throw new Exception(ex.Message);
         }
         return null;
+    }
+
+    public async Task<List<TodoModel>> GetOrderTodoList(int Id)
+    {
+        try
+        {
+            var todoList = await _apiHelper.ApiClient.GetFromJsonAsync<List<TodoModel>>($"/api/GetTodoListByOrderId?Id={Id}");
+            return todoList;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
     }
 }
 

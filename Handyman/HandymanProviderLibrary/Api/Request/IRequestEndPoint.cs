@@ -8,5 +8,6 @@ namespace HandymanProviderLibrary.Api.Request
         Task<string> PostRequest(RequestModel request);
         Task<string> UpdateRequest(RequestModel updateRequest);
         Task<List<RequestModel>> GetRequestsByProvider(string? providerId);
+        Task<List<TodoModel>> GetOrderTodoList(int Id);
     }
 }
