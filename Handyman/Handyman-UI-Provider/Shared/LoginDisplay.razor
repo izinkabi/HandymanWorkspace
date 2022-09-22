@@ -8,11 +8,11 @@
           </a>
           <ul class="dropdown-menu text-small">
             <li><p class="dropdown-header text-muted"> @context.User.Identity?.Name!</p></li>
-            <li><a id="manage" class="dropdown-item text-dark"  href="/Account/Manage/Index" title="Manage">Profile</a></li>
+                    <li><a id="manage" class="dropdown-item text-dark" href="Identity/Account/Manage/Index" title="Manage">Profile</a></li>
             <li><a class="dropdown-item" href="#">Settings</a></li>
             <li><hr class="dropdown-divider"></li>
              @*<form id="logoutForm" class="dropdown-itemform-inline" href="/Account/Logout">*@
-                <a id="logout" href="/Account/Logout" type="submit" class="dropdown-item btn btn-link text-dark">Logout</a>
+                    <a id="logout" href="Identity/Account/Logout" type="submit" class="dropdown-item btn btn-link text-dark">Logout</a>
            @* </form>*@
           </ul>
         </div>
@@ -22,7 +22,7 @@
             @*</form>*@
     </Authorized>
     <NotAuthorized>
-        <a href="Identity/Account/Login" class="nav-link text-dark">Log in2</a>
+            <a href="Identity/Account/Login" class="nav-link text-dark"><strong>LOGIN</strong> </a>
     </NotAuthorized>
 </AuthorizeView>
 </CascadingAuthenticationState>

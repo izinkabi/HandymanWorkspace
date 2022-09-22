@@ -23,6 +23,17 @@ namespace HandymanDataLibray.DataAccess
             return output;
         }
 
+        public TodoModel GetTodoById(int Id)
+        {
+            SQLDataAccess sql = new SQLDataAccess();
+
+
+            var p = new { Id = Id };
+
+            var output = sql.LoadData<TodoModel, dynamic>("Customer.spTodoItemLookUp", p, "HandymanDB").First();
+
+            return output;
+        }
 
 
 

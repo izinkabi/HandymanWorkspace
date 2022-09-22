@@ -22,7 +22,12 @@ namespace HandymanAPI.Controllers
             return todoData.GetTodoListByOrderId(Id);
         }
 
-
+        [Route("api/GetTodoById")]
+        public TodoModel GetTodoId(int Id)
+        {
+            todoData = new TodoData();
+            return todoData.GetTodoById(Id);
+        }
         // POST: api/TodoList
         [Route("api/PostTodoList")]
         public void PostTodoList(List<TodoModel> todoList)

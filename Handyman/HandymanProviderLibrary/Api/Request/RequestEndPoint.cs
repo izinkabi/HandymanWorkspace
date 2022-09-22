@@ -118,5 +118,31 @@ namespace HandymanProviderLibrary.Api.Request;
             throw new Exception(ex.Message);
         }
     }
+
+    public async Task<TodoModel> GetTodoItemById(int Id)
+    {
+        try
+        {
+            var todoItem = await _apiHelper.ApiClient.GetFromJsonAsync<TodoModel>($"/api/GetTodoById?Id={Id}");
+            return todoItem;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    public async Task UpdateTodoItem(TodoModel todoItemUpdate)
+    {
+        try
+        {
+            var httpResponseMessage = await _apiHelper.ApiClient.PutAsJsonAsync<TodoModel>("/api/UpdateTodo", todoItemUpdate);
+            
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
 }
 

@@ -8,7 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Pages\Requests\Todos\TodoComponent.razor" />
     <Content Remove="wwwroot\Images\ac.jpg" />
     <Content Remove="wwwroot\Images\cleaning.jpg" />
     <Content Remove="wwwroot\Images\oven.jpg" />
@@ -16,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Pages\Requests\Todos\TodoComponent.razor" />
+    <None Include="Pages\Requests\TodoComponent.razor" />
     <None Include="wwwroot\Images\ac.jpg" />
     <None Include="wwwroot\Images\cleaning.jpg" />
     <None Include="wwwroot\Images\Icons\Main\Business-Man-Settings-01.metrop" />
@@ -54,14 +53,6 @@
   <ItemGroup>
     <ProjectReference Include="..\HandymanProviderLibrary\HandymanProviderLibrary.csproj" />
     <ProjectReference Include="..\HandymanUILibrary\HandymanUILibrary.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Pages\Requests\Todos\TodoComponent.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Pages\Requests\Todos\TodoComponent.razor" />
   </ItemGroup>
 
 </Project>
