@@ -10,7 +10,6 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Identity
-@using Microsoft.AspNetCore.SignalR.Client
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.Extensions.Caching.Memory
 @using System.Security.Claims
@@ -22,7 +21,7 @@
 @inject IMemoryCache _cache
 @inject AuthenticationStateProvider _authenticationStateProvider
 @inject IOrderEndPoint _orderEndPoint
-
+@implements IDisposable
 
 
 <!--Order Component MarkUp-->
@@ -57,19 +56,15 @@
             @if (!order.IsConfirmed)
             {
                 <button @onclick="ConfirmOrder" type="button" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#staticBackdropConfirmorder"> Confirm </button>
-               
-            
+           
             }
            
-       
         </div>
    
-        
 </dl>
     @if (!order.IsConfirmed)
     {
         <div class="col">
-
 
             <DynamicComponent Type="@typeof(OrderTasksComponent)" @ref="orderTasksComponent" Parameters="orderIdParam" />
         </div>
@@ -104,7 +99,6 @@
     }
 </div>
 
-
 @code {
 
     private List<Service>? serviceDisplayList;
@@ -131,7 +125,7 @@
                 {
                     ["OrderId"] = OrderComponentModel.Id,
                     ["IsNewOrder"] = true
-        };
+            };
         }
     }
 
@@ -140,26 +134,21 @@
 
         try
         {
-           
+
             if (OrderComponentModel.Id != 0 && OrderComponentModel!=null)
             {
                 todoList = new()!;
                 todoList.AddRange(await _orderHelper.GetOrderTodoList(OrderComponentModel.Id));
             }
-               
-           
+
         }catch(Exception ex)
         {
             ErrorMsg = ex.Message;
         }
 
-
-
         NavManager.LocationChanged += HandleLocationChanged;
     }
 
-
-   
 
     //Redirection in razor component
     void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
@@ -168,18 +157,16 @@
     }
 
     //Disposing the component
-    async ValueTask DisposeAsync()
+    public void Dispose()
     {
-
         NavManager.LocationChanged -= HandleLocationChanged;
-        await this.DisposeAsync();
-
+        // await this.DisposeAsync();
+        //return ValueTask.CompletedTask;
     }
 
     //Initiate the order track --soon to be in load orders
     void TrackOrder()
     {
-
 
         order.IsTracking = true;
         // NavManager.NavigateTo($"/orderdetails?id={@order.Id}", true);
@@ -191,7 +178,7 @@
     async Task CancelOrder()
     {
         order.IsConfirmed = false;
-        await DisposeAsync();
+         Dispose();
        
     }
 

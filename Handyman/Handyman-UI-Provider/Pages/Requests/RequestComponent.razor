@@ -9,13 +9,12 @@
 {
 
     <div class="card text-center">
-       
         <div class="card-body">
             <h5 class="card-title">Service Name</h5>
             <p class="card-text"><img src="./Images/@(ImageUrl)" class="img-thumbnail active" width="200"/></p>
            @if(@IsAccepted.Equals(0))
            {
-            <a @onclick="()=> AcceptRequest()" class="btn btn-primary">Accept</a>
+                <a @onclick="()=> AcceptRequest()" class="btn btn-primary">Accept</a>
            }        
         </div>
         <div class="card-footer text-muted">
@@ -54,12 +53,13 @@
    
 
 @code {
-    private List<OrderModel>? orders;
-    private RequestModel? newRequest;
+
+    private List<OrderModel>? orders = new()!;
+    private RequestModel? newRequest = new()!;
     string? ErrorMsg;
     bool isStarted;
     bool isFinished;
-    List<TodoModel>? orderTodoList;
+    List<TodoModel>? orderTodoList = new()!;
     RequestDisplayModel? request = new()!;
 
     private string RequestStage = "New";
@@ -96,7 +96,7 @@
     }
 
     //Create a new request
-    public async Task AcceptRequest()
+    async Task AcceptRequest()
     {
         newRequest = new();
         var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
@@ -120,7 +120,7 @@
 
 
     //This method has the mechanism for starting the request
-    public void StartRequest()
+    void StartRequest()
     {
        
             RequestStage = "Started";            
@@ -128,13 +128,13 @@
     }
 
     //This method encapsulates the mechanism for processing the requesst
-    public async Task ProcessRequest()
+    async Task ProcessRequest()
     {
 
     }
 
     //Completing the request method
-    public void FinishRequest()
+    void FinishRequest()
     {
         RequestStage = "Finished";
         

@@ -1,19 +1,30 @@
 ﻿@page "/todocomponent"
 @using HandymanProviderLibrary.Api.Request
 @using HandymanProviderLibrary.Models
-@inject IRequestEndPoint _requestEndPoint;
+@inject IRequestEndPoint _requestEndPoint
+@inject NavigationManager NavManager
+@implements IDisposable
 
 @if (todoItemDisplay != null)
 {
+    if(@isStatusChanged)
+    {
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+            <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Info:"><use xlink:href="#info-fill" /></svg>
+            <h4 class="alert-heading"><strong>Status Changed!</strong></h4>
+            <div class="justify-content-end">
+                <img src="./Images/hourglass.gif" class="w-10 h-10">
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
     <div class="card text-center">
 
         <div class="form-check-inline alert-success">
             <h5 class="card-title">@todoItemDisplay.ItemName</h5>
         </div>
 
-        
-            
-            @if (IsStarted && @IsFinished)
+            @if (@IsFinished)
             {
             <div class="card-body-inline alert-success">
                 
@@ -68,8 +79,6 @@
                         <path d="M9.972 2.508a.5.5 0 0 0-.16-.556l-.178-.129a5.009 5.009 0 0 0-2.076-.783C6.215.862 4.504 1.229 2.84 3.133H1.786a.5.5 0 0 0-.354.147L.146 4.567a.5.5 0 0 0 0 .706l2.571 2.579a.5.5 0 0 0 .708 0l1.286-1.29a.5.5 0 0 0 .146-.353V5.57l8.387 8.873A.5.5 0 0 0 14 14.5l1.5-1.5a.5.5 0 0 0 .017-.689l-9.129-8.63c.747-.456 1.772-.839 3.112-.839a.5.5 0 0 0 .472-.334z" />
                     </svg>
                 </button>
-
-              
                 </div>
             }else
             {
@@ -96,13 +105,12 @@
                     </label>
                 </div>
                 <hr />
-                <button type="button" @onclick="StartTask" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#timemodal">
+                <button type="button" @onclick="StartTodoItem" class="btn btn-primary" id="liveAlertBtn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-hammer" viewBox="0 0 16 16">
                         <path d="M9.972 2.508a.5.5 0 0 0-.16-.556l-.178-.129a5.009 5.009 0 0 0-2.076-.783C6.215.862 4.504 1.229 2.84 3.133H1.786a.5.5 0 0 0-.354.147L.146 4.567a.5.5 0 0 0 0 .706l2.571 2.579a.5.5 0 0 0 .708 0l1.286-1.29a.5.5 0 0 0 .146-.353V5.57l8.387 8.873A.5.5 0 0 0 14 14.5l1.5-1.5a.5.5 0 0 0 .017-.689l-9.129-8.63c.747-.456 1.772-.839 3.112-.839a.5.5 0 0 0 .472-.334z" />
                     </svg>
                 </button>
 
-                
             </div>
 
         }
@@ -114,13 +122,13 @@
         </div>
     </div>
 
-    <div class="modal modal-dialog modal-sm fade" id="timemodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <img src="~/Images/hourglass.gif">
-    </div>
 }
+
 @code {
+
     bool IsFinished;
     bool IsStarted;
+    bool isStatusChanged;
 
     TodoModel? todoItemDisplay;
 
@@ -134,8 +142,27 @@
             todoItemDisplay = await _requestEndPoint.GetTodoItemById(Id.Value);
     }
 
-    void StartTask()
+    void StartTodoItem()
     {
         IsStarted = true;
+        isStatusChanged = true;
+    }
+
+    void Holaa()
+    {
+
+    }
+
+    void GoBackToRequest()
+    {
+        if(isStatusChanged)
+        {
+            //warning of unsaved changes
+        }
+    }
+
+    public void Dispose()
+    {
+
     }
 }

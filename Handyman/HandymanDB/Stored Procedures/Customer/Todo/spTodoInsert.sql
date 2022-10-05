@@ -7,6 +7,6 @@
     
 AS
 BEGIN
-	INSERT INTO [Customer].[Todo] (ItemName, Description, OrderId, Type, Status)
+	INSERT INTO [Customer].[ToDo] (ItemName, Description, OrderId, Type, Status)
     VALUES(@ItemName, @Description, @OrderId, @Type, @Status)
 END
