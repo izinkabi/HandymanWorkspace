@@ -1,23 +1,26 @@
-﻿
-using Dapper;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+using Dapper;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
-namespace HandymanDataLibray.DataAccess.Internal
+namespace Handyman_DataLibrary.Internal.DataAccess
 {
-    //Had to implement a IDisposable to use the Using stament when starting a transaction
-    public class SQLDataAccess : IDisposable
+    public class SQLDataAccess : IDisposable, ISQLDataAccess
     {
-
+        IConfiguration _configuration;
+        public SQLDataAccess(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
         public string GetConnectionString(string name)
         {
-            return ConfigurationManager.ConnectionStrings[name].ConnectionString;
+            return _configuration.GetConnectionString(name);
         }
 
         public List<T> LoadData<T, U>(string storedProcedure, U parameters, string connectionStringName)
@@ -115,4 +118,3 @@ namespace HandymanDataLibray.DataAccess.Internal
         //Dispose
     }
 }
-
