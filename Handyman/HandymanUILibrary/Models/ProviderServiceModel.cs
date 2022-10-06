@@ -10,6 +10,6 @@ namespace HandymanUILibrary.Models
     {
         public int Id { get; set; }
         public string ServiceProviderId { get; set; }
-        public int JobId { get; set; }
+        public int ServiceId { get; set; }
     }
 }

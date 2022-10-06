@@ -4,9 +4,6 @@ using Handyman_UI_Provider.Areas.Identity.Data;
 using HandymanProviderLibrary.Api.Service;
 using HandymanProviderLibrary.API;
 using Microsoft.AspNetCore.ResponseCompression;
-using Handyman_UI_Provider.Hubs;
-using Handyman_UI_Provider.Hubs.Order;
-using Handyman_UI_Provider.Hubs.Request;
 using HandymanProviderLibrary.Api.Request;
 using HandymanProviderLibrary.Api.ServiceProvider;
 
@@ -61,9 +58,7 @@ app.UseRouting();
 
 app.MapBlazorHub();
 //Mapping of Hub
-app.MapHub<ChatHub>("/chathub");
-app.MapHub<OrderHub>("/orderhub");
-app.MapHub<RequestHub>("/requesthub");
+
 
 app.MapFallbackToPage("/_Host");
 app.UseAuthentication();

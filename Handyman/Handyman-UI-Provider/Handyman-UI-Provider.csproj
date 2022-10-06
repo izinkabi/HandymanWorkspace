@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Pages\Requests\TodoComponent.razor" />
     <None Include="wwwroot\Images\ac.jpg" />
     <None Include="wwwroot\Images\cleaning.jpg" />
     <None Include="wwwroot\Images\Icons\Main\Business-Man-Settings-01.metrop" />

@@ -1,14 +1,15 @@
 ﻿@page "/orderComponent"
 @using HandymanUILibrary.API
 @using HandymanUILibrary.API.Consumer
+@using HandymanUILibrary.API.Consumer.Order
 @using Handymen_UI_Consumer.Areas.Identity.Data
 @using Handymen_UI_Consumer.Helpers
 @using Handymen_UI_Consumer.Models
+@using Handymen_UI_Consumer.Pages.Orders.Tasks
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Identity
-@using Microsoft.AspNetCore.SignalR.Client
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.Extensions.Caching.Memory
 @using System.Security.Claims
@@ -20,12 +21,12 @@
 @inject IMemoryCache _cache
 @inject AuthenticationStateProvider _authenticationStateProvider
 @inject IOrderEndPoint _orderEndPoint
-
+@implements IDisposable
 
 
 <!--Order Component MarkUp-->
-
-<dl class="row justify-content-center">
+<div class="row">
+<dl class="col justify-content-center">
         <div class="card mb-3 " style="max-width: 540px;">
           <div class="row g-0">
             <div class="col-md-4">
@@ -54,31 +55,61 @@
             
             @if (!order.IsConfirmed)
             {
-                <button @onclick="ConfirmOrder" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdropConfirmorder"> Confirm </button>
+                <button @onclick="ConfirmOrder" type="button" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#staticBackdropConfirmorder"> Confirm </button>
+           
             }
            
-       
         </div>
    
 </dl>
-    <!--End Component MarkUp-->
-   
+    @if (!order.IsConfirmed)
+    {
+        <div class="col">
 
+            <DynamicComponent Type="@typeof(OrderTasksComponent)" @ref="orderTasksComponent" Parameters="orderIdParam" />
+        </div>
+    }
+    else if (order.IsConfirmed && !order.IsOnNavDisplay)
+    {
+        <!--List of Todo-items in the confirmed order-->
+        <div class="list-group list-group-flush align-content-lg-center">
+            @*<a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">List group item heading</h5>
+                    <small>3 days ago</small>
+                </div>
+                <p class="mb-1">Some placeholder content in a paragraph.</p>
+                <small>And some small print.</small>
+            </a>*@
+
+           @foreach(var item in @todoList)
+           {
+
+            <a href="#" class="list-group-item list-group-item-action ">
+                <div class="d-flex  justify-content-between">
+                    <h5 class="mb-1">@item.ItemName</h5>
+                        <small class="text-muted">@order.DateCreated.ToString("MMMM dd, yyyy")</small>
+                </div>
+                <p class="mb-1">@item.Description</p>
+                <small class="text-muted">Adhoc/LongTerm</small>
+            </a>
+           }
+        </div>
+        <!--End List-->
+    }
+</div>
 
 @code {
+
     private List<Service>? serviceDisplayList;
-    public Order? order = new Order()!;
-    private HubConnection? orderHubConnection;
-    private HubConnection? requestHubConnection;
-    private PersistingComponentStateSubscription persistingSubscription;
+    private Order? order = new Order()!;
     string? ErrorMsg;
     string? IsAvailableMsg;
-    bool IsProviderAvailable;
-    bool OpenConnection;
     string? user;
-    List<Order> userOrders;
-
-
+    List<Order>? userOrders;
+    DynamicComponent? orderTasksComponent;
+    private IDictionary<string, object>? orderIdParam;
+    private List<TodoModel>? todoList = new List<TodoModel>()!;
     [Parameter]
     public Order? OrderComponentModel
     {
@@ -90,6 +121,11 @@
         set
         {
             order = value;
+            orderIdParam = new Dictionary<string, object>()
+                {
+                    ["OrderId"] = OrderComponentModel.Id,
+                    ["IsNewOrder"] = true
+            };
         }
     }
 
@@ -98,47 +134,21 @@
 
         try
         {
-            //Component persisting state setup****//
-            persistingSubscription =
-            ApplicationState.RegisterOnPersisting(PersistOrder);
 
-            if (!ApplicationState.TryTakeFromJson<Order>(
-                "fetchdata", out var restored))
+            if (OrderComponentModel.Id != 0 && OrderComponentModel!=null)
             {
-                //*The following code get the order from the IOrderEndPoint*//
-                //order =
-                await _orderHelper.LoadUserOrders();
-
-            }else
-            {
-                order = restored!;
+                todoList = new()!;
+                todoList.AddRange(await _orderHelper.GetOrderTodoList(OrderComponentModel.Id));
             }
+
         }catch(Exception ex)
         {
             ErrorMsg = ex.Message;
         }
 
-
-
         NavManager.LocationChanged += HandleLocationChanged;
     }
 
-
-    //Send the Order to signalr request
-    //User must be from Identity
-    async Task Send()
-    {
-        if(orderHubConnection is not null)
-        {
-            try
-            {
-                await orderHubConnection.SendAsync("SendOrder", user, order);
-            }catch(Exception ex)
-            {
-                ErrorMsg = ex.Message;
-            }
-        }
-    }
 
     //Redirection in razor component
     void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
@@ -147,18 +157,16 @@
     }
 
     //Disposing the component
-    async ValueTask DisposeAsync()
+    public void Dispose()
     {
-
         NavManager.LocationChanged -= HandleLocationChanged;
-        await this.DisposeAsync();
-
+        // await this.DisposeAsync();
+        //return ValueTask.CompletedTask;
     }
 
     //Initiate the order track --soon to be in load orders
     void TrackOrder()
     {
-
 
         order.IsTracking = true;
         // NavManager.NavigateTo($"/orderdetails?id={@order.Id}", true);
@@ -169,9 +177,9 @@
     //Cancelling --soon to be in load orders
     async Task CancelOrder()
     {
-        order.IsTracking = false;
-        await DisposeAsync();
-        persistingSubscription.Dispose();
+        order.IsConfirmed = false;
+         Dispose();
+       
     }
 
     //Completing the order on certain --loaders class 
@@ -185,12 +193,12 @@
 
     }
     //Persisting the order 
-    Task PersistOrder()
-    {
-        ApplicationState.PersistAsJson("fetorder", order);
+    //Task PersistOrder()
+    //{
+    //    ApplicationState.PersistAsJson("fetorder", order);
 
-        return Task.CompletedTask;
-    }
+    //    return Task.CompletedTask;
+    //}
 
     //Confirming the order placement--soon to be in ordershelper by all means
     async Task ConfirmOrder()
@@ -207,7 +215,9 @@
             libOrder.DateCreated =  DateTime.Now;
             libOrder.ServiceId = order.ServiceProperty.Id;
             order.IsConfirmed = true;
-            await _orderEndPoint.PostOrder(libOrder);
+            var tasks = (OrderTasksComponent)orderTasksComponent.Instance;//cast the dynamic component...finders cross x
+            this.todoList.AddRange(tasks.TodoDisplayList);
+            await _orderEndPoint.PostOrder(libOrder,tasks.OrderTodoListProperty);
            
         }
         catch (Exception ex)

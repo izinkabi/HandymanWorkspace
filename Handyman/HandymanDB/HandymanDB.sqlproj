@@ -71,6 +71,7 @@
     <Folder Include="Stored Procedures\Customer\Order" />
     <Folder Include="Stored Procedures\Service\Category" />
     <Folder Include="Stored Procedures\ServiceDelivery\Request\Order" />
+    <Folder Include="Stored Procedures\Customer\Todo" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\ScriptsIgnoredOnImport.sql" />
@@ -80,8 +81,6 @@
     <Build Include="Tables\Order.sql" />
     <Build Include="Tables\ProviderService.sql" />
     <Build Include="Tables\Request.sql" />
-    <Build Include="Stored Procedures\Customer\spConsumerInsert.sql" />
-    <Build Include="Stored Procedures\Customer\spConsumerLookUpById.sql" />
     <Build Include="Stored Procedures\Service\spServicesLookUp.sql" />
     <Build Include="Stored Procedures\Service\spServiceLookUpByCategoryId.sql" />
     <Build Include="Stored Procedures\Service\spServiceInsert.sql" />
@@ -112,7 +111,17 @@
     <Build Include="Stored Procedures\ServiceDelivery\Request\Order\spOrderLookUpById.sql" />
     <Build Include="Stored Procedures\ServiceDelivery\Request\spRequestDelete.sql" />
     <Build Include="Stored Procedures\Customer\Order\spOrderDelete.sql" />
+<<<<<<< HEAD
     <Build Include="Schemas\Delivery.sql" />
     <Build Include="Stored Procedures\Service\spServiceCategoryLookUp.sql" />
+=======
+    <Build Include="Tables\ToDo.sql" />
+    <Build Include="Stored Procedures\Customer\Todo\spTodoDelete.sql" />
+    <Build Include="Stored Procedures\Customer\Todo\spTodoInsert.sql" />
+    <Build Include="Stored Procedures\Customer\Todo\spTodoItemsLookUpByOrderId.sql" />
+    <Build Include="Stored Procedures\Customer\Todo\spTodoUpDate.sql" />
+    <Build Include="Stored Procedures\Customer\Order\spNewOrderLookUp.sql" />
+    <Build Include="Stored Procedures\Customer\Todo\spTodoItemLookUp.sql" />
+>>>>>>> 8a637349fe86e7181ba08240be93b45bcf464d51
   </ItemGroup>
 </Project>

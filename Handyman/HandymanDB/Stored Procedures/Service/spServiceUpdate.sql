@@ -8,6 +8,6 @@ AS
 BEGIN
 Set nocount on
 	UPDATE [Service].[Service] 
-	 SET Name=@Name, ImageURL=@ImageUrl, Description=@Description
+	 SET Name=@Name, ImageUrl=@ImageUrl, Description=@Description
 	WHERE Id = @ServiceID AND CategoryID = @CategoryID
 END

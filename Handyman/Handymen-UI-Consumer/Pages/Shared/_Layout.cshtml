@@ -144,7 +144,7 @@
                     </div>
                 </div>
             }else 
-                {
+            {
                      var orders = await _orderHelper.LoadUserOrders();
                    
                 <div class="offcanvas-body" heightoverflow-y:scroll>
@@ -162,13 +162,15 @@
 
                      }
 
-                @foreach (Order order in orders)
+                @foreach (var order in @orders)
                 {
-                    @if (order.IsAccepted==0)
+                            order.IsOnNavDisplay = true;
+                    if (@order.IsAccepted==0)
                     {
-                        <div class="alert alert-warning alert-dismissible fade show" role="alert" id="@order.Id">
+                       
+                       <div class="alert alert-warning alert-dismissible fade show" role="alert" id="@order.Id">
                                 <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(order.Id)" aria-label="Close"></button>
-                            <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@order" />
+                            <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@order" >
                             <div class="row justify-content-center">
                                 <a href="/OrderDetails?Id=@{@order.Id}"  class="btn btn-info">View</a>
                             </div>
@@ -177,7 +179,7 @@
                     {
                          <div class="alert alert-success alert-dismissible fade show" role="alert" id="@order.Id">
                                 <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(order.Id)" aria-label="Close"></button>
-                            <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@order" />
+                            <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@order" >
                            @* <div class="row justify-content-center">
                                 <a href="/OrderDetails?Id=@{@order.Id}"  class="btn btn-info">View</a>
                             </div>*@
@@ -196,14 +198,14 @@
 
    </div>
     <!--end right menu-->
-    <header class="py-3 mb-4 boarder-bottom">
+ @*   <header class="py-3 mb-4 boarder-bottom">
     <div class="container d-flex flex-wrap justify-content-center">
   
       <form class="col-12 col-lg-auto mb-3 mb-lg-0" role="search">
         <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
       </form>
     </div>
-  </header>
+  </header>*@
 
     <!--End NavBar-->
 

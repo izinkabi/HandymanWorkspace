@@ -1,5 +1,4 @@
 ﻿@page "/requestcomponent"
-
 @using HandymanProviderLibrary.Api.Request
 @using HandymanProviderLibrary.Models
 @using Handyman_UI_Provider.Models
@@ -10,76 +9,57 @@
 {
 
     <div class="card text-center">
-        <div class="card-header">
-            <!--Status -->
-            @if (!(@IsAccepted.Equals(0) && !(@RequestStage.Contains("Started")) && (@RequestStage.Contains("Finished"))))
-                {
-
-                    <div  class="form-check form-check-inline">
-                        <input  class="form-check-input" @onclick="StartRequest" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                        <label class="form-check-label" for="inlineRadio2">@RequestStage</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3" disabled>
-                    <label class="form-check-label" for="inlineRadio3">@RequestStage</label>
-                    </div>
-                }
-                 @if (@RequestStage.Contains("Started"))
-                {
-
-                   @* <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" disabled>
-                        <label class="form-check-label" for="inlineRadio1">@RequestStage</label>
-                    </div>*@
-                    @*<div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" disabled>
-                        <label class="form-check-label" for="inlineRadio2">@RequestStage</label>
-                    </div>*@
-                    <div @onclick="FinishRequest" class="form-check form-check-inline">
-                        <input  class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="@isStarted">
-                    <label class="form-check-label" for="inlineRadio3">Finish</label>
-                    </div>
-                }
-                @if (@RequestStage.Contains("Finished"))
-                {
-                    @*<div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1" disabled>
-                        <label class="form-check-label" for="inlineRadio1">Accepted</label>
-                    </div>*@
-                   @* <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="2" disabled>
-                        <label class="form-check-label" for="inlineRadio2">@RequestStage</label>
-                    </div>*@
-                    <div class="form-check form-check-inline">
-                    <input  class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="3" disabled >
-                        <label class="form-check-label" for="inlineRadio3">@RequestStage</label>
-                    </div>
-                }
-            
-            <!--End Status-->
-        </div>
         <div class="card-body">
             <h5 class="card-title">Service Name</h5>
             <p class="card-text"><img src="./Images/@(ImageUrl)" class="img-thumbnail active" width="200"/></p>
            @if(@IsAccepted.Equals(0))
            {
-            <a @onclick="()=> AcceptRequest()" class="btn btn-primary">Accept</a>
+                <a @onclick="()=> AcceptRequest()" class="btn btn-primary">Accept</a>
            }        
         </div>
         <div class="card-footer text-muted">
             @OrderDate
         </div>
+        <div class="accordion accordion-flush" id="accordionExample">
+            @foreach (var item in orderTodoList)
+            {
+                @if (!IsAccepted.Equals(0))//order is just started
+                {
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse@(item.Id)" aria-expanded="true" aria-controls="collapseOne">
+                                @item.ItemName
+                            </button>
+                        </h2>
+                        <div id="collapse@(item.Id)" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                 @item.Description
+                            </div>
+
+                            <a href="todocomponent?Id=@(item.Id)" class="btn-info">
+                                View 
+                            </a>
+                           
+                        </div>
+                    </div>
+                }
+            }
+        </div>
     </div>
+   
 }else{
-    <div class="call-out"> Selected Request is no longer available</div>
+    <div class="call-out">Selected Request is no longer available</div>
 }
+   
 
 @code {
-    private List<OrderModel>? orders;
-    private RequestModel? newRequest;
+
+    private List<OrderModel>? orders = new()!;
+    private RequestModel? newRequest = new()!;
     string? ErrorMsg;
     bool isStarted;
     bool isFinished;
+    List<TodoModel>? orderTodoList = new()!;
     RequestDisplayModel? request = new()!;
 
     private string RequestStage = "New";
@@ -99,10 +79,6 @@
     [SupplyParameterFromQuery(Name = "img")]
     public string? ImageUrl { get; set; }
 
-    //[Parameter]
-    //[SupplyParameterFromQuery(Name = "sn")]
-    //public int ServiceName { get; set; }
-
     [Parameter]
     [SupplyParameterFromQuery(Name = "ia")]
     public int IsAccepted { get; set; }
@@ -111,14 +87,16 @@
     [SupplyParameterFromQuery(Name = "ord")]
     public string? OrderDate { get; set; }
 
-    protected async Task OnInitialisedAsync()
+    protected override async Task OnInitializedAsync()
     {
+        orderTodoList = new()!;
         orders = await _requestEndPoint.GetAllOrdersByService(ServiceId);
-        isStarted = true;
+        orderTodoList = await _requestEndPoint.GetOrderTodoList(OrderId.Value);
+        
     }
 
     //Create a new request
-    public async Task AcceptRequest()
+    async Task AcceptRequest()
     {
         newRequest = new();
         var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
@@ -142,41 +120,26 @@
 
 
     //This method has the mechanism for starting the request
-    public void StartRequest()
+    void StartRequest()
     {
        
             RequestStage = "Started";            
-            //request.Stage = "started";
-            //isStarted = true;
-            //IsAccepted = 1;
-            //InvokeAsync(StateHasChanged);
-       
+            
     }
 
     //This method encapsulates the mechanism for processing the requesst
-    public async Task ProcessRequest()
+    async Task ProcessRequest()
     {
 
     }
 
     //Completing the request method
-    public void FinishRequest()
+    void FinishRequest()
     {
         RequestStage = "Finished";
-        //isFinished = true;
-        //IsAccepted = 1;
-        //InvokeAsync(StateHasChanged);
+        
     }
 
-    //public async Task<RequestDisplayModel> GetRequest()
-    //{
-    //    try
-    //    {
     
-    //    }catch(Exception ex)
-    //    {
-    //        ErrorMsg = ex.Message;
-    //    }
-    //}
 
 }

@@ -1,5 +1,6 @@
 ﻿using HandymanUILibrary.API;
-using HandymanUILibrary.API.Consumer;
+using HandymanUILibrary.API.Consumer.Order;
+using HandymanUILibrary.API.Consumer.Todo;
 using Handymen_UI_Consumer.Areas.Identity.Data;
 using Handymen_UI_Consumer.Data;
 using Handymen_UI_Consumer.Models;
@@ -14,9 +15,11 @@ namespace Handymen_UI_Consumer.Helpers
     {
        
         AuthenticationStateProvider? _authenticationStateProvider;
+        ITodoEndPoint _todoEndPoint;
         IServiceEndPoint _serviceEndPoint;
         IOrderEndPoint? _orderEndpoint;
         private List<Service>? serviceDisplayList;
+        private List<TodoModel> orderTodoList;
         
   
         private Order? order;
@@ -26,17 +29,54 @@ namespace Handymen_UI_Consumer.Helpers
         string? ErrorMsg;
         private readonly Handymen_UI_ConsumerContext _context;
         public OrderHelper(Handymen_UI_ConsumerContext contex,
-            IOrderEndPoint orderEndPoint,IServiceEndPoint serviceEndPoint, AuthenticationStateProvider authenticationState)
+            IOrderEndPoint orderEndPoint, ITodoEndPoint todoEndPoint,IServiceEndPoint serviceEndPoint,
+            AuthenticationStateProvider authenticationState)
         {
             _context = contex; 
             _orderEndpoint = orderEndPoint; 
             _serviceEndPoint = serviceEndPoint;
             _authenticationStateProvider = authenticationState;
-           
+           _todoEndPoint = todoEndPoint;    
             
         }
 
+        //Get the order's todo-list
+        public async Task<List<TodoModel>> GetOrderTodoList(int id)
+        {
 
+            orderTodoList = new()!;
+            var dotoList = new List<HandymanUILibrary.Models.TodoModel>()!;
+            try
+            {
+                dotoList = await _todoEndPoint.GetTodoListByOrderId(id);
+                if(dotoList.Count > 0)
+                {
+                    foreach (var item in dotoList)
+                    {
+                        
+                            var todoItem = new TodoModel();
+                            todoItem.Id = item.Id;
+                            todoItem.OrderId = item.OrderId;
+                            todoItem.ItemName = item.ItemName;
+                            todoItem.Status = item.Status;
+                            todoItem.Description = item.Description;
+                            todoItem.StartDate = item.StartDate;
+                            todoItem.EndDate = item.EndDate;
+                            orderTodoList.Add(todoItem);
+                        
+
+                    }
+                    return orderTodoList;
+                }
+               
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return orderTodoList;
+        }
+
+        //Get the order the order by its id
         public async Task<Order> GetOrderById(int id)
         {
             if(ordersDisplayList == null)
@@ -54,6 +94,7 @@ namespace Handymen_UI_Consumer.Helpers
             return order;
         }
 
+        //Load all the orders that belong to the given user's id
         public async Task<List<Order>> LoadUserOrders()
         {
             ordersDisplayList = new();
