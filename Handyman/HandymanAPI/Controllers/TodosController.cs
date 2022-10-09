@@ -39,7 +39,7 @@ namespace HandymanAPI.Controllers
 
         // PUT: api/Todo/5
         [Route("api/UpdateTodo")]
-        public void UpdateTodo(TodoModel todoUpdate)
+        public void Put(TodoModel todoUpdate)
         {
             todoData = new TodoData();
             todoData.UpdateTodo(todoUpdate);

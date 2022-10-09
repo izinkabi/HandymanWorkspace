@@ -49,7 +49,8 @@
                 </div>
                 <a href="#" class="btn btn-primary">Close</a>
             </div>
-            }else if(IsStarted)
+        }
+        else if (todoItemDisplay.Status.Equals(1))
             {
             <div class="card-body-inline">
             
@@ -73,12 +74,7 @@
                     Finish
                 </label>
             </div>
-            <hr/>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-hammer" viewBox="0 0 16 16">
-                        <path d="M9.972 2.508a.5.5 0 0 0-.16-.556l-.178-.129a5.009 5.009 0 0 0-2.076-.783C6.215.862 4.504 1.229 2.84 3.133H1.786a.5.5 0 0 0-.354.147L.146 4.567a.5.5 0 0 0 0 .706l2.571 2.579a.5.5 0 0 0 .708 0l1.286-1.29a.5.5 0 0 0 .146-.353V5.57l8.387 8.873A.5.5 0 0 0 14 14.5l1.5-1.5a.5.5 0 0 0 .017-.689l-9.129-8.63c.747-.456 1.772-.839 3.112-.839a.5.5 0 0 0 .472-.334z" />
-                    </svg>
-                </button>
+            
                 </div>
             }else
             {
@@ -116,12 +112,22 @@
         }
        
         <div class="card-footer text-muted">
+             <strong>
                 @(
-                     DateTime.UtcNow - todoItemDisplay.StartDate
-                 ) 
+                    "Date Started : " + todoItemDisplay.StartDate
+                 )
+            </strong>
         </div>
     </div>
 
+}
+@if(!string.IsNullOrEmpty(ErrorMsg))
+{
+    <div class="alert-danger">
+        <strong>
+           There was an error with your request...
+        </strong>
+    </div>
 }
 
 @code {
@@ -129,7 +135,7 @@
     bool IsFinished;
     bool IsStarted;
     bool isStatusChanged;
-
+    string ErrorMsg;
     TodoModel? todoItemDisplay;
 
     [Parameter]
@@ -142,10 +148,21 @@
             todoItemDisplay = await _requestEndPoint.GetTodoItemById(Id.Value);
     }
 
-    void StartTodoItem()
+    async Task StartTodoItem()
     {
         IsStarted = true;
         isStatusChanged = true;
+        todoItemDisplay.StartDate = DateTime.Now;
+        todoItemDisplay.Status = 1;
+        try
+        {
+            await _requestEndPoint.UpdateTodoItem(todoItemDisplay);
+           
+        }catch(Exception ex)
+        {
+            ErrorMsg = ex.Message;
+        }
+        
     }
 
     void Holaa()
@@ -158,6 +175,7 @@
         if(isStatusChanged)
         {
             //warning of unsaved changes
+            NavManager.NavigateTo("requestcomponent", true);
         }
     }
 

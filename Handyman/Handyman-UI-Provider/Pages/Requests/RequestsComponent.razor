@@ -1,0 +1,138 @@
+﻿@page "/requestscomponent"
+@using HandymanProviderLibrary.Api.Request
+@using HandymanProviderLibrary.Models
+@using Handyman_UI_Provider.Models
+@using Handyman_UI_Provider.Models.Services
+
+@inject NavigationManager NavManager
+@inject AuthenticationStateProvider _authenticationStateProvider
+@inject IRequestEndPoint _requestEndPoint
+@inject IServiceEndpoint _serviceEndPoint
+
+<div class="bg-info p-2 text-dark bg-opacity-25">
+    <div class="list-group justify-content-center">
+
+        @if (@ownRequests != null)
+        {
+
+
+            foreach (var r in @ownRequests)
+            {
+                <a @onclick="() => DisplayRequestDetails(r)" class="list-group-item list-group-item-action" aria-current="true">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">@r.Service.Name</h5>
+                        <small>@r.DateAccepted.ToString("MM/dd/yyyy HH:mm")</small>
+                    </div>
+                    <p class="mb-1">@r.Service.Description</p>
+                    <small>@r.Stage</small>
+                </a>
+            }
+        }
+
+    </div>
+</div>
+@code {
+    private List<RequestDisplayModel>? ownRequests = new()!;
+    private string ErrorMsg;
+    private RequestDisplayModel? request;
+    private List<RequestDisplayModel>? requsts;
+    private List<RequestDisplayModel>? newRequests;
+    private List<DisplayServiceModel>? services = new()!;
+    private List<ProviderServiceModel>? providerServices;
+    private RequestDisplayModel? newRequest;
+ 
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadRequests();
+    }
+
+
+
+
+    private void DisplayRequestDetails(RequestDisplayModel btnRequest)
+    {
+        NavManager.NavigateTo(NavManager.GetUriWithQueryParameters("requestcomponent", new Dictionary<string, object>()
+            {
+                ["Id"] = btnRequest?.order?.Id,
+                ["sid"] = btnRequest?.order?.ServiceId,
+                ["img"] = btnRequest?.Service.ImageUrl,
+                ["ord"] = btnRequest?.order?.DateCreated.ToString("MM/dd/yyyy HH:mm"),
+                ["ia"] = btnRequest?.order?.IsAccepted
+            }), true);//not yet there
+    }
+
+
+    private async Task LoadRequests()
+    {
+        List<RequestModel>? libRequests;
+
+        try
+        {
+            var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
+            var UserId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+            libRequests = await _requestEndPoint.GetRequestsByProvider(UserId);
+            
+            if (libRequests != null)
+            {
+                await LoadServices();
+
+                foreach (var req in libRequests)
+                {
+                    var reqDisplay = new RequestDisplayModel();
+                    foreach (var servDisplay in services)
+                    {
+                        if (req.ServiceId == servDisplay.Id)
+                        {
+                            reqDisplay.Service = servDisplay;
+                            reqDisplay.DateAccepted = req.DateAccepted;
+                            reqDisplay.Id = req.Id;
+                            reqDisplay.Stage = req.Status;
+                            reqDisplay.order = new();
+                            reqDisplay.order.Id = req.OrderId;
+                            reqDisplay.order.DateCreated = req.DateAccepted;
+                            reqDisplay.order.IsAccepted = 1;
+
+                        }
+                    }
+                    ownRequests.Add(reqDisplay);
+                }
+            }
+            ErrorMsg = string.Empty;
+        }
+        catch (Exception ex)
+        {
+            ErrorMsg = ex.Message;
+        }
+    }
+
+
+    private async Task LoadServices()
+    {
+        services = new List<DisplayServiceModel>();
+        List<ServiceModel>? servicesData = new()!;
+        try
+        {
+            servicesData = await _serviceEndPoint.GetServices();
+        }
+        catch (Exception ex)
+        {
+            ErrorMsg = ex.Message;
+        }
+
+        foreach (var service in servicesData)
+        {
+            //populating a service to UI model
+            var s = new DisplayServiceModel();
+            s.Name = service.Name;
+            s.Description = service.Description;
+            s.ImageUrl = service.ImageUrl;
+            s.Id = service.Id;
+            s.CategoryName = service.Name;
+            s.CategoryDescription = service.Description;
+            s.CategoryType = service.Type;
+            services.Add(s);
+        }
+
+    }
+}

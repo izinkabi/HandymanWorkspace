@@ -72,7 +72,7 @@ namespace HandymanDataLibray.DataAccess
             SQLDataAccess sql = new SQLDataAccess();
 
 
-            sql.SaveData("Customer.spTodoUpdate", new { StartDate = todoUpdate.StartDate, EndDate = todoUpdate.EndDate }, "HandymanDB");
+            sql.SaveData("Customer.spTodoUpdate", new { OrderId  = todoUpdate.OrderId, StartDate = DateTime.Now }, "HandymanDB");
 
         }
 
