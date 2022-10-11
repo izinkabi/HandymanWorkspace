@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "HandymanDB", "HandymanDB\HandymanDB.sqlproj", "{76BFD8A1-C899-48A8-8995-DA8707E1AAD1}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HandymanAPI", "HandymanAPI\HandymanAPI.csproj", "{B2AA8EF6-0509-4C98-906A-428B50159EF7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HandymanDataLibrary", "HandymanDataLibray\HandymanDataLibrary.csproj", "{84D8A002-571A-4CEB-BC33-A566BD410195}"
@@ -31,7 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Handyman-UI-Provider", "Han
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Handyman_Api", "Handyman_Api\Handyman_Api.csproj", "{821B37BC-443E-4193-8DDC-590B12DED6F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Handyman_DataLibrary", "Handyman_DataLibrary\Handyman_DataLibrary.csproj", "{E6246166-9B74-428C-8543-22C2182FECB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Handyman_DataLibrary", "Handyman_DataLibrary\Handyman_DataLibrary.csproj", "{E6246166-9B74-428C-8543-22C2182FECB7}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Handyman_DB", "Handyman_DB\Handyman_DB.sqlproj", "{F35AD620-A691-4D10-ABE4-EEA50B25FDC4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,12 +39,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{76BFD8A1-C899-48A8-8995-DA8707E1AAD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{76BFD8A1-C899-48A8-8995-DA8707E1AAD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{76BFD8A1-C899-48A8-8995-DA8707E1AAD1}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{76BFD8A1-C899-48A8-8995-DA8707E1AAD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{76BFD8A1-C899-48A8-8995-DA8707E1AAD1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{76BFD8A1-C899-48A8-8995-DA8707E1AAD1}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{B2AA8EF6-0509-4C98-906A-428B50159EF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B2AA8EF6-0509-4C98-906A-428B50159EF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2AA8EF6-0509-4C98-906A-428B50159EF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -77,12 +71,17 @@ Global
 		{E6246166-9B74-428C-8543-22C2182FECB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6246166-9B74-428C-8543-22C2182FECB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6246166-9B74-428C-8543-22C2182FECB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F35AD620-A691-4D10-ABE4-EEA50B25FDC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F35AD620-A691-4D10-ABE4-EEA50B25FDC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F35AD620-A691-4D10-ABE4-EEA50B25FDC4}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F35AD620-A691-4D10-ABE4-EEA50B25FDC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F35AD620-A691-4D10-ABE4-EEA50B25FDC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F35AD620-A691-4D10-ABE4-EEA50B25FDC4}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{76BFD8A1-C899-48A8-8995-DA8707E1AAD1} = {4128607C-2F4E-4140-8E9B-F64CCB476A47}
 		{B2AA8EF6-0509-4C98-906A-428B50159EF7} = {25A2DA20-751E-47FD-A8A5-566D79BCC86B}
 		{84D8A002-571A-4CEB-BC33-A566BD410195} = {25A2DA20-751E-47FD-A8A5-566D79BCC86B}
 		{AECFF5A7-61EC-46F3-9826-0AE9B43E12FB} = {B7BD0881-3404-433A-9CA7-56DDB5C5B8E4}
@@ -94,6 +93,7 @@ Global
 		{056D1E4D-49C3-4F48-B6A0-83E572F38A76} = {602873C1-E288-4E80-82CF-4476F0DA5097}
 		{821B37BC-443E-4193-8DDC-590B12DED6F5} = {25A2DA20-751E-47FD-A8A5-566D79BCC86B}
 		{E6246166-9B74-428C-8543-22C2182FECB7} = {25A2DA20-751E-47FD-A8A5-566D79BCC86B}
+		{F35AD620-A691-4D10-ABE4-EEA50B25FDC4} = {4128607C-2F4E-4140-8E9B-F64CCB476A47}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35

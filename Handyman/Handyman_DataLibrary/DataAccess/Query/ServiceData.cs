@@ -21,7 +21,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
         {
            
 
-            var output = _dataAccess.LoadData<ServiceModel, dynamic>("Service.spServiceCategoryLookUp", new { }, "HandymanDB");
+            var output = _dataAccess.LoadData<ServiceModel, dynamic>("Service.spServiceLookUp_GroupByCategory", new { }, "HandymanDB");
 
             return output;
 
