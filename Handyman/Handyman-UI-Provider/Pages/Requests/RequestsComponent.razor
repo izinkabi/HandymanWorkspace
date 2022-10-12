@@ -9,13 +9,14 @@
 @inject IRequestEndPoint _requestEndPoint
 @inject IServiceEndpoint _serviceEndPoint
 
+
+<h3 class="text-center">Accepted Requests</h3>
+<hr/>
 <div class="bg-info p-2 text-dark bg-opacity-25">
     <div class="list-group justify-content-center">
 
         @if (@ownRequests != null)
         {
-
-
             foreach (var r in @ownRequests)
             {
                 <a @onclick="() => DisplayRequestDetails(r)" class="list-group-item list-group-item-action" aria-current="true">

@@ -8,6 +8,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pages\Chats\**" />
+    <Compile Remove="Pages\Directions\**" />
+    <Compile Remove="Pages\Home\**" />
+    <Content Remove="Pages\Chats\**" />
+    <Content Remove="Pages\Directions\**" />
+    <Content Remove="Pages\Home\**" />
+    <EmbeddedResource Remove="Pages\Chats\**" />
+    <EmbeddedResource Remove="Pages\Directions\**" />
+    <EmbeddedResource Remove="Pages\Home\**" />
+    <None Remove="Pages\Chats\**" />
+    <None Remove="Pages\Directions\**" />
+    <None Remove="Pages\Home\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="wwwroot\Images\ac.jpg" />
     <Content Remove="wwwroot\Images\cleaning.jpg" />
     <Content Remove="wwwroot\Images\oven.jpg" />
@@ -42,12 +57,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.8" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Pages\Chats\" />
-    <Folder Include="Pages\Home\" />
-    <Folder Include="Pages\Directions\" />
   </ItemGroup>
 
   <ItemGroup>

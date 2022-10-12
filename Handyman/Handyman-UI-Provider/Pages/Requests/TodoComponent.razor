@@ -49,6 +49,13 @@
                 </div>
                 <a href="#" class="btn btn-primary">Close</a>
             </div>
+            <div class="card-footer text-muted">
+                <strong>
+                    @(
+                        "Date Finished : " + todoItemDisplay.StartDate
+                        )
+                </strong>
+            </div>
         }
         else if (todoItemDisplay.Status.Equals(1))
             {
@@ -76,6 +83,13 @@
             </div>
             
                 </div>
+            <div class="card-footer text-muted">
+                <strong>
+                    @(
+                        "Date Started : " + todoItemDisplay.StartDate
+                        )
+                </strong>
+            </div>
             }else
             {
             <div class="card-body-inline">
@@ -111,13 +125,7 @@
 
         }
        
-        <div class="card-footer text-muted">
-             <strong>
-                @(
-                    "Date Started : " + todoItemDisplay.StartDate
-                 )
-            </strong>
-        </div>
+        
     </div>
 
 }
