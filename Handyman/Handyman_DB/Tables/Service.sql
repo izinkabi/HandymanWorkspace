@@ -5,5 +5,7 @@
 	[serv_img] [varchar](max) NOT NULL,
 	[serv_categoryid] [int] NOT NULL,
 	[serv_datecreated] [datetime] NOT NULL,
-	[serv_status] [nchar](20) NOT NULL,
+	[serv_status] [nchar](20) NOT NULL, 
+    CONSTRAINT [FK_service_category] FOREIGN KEY ([serv_categoryid]) REFERENCES [Service].[category]([cat_id]), 
+    CONSTRAINT [PK_service] PRIMARY KEY ([serv_id]) 
 )

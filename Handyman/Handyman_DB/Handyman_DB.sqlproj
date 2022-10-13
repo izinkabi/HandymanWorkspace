@@ -74,12 +74,21 @@
     <Build Include="Tables\rating.sql" />
     <None Include="Post Deployment Scripts\CreateandPopulateCategory.PostDeployment1.sql" />
     <Build Include="Stored Procedures\spServiceLookUp_GroupByCategory.sql" />
+    <Build Include="Schemas\Delivery.sql" />
+    <Build Include="Tables\address.sql" />
+    <Build Include="Tables\provider.sql" />
+    <Build Include="Tables\employees.sql" />
+    <Build Include="Tables\ratings.sql" />
+    <Build Include="Tables\invoice.sql" />
+    <Build Include="Tables\tasks.sql" />
+    <Build Include="Tables\business.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Script\DevNathi_Handyman_DB.publish.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Post Deployment Scripts\CreatANDpopulateServiceScript.PostDeployment.sql" />
+    <None Include="Post Deployment Scripts\CreateAndPopolateRate.PostDeployment1.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Handyman_DB.refactorlog" />
