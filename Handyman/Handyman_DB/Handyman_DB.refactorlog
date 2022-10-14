@@ -133,4 +133,32 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="emp_userid" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="02bf3120-b930-4a11-a190-56b53c35e7a8" ChangeDateTime="10/14/2022 20:21:17">
+    <Property Name="ElementName" Value="[Delivery].[registation].[_reg_taxnumber]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Delivery].[registation]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="reg_taxnumber" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="20f155c4-4007-4d7f-aa89-91cdd907408d" ChangeDateTime="10/14/2022 21:17:32">
+    <Property Name="ElementName" Value="[Request].[request].[req_employeeid]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Request].[request]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="req_employeesid" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="9562a8c4-af27-4800-8620-2fd486649f61" ChangeDateTime="10/14/2022 21:18:48">
+    <Property Name="ElementName" Value="[Request].[request].[req_employeesid]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Request].[request]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="req_employeeid" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="8dd1f3d6-325e-4701-9520-36ce8d57a0a9" ChangeDateTime="10/14/2022 21:24:32">
+    <Property Name="ElementName" Value="[Request].[order].[order_userid]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Request].[order]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ord_userid" />
+  </Operation>
 </Operations>
