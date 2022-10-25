@@ -7,25 +7,28 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <base href="~/" />
-    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
-    <link href="css/site.css" rel="stylesheet" />
-    <link href="Handyman-SP-UI.styles.css" rel="stylesheet" />
-    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
+
+      <!--CSS Links-->
+    <link href="~/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="~/assets/fontcss/all.css" rel="stylesheet">
+    
+    <!-- Custom styles for this template -->
+    <link href="~/assets/dist/css/dashboard.css" rel="stylesheet">
+    <link href="~/assets/dist/css/sidebars.css" rel="stylesheet">
+    <link href="~/assets/dist/css/headers.css" rel="stylesheet">
+    <link href="~/assets/dist/css/offcanvas.css" rel="stylesheet">
 </head>
 <body>
     @RenderBody()
 
-    <div id="blazor-error-ui">
-        <environment include="Staging,Production">
-            An error has occurred. This application may no longer respond until reloaded.
-        </environment>
-        <environment include="Development">
-            An unhandled exception has occurred. See browser dev tools for details.
-        </environment>
-        <a href="" class="reload">Reload</a>
-        <a class="dismiss">🗙</a>
-    </div>
+
+    <!--JS Scripts-->
+    <script src="~/assets/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/dist/js/sidebars.js"></script>
+      <script src="~/assets/dist/js/feather.min.js"></script>
+      <script src="~/assets/dist/js/Chart.min.js"></script>
+      <script src="~/assets/dist/js/dashboard.js"></script>
+      <script src="~/assets/dist/js/offcanvas.js"></script>
 
     <script src="_framework/blazor.server.js"></script>
 </body>
