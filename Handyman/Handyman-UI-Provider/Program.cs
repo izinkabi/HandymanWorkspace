@@ -21,6 +21,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 // Add services to the container.
 builder.Services.AddSignalR();
 builder.Services.AddRazorPages();
+
 builder.Services.AddServerSideBlazor();
 
 //Dependency Injection

@@ -61,6 +61,10 @@
     <Folder Include="Schemas" />
     <Folder Include="Post Deployment Scripts" />
     <Folder Include="Pre Deployment Scripts" />
+    <Folder Include="Stored Procedures\Service" />
+    <Folder Include="Stored Procedures\Order" />
+    <Folder Include="Stored Procedures\Request" />
+    <Folder Include="Stored Procedures\Task" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Schemas\Request.sql" />
@@ -70,26 +74,35 @@
     <Build Include="Tables\request.sql" />
     <Build Include="Tables\order.sql" />
     <Build Include="Tables\rating.sql" />
-    <None Include="Post Deployment Scripts\CreateandPopulateCategory.PostDeployment1.sql" />
-    <Build Include="Stored Procedures\spServiceLookUp_GroupByCategory.sql" />
+    <None Include="Post Deployment Scripts\CreateANDPopulateCategory.PostDeployment.sql" />
     <Build Include="Schemas\Delivery.sql" />
     <Build Include="Tables\address.sql" />
     <Build Include="Tables\provider.sql" />
     <Build Include="Tables\employees.sql" />
     <Build Include="Tables\ratings.sql" />
     <Build Include="Tables\invoice.sql" />
-    <Build Include="Tables\tasks.sql" />
+    <Build Include="Tables\task.sql" />
     <Build Include="Tables\business.sql" />
     <Build Include="Tables\registation.sql" />
+    <Build Include="Stored Procedures\Service\spUpdateService.sql" />
+    <Build Include="Stored Procedures\Service\spServiceLookUp_GroupByCategory.sql" />
+    <Build Include="Stored Procedures\Order\spOrderInsert.sql" />
+    <Build Include="Stored Procedures\Order\spOrderLookUp_ByConsumerId_OrderByDateCreated.sql" />
+    <Build Include="Tables\order_task.sql" />
+    <Build Include="Stored Procedures\Task\spTaskInsert.sql" />
+    <Build Include="Stored Procedures\Task\spOrder_Task_Insert.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Script\DevNathi_Handyman_DB.publish.publish.xml" />
     <None Include="Handyman_DB.publish.xml" />
-    <None Include="Zee_Handyman_DB.publish.xml" />
+    <None Include="Publish Script\Zee_Handyman_DB.publish.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PostDeploy Include="Post Deployment Scripts\CreatANDpopulateServiceScript.PostDeployment.sql" />
-    <None Include="Post Deployment Scripts\CreateAndPopolateRate.PostDeployment1.sql" />
+    <PostDeploy Include="Post Deployment Scripts\CreatANDPopulateServiceScript.PostDeployment.sql" />
+    <None Include="Post Deployment Scripts\CreateANDPopolateRate.PostDeployment1.sql" />
+    <None Include="Post Deployment Scripts\CreateANDPopulateOrder.PostDeployment.sql" />
+    <None Include="Post Deployment Scripts\CreateANDPopulateTask.PostDeployment.sql" />
+    <None Include="Post Deployment Scripts\CreateANDPopulateOrder_Task.PostDeployment.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Handyman_DB.refactorlog" />
