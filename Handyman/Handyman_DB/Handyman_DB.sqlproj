@@ -89,7 +89,9 @@
     <Build Include="Stored Procedures\Order\spOrderLookUp_ByConsumerId_OrderByDateCreated.sql" />
     <Build Include="Tables\order_task.sql" />
     <Build Include="Stored Procedures\Task\spTaskInsert.sql" />
-    <Build Include="Stored Procedures\Task\spOrder_Task_Insert.sql" />
+    <Build Include="Stored Procedures\Task\spTaskUpdate.sql" />
+    <Build Include="Stored Procedures\Order\spOrderUpdate.sql" />
+    <Build Include="Stored Procedures\Order\spOrder_Task_Insert.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Script\DevNathi_Handyman_DB.publish.publish.xml" />
