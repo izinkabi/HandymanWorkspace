@@ -17,13 +17,13 @@ namespace Handyman_DataLibrary.DataAccess.Query
         }
 
         //Get the consumer's orders and their respective tasks
-        public List<TaskModel> GetConsumerOrderAndTasks(string consumerID)
+        public IEnumerable<OrderTaskModel> GetConsumerOrderAndTasks(string consumerID)
         {
-            List<TaskModel> orders = new()!;
+            List<OrderTaskModel> orders = new()!;
             try
             {
-                orders = _dataAccess.LoadData<TaskModel, dynamic>("Request.spOrderLookUp_ByConsumerId_OrderByDateCreated",
-                         new { consumerID = consumerID }, "HandymanDB");
+                orders = _dataAccess.LoadData<OrderTaskModel, dynamic>("Request.spOrderLookUp_ByConsumerId_OrderByDateCreated",
+                         new { consumerID = consumerID }, "Handyman_DB");
             }
             catch (Exception ex)
             {
@@ -41,7 +41,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
                 var DateCreated = DateTime.Now;
                 //Save order
                 _dataAccess.StartTransaction("Handyman_DB");
-                _dataAccess.SaveDataTransaction("Request.spOrderInsert", new
+                int orderId = _dataAccess.LoadDataTransaction<int,dynamic>("Request.spOrderInsert", new
                 {
                     ConsumerID = order.ConsumerID,
                     DateCreated = order.ord_datecreated,
@@ -49,24 +49,24 @@ namespace Handyman_DataLibrary.DataAccess.Query
                     DueDate = order.ord_duedate,
                     ServiceId = order.ord_service_id
                     //the ordered service because sql wont take a model inside a model
-                });
-                //Get Id from the order model
+                }).First();
+                //--Get Id from the order model
 
-                var orderId = _dataAccess.LoadDataTransaction<int, dynamic>("Request.spNewOrderLookUp", new
-                {
-                    ConsumerID = order.ConsumerID,
-                    DateCreated = DateCreated
+                //var orderId = _dataAccess.LoadDataTransaction<int, dynamic>("Request.spNewOrderLookUp", new
+                //{
+                //    ConsumerID = order.ConsumerID,
+                //    DateCreated = DateCreated
 
-                }).FirstOrDefault();
+                //}).FirstOrDefault();
 
                 /***************Saving the task****************/
 
                 foreach (var item in tasks)
                 {
                     //Save the task item
-                    _taskData.InsertTask(item);
+                    
                     //get a new task id
-                   int taskId = _taskData.GetNewTask(orderId);
+                  int taskId =  _taskData.InsertTask(item);
                     //save the order_task 
                     _dataAccess.SaveDataTransaction("Request.spOrder_Task_Insert",
                         new
@@ -101,6 +101,17 @@ namespace Handyman_DataLibrary.DataAccess.Query
                     },
                     "HandymanDB");
 
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public void DeleteOrderAndTasks(string consumerId, int orderId)
+        {
+            try
+            {
+                _dataAccess.SaveData("spDeleteOrderTask", new { consumerId = consumerId, OrderId = orderId }, "Handyman_DB");
             }
             catch (Exception ex)
             {

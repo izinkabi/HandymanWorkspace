@@ -1,44 +1,48 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Handyman_DataLibrary.DataAccess.Interfaces;
+using Handyman_DataLibrary.Models;
+using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Handyman_Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/orders")]
     [ApiController]
     public class OrdersController : ControllerBase
     {
+        IOrderData _orderData;
+        IEnumerable<OrderTaskModel>? orders;
+        public OrdersController(IOrderData orderData)
+        {
+            _orderData = orderData;
+        }
         // GET: api/<OrdersController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<OrderTaskModel> Get(string consumerId)
         {
-            return new string[] { "value1", "value2" };
-        }
+            orders = _orderData.GetConsumerOrderAndTasks(consumerId);
+            return orders;
 
-        // GET api/<OrdersController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
         }
 
         // POST api/<OrdersController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] OrderModel value)
         {
+            _orderData.SaveOrder(value, (List<TaskModel>)value.Tasks);
         }
 
         // PUT api/<OrdersController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(OrderModel orderUpdate)
         {
+            _orderData.UpdateOrder(orderUpdate);
         }
 
         // DELETE api/<OrdersController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(string consumerId,int orderId)
         {
-
+            _orderData.DeleteOrderAndTasks(consumerId,orderId);
         }
     }
 }

@@ -20,4 +20,9 @@ BEGIN
     @Status,
     @ServiceId
     )
+    
+
+DECLARE @Id INT = SCOPE_IDENTITY();
+
+SELECT [ord_id] FROM [Request].[order] WHERE [ord_id] = @Id
 END

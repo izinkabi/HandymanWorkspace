@@ -4,8 +4,8 @@ namespace Handyman_DataLibrary.DataAccess.Interfaces
 {
     public interface IOrderTaskData
     {
-        void InsertTask(TaskModel task);
+        int InsertTask(TaskModel task);
         void UpdateTask(TaskModel taskUpdate);
-        int GetNewTask(int orderId);
+        //int GetNewTask(int orderId);
     }
 }

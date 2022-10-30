@@ -30,4 +30,7 @@ SET NOCOUNT ON
     @description,
     @serviceId
     )
+    DECLARE @Id INT = SCOPE_IDENTITY();
+
+    SELECT [task_id] FROM [Request].[task] WHERE [task_id] = @Id
 END

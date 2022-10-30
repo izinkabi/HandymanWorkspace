@@ -18,24 +18,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
             _dataAccess = dataAccess;
         }
 
-        public int GetNewTask(int orderId)
-        {
-            int id = 0;
-            try
-            {
-                id = _dataAccess.LoadDataTransaction<int, dynamic>("Request.spNewTaskLookUp", new
-                {
-                    OrderId = orderId,
-
-                }).FirstOrDefault();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-            return id;
-        }
-
+        //Update Task
         public void UpdateTask(TaskModel taskUpdate)
         {
             try
@@ -48,16 +31,20 @@ namespace Handyman_DataLibrary.DataAccess.Query
             }
         }
 
-        public void InsertTask(TaskModel task)
+        //Insert New Task
+        public int InsertTask(TaskModel task)
         {
+            int taskId = 0;
             try
             {
-                var result = _dataAccess.SaveData<TaskModel>("Request.spTaskInsert", task, "Handyman_DB");
+                 taskId = _dataAccess.SaveData<TaskModel>("Request.spTaskInsert", task, "Handyman_DB");
+                    return taskId;
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
+
     }
 }

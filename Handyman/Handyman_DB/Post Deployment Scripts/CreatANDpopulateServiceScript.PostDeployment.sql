@@ -13,22 +13,22 @@ USE [Handyman_DB]
 GO
 
 /****** Object:  Table [Service].[service]    Script Date: 2022/10/11 17:46:05 ******/
-IF EXISTS(SELECT 1 FROM sys.tables WHERE object_id = OBJECT_ID('[Service].[service]'))
-BEGIN;
-    DROP TABLE [Service].[service];
-END;
-GO
+--IF EXISTS(SELECT 1 FROM sys.tables WHERE object_id = OBJECT_ID('[Service].[service]'))
+--BEGIN;
+--    DROP TABLE [Service].[service];
+--END;
+--GO
 
-CREATE TABLE [Service].[service] (
-    [serv_id] [int] NOT NULL IDENTITY(1, 1),
-    [serv_name] VARCHAR(MAX) NULL,
-    [serv_img] VARCHAR(255) NULL,
-    [serv_categoryid] INTEGER NULL,
-    [serv_datecreated] VARCHAR(255) NULL,
-    [serv_status] VARCHAR(MAX) NULL,
-    PRIMARY KEY ([serv_id])
-);
-GO
+--CREATE TABLE [Service].[service] (
+--    [serv_id] [int] NOT NULL IDENTITY(1, 1),
+--    [serv_name] VARCHAR(MAX) NULL,
+--    [serv_img] VARCHAR(255) NULL,
+--    [serv_categoryid] INTEGER NULL,
+--    [serv_datecreated] VARCHAR(255) NULL,
+--    [serv_status] VARCHAR(MAX) NULL,
+--    PRIMARY KEY ([serv_id])
+--);
+--GO
 
 INSERT INTO [Service].[service] (serv_name,serv_img,serv_categoryid,serv_datecreated,serv_status)
 VALUES
