@@ -12,20 +12,20 @@ Post-Deployment Script Template
 USE [Handyman_DB]
 GO
 
-IF EXISTS(SELECT 1 FROM sys.tables WHERE object_id = OBJECT_ID('[Service].[rating]'))
-BEGIN;
-    DROP TABLE [Service].[rating];
-END;
-GO
+--IF EXISTS(SELECT 1 FROM sys.tables WHERE object_id = OBJECT_ID('[Service].[rating]'))
+--BEGIN;
+--    DROP TABLE [Service].[rating];
+--END;
+--GO
 
-CREATE TABLE [Service].[rating] (
-    [rate_id] INTEGER NOT NULL IDENTITY(1, 1),
-    [rate_comment] VARCHAR(MAX) NULL,
-    [rate_datecreated] VARCHAR(255) NULL,
-    [rate_scale] VARCHAR(MAX) NULL,
-    PRIMARY KEY ([rate_id])
-);
-GO
+--CREATE TABLE [Service].[rating] (
+--    [rate_id] INTEGER NOT NULL IDENTITY(1, 1),
+--    [rate_comment] VARCHAR(MAX) NULL,
+--    [rate_datecreated] VARCHAR(255) NULL,
+--    [rate_scale] VARCHAR(MAX) NULL,
+--    PRIMARY KEY ([rate_id])
+--);
+--GO
 
 INSERT INTO [Service].[rating] (rate_comment,rate_datecreated,rate_scale)
 VALUES

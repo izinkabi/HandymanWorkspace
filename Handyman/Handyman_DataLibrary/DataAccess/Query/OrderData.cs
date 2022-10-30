@@ -1,7 +1,6 @@
 ﻿using Handyman_DataLibrary.DataAccess.Interfaces;
 using Handyman_DataLibrary.Internal.DataAccess;
 using Handyman_DataLibrary.Models;
-using System;
 
 
 namespace Handyman_DataLibrary.DataAccess.Query
@@ -34,12 +33,12 @@ namespace Handyman_DataLibrary.DataAccess.Query
         }
 
 
-        public void SaveOrder(OrderModel order, List<TaskModel> tasks)
+        public void SaveOrder(OrderModel order)
         {
             try
             {
                 var DateCreated = DateTime.Now;
-                //Save order
+                /*Save order*/
                 _dataAccess.StartTransaction("Handyman_DB");
                 int orderId = _dataAccess.LoadDataTransaction<int,dynamic>("Request.spOrderInsert", new
                 {
@@ -48,20 +47,11 @@ namespace Handyman_DataLibrary.DataAccess.Query
                     Status = order.ord_status,
                     DueDate = order.ord_duedate,
                     ServiceId = order.ord_service_id
-                    //the ordered service because sql wont take a model inside a model
                 }).First();
-                //--Get Id from the order model
+               
+                /*Saving the task*/
 
-                //var orderId = _dataAccess.LoadDataTransaction<int, dynamic>("Request.spNewOrderLookUp", new
-                //{
-                //    ConsumerID = order.ConsumerID,
-                //    DateCreated = DateCreated
-
-                //}).FirstOrDefault();
-
-                /***************Saving the task****************/
-
-                foreach (var item in tasks)
+                foreach (var item in order.Tasks)
                 {
                     //Save the task item
                     
@@ -86,6 +76,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
             }
         }
        
+        //Update task
         public void UpdateOrder(OrderModel order)
         {
             try
@@ -107,6 +98,12 @@ namespace Handyman_DataLibrary.DataAccess.Query
                 throw new Exception(ex.Message);
             }
         }
+        /// <summary>
+        /// Delete order and related tasks go to _dataaccess for more
+        /// </summary>
+        /// <param name="consumerId"></param>
+        /// <param name="orderId"></param>
+        /// <exception cref="Exception"></exception>
         public void DeleteOrderAndTasks(string consumerId, int orderId)
         {
             try

@@ -19,16 +19,29 @@ namespace Handyman_Api.Controllers
         [HttpGet]
         public IEnumerable<OrderTaskModel> Get(string consumerId)
         {
-            orders = _orderData.GetConsumerOrderAndTasks(consumerId);
-            return orders;
+            try
+            {
+                orders = _orderData.GetConsumerOrderAndTasks(consumerId);
+                return orders;
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
 
         }
 
         // POST api/<OrdersController>
         [HttpPost]
-        public void Post([FromBody] OrderModel value)
+        public void Post([FromBody] OrderModel order)
         {
-            _orderData.SaveOrder(value, (List<TaskModel>)value.Tasks);
+            try
+            {
+                _orderData.SaveOrder(order);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         // PUT api/<OrdersController>/5

@@ -103,10 +103,11 @@
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Post Deployment Scripts\CreatANDPopulateServiceScript.PostDeployment.sql" />
-    <None Include="Post Deployment Scripts\CreateANDPopolateRate.PostDeployment1.sql" />
+    <None Include="Post Deployment Scripts\CreateANDPopolateRate.PostDeployment.sql" />
     <None Include="Post Deployment Scripts\PopulateCategory.PostDeployment.sql" />
     <None Include="Post Deployment Scripts\PopulateOrder.PostDeployment.sql" />
     <None Include="Post Deployment Scripts\PopulateOrderTask.PostDeployment.sql" />
+    <None Include="Post Deployment Scripts\PopulateTask.PostDeployment.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Handyman_DB.refactorlog" />

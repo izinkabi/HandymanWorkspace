@@ -1,12 +1,14 @@
 ﻿CREATE PROCEDURE [Request].[spOrderInsert]
+    @ConsumerID NVARCHAR(MAX),
 	@ServiceId INT = 0,
     @DateCreated DATETIME,
-    @Status NCHAR(100),
+    @Status INT,
     @DueDate DATETIME
 AS
 BEGIN
 	INSERT INTO [Request].[order] 
     (
+    [ord_consumer_id],
     [ord_datecreated],
     [ord_duedate],
     [ord_status],
@@ -15,6 +17,7 @@ BEGIN
     
     VALUES
     (
+    @ConsumerID,
     @DateCreated,
     @DueDate,
     @Status,

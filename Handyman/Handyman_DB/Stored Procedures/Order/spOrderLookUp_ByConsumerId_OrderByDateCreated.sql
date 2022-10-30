@@ -9,6 +9,6 @@ BEGIN
   FROM [Handyman_DB].[Request].[order] o
   inner join [Handyman_DB].[Request].[order_task] s ON s.[order_id] = o.[ord_id] 
   inner join [Handyman_DB].[Request].[task] t ON t.[task_id] = s.[task_id]
-  WHERE o.[ord_consumer_id] = @consumerID
+  WHERE o.[ord_consumer_id] = @consumerID 
   ORDER by o.[ord_datecreated] asc
  END

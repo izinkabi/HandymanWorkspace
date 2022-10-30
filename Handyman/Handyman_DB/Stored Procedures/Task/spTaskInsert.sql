@@ -1,10 +1,10 @@
 ﻿CREATE PROCEDURE [Request].[spTaskInsert]
 	
     @title VARCHAR(100), 
-    @dateStarted DATETIME , 
-    @dateFinished DATETIME, 
+    @dateStarted DATETIME2(7) , 
+    @dateFinished DATETIME2(7), 
     @duration NVARCHAR(150), 
-    @status NVARCHAR(150) , 
+    @status INT , 
     @description VARCHAR(MAX),
     @serviceId int
 AS

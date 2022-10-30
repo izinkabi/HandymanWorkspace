@@ -1,11 +1,7 @@
 ﻿using Handyman_DataLibrary.DataAccess.Interfaces;
 using Handyman_DataLibrary.Internal.DataAccess;
 using Handyman_DataLibrary.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Handyman_DataLibrary.DataAccess.Query
 {
@@ -37,7 +33,9 @@ namespace Handyman_DataLibrary.DataAccess.Query
             int taskId = 0;
             try
             {
-                 taskId = _dataAccess.SaveData<TaskModel>("Request.spTaskInsert", task, "Handyman_DB");
+                task.dateStarted = DateTime.Now;
+                task.dateFinished = DateTime.Now;
+                 taskId = _dataAccess.LoadData<int, dynamic>("Request.spTaskInsert", task, "Handyman_DB").First();
                     return taskId;
             }
             catch (Exception ex)
