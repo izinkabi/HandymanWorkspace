@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [Delivery].[address]
 (
-	[add_Id] INT NOT NULL PRIMARY KEY, 
+	[add_Id] INT NOT NULL PRIMARY KEY IDENTITY, 
     [add_address] NCHAR(10) NOT NULL, 
     [ add_street] NCHAR(10) NULL, 
     [add_suburb] NCHAR(10) NULL, 

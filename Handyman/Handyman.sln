@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Handyman_DataLibrary", "Han
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Handyman_DB", "Handyman_DB\Handyman_DB.sqlproj", "{F35AD620-A691-4D10-ABE4-EEA50B25FDC4}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Handyman-SP-UI", "Handyman-SP-UI\Handyman-SP-UI.csproj", "{223CEABA-99F6-4BB8-A25C-7B1F33B922BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{F35AD620-A691-4D10-ABE4-EEA50B25FDC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F35AD620-A691-4D10-ABE4-EEA50B25FDC4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F35AD620-A691-4D10-ABE4-EEA50B25FDC4}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{223CEABA-99F6-4BB8-A25C-7B1F33B922BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{223CEABA-99F6-4BB8-A25C-7B1F33B922BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{223CEABA-99F6-4BB8-A25C-7B1F33B922BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{223CEABA-99F6-4BB8-A25C-7B1F33B922BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,9 +100,10 @@ Global
 		{821B37BC-443E-4193-8DDC-590B12DED6F5} = {25A2DA20-751E-47FD-A8A5-566D79BCC86B}
 		{E6246166-9B74-428C-8543-22C2182FECB7} = {25A2DA20-751E-47FD-A8A5-566D79BCC86B}
 		{F35AD620-A691-4D10-ABE4-EEA50B25FDC4} = {4128607C-2F4E-4140-8E9B-F64CCB476A47}
+		{223CEABA-99F6-4BB8-A25C-7B1F33B922BD} = {0E5ED1C2-3AB3-4B52-BFFD-2D69B080260B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
 		SolutionGuid = {9CE7BC51-6CF4-496B-8C0C-3627C4C48F8D}
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
 	EndGlobalSection
 EndGlobal
