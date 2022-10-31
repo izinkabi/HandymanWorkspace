@@ -1,9 +1,9 @@
 ﻿@page "/order-tasks-component"
-@using HandymanUILibrary.API.Consumer.Todo
+@using HandymanUILibrary.API.Consumer.task
 @using Handymen_UI_Consumer.Helpers
 @using Handymen_UI_Consumer.Models
 @using Microsoft.AspNetCore.Components.Web
-@inject ITodoEndPoint _todoEndPoint
+@inject ItaskEndPoint _taskEndPoint
 @inject IOrderHelper _orderHelper
 
 
@@ -13,11 +13,11 @@
 
 
         <div class="col m-3"
-        <!--New Task/Todo-item form-->
+        <!--New Task/task-item form-->
 
             <!--New task button-->
             <button class="btn-sm btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                Todo items
+                task items
             </button>
 
             <!--End New task button-->
@@ -33,7 +33,7 @@
 
                                 <p class="h2 text-center mt-3 mb-4 pb-3 text-primary">
                                     <i class="fas fa-check-square me-1"></i>
-                                    <u>Add Todo item</u>
+                                    <u>Add task item</u>
                                 </p>
 
                                 <div class="pb-2">
@@ -41,15 +41,15 @@
                                         
                                         <div class="card-body">
                                                 <div class="mb-1">
-                                                    <input @bind="@todoItem.ItemName" type="text" class="form-control form-control" id="exampleFormControlInput1"
-                                                        placeholder="TodoItem Title...">
+                                                    <input @bind="@taskItem.ItemName" type="text" class="form-control form-control" id="exampleFormControlInput1"
+                                                        placeholder="taskItem Title...">
                                                 </div>
                                                 <div class="mb-1">
-                                                    <textarea @bind="@todoItem.Description" class="form-control" id="exampleFormControlTextarea1" rows="3"  placeholder="Description..."></textarea>
+                                                    <textarea @bind="@taskItem.Description" class="form-control" id="exampleFormControlTextarea1" rows="3"  placeholder="Description..."></textarea>
                                                 </div>
                                         </div>
                                         <div class="card-footer">
-                                            <button  @onclick="AddNewTodoItem" class="btn btn-primary m-3">Add</button>
+                                            <button  @onclick="AddNewtaskItem" class="btn btn-primary m-3">Add</button>
                                         </div>
                                        
                                     </div>
@@ -87,11 +87,11 @@
                 <i class="fas fa-sort-amount-down-alt ms-2"></i>
             </a>
         </div>
-        @if (OrderTodoList.Count > 0)
+        @if (OrdertaskList.Count > 0)
         {
 
 
-            foreach (var item in OrderTodoList)
+            foreach (var item in OrdertaskList)
             {
                 <ul class="list-group list-group-horizontal rounded-0 bg-transparent">
                     <li class="list-group-item d-flex align-items-center ps-0 pe-3 py-1 rounded-0 border-0 bg-transparent">
@@ -105,10 +105,10 @@
                     </li>
                     <li class="list-group-item ps-3 pe-0 py-1 rounded-0 border-0 bg-transparent">
                         <div class="d-flex flex-row justify-content-end mb-1">
-                            <a href="#!" class="text-info" data-mdb-toggle="tooltip" title="Edit todo">
+                            <a href="#!" class="text-info" data-mdb-toggle="tooltip" title="Edit task">
                                 <i class="fas fa-pencil-alt me-3"></i>
                             </a>
-                            <button @onclick="@(()=> DeleteTask(@item))" class="text-danger" data-mdb-toggle="tooltip" title="Delete todo">
+                            <button @onclick="@(()=> DeleteTask(@item))" class="text-danger" data-mdb-toggle="tooltip" title="Delete task">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </div>
@@ -132,64 +132,64 @@
     </div>
 
 </div>
-<!--End Todo-item -->
+<!--End task-item -->
 
 @code {
 
 
-    List<TodoModel> OrderTodoList = new()!;//Local display list
-    TodoModel? todoItem = new()!;
+    List<taskModel> OrdertaskList = new()!;//Local display list
+    taskModel? taskItem = new()!;
     string? ErrorMsg;
-    List<HandymanUILibrary.Models.TodoModel>? newTodoList = new()!;
+    List<HandymanUILibrary.Models.taskModel>? newtaskList = new()!;
 
     [Parameter]
     public int? OrderId { get; set; }
     [Parameter]
     public bool IsNewOrder { get; set; }
 
-    public List<HandymanUILibrary.Models.TodoModel>? OrderTodoListProperty
+    public List<HandymanUILibrary.Models.taskModel>? OrdertaskListProperty
     {
-        get { return newTodoList; }
+        get { return newtaskList; }
 
     }
 
-    public List<TodoModel> TodoDisplayList { get { return OrderTodoList; }  }
+    public List<taskModel> taskDisplayList { get { return OrdertaskList; }  }
 
 
 
 
 
-    void DeleteTask(TodoModel todoitem)
+    void DeleteTask(taskModel taskitem)
     {
-        if (todoitem is not null)
+        if (taskitem is not null)
         {
-            OrderTodoList.Remove(todoitem);
+            OrdertaskList.Remove(taskitem);
         }
     }
 
-    //Adding todo-item in the new list
-    void AddNewTodoItem()
+    //Adding task-item in the new list
+    void AddNewtaskItem()
     {
-        if(todoItem != null)
+        if(taskItem != null)
         {
-            newTodoList.Add(new HandymanUILibrary.Models.TodoModel
+            newtaskList.Add(new HandymanUILibrary.Models.taskModel
                 {
-                    ItemName = todoItem?.ItemName, //this can be a combination of a constant & user input
-                    Description = todoItem?.Description,
-                    OrderId = todoItem.OrderId,//this will be zero here since the order is new
+                    ItemName = taskItem?.ItemName, //this can be a combination of a constant & user input
+                    Description = taskItem?.Description,
+                    OrderId = taskItem.OrderId,//this will be zero here since the order is new
                     Type = 0,//this should be a constant to add logic
                     Status = 0//constant!
                 });
 
-            OrderTodoList.Add(new TodoModel()
+            OrdertaskList.Add(new taskModel()
                 {
-                    ItemName = todoItem?.ItemName, //this can be a combination of a constant & user input
-                    Description = todoItem?.Description,
-                    OrderId = todoItem.OrderId,//this will be zero here since the order is new
+                    ItemName = taskItem?.ItemName, //this can be a combination of a constant & user input
+                    Description = taskItem?.Description,
+                    OrderId = taskItem.OrderId,//this will be zero here since the order is new
                     Type = 0,//this should be a constant to add logic
                     Status = 0//constant!
                 });
-            todoItem = new()!;
+            taskItem = new()!;
         }
     }
 

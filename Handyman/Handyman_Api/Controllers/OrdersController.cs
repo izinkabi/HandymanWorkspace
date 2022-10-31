@@ -10,20 +10,20 @@ namespace Handyman_Api.Controllers
     public class OrdersController : ControllerBase
     {
         IOrderData _orderData;
-        IEnumerable<OrderTaskModel>? orders;
+        IEnumerable<OrderModel>? orders;
         public OrdersController(IOrderData orderData)
         {
             _orderData = orderData;
         }
         // GET: api/<OrdersController>
         [HttpGet]
-        public IEnumerable<OrderTaskModel> Get(string consumerId)
+        public IEnumerable<OrderModel> Get(string consumerId)
         {
             try
             {
                 orders = _orderData.GetConsumerOrderAndTasks(consumerId);
                 return orders;
-            }catch(Exception ex)
+            } catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -32,10 +32,14 @@ namespace Handyman_Api.Controllers
 
         // POST api/<OrdersController>
         [HttpPost]
-        public void Post([FromBody] OrderModel order)
+        public void Post(OrderModel order)
         {
             try
             {
+                if (order == null)
+                {
+                    return;
+                }
                 _orderData.SaveOrder(order);
             }
             catch (Exception ex)
@@ -45,13 +49,25 @@ namespace Handyman_Api.Controllers
         }
 
         // PUT api/<OrdersController>/5
-        [HttpPut("{id}")]
+        [HttpPut]
         public void Put(OrderModel orderUpdate)
         {
-            _orderData.UpdateOrder(orderUpdate);
+            try
+            {
+                if(orderUpdate == null)
+                {
+                    return;
+                }
+                _orderData.UpdateOrder(orderUpdate);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         // DELETE api/<OrdersController>/5
+        // !!!Not yet implemented
         [HttpDelete("{id}")]
         public void Delete(string consumerId,int orderId)
         {

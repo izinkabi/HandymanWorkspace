@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Handymen_UI_Consumer.Helpers;
 
 using HandymanUILibrary.API.Consumer.Order;
-using HandymanUILibrary.API.Consumer.Todo;
+using HandymanUILibrary.API.Consumer.task;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("Handymen_UI_ConsumerContextConnection") ?? throw new InvalidOperationException("Connection string 'Handymen_UI_ConsumerContextConnection' not found.");
@@ -23,7 +23,7 @@ builder.Services.AddSingleton<IAPIHelper, APIHelper>();
 builder.Services.AddTransient<IServiceEndPoint,ServiceEndPoint>();
 builder.Services.AddTransient<IOrderEndPoint, OrderEndPoint>();
 builder.Services.AddScoped<IOrderHelper, OrderHelper>();
-builder.Services.AddTransient<ITodoEndPoint, TodoEndPoint>();
+builder.Services.AddTransient<ItaskEndPoint, taskEndPoint>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {

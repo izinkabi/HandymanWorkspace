@@ -1,6 +1,8 @@
 ﻿
 
-namespace Handyman_DataLibrary.Models
+using System;
+
+namespace HandymanUILibrary.Models
 {
     public class TaskModel
     {

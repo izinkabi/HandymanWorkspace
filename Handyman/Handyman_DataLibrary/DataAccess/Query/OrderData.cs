@@ -1,6 +1,9 @@
 ﻿using Handyman_DataLibrary.DataAccess.Interfaces;
 using Handyman_DataLibrary.Internal.DataAccess;
 using Handyman_DataLibrary.Models;
+using Microsoft.VisualBasic;
+using System;
+using System.Threading.Tasks;
 
 
 namespace Handyman_DataLibrary.DataAccess.Query
@@ -16,20 +19,62 @@ namespace Handyman_DataLibrary.DataAccess.Query
         }
 
         //Get the consumer's orders and their respective tasks
-        public IEnumerable<OrderTaskModel> GetConsumerOrderAndTasks(string consumerID)
+        public IEnumerable<OrderModel> GetConsumerOrderAndTasks(string consumerID)
         {
-            List<OrderTaskModel> orders = new()!;
+            List<OrderTaskModel> ordertasks = new()!;
+            HashSet<OrderModel> orderSet = new()!;//It does not allow duplicates
             try
             {
-                orders = _dataAccess.LoadData<OrderTaskModel, dynamic>("Request.spOrderLookUp_ByConsumerId_OrderByDateCreated",
+                ordertasks = _dataAccess.LoadData<OrderTaskModel, dynamic>("Request.spOrderLookUp_ByConsumerId_OrderByDateCreated",
                          new { consumerID = consumerID }, "Handyman_DB");
+                
+                //Braking down the ordertask entity
+                //First get get orders then get 
+                foreach (var ordertask in ordertasks)
+                {
+                    var order = new OrderModel();
+                    order.service = new();
+                    //populate order
+
+                    order.Id = ordertask.ord_id;
+                    order.ord_duedate = ordertask.ord_duedate;
+                    order.ord_status = ordertask.ord_status;
+                    
+                    order.service = _dataAccess.LoadData<ServiceModel, dynamic>("Request.spServiceLookUpBy_Id",
+                         new { serviceId = ordertask.ord_service_id }, "Handyman_DB").First(); //we need a service model instead
+                    orderSet.Add(order);
+                    
+                }
+                //populate task
+
+                foreach (var order in orderSet)
+                {
+                    order.Tasks = new List<TaskModel>();
+                    foreach (var ordertask in ordertasks)
+                    {
+                        var task = new TaskModel()!;
+
+                        //populate task
+                        task.description = ordertask.tas_description;
+                        task.dateFinished = ordertask.tas_date_finished;
+                        task.dateStarted = ordertask.tas_date_started;
+                        task.title = ordertask.tas_title;
+                        task.Id = ordertask.task_id;
+                        //task.duration = ordertask.tas_duration;
+                        if(order.Id == ordertask.ord_id)
+                        {
+                            order.Tasks.Add(task);
+                        }
+                       
+                    } 
+                }
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
 
-            return orders;
+            return orderSet.ToList();
         }
 
 
@@ -46,7 +91,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
                     DateCreated = order.ord_datecreated,
                     Status = order.ord_status,
                     DueDate = order.ord_duedate,
-                    ServiceId = order.ord_service_id
+                    ServiceId = order.service.serv_id
                 }).First();
                
                 /*Saving the task*/
@@ -76,7 +121,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
             }
         }
        
-        //Update task
+        //Update order and its tasks
         public void UpdateOrder(OrderModel order)
         {
             try
@@ -85,12 +130,22 @@ namespace Handyman_DataLibrary.DataAccess.Query
                     new 
                     {
                         ConsumerID = order.ConsumerID,
-                        DateCreated = order.ord_datecreated,
+                        DateCreated= order.ord_datecreated,
                         Status = order.ord_status,
                         DueDate = order.ord_duedate,
-                        ServiceId = order.ord_service_id
+                        Id = order.Id
+
                     },
-                    "HandymanDB");
+                    "Handyman_DB");
+                //
+                if(order.Tasks.Count() > 0)
+                {
+                    foreach (var task in order.Tasks)
+                    {
+                        _taskData.UpdateTask(task);
+                    }
+                    
+                }
 
             }
             catch (Exception ex)

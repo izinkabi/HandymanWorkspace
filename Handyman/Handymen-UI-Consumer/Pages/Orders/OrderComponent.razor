@@ -71,7 +71,7 @@
     }
     else if (order.IsConfirmed && !order.IsOnNavDisplay)
     {
-        <!--List of Todo-items in the confirmed order-->
+        <!--List of task-items in the confirmed order-->
         <div class="list-group list-group-flush align-content-lg-center">
             @*<a href="#" class="list-group-item list-group-item-action active" aria-current="true">
                 <div class="d-flex w-100 justify-content-between">
@@ -82,7 +82,7 @@
                 <small>And some small print.</small>
             </a>*@
 
-           @foreach(var item in @todoList)
+           @foreach(var item in @taskList)
            {
 
             <a href="#" class="list-group-item list-group-item-action ">
@@ -109,7 +109,7 @@
     List<Order>? userOrders;
     DynamicComponent? orderTasksComponent;
     private IDictionary<string, object>? orderIdParam;
-    private List<TodoModel>? todoList = new List<TodoModel>()!;
+    private List<taskModel>? taskList = new List<taskModel>()!;
     [Parameter]
     public Order? OrderComponentModel
     {
@@ -137,8 +137,8 @@
 
             if (OrderComponentModel.Id != 0 && OrderComponentModel!=null)
             {
-                todoList = new()!;
-                todoList.AddRange(await _orderHelper.GetOrderTodoList(OrderComponentModel.Id));
+                taskList = new()!;
+                taskList.AddRange(await _orderHelper.GetOrdertaskList(OrderComponentModel.Id));
             }
 
         }catch(Exception ex)
@@ -216,8 +216,8 @@
             libOrder.ServiceId = order.ServiceProperty.Id;
             order.IsConfirmed = true;
             var tasks = (OrderTasksComponent)orderTasksComponent.Instance;//cast the dynamic component...finders cross x
-            this.todoList.AddRange(tasks.TodoDisplayList);
-            await _orderEndPoint.PostOrder(libOrder,tasks.OrderTodoListProperty);
+            this.taskList.AddRange(tasks.taskDisplayList);
+            await _orderEndPoint.PostOrder(libOrder,tasks.OrdertaskListProperty);
            
         }
         catch (Exception ex)

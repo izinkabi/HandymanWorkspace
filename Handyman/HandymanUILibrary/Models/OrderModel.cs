@@ -1,26 +1,18 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
 
 namespace HandymanUILibrary.Models
 {
-    public class OrderModel 
+    //An order model with tasks model
+    public class OrderModel
     {
-        public int Id { get; set; }
-        public int ServiceId { get; set; }
         public string ConsumerID { get; set; }
-        public DateTime DateCreated { get; set; }
-        public string Stage { get; set; }
-        public DateTime DateFinished { get; set; }
-        public int IsAccepted { get; set; }
-
-
+        public DateTime ord_datecreated { get; set; }
+        public int ord_status { get; set; }
+        public DateTime ord_duedate { get; set; }
+        public int ord_service_id { get; set; }
+        public IEnumerable<TaskModel>? Tasks { get; set; }
+        public int Id { get; set; }
     }
 }
-
-    
-
-

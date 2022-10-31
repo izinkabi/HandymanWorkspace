@@ -1,6 +1,6 @@
 ﻿using HandymanUILibrary.API;
 using HandymanUILibrary.API.Consumer.Order;
-using HandymanUILibrary.API.Consumer.Todo;
+using HandymanUILibrary.API.Consumer.task;
 using Handymen_UI_Consumer.Areas.Identity.Data;
 using Handymen_UI_Consumer.Data;
 using Handymen_UI_Consumer.Models;
@@ -15,11 +15,11 @@ namespace Handymen_UI_Consumer.Helpers
     {
        
         AuthenticationStateProvider? _authenticationStateProvider;
-        ITodoEndPoint _todoEndPoint;
+        ItaskEndPoint _taskEndPoint;
         IServiceEndPoint _serviceEndPoint;
         IOrderEndPoint? _orderEndpoint;
         private List<Service>? serviceDisplayList;
-        private List<TodoModel> orderTodoList;
+        private List<taskModel> ordertaskList;
         
   
         private Order? order;
@@ -29,51 +29,51 @@ namespace Handymen_UI_Consumer.Helpers
         string? ErrorMsg;
         private readonly Handymen_UI_ConsumerContext _context;
         public OrderHelper(Handymen_UI_ConsumerContext contex,
-            IOrderEndPoint orderEndPoint, ITodoEndPoint todoEndPoint,IServiceEndPoint serviceEndPoint,
+            IOrderEndPoint orderEndPoint, ItaskEndPoint taskEndPoint,IServiceEndPoint serviceEndPoint,
             AuthenticationStateProvider authenticationState)
         {
             _context = contex; 
             _orderEndpoint = orderEndPoint; 
             _serviceEndPoint = serviceEndPoint;
             _authenticationStateProvider = authenticationState;
-           _todoEndPoint = todoEndPoint;    
+           _taskEndPoint = taskEndPoint;    
             
         }
 
-        //Get the order's todo-list
-        public async Task<List<TodoModel>> GetOrderTodoList(int id)
+        //Get the order's task-list
+        public async Task<List<taskModel>> GetOrdertaskList(int id)
         {
 
-            orderTodoList = new()!;
-            var dotoList = new List<HandymanUILibrary.Models.TodoModel>()!;
+            ordertaskList = new()!;
+            var dotoList = new List<HandymanUILibrary.Models.taskModel>()!;
             try
             {
-                dotoList = await _todoEndPoint.GetTodoListByOrderId(id);
+                dotoList = await _taskEndPoint.GettaskListByOrderId(id);
                 if(dotoList.Count > 0)
                 {
                     foreach (var item in dotoList)
                     {
                         
-                            var todoItem = new TodoModel();
-                            todoItem.Id = item.Id;
-                            todoItem.OrderId = item.OrderId;
-                            todoItem.ItemName = item.ItemName;
-                            todoItem.Status = item.Status;
-                            todoItem.Description = item.Description;
-                            todoItem.StartDate = item.StartDate;
-                            todoItem.EndDate = item.EndDate;
-                            orderTodoList.Add(todoItem);
+                            var taskItem = new taskModel();
+                            taskItem.Id = item.Id;
+                            taskItem.OrderId = item.OrderId;
+                            taskItem.ItemName = item.ItemName;
+                            taskItem.Status = item.Status;
+                            taskItem.Description = item.Description;
+                            taskItem.StartDate = item.StartDate;
+                            taskItem.EndDate = item.EndDate;
+                            ordertaskList.Add(taskItem);
                         
 
                     }
-                    return orderTodoList;
+                    return ordertaskList;
                 }
                
             }catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            return orderTodoList;
+            return ordertaskList;
         }
 
         //Get the order the order by its id

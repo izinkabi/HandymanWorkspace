@@ -1,11 +1,12 @@
 ﻿CREATE PROCEDURE [Request].[spTaskUpdate]
 	@id int = 0,
-	@title VARCHAR,
-    @dateStarted DATETIME,
-    @dateFinished DATETIME,
-    @duration NVARCHAR,
-    @status NVARCHAR,
-    @description VARCHAR
+	@title VARCHAR(150),
+    @dateStarted DATETIME2(7),
+    @dateFinished DATETIME2(7),
+    @duration NVARCHAR(150),
+    @status INT,
+    @description VARCHAR(MAX),
+    @serviceId INT
 
 AS
 BEGIN

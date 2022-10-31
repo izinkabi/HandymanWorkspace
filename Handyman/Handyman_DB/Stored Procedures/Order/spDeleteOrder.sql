@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[spNewOrderLookUp]
+﻿CREATE PROCEDURE [dbo].[spDeleteOrder]
 	@param1 int = 0,
 	@param2 int
 AS

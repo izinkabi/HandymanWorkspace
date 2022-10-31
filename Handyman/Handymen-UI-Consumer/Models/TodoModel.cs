@@ -1,6 +1,6 @@
 ﻿namespace Handymen_UI_Consumer.Models
 {
-    public class TodoModel
+    public class taskModel
     {
         public int Id { get; set; }
         public string? ItemName { get; set; }
