@@ -1,9 +1,7 @@
 ﻿using Handyman_DataLibrary.DataAccess.Interfaces;
 using Handyman_DataLibrary.Internal.DataAccess;
 using Handyman_DataLibrary.Models;
-using Microsoft.VisualBasic;
-using System;
-using System.Threading.Tasks;
+
 
 
 namespace Handyman_DataLibrary.DataAccess.Query
@@ -37,10 +35,10 @@ namespace Handyman_DataLibrary.DataAccess.Query
                     //populate order
 
                     order.Id = ordertask.ord_id;
-                    order.ord_duedate = ordertask.ord_duedate;
-                    order.ord_status = ordertask.ord_status;
+                    order.duedate = ordertask.ord_duedate;
+                    order.status = ordertask.ord_status;
                     
-                    order.service = _dataAccess.LoadData<ServiceModel, dynamic>("Request.spServiceLookUpBy_Id",
+                    order.service = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Request.spServiceLookUpBy_Id",
                          new { serviceId = ordertask.ord_service_id }, "Handyman_DB").First(); //we need a service model instead
                     orderSet.Add(order);
                     
@@ -88,9 +86,9 @@ namespace Handyman_DataLibrary.DataAccess.Query
                 int orderId = _dataAccess.LoadDataTransaction<int,dynamic>("Request.spOrderInsert", new
                 {
                     ConsumerID = order.ConsumerID,
-                    DateCreated = order.ord_datecreated,
-                    Status = order.ord_status,
-                    DueDate = order.ord_duedate,
+                    DateCreated = order.datecreated,
+                    Status = order.status,
+                    DueDate = order.duedate,
                     ServiceId = order.service.serv_id
                 }).First();
                
@@ -130,9 +128,9 @@ namespace Handyman_DataLibrary.DataAccess.Query
                     new 
                     {
                         ConsumerID = order.ConsumerID,
-                        DateCreated= order.ord_datecreated,
-                        Status = order.ord_status,
-                        DueDate = order.ord_duedate,
+                        DateCreated= order.datecreated,
+                        Status = order.status,
+                        DueDate = order.duedate,
                         Id = order.Id
 
                     },

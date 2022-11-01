@@ -20,7 +20,7 @@ namespace Handyman_Api.Controllers
         [HttpGet]
         [Route("api/Service/GetServices")]
         //[Authorize]
-        public  List<ServiceModel> GetServices()
+        public  List<Service_CategoryModel> GetServices()
         {
             return  _serviceData.GetAllServices();
         }

@@ -7,7 +7,7 @@ using Handymen_UI_Consumer.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Handymen_UI_Consumer.Areas.Identity.Data;
 using Microsoft.AspNetCore.Authorization;
-using HandymanUILibrary.API.Consumer.Order;
+using HandymanUILibrary.API.Consumer.Order.Interface;
 
 namespace Handymen_UI_Consumer.Pages
 {

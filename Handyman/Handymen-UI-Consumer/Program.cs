@@ -4,9 +4,9 @@ using Handymen_UI_Consumer.Areas.Identity.Data;
 using HandymanUILibrary.API;
 using Microsoft.AspNetCore.ResponseCompression;
 using Handymen_UI_Consumer.Helpers;
-
-using HandymanUILibrary.API.Consumer.Order;
 using HandymanUILibrary.API.Consumer.task;
+using HandymanUILibrary.API.Consumer.Order.Interface;
+using HandymanUILibrary.API.Consumer.Order.Implementation;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("Handymen_UI_ConsumerContextConnection") ?? throw new InvalidOperationException("Connection string 'Handymen_UI_ConsumerContextConnection' not found.");
