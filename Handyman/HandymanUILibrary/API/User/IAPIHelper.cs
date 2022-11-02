@@ -10,8 +10,8 @@ namespace HandymanUILibrary.API
     public interface IAPIHelper
     {
         HttpClient ApiClient { get; }
-        Task<AuthenticatedUserModel> AuthenticateUser(string username, string password);
-        Task<IloggedInUserModel> GetLoggedInUserInfor(string token);
+        //Task<AuthenticatedUserModel> AuthenticateUser(string username, string password);
+        //Task<IloggedInUserModel> GetLoggedInUserInfor(string token);
 
         void LogOutuser();
 

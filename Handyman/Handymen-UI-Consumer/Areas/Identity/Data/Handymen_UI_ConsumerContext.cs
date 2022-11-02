@@ -1,8 +1,7 @@
 ﻿using Handymen_UI_Consumer.Areas.Identity.Data;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Handymen_UI_Consumer.Models;
+
 
 namespace Handymen_UI_Consumer.Data;
 
@@ -21,7 +20,7 @@ public class Handymen_UI_ConsumerContext : IdentityDbContext<Handymen_UI_Consume
         // Add your customizations after calling base.OnModelCreating(builder);
     }
 
-    public DbSet<Handymen_UI_Consumer.Models.Service>? Service { get; set; }
+    public DbSet<HandymanUILibrary.Models.ServiceModel>? Service { get; set; }
 
-    public DbSet<Handymen_UI_Consumer.Models.Order>? Order { get; set; }
+    public DbSet<HandymanUILibrary.Models.OrderModel>? Order { get; set; }
 }

@@ -1,13 +1,16 @@
-﻿using Handymen_UI_Consumer.Models;
+﻿
+
+using HandymanUILibrary.Models;
 
 namespace Handymen_UI_Consumer.Helpers
 {
     public interface IOrderHelper
     {
-        Task<List<Service>> LoadServices();
-        Task<List<Order>> LoadUserOrders();
-        Task<Order> GetOrderById(int id);
+     
+        Task<List<OrderModel>> LoadUserOrders();
+        Task<OrderModel> GetOrderById(int id);
         Task DeleteOrder(int Id);
-        Task<List<taskModel>> GetOrdertaskList(int id);
+        Task CreateOrder(OrderModel newOrder);
+     
     }
 }

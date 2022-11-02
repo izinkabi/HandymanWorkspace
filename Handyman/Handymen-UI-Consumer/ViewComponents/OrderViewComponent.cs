@@ -1,16 +1,14 @@
-﻿using HandymanUILibrary.API.Consumer;
+﻿using HandymanUILibrary.Models;
 using Handymen_UI_Consumer.Helpers;
-using Handymen_UI_Consumer.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.ComponentModel;
+
 
 namespace Handymen_UI_Consumer.ViewComponents
 {
     public class OrderViewComponent : ViewComponent
     {
              private IOrderHelper _orderHelper;
-             private Order order;
+             private OrderModel order;
              public OrderViewComponent(IOrderHelper orderHelper)
              {
                 _orderHelper = orderHelper;

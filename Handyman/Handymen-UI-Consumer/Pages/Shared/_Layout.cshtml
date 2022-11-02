@@ -1,6 +1,6 @@
 ﻿@using HandymanUILibrary.API.Consumer
 @using Handymen_UI_Consumer.Helpers
-@using Handymen_UI_Consumer.Models
+@using HandymanUILibrary.Models
 @using Handymen_UI_Consumer.Pages.Orders
 @using Microsoft.AspNetCore.Identity
 @using Handymen_UI_Consumer.Areas.Identity.Data
@@ -164,8 +164,8 @@
 
                 @foreach (var order in @orders)
                 {
-                            order.IsOnNavDisplay = true;
-                    if (@order.IsAccepted==0)
+                      
+                    if (@order.status<=1)
                     {
                        
                        <div class="alert alert-warning alert-dismissible fade show" role="alert" id="@order.Id">
@@ -187,7 +187,7 @@
                     }
                    
                             ViewData["oid"] = order.Id;
-                            ViewData[$"name{order.Id}"] = order.ServiceProperty.Name;
+                            ViewData[$"name{order.Id}"] = order.service.name;
                             ViewData[$"id{order.Id}"] = order.Id;
                   }
                 </div>

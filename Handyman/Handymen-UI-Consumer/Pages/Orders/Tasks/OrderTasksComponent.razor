@@ -1,18 +1,16 @@
 ﻿@page "/order-tasks-component"
-@using HandymanUILibrary.API.Consumer.task
+@using HandymanUILibrary.Models
 @using Handymen_UI_Consumer.Helpers
-@using Handymen_UI_Consumer.Models
 @using Microsoft.AspNetCore.Components.Web
-@inject ItaskEndPoint _taskEndPoint
 @inject IOrderHelper _orderHelper
 
 
 
 <div class="row d-inline-flex m-0">
-   
 
-
-        <div class="col m-3"
+    @if (isNew)
+    {
+        <div class="col m-3">
         <!--New Task/task-item form-->
 
             <!--New task button-->
@@ -41,16 +39,16 @@
                                         
                                         <div class="card-body">
                                                 <div class="mb-1">
-                                                    <input @bind="@taskItem.ItemName" type="text" class="form-control form-control" id="exampleFormControlInput1"
+                                                    <input @bind="@newTask.title" type="text" class="form-control form-control" id="exampleFormControlInput1"
                                                         placeholder="taskItem Title...">
                                                 </div>
                                                 <div class="mb-1">
-                                                    <textarea @bind="@taskItem.Description" class="form-control" id="exampleFormControlTextarea1" rows="3"  placeholder="Description..."></textarea>
+                                                    <textarea @bind="@newTask.description" class="form-control" id="exampleFormControlTextarea1" rows="3"  placeholder="Description..."></textarea>
                                                 </div>
                                         </div>
-                                        <div class="card-footer">
-                                            <button  @onclick="AddNewtaskItem" class="btn btn-primary m-3">Add</button>
-                                        </div>
+                                        @*<div class="card-footer">
+                                            <button  @onclick="CreateNewTask" class="btn btn-primary m-3">Add</button>
+                                        </div>*@
                                        
                                     </div>
 
@@ -65,133 +63,76 @@
             </div>
         </div>
     
+    }else
+    {
+        <div class="m-3 col ">
 
 
-    <div class="m-3 col ">
+           
 
-
-        <div class="d-flex justify-content-end align-items-center mb-4 pt-2 pb-3">
-            <p class="small mb-0 me-2 text-muted">Filter</p>
-            <select class="select">
-                <option value="1">All</option>
-                <option value="2">Completed</option>
-                <option value="3">Active</option>
-                <option value="4">Has due date</option>
-            </select>
-            <p class="small mb-0 ms-4 me-2 text-muted">Sort</p>
-            <select class="select">
-                <option value="1">Added date</option>
-                <option value="2">Due date</option>
-            </select>
-            <a href="#!" style="color: #23af89;" data-mdb-toggle="tooltip" title="Ascending">
-                <i class="fas fa-sort-amount-down-alt ms-2"></i>
-            </a>
-        </div>
-        @if (OrdertaskList.Count > 0)
-        {
-
-
-            foreach (var item in OrdertaskList)
-            {
-                <ul class="list-group list-group-horizontal rounded-0 bg-transparent">
-                    <li class="list-group-item d-flex align-items-center ps-0 pe-3 py-1 rounded-0 border-0 bg-transparent">
-                        <div class="form-check">
-                            <input class="form-check-input me-0" type="checkbox" value="" id="flexCheckChecked1"
+            <ul class="list-group list-group-horizontal rounded-0 bg-transparent">
+                <li class="list-group-item d-flex align-items-center ps-0 pe-3 py-1 rounded-0 border-0 bg-transparent">
+                    <div class="form-check">
+                        <input class="form-check-input me-0" type="checkbox" value="" id="flexCheckChecked1"
                            aria-label="..." checked />
-                        </div>
-                    </li>
-                    <li class="list-group-item px-3 py-1 d-flex align-items-center flex-grow-1 border-0 bg-transparent">
-                        <p class="lead fw-normal mb-0">@item.ItemName</p>
-                    </li>
-                    <li class="list-group-item ps-3 pe-0 py-1 rounded-0 border-0 bg-transparent">
-                        <div class="d-flex flex-row justify-content-end mb-1">
-                            <a href="#!" class="text-info" data-mdb-toggle="tooltip" title="Edit task">
-                                <i class="fas fa-pencil-alt me-3"></i>
-                            </a>
-                            <button @onclick="@(()=> DeleteTask(@item))" class="text-danger" data-mdb-toggle="tooltip" title="Delete task">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </div>
-                        <div class="text-end text-muted">
-                             <p class="small mb-0"><i class="fas fa-info-circle me-2"></i>@DateTime.UtcNow</p>
-                            
-                        </div>
-                    </li>
-                </ul>
-            }
-        }else
-        {
-            <p>
-                There are no tasks added,
-                did you mean to create one?
-            </p>
-        }
-        
-       
+                    </div>
+                </li>
+                <li class="list-group-item px-3 py-1 d-flex align-items-center flex-grow-1 border-0 bg-transparent">
+                    <p class="lead fw-normal mb-0">@task.title</p>
+                </li>
+               
+            </ul>
 
-    </div>
+            @if (@ErrorMsg != null) {
+                <p>
+                    @ErrorMsg
+                </p>
+            }
+
+
+
+        </div>
+    }
 
 </div>
 <!--End task-item -->
 
 @code {
-
-
-    List<taskModel> OrdertaskList = new()!;//Local display list
-    taskModel? taskItem = new()!;
+    TaskModel task = new()!;
+    TaskModel newTask = new()!;
     string? ErrorMsg;
-    List<HandymanUILibrary.Models.taskModel>? newtaskList = new()!;
+
 
     [Parameter]
-    public int? OrderId { get; set; }
+    public int Id { get; set; }
     [Parameter]
-    public bool IsNewOrder { get; set; }
+    public string? title { get; set; }
+    [Parameter]
+    public string? description { get; set; }
+    [Parameter]
+    public int duration { get; set; }
+    [Parameter]
+    public int status { get; set; }
+    [Parameter]
+    public bool isNew { get; set; }
+    [Parameter]
+    public int serviceId { get; set; }
+    [Parameter]
+    public DateTime dateStarted { get; set; }
+    [Parameter]
+    public DateTime dateFinished { get; set; }
+         
 
-    public List<HandymanUILibrary.Models.taskModel>? OrdertaskListProperty
+
+
+    public TaskModel? NewTask
     {
-        get { return newtaskList; }
+        get { return newTask; }
 
     }
 
-    public List<taskModel> taskDisplayList { get { return OrdertaskList; }  }
 
+  
 
-
-
-
-    void DeleteTask(taskModel taskitem)
-    {
-        if (taskitem is not null)
-        {
-            OrdertaskList.Remove(taskitem);
-        }
-    }
-
-    //Adding task-item in the new list
-    void AddNewtaskItem()
-    {
-        if(taskItem != null)
-        {
-            newtaskList.Add(new HandymanUILibrary.Models.taskModel
-                {
-                    ItemName = taskItem?.ItemName, //this can be a combination of a constant & user input
-                    Description = taskItem?.Description,
-                    OrderId = taskItem.OrderId,//this will be zero here since the order is new
-                    Type = 0,//this should be a constant to add logic
-                    Status = 0//constant!
-                });
-
-            OrdertaskList.Add(new taskModel()
-                {
-                    ItemName = taskItem?.ItemName, //this can be a combination of a constant & user input
-                    Description = taskItem?.Description,
-                    OrderId = taskItem.OrderId,//this will be zero here since the order is new
-                    Type = 0,//this should be a constant to add logic
-                    Status = 0//constant!
-                });
-            taskItem = new()!;
-        }
-    }
-
-
+    
 }

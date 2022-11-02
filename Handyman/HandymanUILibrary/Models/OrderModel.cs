@@ -1,6 +1,4 @@
-﻿
-using HandymanUIDataLibrary.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace HandymanUILibrary.Models

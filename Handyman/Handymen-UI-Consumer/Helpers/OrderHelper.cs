@@ -1,12 +1,8 @@
 ﻿using HandymanUILibrary.API;
 using HandymanUILibrary.API.Consumer.Order.Interface;
-using HandymanUILibrary.API.Consumer.task;
-using Handymen_UI_Consumer.Areas.Identity.Data;
+using HandymanUILibrary.Models;
 using Handymen_UI_Consumer.Data;
-using Handymen_UI_Consumer.Models;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 namespace Handymen_UI_Consumer.Helpers
@@ -15,75 +11,57 @@ namespace Handymen_UI_Consumer.Helpers
     {
        
         AuthenticationStateProvider? _authenticationStateProvider;
-        ItaskEndPoint _taskEndPoint;
         IServiceEndPoint _serviceEndPoint;
         IOrderEndPoint? _orderEndpoint;
-        private List<Service>? serviceDisplayList;
-        private List<taskModel> ordertaskList;
+
+        List<ServiceModel>? serviceDisplayList;
+        List<TaskModel> tasks;
         
   
-        private Order? order;
-        private List<Order>? ordersDisplayList;
+        OrderModel? order;
+        private List<OrderModel>? ordersDisplayList;
         public SelectList? serviceCategorySelectList { get; set; }
         public List<string>? serviceCategories { get; set; }
         string? ErrorMsg;
         private readonly Handymen_UI_ConsumerContext _context;
+        string userId;
         public OrderHelper(Handymen_UI_ConsumerContext contex,
-            IOrderEndPoint orderEndPoint, ItaskEndPoint taskEndPoint,IServiceEndPoint serviceEndPoint,
+            IOrderEndPoint orderEndPoint,IServiceEndPoint serviceEndPoint,
             AuthenticationStateProvider authenticationState)
         {
             _context = contex; 
             _orderEndpoint = orderEndPoint; 
             _serviceEndPoint = serviceEndPoint;
             _authenticationStateProvider = authenticationState;
-           _taskEndPoint = taskEndPoint;    
-            
+           
         }
 
-        //Get the order's task-list
-        public async Task<List<taskModel>> GetOrdertaskList(int id)
+        
+        async Task<string> GetUserId()
         {
-
-            ordertaskList = new()!;
-            var dotoList = new List<HandymanUILibrary.Models.taskModel>()!;
             try
             {
-                dotoList = await _taskEndPoint.GettaskListByOrderId(id);
-                if(dotoList.Count > 0)
-                {
-                    foreach (var item in dotoList)
-                    {
-                        
-                            var taskItem = new taskModel();
-                            taskItem.Id = item.Id;
-                            taskItem.OrderId = item.OrderId;
-                            taskItem.ItemName = item.ItemName;
-                            taskItem.Status = item.Status;
-                            taskItem.Description = item.Description;
-                            taskItem.StartDate = item.StartDate;
-                            taskItem.EndDate = item.EndDate;
-                            ordertaskList.Add(taskItem);
-                        
 
-                    }
-                    return ordertaskList;
-                }
-               
-            }catch(Exception ex)
-            {
-                throw new Exception(ex.Message);
+                var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
+                userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+                
             }
-            return ordertaskList;
+            catch (Exception ex)
+            {
+                ErrorMsg = ex.Message;
+                userId = null;
+            }
+            return userId;
         }
 
         //Get the order the order by its id
-        public async Task<Order> GetOrderById(int id)
+        public async Task<OrderModel> GetOrderById(int id)
         {
             if(ordersDisplayList == null)
             {
                 await LoadUserOrders();
             }
-            foreach(Order o in ordersDisplayList)
+            foreach(OrderModel o in ordersDisplayList)
             {
                 if(o.Id == id)
                 {
@@ -95,113 +73,26 @@ namespace Handymen_UI_Consumer.Helpers
         }
 
         //Load all the orders that belong to the given user's id
-        public async Task<List<Order>> LoadUserOrders()
+        public async Task<List<OrderModel>> LoadUserOrders()
         {
-            ordersDisplayList = new();
-            if(_authenticationStateProvider !=null)
-            {
-                var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
-                var UserId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
-
-                var orders = await _orderEndpoint.GetOrders(UserId);
-                await LoadServices();
-                //dirty work
-                foreach (HandymanUILibrary.Models.OrderModel o in orders)
-                {
-
-                    foreach (var service in serviceDisplayList)
-                    {
-                        if (o.ServiceId == service.Id)
-                        {
-                            order = new();
-                          
-                            order.DateCreated = o.DateCreated;
-                            order.IsConfirmed = true;
-                            order.IsAccepted = o.IsAccepted;
-                            order.Id = o.Id;
-
-
-                            order.ServiceProperty = new();
-                            order.ServiceProperty.Name = service.Name;
-                            order.ServiceProperty.CategoryName = service.CategoryName;
-                            order.ServiceProperty.CategoryDescription = service.CategoryDescription;
-                            order.ServiceProperty.Description = service.Description;
-                            order.ServiceProperty.ImageUrl = service.ImageUrl;
-                            order.IsTracking = false;
-                            ordersDisplayList.Add(order);
-
-                        }
-                    }
-
-                }
-            }
+              
+                ordersDisplayList = await _orderEndpoint?.GetOrders(GetUserId().Result);
+       
                 return ordersDisplayList;
             
         }
 
-        //Loading Services
-        public async Task<List<Service>> LoadServices()
-        {
-            serviceDisplayList = new List<Service>();
-            List<HandymanUILibrary.Models.ServiceModel> services = new List<HandymanUILibrary.Models.ServiceModel>();
 
-            try
-            {
-                //await the endpoint
-                services = await _serviceEndPoint.GetServices();
-
-                foreach (var s in services)
-                {
-                    Service service = new Service();
-                    //population
-                    service.Name = s.Name;
-                    service.Description = s.Description;
-                    service.Id = s.Id;
-                    //...category
-                    service.CategoryId = s.CategoryId;
-                    service.CategoryName = s.CategoryName;
-                    service.CategoryDescription = s.CategoryDescription;
-                    service.CategoryType = s.Type;
-                    service.ImageUrl = s.ImageUrl;
-
-                    serviceDisplayList.Add(service);
-                    ErrorMsg = null;
-                }
-
-            }
-            catch (Exception ex)
-            {
-                ErrorMsg = ex.Message;
-            }
-            return serviceDisplayList;
-        }
-
-        //Loading the Service Categories from IServicesEndPoint service
-        private async Task LoadServiceCategories()
+        //Create an order
+        public async Task CreateOrder(OrderModel newOrder)
         {
             try
             {
-                List<HandymanUILibrary.Models.ServiceCategoryModel> serviceCategoryModel = new();
-                serviceCategories = new List<string>();
-                serviceCategoryModel = await _serviceEndPoint.GetServiceCategories();
-                foreach (var serviceCategory in serviceCategoryModel)
-                {
-                    var uiCategory = new ServiceCategory();
-                    uiCategory.CategoryName = serviceCategory.CategoryName;
-                    uiCategory.CategoryDescription = serviceCategory.CategoryDescription;
-                    uiCategory.CategoryId = serviceCategory.CategoryId;
-                    if (serviceDisplayList.Count > 0)
-                    {
-                        uiCategory.Services = serviceDisplayList;
-                    }
-                    serviceCategories.Add(uiCategory.CategoryName);
-                }
-                serviceCategorySelectList = new SelectList(serviceCategories);
-                ErrorMsg = null;
+                await _orderEndpoint.PostOrder(newOrder);
             }
             catch (Exception ex)
             {
-                ErrorMsg = ex.Message;
+                throw new Exception(ex.Message);
             }
         }
 
@@ -214,7 +105,7 @@ namespace Handymen_UI_Consumer.Helpers
                 try
                 {
                    
-                  await _orderEndpoint.DeleteOrder(Id);
+                 // await _orderEndpoint.DeleteOrder(Id);
                      
                 }catch(Exception ex)
                 {

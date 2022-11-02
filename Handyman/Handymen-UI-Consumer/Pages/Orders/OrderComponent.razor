@@ -1,26 +1,15 @@
 ﻿@page "/orderComponent"
-@    using HandymanUILibrary.API
-@    using HandymanUILibrary.API.Consumer
-@    using HandymanUILibrary.API.Consumer.Order
-@    using Handymen_UI_Consumer.Areas.Identity.Data
-@    using Handymen_UI_Consumer.Helpers
-@    using Handymen_UI_Consumer.Models
-@    using Handymen_UI_Consumer.Pages.Orders.Tasks
-@    using Microsoft.AspNetCore.Authorization
-@    using Microsoft.AspNetCore.Components.Authorization
-@    using Microsoft.AspNetCore.Components.Routing
-@    using Microsoft.AspNetCore.Identity
-@    using Microsoft.AspNetCore.Components.Web
-@    using Microsoft.Extensions.Caching.Memory
-@    using System.Security.Claims
+@using HandymanUILibrary.Models
+@using Handymen_UI_Consumer.Helpers
+@using Handymen_UI_Consumer.Pages.Orders.Tasks
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Routing
+
 
 @inject NavigationManager NavManager
 @inject ILogger<OrderComponent> Logger
 @inject PersistentComponentState ApplicationState
 @inject IOrderHelper _orderHelper
-@inject IMemoryCache _cache
-@inject AuthenticationStateProvider _authenticationStateProvider
-@inject IOrderEndPoint _orderEndPoint
 @implements IDisposable
 
 
@@ -30,13 +19,13 @@
         <div class="card mb-3 " style="max-width: 540px;">
           <div class="row g-0">
             <div class="col-md-4">
-                <img src="/Images/@(order.ServiceProperty.ImageUrl)" class="img-fluid rounded-start" alt="...">
+                <img src="/Images/@(order.service.img)" class="img-fluid rounded-start" alt="...">
             </div>
             <div class="col-md-8">
               <div class="card-body">
-                    <h5 class="card-title" id="orderName">@order.ServiceProperty.Name</h5>
-                    <p class="card-text" id="orderDescription"> @order.ServiceProperty.Description</p>
-                    <p class="card-text"><small class="text-muted">@order.DateCreated.ToString("MMMM dd, yyyy")</small></p>
+                    <h5 class="card-title" id="orderName">@order.service.name</h5>
+                    <p class="card-text" id="orderDescription"> @order.service.category.description</p>
+                    <p class="card-text"><small class="text-muted">@order.datecreated.ToString("MMMM dd, yyyy")</small></p>
               </div>
             </div>
           </div>
@@ -47,13 +36,13 @@
                 If the order is not confirmed by the consumer (and ofcourse by default cannot be accepted by a service provider) --display confirm button
             *@
 
-            @if(order.IsAccepted==1)
+            @if(order.status > 3)
             {
                 <button @onclick="TrackOrder" class="btn btn-outline-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Track Order</button>
             
             }
             
-            @if (!order.IsConfirmed)
+            @if (order.status < 1)
             {
                 <button @onclick="ConfirmOrder" type="button" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#staticBackdropConfirmorder"> Confirm </button>
            
@@ -62,56 +51,91 @@
         </div>
    
 </dl>
-    @if (!order.IsConfirmed)
+    @if (order.status < 1)
     {
-        <div class="col">
+        //create a dummy parameter for new tasks display
+        
+            taskParam = new Dictionary<string, object>()
+            {
+                ["title"] = "123",
+                ["description"] = "321",
+                ["duration"] = 111,
+                ["status"] = 111,
+                ["isNew"] = true,
+                ["serviceId"] = order.service.id,
+                ["dateStarted"] = DateTime.Now,
+                ["Id"] = 0,
+                ["dateFinished"] = DateTime.FromOADate
 
-            <DynamicComponent Type="@typeof(OrderTasksComponent)" @ref="orderTasksComponent" Parameters="orderIdParam" />
+            };
+        var tasksComponent = (OrderTasksComponent)orderTasksComponent.Instance;//cast the dynamic component...finders cross x
+        newTask = new();
+        newTask = tasksComponent.NewTask;
+        
+        <div class="m-3 col ">
+
+            
+                    <DynamicComponent Type="@typeof(OrderTasksComponent)" @ref="orderTasksComponent" Parameters="taskParam" />
+                    
+
+                    <div class="card-footer">
+                        <button @onclick="@(()=> CreateNewTask(newTask))" class="btn btn-primary m-3">Add</button>
+                    </div>
+                
+            
+            
         </div>
+
     }
-    else if (order.IsConfirmed && !order.IsOnNavDisplay)
+    else if (order.Tasks.Count > 0)
     {
         <!--List of task-items in the confirmed order-->
         <div class="list-group list-group-flush align-content-lg-center">
-            @*<a href="#" class="list-group-item list-group-item-action active" aria-current="true">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">List group item heading</h5>
-                    <small>3 days ago</small>
-                </div>
-                <p class="mb-1">Some placeholder content in a paragraph.</p>
-                <small>And some small print.</small>
-            </a>*@
+           
 
-           @foreach(var item in @taskList)
+           @foreach(var item in @order.Tasks)
            {
+                taskParam = new Dictionary<string, object>()
+                    {
+                        ["title"] = item.title,
+                        ["description"] = item.description,
+                        ["duration"] = item.duration,
+                        ["status"] = item.status,
+                        ["isNew"] = false,
+                        ["serviceId"] = item.serviceId,
+                        ["dateStarted"] = item.dateStarted,
+                        ["Id"] = item.Id,
+                        ["dateFinished"] = item.dateFinished
+        
+                    };
+                <DynamicComponent Type="@typeof(OrderTasksComponent)" @ref="orderTasksComponent" Parameters="taskParam" />
 
-            <a href="#" class="list-group-item list-group-item-action ">
-                <div class="d-flex  justify-content-between">
-                    <h5 class="mb-1">@item.ItemName</h5>
-                        <small class="text-muted">@order.DateCreated.ToString("MMMM dd, yyyy")</small>
-                </div>
-                <p class="mb-1">@item.Description</p>
-                <small class="text-muted">Adhoc/LongTerm</small>
-            </a>
-           }
+            }
         </div>
         <!--End List-->
     }
 </div>
+@if (ErrorMsg != null)
+{
+    <p>
+        @ErrorMsg
+    </p>
+}
 
 @code {
 
-    private List<Service>? serviceDisplayList;
-    private Order? order = new Order()!;
+    OrderModel? order = new()!;
+    TaskModel? newTask = new()!;
+
     string? ErrorMsg;
-    string? IsAvailableMsg;
-    string? user;
-    List<Order>? userOrders;
+    
+
     DynamicComponent? orderTasksComponent;
-    private IDictionary<string, object>? orderIdParam;
-    private List<taskModel>? taskList = new List<taskModel>()!;
+    IDictionary<string, object>? taskParam;
+    List<TaskModel>? taskList = new()!;
+
     [Parameter]
-    public Order? OrderComponentModel
+    public OrderModel? OrderComponentModel
     {
         get
         {
@@ -121,35 +145,22 @@
         set
         {
             order = value;
-            orderIdParam = new Dictionary<string, object>()
-                {
-                    ["OrderId"] = OrderComponentModel.Id,
-                    ["IsNewOrder"] = true
-            };
+
         }
     }
 
     protected override async Task OnInitializedAsync()
     {
-
-        try
-        {
-
-            if (OrderComponentModel.Id != 0 && OrderComponentModel!=null)
-            {
-                taskList = new()!;
-                taskList.AddRange(await _orderHelper.GetOrdertaskList(OrderComponentModel.Id));
-            }
-
-        }catch(Exception ex)
-        {
-            ErrorMsg = ex.Message;
-        }
-
         NavManager.LocationChanged += HandleLocationChanged;
     }
 
-
+    void AddToTask(TaskModel newTask)
+    {
+        if(newTask!=null)
+        {
+            order.Tasks.Add(newTask);
+        }
+    }
     //Redirection in razor component
     void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
     {
@@ -160,26 +171,37 @@
     public void Dispose()
     {
         NavManager.LocationChanged -= HandleLocationChanged;
-        // await this.DisposeAsync();
-        //return ValueTask.CompletedTask;
+
     }
 
     //Initiate the order track --soon to be in load orders
-    void TrackOrder()
-    {
+    //void TrackOrder()
+    //{
 
-        order.IsTracking = true;
-        // NavManager.NavigateTo($"/orderdetails?id={@order.Id}", true);
-        NavManager.NavigateTo("/orders/ordertracker",true);
+    //    //order.IsTracking = true;
+    //    // NavManager.NavigateTo($"/orderdetails?id={@order.Id}", true);
+    //    NavManager.NavigateTo("/orders/ordertracker",true);
+    //}
+
+    //Adding task-item in the new list
+    void CreateNewTask(TaskModel task)
+    {
+        if (newTask != null)
+        {
+            newTask = task;
+            newTask.status = 1;
+            newTask.duration = 5;
+            order.Tasks.Add(newTask);
+        }
     }
 
-
+   
     //Cancelling --soon to be in load orders
     async Task CancelOrder()
     {
-        order.IsConfirmed = false;
-         Dispose();
-       
+        
+        Dispose();
+
     }
 
     //Completing the order on certain --loaders class 
@@ -192,33 +214,15 @@
     {
 
     }
-    //Persisting the order 
-    //Task PersistOrder()
-    //{
-    //    ApplicationState.PersistAsJson("fetorder", order);
-
-    //    return Task.CompletedTask;
-    //}
-
+   
     //Confirming the order placement--soon to be in ordershelper by all means
     async Task ConfirmOrder()
     {
-        HandymanUILibrary.Models.OrderModel libOrder = new();
-
         try
         {
-            var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
-            var UserId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
-            //Populate the order before posting it to db
-            libOrder.ConsumerID = UserId.ToString();
-            libOrder.IsAccepted = 0;//not accepted as yet, this is a new order
-            libOrder.DateCreated =  DateTime.Now;
-            libOrder.ServiceId = order.ServiceProperty.Id;
-            order.IsConfirmed = true;
-            var tasks = (OrderTasksComponent)orderTasksComponent.Instance;//cast the dynamic component...finders cross x
-            this.taskList.AddRange(tasks.taskDisplayList);
-            await _orderEndPoint.PostOrder(libOrder,tasks.OrdertaskListProperty);
-           
+            
+            
+            await _orderHelper.CreateOrder(order);
         }
         catch (Exception ex)
         {
@@ -228,21 +232,21 @@
     }
 
 
-    //[Authorize]
-    //public async Task DeleteOrder(int Id)
-    //{
-    //    try
-    //    {
+    [Authorize]
+    public async Task DeleteOrder(int Id)
+    {
+        try
+        {
 
-    //        await _orderHelper.DeleteOrder(Id);
-    //        NavManager.ToAbsoluteUri("/index");
-    //        await InvokeAsync(StateHasChanged);
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        ErrorMsg = ex.Message;
+            await _orderHelper.DeleteOrder(Id);
+            NavManager.ToAbsoluteUri("/index");
+            await InvokeAsync(StateHasChanged);
+        }
+        catch (Exception ex)
+        {
+            ErrorMsg = ex.Message;
 
-    //    }
+        }
 
-    //}
+    }
 }

@@ -21,7 +21,7 @@
               <div class="row">
 
                     
-                @if(!Model.OrderProperty.IsConfirmed)
+                @if(!(Model.OrderProperty.status==0))
                 {
                 <div class="col-5 justify-content-start">
 

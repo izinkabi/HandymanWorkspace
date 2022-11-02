@@ -4,7 +4,6 @@ using Handymen_UI_Consumer.Areas.Identity.Data;
 using HandymanUILibrary.API;
 using Microsoft.AspNetCore.ResponseCompression;
 using Handymen_UI_Consumer.Helpers;
-using HandymanUILibrary.API.Consumer.task;
 using HandymanUILibrary.API.Consumer.Order.Interface;
 using HandymanUILibrary.API.Consumer.Order.Implementation;
 
@@ -18,12 +17,11 @@ builder.Services.AddDefaultIdentity<Handymen_UI_ConsumerUser>(options => options
     .AddEntityFrameworkStores<Handymen_UI_ConsumerContext>();
 
 
-
 builder.Services.AddSingleton<IAPIHelper, APIHelper>();
 builder.Services.AddTransient<IServiceEndPoint,ServiceEndPoint>();
 builder.Services.AddTransient<IOrderEndPoint, OrderEndPoint>();
 builder.Services.AddScoped<IOrderHelper, OrderHelper>();
-builder.Services.AddTransient<ItaskEndPoint, taskEndPoint>();
+
 
 builder.Services.ConfigureApplicationCookie(options =>
 {

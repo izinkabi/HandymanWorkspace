@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HandymanUIDataLibrary.Models
+namespace HandymanUILibrary.Models
 {
     public class ServiceModel
     {
