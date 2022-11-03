@@ -37,9 +37,24 @@ namespace Handyman_DataLibrary.DataAccess.Query
                     order.Id = ordertask.ord_id;
                     order.duedate = ordertask.ord_duedate;
                     order.status = ordertask.ord_status;
-                    
-                    order.service = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Request.spServiceLookUpBy_Id",
-                         new { serviceId = ordertask.ord_service_id }, "Handyman_DB").First(); //we need a service model instead
+
+                    Service_CategoryModel service = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Request.spServiceLookUpBy_Id",
+                         new { serviceId = ordertask.ord_service_id }, "Handyman_DB").First(); 
+                    //populate service of each order
+                    order.service.name = service.serv_name;
+                    order.service.status = service.serv_status;
+                    order.service.datecreated = service.serv_datecreated;
+                    order.service.img = service.serv_img;
+                    order.service.id = service.serv_id;
+
+
+                    order.service.category = new ServiceCategoryModel();
+
+                    //populate category
+                    order.service.category.name = service.cat_name;
+                    order.service.category.description = service.cat_description;
+                    order.service.category.type = service.cat_type;
+
                     orderSet.Add(order);
                     
                 }
@@ -89,7 +104,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
                     DateCreated = order.datecreated,
                     Status = order.status,
                     DueDate = order.duedate,
-                    ServiceId = order.service.serv_id
+                    ServiceId = order.service.id
                 }).First();
                
                 /*Saving the task*/

@@ -50,7 +50,7 @@ namespace Handymen_UI_Consumer.Pages
             //}
             //Populate the select list, could have been done so easily
 
-            serviceCategorySelectList = new SelectList(serviceCategories);
+            serviceCategorySelectList = new SelectList(services);
         }
 
         //A local service list variable

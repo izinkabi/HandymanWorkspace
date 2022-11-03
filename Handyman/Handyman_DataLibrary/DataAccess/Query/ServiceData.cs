@@ -17,7 +17,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
         public List<ServiceModel> GetAllServices()
         {
            
-            IList<Service_CategoryModel> output = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Service.spServiceLookUp_GroupByCategory", new { }, "HandymanDB");
+            IList<Service_CategoryModel> output = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Service.spServiceLookUp_GroupByCategory", new { }, "Handyman_DB");
 
             //populate the service and its category
             var services = new List<ServiceModel>();

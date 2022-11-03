@@ -58,12 +58,12 @@ public class OrderEndPoint : IOrderEndPoint
     /// <param name="customerId"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public async Task<List<OrderModel>> GetOrders(string customerId)
+    public async Task<IList<OrderModel>> GetOrders(string customerId)
     {
         try
         {
-            List<OrderModel> httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<List<OrderModel>>($"/api/Get?ConsumerIdId={customerId}");
-
+            IList<OrderModel> httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<IList<OrderModel>>($"/api/orders/GetOrders?consumerId={customerId}");
+        
             return httpResponseMessage;
 
         }
@@ -83,7 +83,7 @@ public class OrderEndPoint : IOrderEndPoint
     {
         try
         {
-            var result = await _aPIHelper.ApiClient.PutAsJsonAsync<OrderModel>("api/Orders/Put", orderUpdate);
+            var result = await _aPIHelper.ApiClient.PutAsJsonAsync<OrderModel>("/api/Orders/Put", orderUpdate);
 
         }
         catch (Exception ex)

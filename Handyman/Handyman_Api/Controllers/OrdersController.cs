@@ -17,6 +17,7 @@ namespace Handyman_Api.Controllers
         }
         // GET: api/<OrdersController>
         [HttpGet]
+        [Route("GetOrders")]
         public IEnumerable<OrderModel> Get(string consumerId)
         {
             try

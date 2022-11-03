@@ -34,7 +34,7 @@ namespace HandymanUILibrary.API
             try
             {
 
-                List<ServiceModel> httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<List<ServiceModel>>("Services/GetServies");
+                List<ServiceModel> httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<List<ServiceModel>>("/api/services/GetServices");
                 return httpResponseMessage;
             }
             catch (Exception ex) 

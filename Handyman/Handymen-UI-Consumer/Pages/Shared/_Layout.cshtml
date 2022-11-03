@@ -105,7 +105,9 @@
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end sticky-top">
                             <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    @orders.Count() <!--Total value of Orders-->
+                                   
+                                       @orders.Count() <!--Total value of Orders-->
+                                   
                                     <span class="visually-hidden">unread messages</span>
                                 </span>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-basket" viewBox="0 0 16 16">
@@ -115,7 +117,7 @@
                         </div>
 
 
-                    }
+            }
                     <partial name="_LoginPartial" />
                 </div>
     </header>
@@ -220,17 +222,21 @@
 
    @{
     var ods = await _orderHelper.LoadUserOrders();
-    foreach(var order in ods)
+    @if (ods!=null)
     {
-        <div>
-           <!--invoking the orderviewComponent-->
-                @await Component.InvokeAsync("Order",
+            foreach (var order in ods)
+            {
+                <div>
+                    <!--invoking the orderviewComponent-->
+                    @await Component.InvokeAsync("Order",
                     new {
-                        Id =  order.Id
+                    Id =  order.Id
                     })
-        </div>
-        
-    }
+                </div>
+
+            }
+        }
+   
       
   }
 

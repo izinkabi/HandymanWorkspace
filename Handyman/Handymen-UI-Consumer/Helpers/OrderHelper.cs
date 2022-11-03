@@ -75,9 +75,11 @@ namespace Handymen_UI_Consumer.Helpers
         //Load all the orders that belong to the given user's id
         public async Task<List<OrderModel>> LoadUserOrders()
         {
-              
-                ordersDisplayList = await _orderEndpoint?.GetOrders(GetUserId().Result);
-       
+                if (userId == null)
+                {
+                    userId = GetUserId().Result;
+                }
+                ordersDisplayList = (List<OrderModel>?)await _orderEndpoint?.GetOrders(userId);
                 return ordersDisplayList;
             
         }

@@ -1,26 +1,23 @@
 ﻿using Handyman_DataLibrary.DataAccess.Interfaces;
 using Handyman_DataLibrary.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Handyman_Api.Controllers
 {
-    
-
+    [Route("api/services")]
     [ApiController]
-    public class ServiceController : ControllerBase
+    public class ServicesController : ControllerBase
     {
         IServiceData _serviceData;
-        public ServiceController(IServiceData serviceData)
+        public ServicesController(IServiceData serviceData)
         {
             _serviceData = serviceData;
         } 
 
         [HttpGet]
-        [Route("api/Service/GetServices")]
+        [Route("GetServices")]
         //[Authorize]
-        public  List<Service_CategoryModel> GetServices()
+        public  List<ServiceModel> Get()
         {
             return  _serviceData.GetAllServices();
         }
