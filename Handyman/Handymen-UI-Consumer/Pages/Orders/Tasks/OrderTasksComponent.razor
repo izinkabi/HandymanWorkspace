@@ -1,12 +1,10 @@
 ﻿@page "/order-tasks-component"
+@implements IDisposable
 @using HandymanUILibrary.Models
 @using Handymen_UI_Consumer.Helpers
 @using Microsoft.AspNetCore.Components.Web
-@inject IOrderHelper _orderHelper
 
-
-
-<div class="row d-inline-flex m-0">
+<div class="row d-inline-flex m-0" >
 
     @if (isNew)
     {
@@ -67,9 +65,6 @@
     {
         <div class="m-3 col ">
 
-
-           
-
             <ul class="list-group list-group-horizontal rounded-0 bg-transparent">
                 <li class="list-group-item d-flex align-items-center ps-0 pe-3 py-1 rounded-0 border-0 bg-transparent">
                     <div class="form-check">
@@ -78,7 +73,7 @@
                     </div>
                 </li>
                 <li class="list-group-item px-3 py-1 d-flex align-items-center flex-grow-1 border-0 bg-transparent">
-                    <p class="lead fw-normal mb-0">@task.title</p>
+                    <p class="lead fw-normal mb-0">@title</p>
                 </li>
                
             </ul>
@@ -95,13 +90,14 @@
     }
 
 </div>
+
 <!--End task-item -->
 
 @code {
     TaskModel task = new()!;
     TaskModel newTask = new()!;
     string? ErrorMsg;
-
+    bool isnew;
 
     [Parameter]
     public int Id { get; set; }
@@ -114,14 +110,23 @@
     [Parameter]
     public int status { get; set; }
     [Parameter]
-    public bool isNew { get; set; }
+    public bool isNew 
+    { 
+        get{ return isnew; } 
+        set{ isnew = value; } 
+    }
     [Parameter]
     public int serviceId { get; set; }
     [Parameter]
     public DateTime dateStarted { get; set; }
     [Parameter]
     public DateTime dateFinished { get; set; }
-         
+    private bool shouldRender = true;
+
+    protected override bool ShouldRender()
+    {
+        return shouldRender;
+    }
 
 
 
@@ -131,8 +136,9 @@
 
     }
 
-
-  
-
+    void IDisposable.Dispose()
+    {
+        
+    }
     
 }

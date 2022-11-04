@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using HandymanUILibrary.API.Consumer.Order.Interface;
 
 
+
 namespace Handymen_UI_Consumer.Pages
 {
     [Authorize]
@@ -15,6 +16,10 @@ namespace Handymen_UI_Consumer.Pages
         IOrderHelper? _orderHelper;
         string? ErrorMsg;
       
+        public OrderDetailsModel(IOrderHelper orderHelper)
+        {
+            _orderHelper = orderHelper;
+        }
 
         //The OrderModel as a class property
         [BindProperty(SupportsGet = true)]
@@ -28,24 +33,26 @@ namespace Handymen_UI_Consumer.Pages
             }
         }
 
-        //This method displays the Order from the SignalR Hub method
-        public async Task<IActionResult> OnGetAsync(int Id)
-        {
-           
+        
 
-            if (Id == null)
+        public async Task<IActionResult> OnGetAsync(int id)
+        {
+
+            order.service = new()!;
+            
+            if (id == 0)
             {
                 return NotFound();
             }
 
-            try
-            {
-                order = await _orderHelper.GetOrderById(Id);
-            }
-            catch (Exception ex)
-            {
-                ErrorMsg = ex.Message;
-            }
+            //try
+            //{
+            //    order = await _orderHelper.GetOrderById(Id);
+            //}
+            //catch (Exception ex)
+            //{
+            //    ErrorMsg = ex.Message;
+            //}
 
 
             return Page();

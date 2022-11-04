@@ -55,7 +55,16 @@ namespace Handyman_DataLibrary.DataAccess.Query
                     order.service.category.description = service.cat_description;
                     order.service.category.type = service.cat_type;
 
+                    //Check if the has been populated already
+                    foreach (var o in orderSet)
+                    {
+                        if (o.Id==order.Id)
+                        {
+                            orderSet.Remove(o);
+                        }
+                    }
                     orderSet.Add(order);
+                    
                     
                 }
                 //populate task

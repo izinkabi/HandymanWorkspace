@@ -151,22 +151,22 @@
                 @foreach (var item in Model.ServiceList)
                 {
                     
-        <div class="col">
-            <div class="card shadow-sm">
-            <img src="~/Images/@item.img"  class="bd-placeholder-img card-img-top" width="100%" height="225"/>
-            @*<title>@item.Name l</title>*@
-            <rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">@item.category.name</text>
-            <div class="card-body">
-              <p class="card-text">@item.category.description</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                    <a  asp-page="./Services/Details" class="btn btn-sm btn-outline-secondary" asp-route-id="@item.id">Details</a>
+                <div class="col">
+                    <div class="card shadow-sm">
+                    <img src="~/Images/@item.img"  class="bd-placeholder-img card-img-top" width="100%" height="225"/>
+                    @*<title>@item.Name l</title>*@
+                    <rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">@item.name</text>
+                    <div class="card-body">
+                      <p class="card-text">@item.category.description</p>
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <a  asp-page="./Services/Details" class="btn btn-sm btn-outline-secondary" asp-route-id="@item.id">Details</a>
+                        </div>
+                        <small class="text-muted">9 mins</small>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <small class="text-muted">9 mins</small>
-              </div>
-            </div>
-          </div>
-        </div>
             }
         }
       </div>

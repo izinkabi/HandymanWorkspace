@@ -33,6 +33,7 @@ namespace Handyman_Api.Controllers
 
         // POST api/<OrdersController>
         [HttpPost]
+        [Route("Post")]
         public void Post(OrderModel order)
         {
             try

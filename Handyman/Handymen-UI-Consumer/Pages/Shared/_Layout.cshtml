@@ -23,9 +23,9 @@
     <base href="~/" />
     <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
 
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+            <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
             <link rel="stylesheet" href="~/Identity/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/Identity/css/site.css" />
+            <link rel="stylesheet" href="~/Identity/css/site.css" />
 
     <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet"/>
 
@@ -167,17 +167,17 @@
                 @foreach (var order in @orders)
                 {
                       
-                    if (@order.status<=1)
+                    if (@order.status == 1)
                     {
                        
                        <div class="alert alert-warning alert-dismissible fade show" role="alert" id="@order.Id">
                                 <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(order.Id)" aria-label="Close"></button>
                             <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@order" >
                             <div class="row justify-content-center">
-                                <a href="/OrderDetails?Id=@{@order.Id}"  class="btn btn-info">View</a>
+                                            <a href="/OrderDetails?id=@(order.Id)" class="btn btn-info">View</a>
                             </div>
                      </div>
-                    }else
+                    }else if (@order.status > 1)
                     {
                          <div class="alert alert-success alert-dismissible fade show" role="alert" id="@order.Id">
                                 <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(order.Id)" aria-label="Close"></button>
@@ -220,7 +220,8 @@
 
     <!-- Modal -->
 
-   @{
+  @if (SignInManager.IsSignedIn(User))
+  {
     var ods = await _orderHelper.LoadUserOrders();
     @if (ods!=null)
     {
@@ -273,5 +274,6 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="_framework/blazor.server.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <persist-component-state />
 </body>
 </html>

@@ -19,15 +19,12 @@ namespace Handymen_UI_Consumer.Pages
         [BindProperty(SupportsGet = true)]
         public string? searchString { get; set; }   
         public SelectList? serviceCategorySelectList { get; set; }
-        public List<string>? serviceCategories { get; set; }
-        [BindProperty(SupportsGet = true)]
-        public string? category { get; set; }
-       
+        
         public IndexPageModel(IServiceEndPoint serviceEndPoint)
         {
           
             _serviceEndPoint = serviceEndPoint;
-            LoadServices();
+            
            
         }
 
@@ -50,7 +47,7 @@ namespace Handymen_UI_Consumer.Pages
             //}
             //Populate the select list, could have been done so easily
 
-            serviceCategorySelectList = new SelectList(services);
+           
         }
 
         //A local service list variable
@@ -75,7 +72,7 @@ namespace Handymen_UI_Consumer.Pages
             {
                 //await the endpoint
                 services = await _serviceEndPoint.GetServices();
-
+                serviceCategorySelectList = new SelectList(services);
             }
             catch (Exception ex)
             {

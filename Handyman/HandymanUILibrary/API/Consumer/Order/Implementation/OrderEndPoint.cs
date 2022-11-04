@@ -27,9 +27,11 @@ public class OrderEndPoint : IOrderEndPoint
     /// <param name="order"></param>
     /// <returns>OrderModel</returns>
     /// <exception cref="Exception">Empty Model Exception</exception>
-    public async Task<Task> PostOrder(OrderModel order)
+    public async Task PostOrder(OrderModel order)
     {
-        var httpResponseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync<OrderModel>("/api/Post", /*new
+        try
+        {
+            var httpResponseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync<OrderModel>("/api/orders/Post", /*new
         {
             order.ConsumerID,
             order.service,
@@ -41,16 +43,12 @@ public class OrderEndPoint : IOrderEndPoint
 
         }*/ order);
 
-
-        if (httpResponseMessage.IsSuccessStatusCode)
-        {
-            var result = await httpResponseMessage.Content.ReadFromJsonAsync<OrderModel>();
-            return Task.CompletedTask;
         }
-        else
+        catch (Exception ex)
         {
-            throw new Exception(httpResponseMessage.ReasonPhrase);
+            throw new Exception(ex.Message);
         }
+        
     }
     /// <summary>
     /// This method is used to Find a request using the Customer ID from the API

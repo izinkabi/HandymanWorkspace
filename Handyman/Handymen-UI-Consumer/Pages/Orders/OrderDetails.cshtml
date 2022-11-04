@@ -28,13 +28,7 @@
     
             @*<button type="button" class="btn-close align-content-end" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(Model.Order.Id)" aria-label="Close"></button>
        *@
-            <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@(Model.Order)" />@*param-OrderComponentModel="@(@Model.OrderProperty)"*@
+            <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@(@Model.Order)" />@*param-OrderComponentModel="@(@Model.OrderProperty)"*@
             
-            @functions
-            {
-                [Parameter]
-                public int? Id { get; set; }
-            }
-        
     </div>
 </div>

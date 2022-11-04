@@ -1,37 +1,28 @@
-﻿using HandymanUILibrary.API;
-using HandymanUILibrary.API.Consumer.Order.Interface;
+﻿using HandymanUILibrary.API.Consumer.Order.Interface;
 using HandymanUILibrary.Models;
-using Handymen_UI_Consumer.Data;
+using Handymen_UI_Consumer.Areas.Identity.Data;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
+
+
+ 
 namespace Handymen_UI_Consumer.Helpers
 {
     public class OrderHelper: PageModel,  IOrderHelper
     {
-       
         AuthenticationStateProvider? _authenticationStateProvider;
-        IServiceEndPoint _serviceEndPoint;
         IOrderEndPoint? _orderEndpoint;
-
-        List<ServiceModel>? serviceDisplayList;
-        List<TaskModel> tasks;
-        
-  
+        Handymen_UI_ConsumerUser _userContaxt;
         OrderModel? order;
-        private List<OrderModel>? ordersDisplayList;
-        public SelectList? serviceCategorySelectList { get; set; }
-        public List<string>? serviceCategories { get; set; }
+        List<OrderModel>? ordersDisplayList;
+
+      
         string? ErrorMsg;
-        private readonly Handymen_UI_ConsumerContext _context;
         string userId;
-        public OrderHelper(Handymen_UI_ConsumerContext contex,
-            IOrderEndPoint orderEndPoint,IServiceEndPoint serviceEndPoint,
+        public OrderHelper(IOrderEndPoint orderEndPoint,
             AuthenticationStateProvider authenticationState)
         {
-            _context = contex; 
-            _orderEndpoint = orderEndPoint; 
-            _serviceEndPoint = serviceEndPoint;
+            _orderEndpoint = orderEndPoint;
             _authenticationStateProvider = authenticationState;
            
         }
@@ -41,10 +32,16 @@ namespace Handymen_UI_Consumer.Helpers
         {
             try
             {
-
-                var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
-                userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
-                
+                if(_userContaxt.Id != null)
+                {
+                    userId = _userContaxt.Id;
+                }
+                else
+                {
+                    var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
+                    userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+                }
+              
             }
             catch (Exception ex)
             {
@@ -90,7 +87,12 @@ namespace Handymen_UI_Consumer.Helpers
         {
             try
             {
-                await _orderEndpoint.PostOrder(newOrder);
+                if (userId == null)
+                {
+                    await GetUserId();
+                }
+                newOrder.ConsumerID = userId;
+                await _orderEndpoint?.PostOrder(newOrder);
             }
             catch (Exception ex)
             {

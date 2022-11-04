@@ -42,7 +42,7 @@ namespace Handymen_UI_Consumer.Pages
 
              await buildOrder(id);
 
-            if (order.Id != id)
+            if (order.Id == id)
             {
                 return RedirectToPage("./Orders/OrderDetails");
             }
@@ -52,22 +52,24 @@ namespace Handymen_UI_Consumer.Pages
         }
       
         //Load / Create the Order 
-        private async Task buildOrder(int? id)
+        async Task buildOrder(int? id)
         {
             await LoadServices();
 
             foreach (var service in serviceDisplayList)
             {
-                if (service.id == id)
+                if (service.id == id.Value)
                 {
                     order = new HandymanUILibrary.Models.OrderModel();
+                    order.service = new();
                     order.service = service;
+                    
                 }
             }
             
         }
         //Load Services from the IServiceEndPoint service
-        private async Task LoadServices()
+        async Task LoadServices()
         {
            
             try

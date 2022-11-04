@@ -35,8 +35,20 @@ namespace Handyman_DataLibrary.DataAccess.Query
             {
                 task.dateStarted = DateTime.Now;
                 task.dateFinished = DateTime.Now;
-                 taskId = _dataAccess.LoadData<int, dynamic>("Request.spTaskInsert", task, "Handyman_DB").First();
-                    return taskId;
+                
+                 taskId = _dataAccess.LoadData<int, dynamic>("Request.spTaskInsert",new 
+                 { 
+                     dateStarted = task.dateFinished,
+                     title = task.title,
+                     duration = task.duration,
+                     status = task.status,
+                     description = task.description,
+                     serviceId = task.serviceId,
+                     dateFinished = task.dateFinished,
+
+                 }, "Handyman_DB").First();
+                    
+                return taskId;
             }
             catch (Exception ex)
             {
