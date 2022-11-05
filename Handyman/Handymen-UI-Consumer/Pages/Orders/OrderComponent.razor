@@ -14,8 +14,8 @@
 
 <!--Order Component MarkUp-->
 <div class="row">
-<dl class="col justify-content-center">
-        <div class="card mb-3 " style="max-width: 540px;">
+<dl class="col align-content-center">
+        <div class="card mb-3 ">
           <div class="row g-0">
             <div class="col-md-4">
                 <img src="/Images/@(order.service.img)" class="img-fluid rounded-start" alt="...">
@@ -28,6 +28,7 @@
               </div>
             </div>
           </div>
+        </div>
             @*
                 ### Button display logic in a re-usable component###
                 If the order is confirmed by the consumer and by the service provider accepted --display tracking button
@@ -44,8 +45,7 @@
             {
                 <button @onclick="ConfirmOrder" type="button" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#staticBackdropConfirmorder"> Confirm </button>
             }
-           
-        </div>
+       
    
 </dl>
     @if (order.status < 1)
@@ -141,6 +141,7 @@
     void AddToTasks()
     {
         var tasksComponent = (OrderTasksComponent)orderTasksComponent?.Instance;//cast the dynamic component...finders cross x
+        
         newTask = new()!;
         newTask.title = tasksComponent?.NewTask.title;
         newTask.status = tasksComponent.NewTask.status;
@@ -205,6 +206,7 @@
             order.Tasks = taskList;
             order.datecreated = DateTime.Now;
             order.duedate = DateTime.Now;
+            order.status = 1;
             await _orderHelper.CreateOrder(order);
         }
         catch (Exception ex)

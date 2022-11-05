@@ -12,13 +12,12 @@ namespace Handymen_UI_Consumer.Helpers
     {
         AuthenticationStateProvider? _authenticationStateProvider;
         IOrderEndPoint? _orderEndpoint;
-        Handymen_UI_ConsumerUser _userContaxt;
         OrderModel? order;
         List<OrderModel>? ordersDisplayList;
 
       
         string? ErrorMsg;
-        string userId;
+        static string? userId;
         public OrderHelper(IOrderEndPoint orderEndPoint,
             AuthenticationStateProvider authenticationState)
         {
@@ -32,12 +31,8 @@ namespace Handymen_UI_Consumer.Helpers
         {
             try
             {
-                if(_userContaxt.Id != null)
-                {
-                    userId = _userContaxt.Id;
-                }
-                else
-                {
+                if (userId == null)
+                { 
                     var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
                     userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
                 }

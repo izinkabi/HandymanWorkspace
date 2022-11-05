@@ -2,77 +2,82 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Handymen_UI_Consumer.Helpers;
 using Microsoft.AspNetCore.Authorization;
-using HandymanUILibrary.API.Consumer.Order.Interface;
+using Handymen_UI_Consumer.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity;
 
 
 
-namespace Handymen_UI_Consumer.Pages
+
+
+namespace Handymen_UI_Consumer.Pages;
+
+[Authorize]
+public class OrderDetailsModel : PageModel
 {
-    [Authorize]
-    public class OrderDetailsModel : PageModel
+    SignInManager<Handymen_UI_ConsumerUser> _signInManager;
+    HandymanUILibrary.Models.OrderModel order = new()!;
+    IOrderHelper? _orderHelper;
+    string? ErrorMsg;
+  
+    public OrderDetailsModel(IOrderHelper orderHelper, 
+        SignInManager<Handymen_UI_ConsumerUser> signInManager)
+    {
+        _orderHelper = orderHelper;
+        _signInManager = signInManager;
+    }
+
+    //The OrderModel as a class property
+    [BindProperty(SupportsGet = true)]
+    public HandymanUILibrary.Models.OrderModel Order
+    {
+        get { return order; }
+        set
+        {
+            order = value;
+
+        }
+    }
+
+    
+    //Get on Page redirection and 
+    public async Task<IActionResult> OnGetAsync(int? id)
     {
 
-        HandymanUILibrary.Models.OrderModel order = new()!;
-        IOrderHelper? _orderHelper;
-        string? ErrorMsg;
-      
-        public OrderDetailsModel(IOrderHelper orderHelper)
-        {
-            _orderHelper = orderHelper;
-        }
-
-        //The OrderModel as a class property
-        [BindProperty(SupportsGet = true)]
-        public HandymanUILibrary.Models.OrderModel Order
-        {
-            get { return order; }
-            set
-            {
-                order = value;
-
-            }
-        }
-
+        order.service = new()!;
         
-
-        public async Task<IActionResult> OnGetAsync(int id)
+        if (id == 0)
         {
-
-            order.service = new()!;
-            
-            if (id == 0)
-            {
-                return NotFound();
-            }
-
-            //try
-            //{
-            //    order = await _orderHelper.GetOrderById(Id);
-            //}
-            //catch (Exception ex)
-            //{
-            //    ErrorMsg = ex.Message;
-            //}
-
-
-            return Page();
+            return NotFound();
         }
 
-        
-        public async Task<RedirectResult> OnPostAsync(int Id)
+        try
         {
-            try
-            {
-                await _orderHelper.DeleteOrder(Id);
+            if (_signInManager.IsSignedIn(User))
+                order = await _orderHelper.GetOrderById(id.Value);
+        }
+        catch (Exception ex)
+        {
+            ErrorMsg = ex.Message;
+        }
 
-            }
-            catch (Exception ex)
-            {
-                ErrorMsg = ex.Message;
 
-            }
-            return Redirect("./Index");
+        return Page();
+    }
+
+    
+    public async Task<RedirectResult> OnPostAsync(int Id)
+    {
+        try
+        {
+            await _orderHelper.DeleteOrder(Id);
 
         }
+        catch (Exception ex)
+        {
+            ErrorMsg = ex.Message;
+
+        }
+        return Redirect("./Index");
+
     }
 }
