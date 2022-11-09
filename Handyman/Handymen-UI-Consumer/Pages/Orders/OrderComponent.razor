@@ -15,6 +15,7 @@
 <!--Order Component MarkUp-->
 <div class="row">
 <dl class="col align-content-center">
+        <a href="##" onclick="history.go(-1); return false;">Go back</a>
         <div class="card mb-3 ">
           <div class="row g-0">
             <div class="col-md-4">
@@ -142,6 +143,7 @@
     {
         var tasksComponent = (OrderTasksComponent)orderTasksComponent?.Instance;//cast the dynamic component...finders cross x
         
+        //Tasks population
         newTask = new()!;
         newTask.title = tasksComponent?.NewTask.title;
         newTask.status = tasksComponent.NewTask.status;
@@ -151,10 +153,7 @@
         newTask.dateStarted = DateTime.UtcNow;
         newTask.serviceId = order.service.id;
 
-
         taskList.Add(newTask);
-
-
 
     }
     //Redirection in razor component
@@ -179,7 +178,7 @@
     //    NavManager.NavigateTo("/orders/ordertracker",true);
     //}
 
-    //Cancelling --soon to be in load orders
+    //Cancelling --soon to be in Helper orders
     async Task CancelOrder()
     {
 
@@ -216,7 +215,6 @@
     
     }
 
-
     [Authorize]
     public async Task DeleteOrder(int Id)
     {
@@ -232,6 +230,5 @@
             ErrorMsg = ex.Message;
 
         }
-
     }
 }
