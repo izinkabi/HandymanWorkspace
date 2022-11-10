@@ -4,7 +4,7 @@
 	[req_datecreated] [datetime2](7) NOT NULL,
 	[req_status] [nchar](10) NOT NULL,
 	[req_progress] [nchar](10) NULL, 
-    [req_employeeid] INT NOT NULL, 
+    [req_employeeid] NVARCHAR (450) NOT NULL, 
     [req_orderid] INT NOT NULL, 
     CONSTRAINT [PK_request] PRIMARY KEY ([req_id]), 
     CONSTRAINT [FK_request_employees] FOREIGN KEY ([req_employeeid]) REFERENCES [Delivery].[employees]([emp_id]), 

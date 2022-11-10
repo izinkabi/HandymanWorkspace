@@ -66,6 +66,10 @@
     <Folder Include="Stored Procedures\Request" />
     <Folder Include="Stored Procedures\Task" />
     <Folder Include="Stored Procedures\Order_Task" />
+    <Folder Include="Stored Procedures\Stuff" />
+    <Folder Include="Stored Procedures\Business" />
+    <Folder Include="Stored Procedures\Business\Employee" />
+    <Folder Include="Stored Procedures\Business\Employee\Provider" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Schemas\Request.sql" />
@@ -96,6 +100,9 @@
     <Build Include="Stored Procedures\Order_Task\spDeleteOrderTask.sql" />
     <Build Include="Stored Procedures\Order\spDeleteOrder.sql" />
     <Build Include="Stored Procedures\Service\spServiceLookUpBy_Id.sql" />
+    <Build Include="Tables\employee_service.sql" />
+    <Build Include="Schemas\dbo.sql" />
+    <Build Include="Stored Procedures\Business\Employee\_spEmployeesLookUp_.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Script\DevNathi_Handyman_DB.publish.publish.xml" />

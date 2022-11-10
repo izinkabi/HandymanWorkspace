@@ -20,6 +20,7 @@ builder.Services.AddSingleton<ISQLDataAccess, SQLDataAccess>();
 builder.Services.AddScoped<IServiceData, ServiceData>();
 builder.Services.AddScoped<IOrderData, OrderData>();
 builder.Services.AddTransient<IOrderTaskData, OrderTaskData>();
+builder.Services.AddScoped<IEmployeeData, EmployeeData>();
 
 
 builder.Services.AddControllers();

@@ -16,7 +16,12 @@ namespace Handyman_DataLibrary.DataAccess.Query
             _taskData = orderTaskData;
         }
 
-        //Get the consumer's orders and their respective tasks
+        /// <summary>
+        /// Get the consumer's orders and their respective tasks
+        /// </summary>
+        /// <param name="consumerID"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public IEnumerable<OrderModel> GetConsumerOrderAndTasks(string consumerID)
         {
             List<OrderTaskModel> ordertasks = new()!;
