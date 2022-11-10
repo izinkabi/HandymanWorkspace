@@ -15,7 +15,7 @@
     @if(@Model.OrderProperty!=null)
     {
 
-                
+              <a href="##" onclick="history.go(-1); return false;">Go back</a>
               <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@(@Model.OrderProperty)" />
               <!--Buttons-->
               <div class="row">
