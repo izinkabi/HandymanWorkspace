@@ -4,6 +4,7 @@ namespace Handyman_DataLibrary.DataAccess.Interfaces
 {
     public interface IEmployeeData
     {
-        EmployeeModel GetEmployeeWithServices(string EmployeeId);
+        EmployeeModel GetEmployeeWithRatings(string EmployeeId);
+        void InsertEmployee(EmployeeModel employee);
     }
 }

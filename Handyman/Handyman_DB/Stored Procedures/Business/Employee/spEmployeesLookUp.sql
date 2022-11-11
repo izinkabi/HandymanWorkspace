@@ -6,6 +6,6 @@ Begin
   FROM [Handyman_DB].[Delivery].[employees] e
   inner join [Handyman_DB].[Delivery].[ratings] r ON [e].[emp_ratingid] = [r].[rate_id]
   
-  WHERE [e].[emp_businessid] = @EmployeeId
+  WHERE [e].[emp_userid] = @EmployeeId
 END
 

@@ -1,4 +1,5 @@
 ﻿using Handyman_DataLibrary.DataAccess.Interfaces;
+using Handyman_DataLibrary.DataAccess.Query;
 using Handyman_DataLibrary.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,20 +10,21 @@ namespace Handyman_Api.Controllers
     [ApiController]
     public class DeliveryController : ControllerBase
     {
-        IEmployeeData _employeeData;
-        public DeliveryController(IEmployeeData employeeData)
+        IBusinessData _businessData;
+        public DeliveryController(IBusinessData business)
         {
-            _employeeData = employeeData;
+            _businessData = business;
         }
 
+        //Get the business under which the employee(userId) is registered
         [HttpGet]
         [Route("GetEmployee")]
         public EmployeeModel GetEmployee(string employeeid)
         {
             try
             {
-                var employee = _employeeData.GetEmployeeWithServices(employeeid);
-                return employee;
+                var business = _businessData.GetBusiness(employeeid);
+                return business.Employee;
             }
             catch (Exception ex)
             {
@@ -30,5 +32,34 @@ namespace Handyman_Api.Controllers
                 throw new Exception(ex.Message);
             }
         }
+
+        //Register A business
+        [HttpPost]
+        public int Post(BusinessModel business)
+        {
+            try
+            {
+              int businessId = _businessData.CreateBusiness(business);
+                return businessId;
+            }catch(Exception ex) 
+            {
+                throw new Exception(ex.Message);    
+            }
+        }
+
+        //Update the business or its address
+        [HttpPut]
+        public void Update()
+        {
+
+        }
+        //Employ a new member
+        //public void Employ() 
+        //{
+
+        //}
+
+
+
     }
 }

@@ -87,7 +87,7 @@
     <Build Include="Tables\invoice.sql" />
     <Build Include="Tables\task.sql" />
     <Build Include="Tables\business.sql" />
-    <Build Include="Tables\registation.sql" />
+    <Build Include="Tables\registration.sql" />
     <Build Include="Stored Procedures\Service\spUpdateService.sql" />
     <Build Include="Stored Procedures\Service\spServiceLookUp_GroupByCategory.sql" />
     <Build Include="Stored Procedures\Order\spOrderInsert.sql" />
@@ -102,7 +102,13 @@
     <Build Include="Stored Procedures\Service\spServiceLookUpBy_Id.sql" />
     <Build Include="Tables\employee_service.sql" />
     <Build Include="Schemas\dbo.sql" />
-    <Build Include="Stored Procedures\Business\Employee\_spEmployeesLookUp_.sql" />
+    <Build Include="Stored Procedures\Business\Employee\spEmployeesLookUp.sql" />
+    <Build Include="Stored Procedures\Business\Employee\spBusiness_Registration_LookUp.sql" />
+    <Build Include="Stored Procedures\Business\Employee\Provider\spProvider_Service_LookUp.sql" />
+    <Build Include="Stored Procedures\Business\spBusinessInsert.sql" />
+    <Build Include="Stored Procedures\Business\spRegistrationInsert.sql" />
+    <Build Include="Stored Procedures\Business\Employee\spEmployeeInsert.sql" />
+    <Build Include="Stored Procedures\Business\spAddressInsert.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Script\DevNathi_Handyman_DB.publish.publish.xml" />

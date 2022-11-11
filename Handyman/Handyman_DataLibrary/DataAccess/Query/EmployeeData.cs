@@ -17,7 +17,8 @@ namespace Handyman_DataLibrary.DataAccess.Query
         {
             _dataAccess = dataAccess;
         }
-        public EmployeeModel GetEmployeeWithServices(string EmployeeId)
+        //Get an employee
+        public EmployeeModel GetEmployeeWithRatings(string EmployeeId)
         {
             EmployeeModel employee = new();
             /// List<RatingsModel> ratings = new();
@@ -25,7 +26,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
             try
             {
                 //get the business , employee and the related ratings
-                var ers = _dataAccess.LoadData<Employee_Rating_Model, dynamic>("spEmployeesLookUp", new { EmployeeId = EmployeeId }, "Handyman_DB");
+                var ers = _dataAccess.LoadData<Employee_Rating_Model, dynamic>("Delivery.spEmployeesLookUp", new { EmployeeId = EmployeeId }, "Handyman_DB");
 
                 //popolate the data in the following sequence
                 //Employee
@@ -40,14 +41,31 @@ namespace Handyman_DataLibrary.DataAccess.Query
                     rating.review = er.rate_review;
                     rating.recommnedation = er.rate_recommendation;
                     employee.ratings.Add(rating);
+
+
                 }
             }
             catch (Exception)
             {
-
+                employee = null;
                 throw;
             }
             return employee;
+        }
+        
+        //Create a new employee
+        public void InsertEmployee(EmployeeModel employee)
+        {
+            try
+            {
+                _dataAccess.SaveData<EmployeeModel>("Delivery.spEmployeeInsert", employee, "Handyman_DB");
+            }catch(Exception ex) { throw new Exception(ex.Message); }
+        }
+
+        //Delete or remove employee
+        protected virtual void Resign(string employeeId)
+        {
+
         }
     }
 }

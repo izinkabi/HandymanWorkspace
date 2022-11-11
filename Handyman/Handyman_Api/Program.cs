@@ -19,8 +19,10 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddSingleton<ISQLDataAccess, SQLDataAccess>();
 builder.Services.AddScoped<IServiceData, ServiceData>();
 builder.Services.AddScoped<IOrderData, OrderData>();
-builder.Services.AddTransient<IOrderTaskData, OrderTaskData>();
-builder.Services.AddScoped<IEmployeeData, EmployeeData>();
+builder.Services.AddScoped<IOrderTaskData,OrderTaskData>();
+builder.Services.AddTransient<IEmployeeData, EmployeeData>();
+builder.Services.AddTransient<IServiceProviderData, ServiceProviderData>();
+builder.Services.AddScoped<IBusinessData, BusinessData>();
 
 
 builder.Services.AddControllers();
