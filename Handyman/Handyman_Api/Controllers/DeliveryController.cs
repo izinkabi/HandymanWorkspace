@@ -45,10 +45,10 @@ namespace Handyman_Api.Controllers
 
         }
         //Employ a new member
-        public void Employ() 
-        {
+        //public void Employ() 
+        //{
 
-        }
+        //}
 
 
 

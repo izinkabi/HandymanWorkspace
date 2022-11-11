@@ -26,7 +26,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
             try
             {
                 //get the business , employee and the related ratings
-                var ers = _dataAccess.LoadData<Employee_Rating_Model, dynamic>("spEmployeesLookUp", new { EmployeeId = EmployeeId }, "Handyman_DB");
+                var ers = _dataAccess.LoadData<Employee_Rating_Model, dynamic>("Delivery.spEmployeesLookUp", new { EmployeeId = EmployeeId }, "Handyman_DB");
 
                 //popolate the data in the following sequence
                 //Business
