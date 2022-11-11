@@ -1,4 +1,5 @@
 ﻿using Handyman_DataLibrary.DataAccess.Interfaces;
+using Handyman_DataLibrary.DataAccess.Query;
 using Handyman_DataLibrary.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,10 +10,10 @@ namespace Handyman_Api.Controllers
     [ApiController]
     public class DeliveryController : ControllerBase
     {
-        IEmployeeData _employeeData;
-        public DeliveryController(IEmployeeData employeeData)
+        IBusinessData _businessData;
+        public DeliveryController(IBusinessData business)
         {
-            _employeeData = employeeData;
+            _businessData = business;
         }
 
         [HttpGet]
@@ -20,7 +21,7 @@ namespace Handyman_Api.Controllers
         {
             try
             {
-                var employee = _employeeData.GetEmployeeWithServices(employeeid);
+                var employee = _businessData.GetEmployeeWithRatings(employeeid);
                 return employee;
             }
             catch (Exception ex)

@@ -17,7 +17,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
         {
             _dataAccess = dataAccess;
         }
-        public EmployeeModel GetEmployeeWithServices(string EmployeeId)
+        public EmployeeModel GetEmployeeWithRatings(string EmployeeId)
         {
             EmployeeModel employee = new();
             /// List<RatingsModel> ratings = new();
