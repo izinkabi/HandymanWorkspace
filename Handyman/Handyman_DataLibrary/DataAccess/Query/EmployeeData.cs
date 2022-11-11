@@ -28,7 +28,6 @@ namespace Handyman_DataLibrary.DataAccess.Query
                 var ers = _dataAccess.LoadData<Employee_Rating_Model, dynamic>("spEmployeesLookUp", new { EmployeeId = EmployeeId }, "Handyman_DB");
 
                 //popolate the data in the following sequence
-                //Business
                 //Employee
                 //Rating
                 foreach (var er in ers)

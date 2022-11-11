@@ -10,7 +10,7 @@ namespace HandymanUILibrary.API.Consumer.Order.Implementation;
 public class OrderEndPoint : IOrderEndPoint
 {
     IAPIHelper _aPIHelper;
-   
+
     /// <summary>
     /// This method is used to construct a the API helper
     /// </summary>
@@ -48,7 +48,7 @@ public class OrderEndPoint : IOrderEndPoint
         {
             throw new Exception(ex.Message);
         }
-        
+
     }
     /// <summary>
     /// This method is used to Find a request using the Customer ID from the API
@@ -61,7 +61,7 @@ public class OrderEndPoint : IOrderEndPoint
         try
         {
             IList<OrderModel> httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<IList<OrderModel>>($"/api/orders/GetOrders?consumerId={customerId}");
-        
+
             return httpResponseMessage;
 
         }

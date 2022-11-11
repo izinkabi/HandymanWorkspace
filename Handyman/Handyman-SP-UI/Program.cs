@@ -1,6 +1,9 @@
 using Handyman_SP_UI.Areas.Identity;
 using Handyman_SP_UI.Areas.Identity.Data;
 using Handyman_SP_UI.Data;
+using Handyman_SP_UI.Helpers;
+using HandymanProviderLibrary.Api.Stuff;
+using HandymanProviderLibrary.API;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
@@ -20,6 +23,9 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddScoped<TokenProvider>();
+builder.Services.AddSingleton<IAPIHelper, APIHelper>();
+builder.Services.AddScoped<IDeliveryEndpoint, DeliveryEndpoint>();
+builder.Services.AddTransient<IEmployeeHelper, EmployeeHelper>();
 
 var app = builder.Build();
 

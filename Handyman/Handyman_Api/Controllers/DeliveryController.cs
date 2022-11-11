@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Handyman_Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Delivery")]
     [ApiController]
     public class DeliveryController : ControllerBase
     {
@@ -16,7 +16,8 @@ namespace Handyman_Api.Controllers
         }
 
         [HttpGet]
-        public EmployeeModel Get(string employeeid)
+        [Route("GetEmployee")]
+        public EmployeeModel GetEmployee(string employeeid)
         {
             try
             {

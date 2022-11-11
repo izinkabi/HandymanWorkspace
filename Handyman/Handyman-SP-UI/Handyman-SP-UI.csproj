@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HandymanProviderLibrary\HandymanProviderLibrary.csproj" />
     <ProjectReference Include="..\HandymanUILibrary\HandymanUILibrary.csproj" />
   </ItemGroup>
 
@@ -39,7 +40,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\Business\Stuff\" />
+    <Folder Include="NewFolder\" />
   </ItemGroup>
 
 </Project>
