@@ -42,24 +42,29 @@ namespace Handyman_DataLibrary.DataAccess.Query
                     rating.review = er.rate_review;
                     rating.recommnedation = er.rate_recommendation;
                     employee.ratings.Add(rating);
+
+
                 }
             }
             catch (Exception)
             {
-
+                employee = null;
                 throw;
             }
             return employee;
         }
         
         //Create a new employee
-        protected void CreateEmployee(EmployeeModel employee)
+        public void InsertEmployee(EmployeeModel employee)
         {
-
+            try
+            {
+                _dataAccess.SaveData<EmployeeModel>("Delivery.spEmployeeInsert", employee, "Handyman_DB");
+            }catch(Exception ex) { throw new Exception(ex.Message); }
         }
 
         //Delete or remove employee
-        protected void Resign(string employeeId)
+        protected virtual void Resign(string employeeId)
         {
 
         }

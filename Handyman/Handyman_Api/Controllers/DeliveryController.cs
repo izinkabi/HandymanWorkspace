@@ -1,4 +1,5 @@
 ﻿using Handyman_DataLibrary.DataAccess.Interfaces;
+using Handyman_DataLibrary.DataAccess.Query;
 using Handyman_DataLibrary.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -33,9 +34,16 @@ namespace Handyman_Api.Controllers
 
         //Register A business
         [HttpPost]
-        public void Post(BusinessModel business)
+        public int Post(BusinessModel business)
         {
-
+            try
+            {
+              int businessId = _businessData.CreateBusiness(business);
+                return businessId;
+            }catch(Exception ex) 
+            {
+                throw new Exception(ex.Message);    
+            }
         }
 
         //Update the business or its address

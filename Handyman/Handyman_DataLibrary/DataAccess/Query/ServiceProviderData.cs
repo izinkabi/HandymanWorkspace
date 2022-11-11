@@ -32,10 +32,10 @@ namespace Handyman_DataLibrary.DataAccess.Query
         }
 
         //Remove a service of a provider
-        public void RemoveService(int serviceId, string providerId)
-        {
+        //public void RemoveService(int serviceId, string providerId)
+        //{
 
-        }
+        //}
 
         //Get the service provider and the services
         public ServiceProviderModel GetServiceProvider(string providerId)
@@ -43,7 +43,8 @@ namespace Handyman_DataLibrary.DataAccess.Query
             try
             {
                 //Get the service of the provider
-                List<Service_CategoryModel> service_category = _dataAccess.LoadData<Service_CategoryModel, dynamic>("spProvider_Service_LookUp", new { provider = providerId }, "Handyman_DB");
+                List<Service_CategoryModel> service_category = _dataAccess.LoadData<Service_CategoryModel, dynamic>("spProvider_Service_LookUp", 
+                    new { provider = providerId }, "Handyman_DB");
 
                 var services = new List<ServiceModel>();
                 var provider = new ServiceProviderModel()!;
@@ -80,6 +81,9 @@ namespace Handyman_DataLibrary.DataAccess.Query
 
         }
 
-
+        //protected override void Resign(string employeeId)
+        //{
+        //    base.Resign(employeeId);
+        //}
     }
 }

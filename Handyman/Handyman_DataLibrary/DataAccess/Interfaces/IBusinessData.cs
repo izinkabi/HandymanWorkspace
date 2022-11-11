@@ -1,12 +1,13 @@
 ﻿using Handyman_DataLibrary.Models;
 
-namespace Handyman_DataLibrary.DataAccess.Interfaces
+namespace Handyman_DataLibrary.DataAccess.Query
 {
     public interface IBusinessData
     {
-        void EmployMember(EmployeeModel newEmployee);
+        int CreateBusiness(BusinessModel business);
+        void EmployMember(ServiceProviderModel serviceProvider);
         BusinessModel GetBusiness(string userId);
-        void Register(RegistrationModel registration);
+        //int Register(RegistrationModel registration);
         void ReleaseEmployee();
     }
 }

@@ -6,6 +6,6 @@
         public string? name { get; set; }
         public string? regNumber { get; set; }
         public string? taxNumber { get; set; }
-        public string? businessType { get; set; }
+        public int businessType { get; set; }
     }
 }

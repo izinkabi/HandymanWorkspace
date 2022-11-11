@@ -11,5 +11,7 @@ namespace Handyman_DataLibrary.Models
      
         public IList<ServiceModel>? Services { get; set; }
         public string? pro_providerId { get; set; }
+
+       
     }
 }
