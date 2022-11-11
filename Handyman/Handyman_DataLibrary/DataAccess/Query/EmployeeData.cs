@@ -17,6 +17,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
         {
             _dataAccess = dataAccess;
         }
+        //Get an employee
         public EmployeeModel GetEmployeeWithRatings(string EmployeeId)
         {
             EmployeeModel employee = new();
@@ -49,6 +50,18 @@ namespace Handyman_DataLibrary.DataAccess.Query
                 throw;
             }
             return employee;
+        }
+        
+        //Create a new employee
+        protected void CreateEmployee(EmployeeModel employee)
+        {
+
+        }
+
+        //Delete or remove employee
+        protected void Resign(string employeeId)
+        {
+
         }
     }
 }

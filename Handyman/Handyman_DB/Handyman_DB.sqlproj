@@ -103,6 +103,8 @@
     <Build Include="Tables\employee_service.sql" />
     <Build Include="Schemas\dbo.sql" />
     <Build Include="Stored Procedures\Business\Employee\_spEmployeesLookUp_.sql" />
+    <Build Include="Stored Procedures\Business\Employee\spBusiness_Registration_LookUp.sql" />
+    <Build Include="Stored Procedures\Business\Employee\Provider\spProvider_Service_LookUp.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Script\DevNathi_Handyman_DB.publish.publish.xml" />

@@ -18,9 +18,10 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 // Add services to the container
 builder.Services.AddSingleton<ISQLDataAccess, SQLDataAccess>();
 builder.Services.AddScoped<IServiceData, ServiceData>();
-builder.Services.AddScoped<IOrderData, OrderData>();
-builder.Services.AddTransient<IOrderTaskData, OrderTaskData>();
+builder.Services.AddTransient<IOrderData, OrderData>();
 builder.Services.AddScoped<IEmployeeData, EmployeeData>();
+builder.Services.AddTransient<IServiceProviderData, ServiceProviderData>();
+builder.Services.AddScoped<IBusinessData, BusinessData>();
 
 
 builder.Services.AddControllers();

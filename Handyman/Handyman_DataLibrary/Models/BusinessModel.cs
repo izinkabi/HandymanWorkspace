@@ -2,7 +2,7 @@
 {
     public class BusinessModel
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public RegistrationModel? registration { get; set; }
         public EmployeeModel? Employee { get; set; }
         public AddressModel? address { get; set; }

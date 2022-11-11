@@ -13,5 +13,8 @@ namespace Handyman_DataLibrary.Models
     {
         public string? employeeId { get; set; }
         public IList<RatingsModel>? ratings { get; set; }
+        public int BusinessId { get; set; }
+
+        public DateTime DateEmployed { get; set; }
     }
 }

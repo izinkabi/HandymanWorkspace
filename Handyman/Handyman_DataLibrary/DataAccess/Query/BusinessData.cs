@@ -28,21 +28,43 @@ namespace Handyman_DataLibrary.DataAccess.Query
 
 
         //Get the business of the loggedIn user
-        public BusinessRegistrationModel GetBusiness(string userId)
+        public BusinessModel GetBusiness(string userId)
         {
-            //Get the stored-procedure that returns a business, registration and address
-            BusinessModel business = _dataAccess.LoadData<BusinessRegistrationModel, dynamic>("spBusiness_Registration_LookUp", new { businessId = businessId }, "Handyman_DB").First();
+            //Break the entities into models: business, employee and address
+            //Build a business model
+            //Return business Model
 
-            EmployeeModel employee =  _serviceProvider.GetEmployeeWithRatings(userId);
-            business.Employee = new();
-            
-            //Populating
+            //Get the provider as an employee
+            EmployeeModel employee = _serviceProvider.GetEmployeeWithRatings(userId);
+
+            //Get business, registration and address
+            BusinessRegistrationModel businessRegistration = _dataAccess.LoadData<BusinessRegistrationModel, dynamic>("spBusiness_Registration_LookUp", new { businessId = employee.BusinessId }, "Handyman_DB").First();
+
+            //Populate the business
+            BusinessModel business = new()!;
+
+            business.Id = businessRegistration.bus_Id;
+            business.date = businessRegistration.bus_datecreated;
+            business.Employee = employee;
+            //Populate registration
+            business.registration.Id = businessRegistration.reg_Id;
+            business.registration.name = businessRegistration.reg_name;
+            business.registration.regNumber = businessRegistration.reg_regnumber;
+            business.registration.taxNumber = businessRegistration.reg_taxnumber;
+
+            //Populating address
+
+            business.address.add_state = businessRegistration.add_state;
+            business.address.add_country = businessRegistration.add_country;
+            business.address.add_Id = businessRegistration.add_Id;
+            business.address.add_zip = businessRegistration.add_zip;
+            business.address.add_city = businessRegistration.add_city;
+            business.address.add_latitude = businessRegistration.add_latitude;
+            business.address.add_longitude = businessRegistration.add_longitude;
 
 
             return business;
-            //Break the entities into models
-            //Build a business model
-            //Return business Model
+        
         }
 
         
