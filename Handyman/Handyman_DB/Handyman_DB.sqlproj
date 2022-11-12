@@ -109,6 +109,10 @@
     <Build Include="Stored Procedures\Business\spRegistrationInsert.sql" />
     <Build Include="Stored Procedures\Business\Employee\spEmployeeInsert.sql" />
     <Build Include="Stored Procedures\Business\spAddressInsert.sql" />
+    <Build Include="Stored Procedures\Business\Employee\Provider\spProviderInsert.sql" />
+    <Build Include="Tables\employee_ratings.sql" />
+    <Build Include="Stored Procedures\Business\Employee\spEmployee_Rating_Insert.sql" />
+    <Build Include="Stored Procedures\Business\Employee\spRatingInsert.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Script\DevNathi_Handyman_DB.publish.publish.xml" />

@@ -82,20 +82,26 @@ namespace Handyman_DataLibrary.DataAccess.Query
             BusinessRegistrationModel businessRegistration = _dataAccess.LoadData<BusinessRegistrationModel, dynamic>("Delivery.spBusiness_Registration_LookUp",
                 new { businessId = employee.BusinessId }, "Handyman_DB").First();
 
-            //Populate the business
+            //Populating business
             BusinessModel business = new()!;
 
             business.Id = businessRegistration.bus_Id;
             business.date = businessRegistration.bus_datecreated;
-            business.Employee = employee;
-            //Populate registration
+            //Employee
+
+            business.Employee = new()!;
+               
+            business.Employee.BusinessId = businessRegistration.bus_Id;
+            business.Employee.DateEmployed = businessRegistration.bus_datecreated;
+            //Reistration
+            business.registration = new()!;
             business.registration.Id = businessRegistration.reg_Id;
             business.registration.name = businessRegistration.reg_name;
             business.registration.regNumber = businessRegistration.reg_regnumber;
             business.registration.taxNumber = businessRegistration.reg_taxnumber;
 
-            //Populating address
-
+            //Address
+            business.address = new()!;
             business.address.add_state = businessRegistration.add_state;
             business.address.add_country = businessRegistration.add_country;
             business.address.add_Id = businessRegistration.add_Id;
@@ -137,14 +143,16 @@ namespace Handyman_DataLibrary.DataAccess.Query
 
                         }).First();
 
+                    _dataAccess.CommitTransation();
 
-
+                    //then save the employee
                     if (business.Employee != null)
                     {
+                        //Insert the employee
                         business.Employee.BusinessId = businessId;
-                       // EmployMember(business.Employee);
+                        EmployMember(business.Employee);
                     }
-                    _dataAccess.CommitTransation();
+                   
                     return businessId;
                 }
             }
@@ -157,16 +165,15 @@ namespace Handyman_DataLibrary.DataAccess.Query
         }
 
         //Create an employee in a business
+        
         public void EmployMember(ServiceProviderModel serviceProvider)
         {
             try
             {
                 //check if the service provider is a employee
-                if (serviceProvider is EmployeeModel)
+                if (serviceProvider is not null)
                 {
-                    //Insert a employee
-                    _serviceProvider.InsertEmployee(serviceProvider);
-                    //Insert a provider
+                    //Insert a provider and its employee details
                     _serviceProvider.InsertProvider(serviceProvider);
                 }
 

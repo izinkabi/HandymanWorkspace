@@ -16,9 +16,9 @@ namespace Handyman_Api.Controllers
             _businessData = business;
         }
 
-        //Get the business under which the employee(userId) is registered
+        //Get the business under which the employee(userId) which is a provider is registered
         [HttpGet]
-        public EmployeeModel Get(string employeeid)
+        public ServiceProviderModel Get(string employeeid)
         {
             try
             {
@@ -52,11 +52,22 @@ namespace Handyman_Api.Controllers
         {
 
         }
-        //Employ a new member
-        //public void Employ() 
-        //{
 
-        //}
+        //Employ a new member
+        [HttpPost]
+        [Route("AddNewMember")]
+        public void Employ(ServiceProviderModel serviceProvider)
+        {
+            try
+            {
+                _businessData.EmployMember(serviceProvider);
+            }
+            catch(Exception ex) 
+            {
+                throw new Exception(ex.Message);    
+            }
+           
+        }
 
 
 

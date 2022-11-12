@@ -40,7 +40,8 @@ namespace Handyman_DataLibrary.DataAccess.Query
                     rating.Id = er.rate_id;
                     rating.stars = er.rate_stars;
                     rating.review = er.rate_review;
-                    rating.recommnedation = er.rate_recommendation;
+                    rating.recommendation = er.rate_recommendation;
+                    employee.ratings = new List<RatingsModel>()!;
                     employee.ratings.Add(rating);
 
 
@@ -55,14 +56,42 @@ namespace Handyman_DataLibrary.DataAccess.Query
         }
         
         //Create a new employee
-        public void InsertEmployee(EmployeeModel employee)
+        protected void InsertEmployee(EmployeeModel employee)
         {
             try
             {
-                _dataAccess.SaveData<EmployeeModel>("Delivery.spEmployeeInsert", employee, "Handyman_DB");
-            }catch(Exception ex) { throw new Exception(ex.Message); }
-        }
+                //Insert the employee
+                _dataAccess.SaveData("Delivery.spEmployeeInsert",
+                       new
+                       {
+                           employeeId = employee.employeeId,
+                           BusinessId = employee.BusinessId,
+                           DateEmployed = employee.DateEmployed,
+                       }, "Handyman_DB");
 
+                //Insert the ratings
+                foreach (var er in employee.ratings)
+                {
+                    int id = InsertRating(er);
+                    _dataAccess.SaveData("Delivery.spEmployee_Rating_Insert",
+                        new { providerId = employee.employeeId, ratingId = id }, "Handyman_DB");
+                }
+                    
+            }
+            catch(Exception ex) { throw new Exception(ex.Message); }
+        }
+        
+        //Helper method for rating insert
+        int InsertRating(RatingsModel rating)
+        {
+           
+            try
+            {
+                int rate_id = _dataAccess.LoadData<int, dynamic>("Delivery.spRatingInsert", rating, "Handyman_DB").First();
+                
+                return rate_id;
+            }catch(Exception ex) { throw new Exception(); }
+        }
         //Delete or remove employee
         protected virtual void Resign(string employeeId)
         {

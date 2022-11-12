@@ -18,11 +18,6 @@ namespace Handyman_DataLibrary.DataAccess.Query
             _dataAccess = dataAccess;
         }
 
-        //public ServiceProviderData(ISQLDataAccess dataAccess) 
-        //{
-        //    _dataAccess = dataAccess;
-        //}
-
         public void InsertServices(ServiceProviderModel provider)
         {
             foreach (var service in provider.ratings)
@@ -32,10 +27,10 @@ namespace Handyman_DataLibrary.DataAccess.Query
         }
 
         //Remove a service of a provider
-        //public void RemoveService(int serviceId, string providerId)
-        //{
+        public void RemoveService(int serviceId, string providerId)
+        {
 
-        //}
+        }
 
         //Get the service provider and the services
         public ServiceProviderModel GetServiceProvider(string providerId)
@@ -76,14 +71,31 @@ namespace Handyman_DataLibrary.DataAccess.Query
             }
         }
         
+        //Insert the employee followed by provider 
         public void InsertProvider(ServiceProviderModel serviceProvider)
         {
+            try
+            {
+                //insert the employee details 
+                this.InsertEmployee(serviceProvider);
 
+                foreach (var service in serviceProvider.Services)
+                {
+                    //Insert the provider 
+                    _dataAccess.SaveData("Delivery.spProviderInsert", 
+                        new 
+                        {
+                            pro_providerId = serviceProvider.pro_providerId,
+                            ServiceId = service.id
+                        },
+                        "Handyman_DB");
+                }
+            }catch(Exception ex) 
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        //protected override void Resign(string employeeId)
-        //{
-        //    base.Resign(employeeId);
-        //}
+        
     }
 }
