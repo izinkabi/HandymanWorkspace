@@ -1,0 +1,67 @@
+﻿
+using HandymanProviderLibrary.Api.EndPoints.Interface;
+using HandymanProviderLibrary.API;
+using HandymanProviderLibrary.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http.Json;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HandymanProviderLibrary.Api.Business.Implementation;
+
+public class BusinessEndPoint : IBusinessEndPoint
+{
+    static IAPIHelper? _apiHelper;
+    static IServiceProviderEndPoint? _serviceProvider;
+    static BusinessModel? business;
+    public BusinessEndPoint(IAPIHelper apiHelper, IServiceProviderEndPoint serviceProvider)
+    {
+        _apiHelper = apiHelper;
+        _serviceProvider = serviceProvider;
+    }
+
+    //Get the business's employee(ServiceProvider)
+    public async Task<BusinessModel> GetLoggedInEmployee(string employeeid)
+    {
+        try
+        {
+            business = await _apiHelper.ApiClient.GetFromJsonAsync<BusinessModel>($"/api/Delivery/Business/Get?employeeid={employeeid}");
+            return business;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    //Create a new business
+    public async Task CreateNewBusiness(BusinessModel business)
+    {
+        try
+        {
+            await _apiHelper.ApiClient.PostAsJsonAsync<BusinessModel>("/api/Delivery/Business/Post", business);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+
+    }
+
+    //Add new services under the business's provider
+    public async Task EmployMember(ServiceProviderModel serviceProvider)
+    {
+        try
+        {
+            await _serviceProvider.CreateServiceProvider(serviceProvider);
+        }
+        catch (Exception ex)
+        {
+            serviceProvider = null;
+            throw new Exception(ex.Message);
+        }
+    }
+
+}

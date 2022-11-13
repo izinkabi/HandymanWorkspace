@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HandymanProviderLibrary.Models
+namespace HandymanProviderLibrary.Models;
+
+public class AuthenticatedUserModel
 {
-    public class AuthenticatedUserModel
-    {
-        public string Access_Token { get; set; }
-        public string UserName { get; set; }
-    }
+    public string Access_Token { get; set; }
+    public string UserName { get; set; }
 }

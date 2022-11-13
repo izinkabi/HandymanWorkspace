@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace HandymanProviderLibrary.Models;
 
-public class ServiceCategoryModel
+public class ServiceProviderModel: EmployeeModel
 {
-    public string name { get; set; }
-    public string type { get; set; }
-    public string description { get; set; }
+ 
+    public IList<ServiceModel>? Services { get; set; }
+    public string? pro_providerId { get; set; }
+
+   
 }

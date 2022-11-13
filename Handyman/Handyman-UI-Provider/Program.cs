@@ -5,7 +5,8 @@ using HandymanProviderLibrary.Api.Service;
 using HandymanProviderLibrary.API;
 using Microsoft.AspNetCore.ResponseCompression;
 using HandymanProviderLibrary.Api.Request;
-using HandymanProviderLibrary.Api.ServiceProvider;
+using HandymanProviderLibrary.Api.Business.Implementation;
+using HandymanProviderLibrary.Api.EndPoints.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("IdentityDataContextConnection") ?? throw new InvalidOperationException("Connection string 'IdentityDataContextConnection' not found.");
@@ -28,7 +29,10 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<IAPIHelper, APIHelper>();
 builder.Services.AddTransient<IServiceEndpoint, ServiceEndpoint>();
 builder.Services.AddSingleton<IRequestEndPoint,RequestEndPoint>();
+builder.Services.AddTransient<EmployeeEndPoint>();
 builder.Services.AddTransient<IServiceProviderEndPoint, ServiceProviderEndPoint>();
+builder.Services.AddScoped<IBusinessEndPoint, BusinessEndPoint>();
+
 
 
 builder.Services.AddResponseCompression(opts =>
