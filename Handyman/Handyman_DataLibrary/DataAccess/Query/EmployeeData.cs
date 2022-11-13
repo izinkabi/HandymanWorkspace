@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Handyman_DataLibrary.DataAccess.Query
 {
-    public class EmployeeData : IEmployeeData
+    public class EmployeeData 
     {
         ISQLDataAccess _dataAccess;
 
@@ -18,7 +18,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
             _dataAccess = dataAccess;
         }
         //Get an employee
-        public EmployeeModel GetEmployeeWithRatings(string EmployeeId)
+        protected EmployeeModel GetEmployeeWithRatings(string EmployeeId)
         {
             EmployeeModel employee = new();
             /// List<RatingsModel> ratings = new();
@@ -32,16 +32,19 @@ namespace Handyman_DataLibrary.DataAccess.Query
                 //Business
                 //Employee
                 //Rating
+                employee.ratings = new List<RatingsModel>()!;
                 foreach (var er in ers)
                 {
-                    employee.employeeId = er.emp_Id;
-
+                   
                     rating = new();
+                    employee.employeeId = EmployeeId;
+                    employee.BusinessId = er.emp_businessid;
                     rating.Id = er.rate_id;
                     rating.stars = er.rate_stars;
                     rating.review = er.rate_review;
                     rating.recommendation = er.rate_recommendation;
-                    employee.ratings = new List<RatingsModel>()!;
+
+                    
                     employee.ratings.Add(rating);
 
 

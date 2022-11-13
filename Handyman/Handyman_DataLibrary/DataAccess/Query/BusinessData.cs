@@ -76,7 +76,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
             //Return business Model
 
             //Get the provider as an employee
-            EmployeeModel employee = _serviceProvider.GetEmployeeWithRatings(userId);
+            ServiceProviderModel employee = _serviceProvider.GetServiceProvider(userId);
 
             //Get business, registration and address
             BusinessRegistrationModel businessRegistration = _dataAccess.LoadData<BusinessRegistrationModel, dynamic>("Delivery.spBusiness_Registration_LookUp",
@@ -85,14 +85,15 @@ namespace Handyman_DataLibrary.DataAccess.Query
             //Populating business
             BusinessModel business = new()!;
 
-            business.Id = businessRegistration.bus_Id;
+            business.Id = employee.BusinessId;
             business.date = businessRegistration.bus_datecreated;
+            business.Type = businessRegistration.reg_businesstype;
             //Employee
 
             business.Employee = new()!;
+            business.Employee = employee;
                
-            business.Employee.BusinessId = businessRegistration.bus_Id;
-            business.Employee.DateEmployed = businessRegistration.bus_datecreated;
+           
             //Reistration
             business.registration = new()!;
             business.registration.Id = businessRegistration.reg_Id;

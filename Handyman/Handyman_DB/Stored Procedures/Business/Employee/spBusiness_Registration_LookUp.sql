@@ -7,4 +7,5 @@ SET NOCOUNT ON
     FROM [Delivery].[business] b
     INNER JOIN [Delivery].[registration] r ON r.[reg_Id] = b.bus_registrationid
     INNER JOIN [Delivery].[address] a ON a.[add_Id] = b.[bus_addressid]
+    WHERE b.[bus_Id] = @businessId
 END

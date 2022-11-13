@@ -19,7 +19,7 @@ namespace Handyman_DataLibrary.Models
         public string? reg_name { get; set; }
         public string? reg_regnumber { get; set; }
         public string? reg_taxnumber { get; set; }
-        public string? reg_businesstype { get; set; }
+        public int reg_businesstype { get; set; }
 
         //Address
         public int add_Id { get; set; }
