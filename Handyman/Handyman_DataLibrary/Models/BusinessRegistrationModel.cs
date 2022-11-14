@@ -13,8 +13,10 @@ namespace Handyman_DataLibrary.Models
         public int bus_registrationid { get; set; }
         public int bus_addressid { get; set; }
         public DateTime bus_datecreated { get; set; }
+        public string? bus_name { get; set; }
 
         //registration
+
         public int reg_Id { get; set; }
         public string? reg_name { get; set; }
         public string? reg_regnumber { get; set; }

@@ -4,9 +4,9 @@ using Handyman_UI_Provider.Areas.Identity.Data;
 using HandymanProviderLibrary.Api.Service;
 using HandymanProviderLibrary.API;
 using Microsoft.AspNetCore.ResponseCompression;
-using HandymanProviderLibrary.Api.Request;
 using HandymanProviderLibrary.Api.Business.Implementation;
 using HandymanProviderLibrary.Api.EndPoints.Interface;
+using HandymanProviderLibrary.Api.EndPoints.Implementation;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("IdentityDataContextConnection") ?? throw new InvalidOperationException("Connection string 'IdentityDataContextConnection' not found.");

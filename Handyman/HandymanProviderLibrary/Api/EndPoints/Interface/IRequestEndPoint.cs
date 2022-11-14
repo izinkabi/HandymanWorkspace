@@ -1,15 +1,12 @@
 ﻿using HandymanProviderLibrary.Models;
 
-namespace HandymanProviderLibrary.Api.Request
+namespace HandymanProviderLibrary.Api.EndPoints.Interface
 {
     public interface IRequestEndPoint
     {
         Task<List<OrderModel>> GetAllOrdersByService(int serviceId);
+        Task<List<RequestModel>> GetRequestsByProvider(string? providerId);
         Task<string> PostRequest(RequestModel request);
         Task<string> UpdateRequest(RequestModel updateRequest);
-        Task<List<RequestModel>> GetRequestsByProvider(string? providerId);
-        Task<List<TodoModel>> GetOrderTodoList(int Id);
-        Task<TodoModel> GetTodoItemById(int Id);
-        Task UpdateTodoItem(TodoModel todoItemUpdate);
     }
 }

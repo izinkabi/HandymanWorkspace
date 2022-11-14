@@ -8,4 +8,5 @@ public class BusinessModel
     public AddressModel? address { get; set; }
     public DateTime date { get; set; }
     public int Type { get; set; }
+    public string? Name { get; set; }
 }

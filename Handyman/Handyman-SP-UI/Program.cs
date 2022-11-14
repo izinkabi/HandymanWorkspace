@@ -1,6 +1,10 @@
 using Handyman_SP_UI.Areas.Identity;
 using Handyman_SP_UI.Areas.Identity.Data;
 using Handyman_SP_UI.Data;
+using Handyman_SP_UI.Pages.Helpers;
+using HandymanProviderLibrary.Api.Business.Implementation;
+using HandymanProviderLibrary.Api.EndPoints.Interface;
+using HandymanProviderLibrary.API;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
@@ -18,7 +22,13 @@ builder.Services.AddDefaultIdentity<Handyman_SP_UIUser>(options => options.SignI
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddSingleton<IAPIHelper, APIHelper>();
+builder.Services.AddScoped<IBusinessEndPoint, BusinessEndPoint>();
+builder.Services.AddScoped<EmployeeEndPoint>();
+builder.Services.AddScoped<IServiceProviderEndPoint, ServiceProviderEndPoint>();
+builder.Services.AddScoped<IBusinessEndPoint, BusinessEndPoint>();
+builder.Services.AddScoped<IBusinessHelper, BusinessHelper>();
+builder.Services.AddAntiforgery();
 builder.Services.AddScoped<TokenProvider>();
 
 var app = builder.Build();

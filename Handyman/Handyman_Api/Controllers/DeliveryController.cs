@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Handyman_Api.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/Delivery")]
 [ApiController]
 public class DeliveryController : ControllerBase
 {
@@ -18,13 +18,13 @@ public class DeliveryController : ControllerBase
 
     //Get the business under which the employee(userId) which is a provider is registered
     [HttpGet]
-    [Route("/Business/Get")]
-    public ServiceProviderModel Get(string employeeid)
+    [Route("Get")]
+    public BusinessModel Get(string employeeid)
     {
         try
         {
             var business = _businessData.GetBusiness(employeeid);
-            return business.Employee;
+            return business;
         }
         catch (Exception ex)
         {
@@ -34,7 +34,7 @@ public class DeliveryController : ControllerBase
 
     //Register A business
     [HttpPost]
-    [Route("/Business/Create")]
+    [Route("Business/Create")]
     public int CreateBusiness(BusinessModel business)
     {
         try
@@ -49,7 +49,7 @@ public class DeliveryController : ControllerBase
 
     //Update the business or its address
     [HttpPut]
-    [Route("/Business/Update")]
+    [Route("Business/Update")]
     public void Update()
     {
 
@@ -57,7 +57,7 @@ public class DeliveryController : ControllerBase
 
     //Employ a new member
     [HttpPost]
-    [Route("/Business/AddNewMember")]
+    [Route("Business/AddNewMember")]
     public void AddNewMember(ServiceProviderModel serviceProvider)
     {
         try

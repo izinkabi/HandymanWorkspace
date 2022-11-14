@@ -1,75 +1,122 @@
 ﻿@page "/business"
-@page "/companydetails"
 
+
+@using HandymanProviderLibrary.Api.EndPoints.Interface;
+@using HandymanProviderLibrary.Models;
+@using Handyman_SP_UI.Pages.Helpers;
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Identity
 @using Handyman_SP_UI.Areas.Identity.Data
 @inject NavigationManager Navigation
 @inject TokenProvider  TokenProvider
 
-
 @inject SignInManager<Handyman_SP_UIUser> SignInManager
 @inject UserManager<Handyman_SP_UIUser> UserManager
-
-
+@inject IBusinessHelper _business;
 
 <br />
-  <div class="p-4 p-md-3 mb-2 rounded text-bg-dark">
-    <div class="col-md-6 px-0">
-      <h1 class="display-4 fst-italic">Hi</h1>
-      <p class="lead my-3">In this page you can manage you company, stuff</p>
-    </div>
-  </div>
+@if (business != null)
+{
 
-  <div class="row mb-2">
-    <div class="col-md-3">
-      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-        <div class="col p-4 d-flex flex-column position-static">
-          <strong class="d-inline-block mb-2 text-primary">World</strong>
-          <h3 class="mb-0">Company</h3>
+    <!--Welcome-->
+    <div class="p-4 p-md-3 mb-2 rounded text-bg-dark">
+        <div class="col-md-6 px-0">
+            <h1 class="display-4 fst-italic">Hi</h1>
+            <p class="lead my-3">In this page you can manage you company, stuff</p>
+        </div>
+    </div>
+    <!--End Welcome-->
 
-          <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="stretched-link">Edit</a>
-          <div class="mb-1 text-muted">1</div>
+    <!--Business Component-->
+    <div class="row mb-2">
+        <div class="col-md-3">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-primary">Company</strong>
+                    <h3 class="mb-0">@business.Name</h3>
+
+                    <p class="card-text mb-auto">This is a business description</p>
+                    <a href="#" class="stretched-link">Edit</a>
+                    <div class="mb-1 text-muted">1</div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-      <div class="col-md-3">
-      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-        <div class="col p-4 d-flex flex-column position-static">
-          <strong class="d-inline-block mb-2 text-primary">World</strong>
-          <h3 class="mb-0">Stuff</h3>
-          <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-          <a href="stuff" class="stretched-link">Edit</a>
-          <div class="mb-1 text-muted">3</div>
+        <!--End Business Component-->
+
+        <!--Business Component-->
+        <div class="col-md-3">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-primary">Stuff</strong>
+                    <h3 class="mb-0">@business.Employee.FullName</h3>
+                    <p class="card-text mb-auto">This is the provider description and employee</p>
+                    <a href="stuff" class="stretched-link">Edit</a>
+                    <div class="mb-1 text-muted">3</div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-          <div class="col-md-3">
-      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-        <div class="col p-4 d-flex flex-column position-static">
-          <strong class="d-inline-block mb-2 text-primary">World</strong>
-          <h3 class="mb-0">Locations</h3>
-          <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="stretched-link">Edit</a>
-          <div class="mb-1 text-muted">2</div>
+        <!--End Business Component-->
+
+
+        <!--Addresses Component-->
+        <div class="col-md-3">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-primary">World</strong>
+                    <h3 class="mb-0">@business.address.add_city</h3>
+                    <p class="card-text mb-auto">This is a description for addresses</p>
+                    <a href="#" class="stretched-link">Edit</a>
+                    <div class="mb-1 text-muted">2</div>
+                </div>
+            </div>
         </div>
-      </div>
+        <!--End Addresses Component-->
+
+        <!--Services Component-->
+        @foreach (var service in business.Employee.Services)
+        {
+            <div class="col-md-3">
+                <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <strong class="d-inline-block mb-2 text-primary">World</strong>
+                        <h3 class="mb-0">@service.name</h3>
+                        <p class="card-text mb-auto">@service.category</p>
+                        <a href="#" class="stretched-link">Edit</a>
+                        <div class="mb-1 text-muted">12</div>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
-          <div class="col-md-3">
-      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-        <div class="col p-4 d-flex flex-column position-static">
-          <strong class="d-inline-block mb-2 text-primary">World</strong>
-          <h3 class="mb-0">Services</h3>
-          <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="stretched-link">Edit</a>
-          <div class="mb-1 text-muted">12</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <br />
+    <!--End Services Component-->
+
+
+
+
+    <!--Ratings Component-->
+
+    <!--End Ratings Component-->
+    <br />
+}
+    @if(ErrorMsg!=null)
+    {
+        <p>@ErrorMsg</p>
+    }
 
 @code {
 
+    BusinessModel? business;
+    string? ErrorMsg;
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            business = await _business.GetBusinessLoggedInEmployee();
+        }catch(Exception ex)
+        {
+            ErrorMsg = ex.Message;
+            throw new Exception(ex.Message);  
+        }
+       
+    }
 }

@@ -1,12 +1,13 @@
-﻿@page "/"
+﻿@*
 
-@    using HandymanProviderLibrary.Api.Request
-@    using HandymanProviderLibrary.Api.Service
-@    using HandymanProviderLibrary.Api.ServiceProvider
-@    using HandymanProviderLibrary.Models
-@    using Handyman_UI_Provider.Models
-@    using Handyman_UI_Provider.Models.Services
-@    using Microsoft.Extensions.Logging
+
+@using HandymanProviderLibrary.Api.EndPoints.Interface
+@using HandymanProviderLibrary.Api.Service
+@using HandymanProviderLibrary.Api.ServiceProvider
+@using HandymanProviderLibrary.Models
+@using Handyman_UI_Provider.Models
+@using Handyman_UI_Provider.Models.Services
+@using Microsoft.Extensions.Logging
 
 @implements IDisposable
 
@@ -16,7 +17,9 @@
 @inject IServiceProviderEndPoint? _serviceProviderEndPoint
 @inject AuthenticationStateProvider _authenticationStateProvider
 @inject ILogger<Index> Logger
+    *@
 
+    @* 
 <PageTitle>Home</PageTitle>
 
 <div class="container-fluid">
@@ -300,3 +303,4 @@
     }
 
 }
+*@

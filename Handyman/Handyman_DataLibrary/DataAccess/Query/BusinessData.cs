@@ -88,6 +88,10 @@ namespace Handyman_DataLibrary.DataAccess.Query
             business.Id = employee.BusinessId;
             business.date = businessRegistration.bus_datecreated;
             business.Type = businessRegistration.reg_businesstype;
+            business.Name = businessRegistration.bus_name;
+
+
+
             //Employee
 
             business.Employee = new()!;
@@ -140,7 +144,8 @@ namespace Handyman_DataLibrary.DataAccess.Query
                             //this is a new business (new address and registration)
                             bus_registrationid = reg_id,
                             bus_addressid = address_id,
-                            bus_datecreated = business.date
+                            bus_datecreated = business.date,
+                            bus_name = business.Name
 
                         }).First();
 
