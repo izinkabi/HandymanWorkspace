@@ -3,6 +3,8 @@ using Handyman_DataLibrary.DataAccess.Interfaces;
 using Handyman_DataLibrary.DataAccess.Query;
 using Handyman_DataLibrary.Internal.DataAccess;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,7 +21,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddSingleton<ISQLDataAccess, SQLDataAccess>();
 builder.Services.AddScoped<IServiceData, ServiceData>();
 builder.Services.AddScoped<IOrderData, OrderData>();
-builder.Services.AddScoped<IOrderTaskData,OrderTaskData>();
+builder.Services.AddScoped<IOrderTaskData, OrderTaskData>();
 builder.Services.AddTransient<EmployeeData>();
 builder.Services.AddTransient<IServiceProviderData, ServiceProviderData>();
 builder.Services.AddScoped<IBusinessData, BusinessData>();
@@ -29,7 +31,14 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.DisableImplicitFromServicesParameters = true;
+});
+builder.Services.AddControllers(options =>
+{
+    options.ModelMetadataDetailsProviders.Add(new SystemTextJsonValidationMetadataProvider());
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

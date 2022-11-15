@@ -1,23 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using HandymanUILibrary.API;
-using Microsoft.AspNetCore.Authorization;
+﻿using HandymanUILibrary.API;
 using HandymanUILibrary.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Handymen_UI_Consumer.Pages
 {
     [Authorize]
     public class DetailsModel : PageModel
     {
-       
+
         private IServiceEndPoint _serviceEndPoint;
         public DetailsModel(IServiceEndPoint serviceEndPoint)
         {
-           _serviceEndPoint = serviceEndPoint;
+            _serviceEndPoint = serviceEndPoint;
         }
 
-         public ServiceModel? Service { get; set; } 
-        
+        public ServiceModel? Service { get; set; }
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null || _serviceEndPoint == null)
@@ -32,13 +32,13 @@ namespace Handymen_UI_Consumer.Pages
                 {
                     return NotFound();
                 }
-                else if(service.id == id)   
+                else if (service.id == id)
                 {
                     Service = new();
                     Service = service;
                     return Page();
                 }
-               
+
             }
             return Page();
 

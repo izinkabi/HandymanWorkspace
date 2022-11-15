@@ -1,7 +1,7 @@
-﻿using HandymanProviderLibrary.API;
+﻿using HandymanProviderLibrary.Api.ApiHelper;
 using HandymanProviderLibrary.Models;
 
-namespace HandymanProviderLibrary.Api.Business.Implementation;
+namespace HandymanProviderLibrary.Api.EndPoints.Implementation;
 
 public class EmployeeEndPoint
 {

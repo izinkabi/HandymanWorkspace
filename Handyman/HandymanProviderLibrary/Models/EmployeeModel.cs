@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-namespace HandymanProviderLibrary.Models;
+﻿namespace HandymanProviderLibrary.Models;
 
 /// <summary>
 /// Employees model with a list of services, business and ratings

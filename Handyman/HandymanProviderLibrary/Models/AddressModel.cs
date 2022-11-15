@@ -2,7 +2,7 @@
 
 public class AddressModel
 {
-  
+
     public int add_Id { get; set; }
     public string? add_street { get; set; }
     public string? add_suburb { get; set; }

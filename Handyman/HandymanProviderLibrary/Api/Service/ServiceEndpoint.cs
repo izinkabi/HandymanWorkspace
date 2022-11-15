@@ -1,4 +1,4 @@
-﻿using HandymanProviderLibrary.API;
+﻿using HandymanProviderLibrary.Api.ApiHelper;
 using HandymanProviderLibrary.Models;
 using System.Net.Http.Json;
 
@@ -72,11 +72,11 @@ public class ServiceEndpoint : IServiceEndpoint
     public async Task<string> CreateProviderService(ProviderServiceModel providerService)
     {
         string? result = null;
-        var ps = new 
+        var ps = new
         {
             ServiceId = providerService.ServiceId,
             ServiceProviderId = providerService.ServiceProviderId,
-            Id = providerService.Id 
+            Id = providerService.Id
         };
 
         try
@@ -84,10 +84,10 @@ public class ServiceEndpoint : IServiceEndpoint
             var httpResponseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync("/api/PostProvidersService", ps);
             if (httpResponseMessage.IsSuccessStatusCode)
             {
-                result =  httpResponseMessage.ReasonPhrase;
+                result = httpResponseMessage.ReasonPhrase;
                 return result;
             }
-            
+
         }
         catch (Exception ex)
         {

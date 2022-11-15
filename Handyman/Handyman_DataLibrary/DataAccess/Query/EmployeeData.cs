@@ -1,15 +1,9 @@
-﻿using Handyman_DataLibrary.DataAccess.Interfaces;
-using Handyman_DataLibrary.Internal.DataAccess;
+﻿using Handyman_DataLibrary.Internal.DataAccess;
 using Handyman_DataLibrary.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Handyman_DataLibrary.DataAccess.Query
 {
-    public class EmployeeData 
+    public class EmployeeData
     {
         ISQLDataAccess _dataAccess;
 
@@ -35,7 +29,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
                 employee.ratings = new List<RatingsModel>()!;
                 foreach (var er in ers)
                 {
-                   
+
                     rating = new();
                     employee.employeeId = EmployeeId;
                     employee.BusinessId = er.emp_businessid;
@@ -44,7 +38,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
                     rating.review = er.rate_review;
                     rating.recommendation = er.rate_recommendation;
 
-                    
+
                     employee.ratings.Add(rating);
 
 
@@ -57,7 +51,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
             }
             return employee;
         }
-        
+
         //Create a new employee
         protected void InsertEmployee(EmployeeModel employee)
         {
@@ -79,21 +73,22 @@ namespace Handyman_DataLibrary.DataAccess.Query
                     _dataAccess.SaveData("Delivery.spEmployee_Rating_Insert",
                         new { providerId = employee.employeeId, ratingId = id }, "Handyman_DB");
                 }
-                    
+
             }
-            catch(Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex) { throw new Exception(ex.Message); }
         }
-        
+
         //Helper method for rating insert
         int InsertRating(RatingsModel rating)
         {
-           
+
             try
             {
                 int rate_id = _dataAccess.LoadData<int, dynamic>("Delivery.spRatingInsert", rating, "Handyman_DB").First();
-                
+
                 return rate_id;
-            }catch(Exception ex) { throw new Exception(); }
+            }
+            catch (Exception ex) { throw new Exception(); }
         }
         //Delete or remove employee
         protected virtual void Resign(string employeeId)

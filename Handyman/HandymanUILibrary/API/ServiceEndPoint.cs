@@ -1,24 +1,22 @@
 ﻿using HandymanUILibrary.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HandymanUILibrary.API
 {
-    public class ServiceEndPoint: IServiceEndPoint
+    public class ServiceEndPoint : IServiceEndPoint
     {
         private IAPIHelper _aPIHelper;
-        
+
         /// <summary>
         /// Constractor for the API helper
         /// </summary>
         /// <param name="aPIHelper"></param>
         /// 
-        
+
         public ServiceEndPoint(IAPIHelper aPIHelper)
         {
             _aPIHelper = aPIHelper;
@@ -37,11 +35,11 @@ namespace HandymanUILibrary.API
                 List<ServiceModel> httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<List<ServiceModel>>("/api/services/GetServices");
                 return httpResponseMessage;
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-                throw  new Exception(ex.Message);  
+                throw new Exception(ex.Message);
             }
-        
+
 
         }
         /// <summary>
@@ -56,12 +54,12 @@ namespace HandymanUILibrary.API
                 List<ServiceCategoryModel> httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<List<ServiceCategoryModel>>("Services/GetServiceCategories");
                 return httpResponseMessage;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
 
-            
+
         }
         /// <summary>
         ///This method is used to Find a service using it's ID from the API

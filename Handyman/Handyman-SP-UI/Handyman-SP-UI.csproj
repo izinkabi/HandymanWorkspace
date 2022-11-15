@@ -9,10 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Pages\BusinessComponents\Stuff\**" />
-    <Content Remove="Pages\BusinessComponents\Stuff\**" />
-    <EmbeddedResource Remove="Pages\BusinessComponents\Stuff\**" />
-    <None Remove="Pages\BusinessComponents\Stuff\**" />
+    <Compile Remove="Pages\Businesses\Stuff\**" />
+    <Content Remove="Pages\Businesses\Stuff\**" />
+    <EmbeddedResource Remove="Pages\Businesses\Stuff\**" />
+    <None Remove="Pages\Businesses\Stuff\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,7 +30,7 @@
 
 
   <ItemGroup>
-    <None Include="Pages\BusinessComponents\Stuff.razor" />
+    <None Include="Pages\Businesses\Stuff.razor" />
   </ItemGroup>
 
 

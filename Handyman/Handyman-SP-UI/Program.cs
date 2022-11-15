@@ -2,9 +2,9 @@ using Handyman_SP_UI.Areas.Identity;
 using Handyman_SP_UI.Areas.Identity.Data;
 using Handyman_SP_UI.Data;
 using Handyman_SP_UI.Pages.Helpers;
-using HandymanProviderLibrary.Api.Business.Implementation;
+using HandymanProviderLibrary.Api.ApiHelper;
+using HandymanProviderLibrary.Api.EndPoints.Implementation;
 using HandymanProviderLibrary.Api.EndPoints.Interface;
-using HandymanProviderLibrary.API;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,9 +28,15 @@ builder.Services.AddScoped<IBusinessHelper, BusinessHelper>();
 builder.Services.AddAntiforgery();
 builder.Services.AddScoped<TokenProvider>();
 builder.Services.AddScoped<EmployeeHelper>();
-
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.CheckConsentNeeded = context => true;
+    options.MinimumSameSitePolicy = SameSiteMode.None;
+    options.ConsentCookieValue = "true";
+});
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

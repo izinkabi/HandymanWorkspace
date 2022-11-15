@@ -1,6 +1,6 @@
 ﻿using HandymanProviderLibrary.Models;
 
-namespace HandymanProviderLibrary.API
+namespace HandymanProviderLibrary.Api.ApiHelper
 {
     public interface IAPIHelper
     {

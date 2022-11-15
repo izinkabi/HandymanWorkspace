@@ -1,6 +1,4 @@
 ﻿using System.Net.Http;
-using System.Threading.Tasks;
-using HandymanUILibrary.Models;
 
 namespace HandymanUILibrary.API
 {

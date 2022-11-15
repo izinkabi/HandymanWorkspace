@@ -1,5 +1,5 @@
 ﻿@page "/business"
-
+@page "/bus"
 @using HandymanProviderLibrary.Api.EndPoints.Interface
 @using HandymanProviderLibrary.Models
 @using Handyman_SP_UI.Pages.Helpers
@@ -18,7 +18,7 @@
 <AuthorizeView>
   <Authorized>
 
-    @if (@business != null)
+    @if (business != null)
     {
 
                 <!--Welcome-->
@@ -121,21 +121,24 @@
 
 @code {
 
-    static BusinessModel? business = new()!;
+    static BusinessModel? business;
     string? ErrorMsg;
     string? role;
 
     protected override async Task OnInitializedAsync()
     {
         try
-        {
-            if(_business!=null)
+        {                    
+            if(business==null)
             {
-                var biz = await _business.GetBusinessLoggedInEmployee();
-                if (biz != null)
-                business = biz;
+                
+                    var biz = await _business.GetBusinessLoggedInEmployee();
+                    if (biz != null)
+                    {
+                        business = biz;
+                    }
+                
             }
-           
 
         }catch(Exception ex)
         {

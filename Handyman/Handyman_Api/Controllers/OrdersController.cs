@@ -24,7 +24,8 @@ namespace Handyman_Api.Controllers
             {
                 orders = _orderData.GetConsumerOrderAndTasks(consumerId);
                 return orders;
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -56,7 +57,7 @@ namespace Handyman_Api.Controllers
         {
             try
             {
-                if(orderUpdate == null)
+                if (orderUpdate == null)
                 {
                     return;
                 }
@@ -71,9 +72,9 @@ namespace Handyman_Api.Controllers
         // DELETE api/<OrdersController>/5
         // !!!Not yet implemented
         [HttpDelete("{id}")]
-        public void Delete(string consumerId,int orderId)
+        public void Delete(string consumerId, int orderId)
         {
-            _orderData.DeleteOrderAndTasks(consumerId,orderId);
+            _orderData.DeleteOrderAndTasks(consumerId, orderId);
         }
     }
 }

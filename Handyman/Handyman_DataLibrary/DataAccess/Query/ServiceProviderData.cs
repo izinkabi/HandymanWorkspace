@@ -1,19 +1,14 @@
 ﻿using Handyman_DataLibrary.DataAccess.Interfaces;
 using Handyman_DataLibrary.Internal.DataAccess;
 using Handyman_DataLibrary.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Handyman_DataLibrary.DataAccess.Query
 {
-    public class ServiceProviderData : EmployeeData , IServiceProviderData
+    public class ServiceProviderData : EmployeeData, IServiceProviderData
     {
         ISQLDataAccess _dataAccess;
 
-        public ServiceProviderData(ISQLDataAccess dataAccess):base(dataAccess) 
+        public ServiceProviderData(ISQLDataAccess dataAccess) : base(dataAccess)
         {
             _dataAccess = dataAccess;
         }
@@ -38,11 +33,11 @@ namespace Handyman_DataLibrary.DataAccess.Query
         {
             try
             {
-                
+
                 //Get employee
                 var employee = this.GetEmployeeWithRatings(providerId);
                 //Get the service of the provider
-                List<Service_CategoryModel> service_category = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Delivery.spProvider_Service_LookUp", 
+                List<Service_CategoryModel> service_category = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Delivery.spProvider_Service_LookUp",
                     new { providerId = providerId }, "Handyman_DB");
 
 
@@ -76,12 +71,12 @@ namespace Handyman_DataLibrary.DataAccess.Query
 
                 return provider;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        
+
         //Insert the employee followed by provider 
         public void InsertProvider(ServiceProviderModel serviceProvider)
         {
@@ -93,20 +88,21 @@ namespace Handyman_DataLibrary.DataAccess.Query
                 foreach (var service in serviceProvider.Services)
                 {
                     //Insert the provider 
-                    _dataAccess.SaveData("Delivery.spProviderInsert", 
-                        new 
+                    _dataAccess.SaveData("Delivery.spProviderInsert",
+                        new
                         {
                             pro_providerId = serviceProvider.pro_providerId,
                             ServiceId = service.id
                         },
                         "Handyman_DB");
                 }
-            }catch(Exception ex) 
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
 
-        
+
     }
 }

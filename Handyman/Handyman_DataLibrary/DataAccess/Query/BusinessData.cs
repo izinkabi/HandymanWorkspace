@@ -1,11 +1,6 @@
 ﻿using Handyman_DataLibrary.DataAccess.Interfaces;
 using Handyman_DataLibrary.Internal.DataAccess;
 using Handyman_DataLibrary.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Handyman_DataLibrary.DataAccess.Query
 {
@@ -26,16 +21,16 @@ namespace Handyman_DataLibrary.DataAccess.Query
             int registrationId = 0;
             try
             {
-                registrationId = _dataAccess.LoadData<int, dynamic>("Delivery.spRegistrationInsert", 
-                    new 
+                registrationId = _dataAccess.LoadData<int, dynamic>("Delivery.spRegistrationInsert",
+                    new
                     {
-                        
+
                         reg_name = registration.name,
                         reg_regnumber = registration.regNumber,
                         reg_taxnumber = registration.taxNumber,
-                        reg_businesstype  = registration.businessType
+                        reg_businesstype = registration.businessType
 
-                    } , "Handyman_DB").First();
+                    }, "Handyman_DB").First();
                 return registrationId;
             }
             catch (Exception ex)
@@ -52,18 +47,19 @@ namespace Handyman_DataLibrary.DataAccess.Query
                 //Insert the address and get an ID
                 var add_id = _dataAccess.SaveData("Delivery.spAddressInsert",
 
-                    new {
-                            add_street = address.add_street,
-                            add_suburb = address.add_suburb,
-                            add_city = address.add_city,
-                            add_zip = address.add_zip,
-                            add_latitude = address.add_latitude,
-                            add_longitude = address.add_longitude,
-                            add_country = address.add_country,
-                            add_state = address.add_state
-                       },
+                    new
+                    {
+                        add_street = address.add_street,
+                        add_suburb = address.add_suburb,
+                        add_city = address.add_city,
+                        add_zip = address.add_zip,
+                        add_latitude = address.add_latitude,
+                        add_longitude = address.add_longitude,
+                        add_country = address.add_country,
+                        add_state = address.add_state
+                    },
                     "Handyman_DB");
-                return add_id;           
+                return add_id;
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
@@ -96,8 +92,8 @@ namespace Handyman_DataLibrary.DataAccess.Query
 
             business.Employee = new()!;
             business.Employee = employee;
-               
-           
+
+
             //Reistration
             business.registration = new()!;
             business.registration.Id = businessRegistration.reg_Id;
@@ -127,7 +123,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
             int businessId = 0;
             try
             {
-                
+
                 if (business.registration != null && business.address != null)
                 {
                     //Register and get an ID
@@ -158,7 +154,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
                         business.Employee.BusinessId = businessId;
                         EmployMember(business.Employee);
                     }
-                   
+
                     return businessId;
                 }
             }
@@ -171,7 +167,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
         }
 
         //Create an employee in a business
-        
+
         public void EmployMember(ServiceProviderModel serviceProvider)
         {
             try

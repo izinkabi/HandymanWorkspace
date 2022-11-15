@@ -1,11 +1,11 @@
-using Microsoft.EntityFrameworkCore;
-using Handymen_UI_Consumer.Data;
-using Handymen_UI_Consumer.Areas.Identity.Data;
 using HandymanUILibrary.API;
-using Microsoft.AspNetCore.ResponseCompression;
-using Handymen_UI_Consumer.Helpers;
-using HandymanUILibrary.API.Consumer.Order.Interface;
 using HandymanUILibrary.API.Consumer.Order.Implementation;
+using HandymanUILibrary.API.Consumer.Order.Interface;
+using Handymen_UI_Consumer.Areas.Identity.Data;
+using Handymen_UI_Consumer.Data;
+using Handymen_UI_Consumer.Helpers;
+using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("Handymen_UI_ConsumerContextConnection") ?? throw new InvalidOperationException("Connection string 'Handymen_UI_ConsumerContextConnection' not found.");
@@ -18,7 +18,7 @@ builder.Services.AddDefaultIdentity<Handymen_UI_ConsumerUser>(options => options
 
 
 builder.Services.AddSingleton<IAPIHelper, APIHelper>();
-builder.Services.AddTransient<IServiceEndPoint,ServiceEndPoint>();
+builder.Services.AddTransient<IServiceEndPoint, ServiceEndPoint>();
 builder.Services.AddTransient<IOrderEndPoint, OrderEndPoint>();
 builder.Services.AddScoped<IOrderHelper, OrderHelper>();
 

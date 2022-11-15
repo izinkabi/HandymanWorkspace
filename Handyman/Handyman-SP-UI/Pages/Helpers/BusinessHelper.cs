@@ -38,13 +38,13 @@ namespace Handyman_SP_UI.Pages.Helpers
         {
             try
             {
-                if(userId == null)
+                if (userId == null)
                 {
                     userId = await GetUserId();
                 }
-                
-               var business = await _business.GetLoggedInEmployee(userId);
-               return business;
+
+                var business = await _business.GetLoggedInEmployee(userId);
+                return business;
             }
             catch (Exception ex)
             {

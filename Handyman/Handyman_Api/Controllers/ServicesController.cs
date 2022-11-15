@@ -12,14 +12,14 @@ namespace Handyman_Api.Controllers
         public ServicesController(IServiceData serviceData)
         {
             _serviceData = serviceData;
-        } 
+        }
 
         [HttpGet]
         [Route("GetServices")]
         //[Authorize]
-        public  List<ServiceModel> Get()
+        public List<ServiceModel> Get()
         {
-            return  _serviceData.GetAllServices();
+            return _serviceData.GetAllServices();
         }
 
         //[HttpGet]

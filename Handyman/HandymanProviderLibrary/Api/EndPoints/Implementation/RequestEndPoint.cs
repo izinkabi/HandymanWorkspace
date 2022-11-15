@@ -1,7 +1,6 @@
-﻿using HandymanProviderLibrary.Api.EndPoints.Interface;
-using HandymanProviderLibrary.API;
+﻿using HandymanProviderLibrary.Api.ApiHelper;
+using HandymanProviderLibrary.Api.EndPoints.Interface;
 using HandymanProviderLibrary.Models;
-using System.Net.Http;
 using System.Net.Http.Json;
 
 

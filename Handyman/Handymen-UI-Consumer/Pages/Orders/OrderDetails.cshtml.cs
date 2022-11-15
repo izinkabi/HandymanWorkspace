@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Handymen_UI_Consumer.Areas.Identity.Data;
 using Handymen_UI_Consumer.Helpers;
 using Microsoft.AspNetCore.Authorization;
-using Handymen_UI_Consumer.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 
 
@@ -18,8 +18,8 @@ public class OrderDetailsModel : PageModel
     HandymanUILibrary.Models.OrderModel order = new()!;
     IOrderHelper? _orderHelper;
     string? ErrorMsg;
-  
-    public OrderDetailsModel(IOrderHelper orderHelper, 
+
+    public OrderDetailsModel(IOrderHelper orderHelper,
         SignInManager<Handymen_UI_ConsumerUser> signInManager)
     {
         _orderHelper = orderHelper;
@@ -38,13 +38,13 @@ public class OrderDetailsModel : PageModel
         }
     }
 
-    
+
     //Get on Page redirection and 
     public async Task<IActionResult> OnGetAsync(int? id)
     {
 
         order.service = new()!;
-        
+
         if (id == 0)
         {
             return NotFound();
@@ -64,7 +64,7 @@ public class OrderDetailsModel : PageModel
         return Page();
     }
 
-    
+
     public async Task<RedirectResult> OnPostAsync(int Id)
     {
         try
