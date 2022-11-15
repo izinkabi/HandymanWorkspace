@@ -5,9 +5,6 @@ using Handyman_SP_UI.Pages.Helpers;
 using HandymanProviderLibrary.Api.Business.Implementation;
 using HandymanProviderLibrary.Api.EndPoints.Interface;
 using HandymanProviderLibrary.API;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +27,8 @@ builder.Services.AddScoped<IBusinessEndPoint, BusinessEndPoint>();
 builder.Services.AddScoped<IBusinessHelper, BusinessHelper>();
 builder.Services.AddAntiforgery();
 builder.Services.AddScoped<TokenProvider>();
+builder.Services.AddScoped<EmployeeHelper>();
+
 
 var app = builder.Build();
 

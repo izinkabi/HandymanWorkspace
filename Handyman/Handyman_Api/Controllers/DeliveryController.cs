@@ -1,7 +1,6 @@
-﻿using Handyman_DataLibrary.DataAccess.Interfaces;
+﻿using Handyman_DataLibrary;
 using Handyman_DataLibrary.DataAccess.Query;
 using Handyman_DataLibrary.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Handyman_Api.Controllers;
@@ -39,11 +38,12 @@ public class DeliveryController : ControllerBase
     {
         try
         {
-          int businessId = _businessData.CreateBusiness(business);
+            int businessId = _businessData.CreateBusiness(business);
             return businessId;
-        }catch(Exception ex) 
+        }
+        catch (Exception ex)
         {
-            throw new Exception(ex.Message);    
+            throw new Exception(ex.Message);
         }
     }
 
@@ -64,11 +64,11 @@ public class DeliveryController : ControllerBase
         {
             _businessData.EmployMember(serviceProvider);
         }
-        catch(Exception ex) 
+        catch (Exception ex)
         {
-            throw new Exception(ex.Message);    
+            throw new Exception(ex.Message);
         }
-       
+
     }
 
 

@@ -1,21 +1,16 @@
 ﻿using HandymanProviderLibrary.Api.EndPoints.Interface;
 using HandymanProviderLibrary.API;
 using HandymanProviderLibrary.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HandymanProviderLibrary.Api.Business.Implementation;
 
 public class BusinessEndPoint : IBusinessEndPoint
 {
-    static IAPIHelper? _apiHelper;
+    IAPIHelper? _apiHelper;
     static IServiceProviderEndPoint? _serviceProvider;
-    BusinessModel? business = new()!;
-    string ErrorMsg;
+    static BusinessModel? business;
+    string? ErrorMsg;
     public BusinessEndPoint(IAPIHelper apiHelper, IServiceProviderEndPoint serviceProvider)
     {
         _apiHelper = apiHelper;
@@ -27,8 +22,8 @@ public class BusinessEndPoint : IBusinessEndPoint
     {
         try
         {
-           business = await _apiHelper.ApiClient.GetFromJsonAsync<BusinessModel>($"/api/Delivery/Get?employeeid={employeeid}");
-           
+            business = await _apiHelper.ApiClient.GetFromJsonAsync<BusinessModel>($"/api/Delivery/Get?employeeid={employeeid}");
+
         }
         catch (Exception ex)
         {

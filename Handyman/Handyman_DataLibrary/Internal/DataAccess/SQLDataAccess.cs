@@ -27,11 +27,9 @@ namespace Handyman_DataLibrary.Internal.DataAccess
         {
             string connectionString = GetConnectionString(connectionStringName);
 
-            using (IDbConnection connection = new SqlConnection(connectionString))
-            {
-                List<T> rows = connection.Query<T>(storedProcedure, parameters, commandType: CommandType.StoredProcedure).ToList();
-                return rows;
-            }
+            using IDbConnection connection = new SqlConnection(connectionString);
+            List<T> rows = connection.Query<T>(storedProcedure, parameters, commandType: CommandType.StoredProcedure).ToList();
+            return rows;
         }
 
         public int SaveData<T>(string storedProcedure, T parameters, string connectionStringName)
