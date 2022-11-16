@@ -6,9 +6,10 @@ namespace Handyman_SP_UI.Pages.Helpers
 {
     public class BusinessHelper : IBusinessHelper
     {
-        IBusinessEndPoint _business;
-        AuthenticationStateProvider? _authenticationStateProvider;
+        static IBusinessEndPoint _business;
+        static AuthenticationStateProvider? _authenticationStateProvider;
         static string? userId;
+
         public BusinessHelper(IBusinessEndPoint business, AuthenticationStateProvider? authenticationStateProvider)
         {
             _business = business;

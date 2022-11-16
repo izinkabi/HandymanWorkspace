@@ -28,12 +28,15 @@ builder.Services.AddScoped<IBusinessHelper, BusinessHelper>();
 builder.Services.AddAntiforgery();
 builder.Services.AddScoped<TokenProvider>();
 builder.Services.AddScoped<EmployeeHelper>();
+
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {
     options.CheckConsentNeeded = context => true;
     options.MinimumSameSitePolicy = SameSiteMode.None;
     options.ConsentCookieValue = "true";
 });
+builder.Services.AddOptions();
+builder.Services.AddAuthorizationCore();
 
 var app = builder.Build();
 

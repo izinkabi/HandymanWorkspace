@@ -1,10 +1,11 @@
 ﻿@page "/new-business"
-@page "/pre"
+@page "/newbi"
 @using HandymanProviderLibrary.Models;
-@using Microsoft.AspNetCore.Components
+
+
 
 <section id="forms">
-    <h2 class="sticky-xl-top fw-bold pt-3 pt-xl-5 pb-2 pb-xl-3 text-center">Create Profile</h2>
+    <h2 class="sticky-xl-top fw-bold pt-3 pt-xl-5 pb-2 pb-xl-3 text-center">Create Business Profile</h2>
 
     <article class="my-3 justify-content-center" id="validation">
 
@@ -14,7 +15,7 @@
                     <form class="row g-3">
                         <div class="col-md-6">
                             <label for="validationServer01" class="form-label">Business name</label>
-                            <input type="text" class="form-control is-valid" bind="@newBusiness.Name" id="validationServer01" placeholder="Zee Holding/ ZM LTD PTY" required>
+                            <input type="text" class="form-control is-valid"  id="validationServer01" placeholder="Zee Holding/ ZM LTD PTY" required>
                             <div class="valid-feedback">
                                 Looks good!
                             </div>
@@ -22,7 +23,7 @@
 
                         <div class="col-md-6">
                             <label for="validationServer02" class="form-label">Business Description</label>
-                            <input type="text" @bind="@newBusiness.Description" class="form-control is-valid" id="validationServer02" placeholder="What do you do?" required>
+                            <input type="text"  class="form-control is-valid" id="validationServer02" placeholder="What do you do?" required>
                             <div class="valid-feedback">
                                 Looks good!
                             </div>
@@ -36,7 +37,7 @@
                         <!--Address-->
                         <div class="col-md-6">
                             <label for="validationServer03" class="form-label">City</label>
-                            <input type="text" class="form-control is-invalid" bind="@newBusiness.address.add_city" id="validationServer03" required>
+                            <input type="text" class="form-control is-invalid"  id="validationServer03" required>
                             <div class="invalid-feedback">
                                 Please provide a valid city.
                             </div>
@@ -53,7 +54,7 @@
                         </div>
                         <div class="col-md-3">
                             <label for="validationServer05" class="form-label">Zip Code</label>
-                            <input type="text" class="form-control is-invalid" bind="@newBusiness.address.add_zip" id="validationServer05" required>
+                            <input type="text" class="form-control is-invalid" id="validationServer05" required>
                             <div class="invalid-feedback">
                                 Please provide a valid zip.
                             </div>
@@ -79,9 +80,9 @@
         </div>
     </article>
 </section>
-
+      
 @code {
-    BusinessModel? newBusiness;
-
+    
+    protected BusinessModel? newBusiness { get; set; }
 
 }
