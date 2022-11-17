@@ -7,8 +7,8 @@ namespace HandymanProviderLibrary.Api.Service;
 
 public class ServiceEndpoint : IServiceEndpoint
 {
-    private IAPIHelper _aPIHelper;
-
+    static IAPIHelper _aPIHelper;
+    static IList<ServiceModel>? services;
     /// <summary>
     /// Constractor for the API helper
     /// </summary>
@@ -28,14 +28,18 @@ public class ServiceEndpoint : IServiceEndpoint
     {
         try
         {
-            List<ServiceModel>? httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<List<ServiceModel>>("Services/GetServies");
-            return httpResponseMessage;
+            if (services == null)
+            {
+                services = await _aPIHelper.ApiClient.GetFromJsonAsync<List<ServiceModel>>("/api/services/GetServices");
+            }
+
+
         }
         catch (Exception ex)
         {
             throw new Exception(ex.Message);
         }
-
+        return services.ToList();
     }
 
 

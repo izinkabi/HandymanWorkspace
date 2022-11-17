@@ -5,6 +5,8 @@ using Handyman_SP_UI.Pages.Helpers;
 using HandymanProviderLibrary.Api.ApiHelper;
 using HandymanProviderLibrary.Api.EndPoints.Implementation;
 using HandymanProviderLibrary.Api.EndPoints.Interface;
+using HandymanProviderLibrary.Api.Service;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +30,7 @@ builder.Services.AddScoped<IBusinessHelper, BusinessHelper>();
 builder.Services.AddAntiforgery();
 builder.Services.AddScoped<TokenProvider>();
 builder.Services.AddScoped<EmployeeHelper>();
+builder.Services.AddScoped<IServiceEndpoint, ServiceEndpoint>();
 
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {
@@ -35,8 +38,14 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
     options.MinimumSameSitePolicy = SameSiteMode.None;
     options.ConsentCookieValue = "true";
 });
+builder.Services.AddResponseCompression(opt =>
+{
+    opt.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+      new[] { "application/octet-stream" });
+});
 builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();
+
 
 var app = builder.Build();
 
@@ -48,6 +57,7 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
 
 app.UseHttpsRedirection();
 

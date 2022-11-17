@@ -1,0 +1,78 @@
+﻿@page "/services-album"
+@page "/servicists"
+
+
+@inject IServiceEndpoint _serviceEP
+@inject NavigationManager NavManager 
+   
+   <section class="py-5 text-center container">
+   <div class="p-5 mb-4 bg-light rounded-3">
+      <div class="container-fluid py-5">
+            <h1 class="fw-light">Offered Services</h1>
+            <p class="lead text-muted">These are all service you need to add your business and start up on tha money making </p>
+      </div>
+    </div>
+  </section>
+    <div class="b-example-divider"></div>
+    <div class="album py-5 bg-light">
+        <div class="container">
+
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                @foreach(var service in services)
+                {
+                    @*<div @onclick="@(()=>ViewServiceDetails(service))">*@
+                        <MyService serviceModel="@service"/>
+                    @*</div>*@
+                    
+                }
+                
+            </div>
+        </div>
+    </div>
+
+
+@code {
+    IList<ServiceModel>? services;
+    string? ErrorMsg;
+
+    enum ServiceTypes{
+        Indoor,
+        Outdoor,
+
+    }
+
+    enum TaskTypes
+    {
+        Collect,
+        Inhouse,
+        Remote,
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            services = new List<ServiceModel>(); services = new List<ServiceModel>();
+            services = await _serviceEP.GetServices();
+    //                            public int id { get; set; }
+    //public string name { get; set; }
+    //public string img { get; set; }
+    //public ServiceCategoryModel category { get; set; }
+    //public DateTime datecreated { get; set; }
+    //public string status { get; set; }
+
+        }catch(Exception ex)
+        {
+            ErrorMsg = ex.Message;
+        }
+    }
+
+
+    void ViewServiceDetails(ServiceModel s)
+    {
+        NavManager.NavigateTo(NavManager.GetUriWithQueryParameters("servicist",new Dictionary<string, object>()
+        {
+                ["serviceModel"] = s
+             
+        }));
+    }
+}

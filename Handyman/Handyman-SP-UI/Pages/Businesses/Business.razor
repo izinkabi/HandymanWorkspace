@@ -1,133 +1,139 @@
 ﻿@page "/business"
 @page "/bus"
-@using Microsoft.AspNetCore.Authorization
+
 @inject IAuthorizationService AuthorizationService
-
-@using HandymanProviderLibrary.Api.EndPoints.Interface
-@using HandymanProviderLibrary.Models
-@using Handyman_SP_UI.Pages.Helpers
-@using Microsoft.AspNetCore.Components.Authorization
-@using Microsoft.AspNetCore.Identity
-@using Handyman_SP_UI.Areas.Identity.Data
-
-@inject NavigationManager Navigation
 @inject NavigationManager NavManager
 @inject SignInManager<Handyman_SP_UIUser> signInManager
 @inject UserManager<Handyman_SP_UIUser> UserManager 
 @inject IBusinessHelper _business
 
 
+
 @if (isLoggedIn)
 {
     
    
-if (@role == "ServiceProvider")
-{
-    <!--Welcome-->
-    <div class="p-4 p-md-3 mb-2 rounded text-bg-dark">
-        <div class="col-md-6 px-0">
-            <h1 class="display-4 fst-italic">Hi</h1>
-            <p class="lead my-3">Welcome to Handyman's @business.Name</p>
-        </div>
-    </div>
-    <!--End Welcome-->
-
-    <!--Business Component-->
-    <div class="row mb-2">
-        <div class="col-md-3">
-            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                <div class="col p-4 d-flex flex-column position-static">
-                    <strong class="d-inline-block mb-2 text-primary">Company details </strong>
-                    <h3 class="mb-0">@business.Name</h3>
-
-                    <p class="card-text mb-auto">This is a business description</p> <!--Should come from db -->
-                    <a href="#" class="stretched-link">Edit</a>
-                    <div class="mb-1 text-muted">1</div>
+        if (role == "ServiceProvider")
+        {
+            <!--Welcome-->
+            <div class="p-4 p-md-3 mb-2 rounded text-bg-dark">
+                <div class="col-md-6 px-0">
+                    <h1 class="display-4 fst-italic">Hi</h1>
+                    <p class="lead my-3">Welcome to Handyman's @business.Name</p>
                 </div>
             </div>
-        </div>
-        <!--End Business Component-->
+            <!--End Welcome-->
 
-        <!--Business Component-->
+            <!--Business Component-->
+            <div class="row mb-2">
+                <div class="col-md-3">
+                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                        <div class="col p-4 d-flex flex-column position-static">
+                            <strong class="d-inline-block mb-2 text-primary">Company details </strong>
+                            <h3 class="mb-0">@business.Name</h3>
 
-        <div class="col-md-3">
-            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                <div class="col p-4 d-flex flex-column position-static">
-
-                    <ServiceProvider Address="@business.address" serviceProvider="@business.Employee">
-
-                    </ServiceProvider>
-
-                    <a href="provider" class="stretched-link">Edit</a>
-
-                    <div class="mb-1 text-muted">3</div>
+                            <p class="card-text mb-auto">This is a business description</p> <!--Should come from db -->
+                            <a href="#" class="stretched-link">Edit</a>
+                            <div class="mb-1 text-muted">1</div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+                <!--End Business Component-->
 
-        <!--End Business Component-->
+                <!--Business Component-->
 
+                <div class="col-md-3">
+                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                        <div class="col p-4 d-flex flex-column position-static">
 
-        <!--Addresses Component-->
-        <div class="col-md-3">
-            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                <div class="col p-4 d-flex flex-column position-static">
-                    <strong class="d-inline-block mb-2 text-primary">Address</strong>
-                    <h3 class="mb-0">@business.address.add_city</h3>
-                    <p class="card-text mb-auto">This is a description for addresses</p>
-                    <a href="#" class="stretched-link">Edit</a>
-                    <div class="mb-1 text-muted">2</div>
+                            <ServiceProvider Address="@business.address" serviceProvider="@business.Employee">
+
+                            </ServiceProvider>
+
+                            <a href="provider" class="stretched-link">Edit</a>
+
+                            <div class="mb-1 text-muted">3</div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <!--End Addresses Component-->
 
-        <!--Services Component-->
+                <!--End Business Component-->
 
-        <div class="col-md-3">
-            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                <div class="col p-4 d-flex flex-column position-static">
-                    <strong class="d-inline-block mb-2 text-primary">World</strong>
-                    <h3 class="mb-0">@business.Employee.Services.ElementAt(0).name</h3>
-                    <p class="card-text mb-auto">@business.Employee.Services.ElementAt(0).category.description...and more</p>
-                    <a href="#" class="stretched-link">Edit</a>
-                    <div class="mb-1 text-muted">12</div>
+
+                <!--Addresses Component-->
+                <div class="col-md-3">
+                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                        <div class="col p-4 d-flex flex-column position-static">
+                            <strong class="d-inline-block mb-2 text-primary">Address</strong>
+                            <h3 class="mb-0">@business.address.add_city</h3>
+                            <p class="card-text mb-auto">This is a description for addresses</p>
+                            <a href="#" class="stretched-link">Edit</a>
+                            <div class="mb-1 text-muted">2</div>
+                        </div>
+                    </div>
                 </div>
+                <!--End Addresses Component-->
+
+                <!--Services Component-->
+
+                <div class="col-md-3">
+                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                        <div class="col p-4 d-flex flex-column position-static">
+                            <strong class="d-inline-block mb-2 text-primary">World</strong>
+                            <h3 class="mb-0">@business.Employee.Services.ElementAt(0).name</h3>
+                            <p class="card-text mb-auto">@business.Employee.Services.ElementAt(0).category.description...and more</p>
+                            <a href="#" class="stretched-link">Edit</a>
+                            <div class="mb-1 text-muted">12</div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-        </div>
+            <!--End Services Component-->
 
-    </div>
-    <!--End Services Component-->
+            <!--Ratings Component-->
 
-    <!--Ratings Component-->
+            <!--End Ratings Component-->
 
-    <!--End Ratings Component-->
-
-    <br />
             
-           
-
-}else
-{
-            <div>
-             <NewBusiness />
-            </div>
-             
+            
+        }
 }
+else
+{
+    <div class="p-5 mb-4 bg-light rounded-3">
+        <div class="container-fluid py-5">
+            <h1 class="display-5 fw-bold">Welcome to Handymen</h1>
+            <p class="col-md-8 fs-4">All services you think you can provide are listed here choose at least one and become <strong>Handymen</strong>, become the best in what you do and get money out of it</p>
+            <button @onclick="displayServiceAlbum" class="btn btn-primary btn-lg">Check them out!</button>
+        </div>
+    </div>
+  
 }
 @if(!(ErrorMsg==null))
 {
         <h4> Hi Please login</h4>
 }
    
-        
-
 @code {
 
     static BusinessModel? business;
     string? ErrorMsg;
     string? role;
     bool isLoggedIn;
+
+
+
+
+
+    enum Categories
+    {
+        Electronic,
+        Plumbing,
+        construction,
+        logistics
+
+    }
 
     [CascadingParameter]
     private Task<AuthenticationState> authenticationStateTask { get; set; }
@@ -136,59 +142,76 @@ if (@role == "ServiceProvider")
     {
         try
         {
+           if(isLoggedIn==false)
             await OpenBusiness();
 
-        }catch(Exception ex)
+        }
+        catch (Exception ex)
         {
             _business = null;
             ErrorMsg = ex.Message;
-            throw new Exception(ex.Message);  
+            throw new Exception(ex.Message);
         }
+    }
 
+    void displayServiceAlbum()
+    {
+        NavManager.NavigateTo("servicists");
+    }
 
-        async Task OpenBusiness()
+    async Task OpenBusiness()
+    {
+        var user = (await authenticationStateTask).User;
+
+        if (user.Identity.IsAuthenticated)
         {
-            var user = (await authenticationStateTask).User;
+            isLoggedIn = true;
 
-            if (user.Identity.IsAuthenticated)
+            if (user.IsInRole("ServiceProvider"))
             {
-                isLoggedIn = true;
-
-                if (user.IsInRole("ServiceProvider"))
+               
+                try
                 {
-                    role = "ServiceProvider";
-                    try
+                    if (business == null)
                     {
-                        if (business == null)
+                        if (_business != null)
                         {
-                            if (_business != null)
+                            var biz = await _business.GetBusinessLoggedInEmployee();
+                            if (biz != null)
                             {
-                                var biz = await _business.GetBusinessLoggedInEmployee();
-                                if (biz != null)
-                                {
-                                    business = biz;
-
-                                }
+                                business = biz;
+                                role = "ServiceProvider";
                             }
-
 
                         }
                     }
-                    catch (Exception ex)
-                    {
-
-                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
                 }
             }
+            else
+            {
+                NavManager.NavigateTo("nus",true);
+            }
 
-            //if ((await AuthorizationService.AuthorizeAsync(user, "content-editor"))
-            //    .Succeeded)
-            //{
-            //    // Perform an action only available to users satisfying the
-            //    // 'content-editor' policy.
-            //}
         }
-       
+
     }
+
+   void CreateBusiness()
+    {
+        try
+        {
+            //var entity = (NewBusiness)newBiz.Instance;
+            //entity.SubmitForm();
+            
+        }
+        catch (Exception ex)
+        {
+            ErrorMsg = ex.Message;  
+        }
+    }    
 }
 

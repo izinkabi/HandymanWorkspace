@@ -1,88 +1,233 @@
 ﻿@page "/new-business"
-@page "/newbi"
-@using HandymanProviderLibrary.Models;
+@page "/nus"
 
+@using HandymanProviderLibrary.Api.Service
+@using HandymanProviderLibrary.Models
+@using Handyman_SP_UI.Pages.Businesses.ServiceProviderComponent
+@using Microsoft.AspNetCore.Components.Web.Virtualization
 
+@inject IServiceEndpoint _servicesEP
 
-<section id="forms">
-    <h2 class="sticky-xl-top fw-bold pt-3 pt-xl-5 pb-2 pb-xl-3 text-center">Create Business Profile</h2>
+<!--New Businees accodion-->
+           
+    <h2 class="fw-bold pt-3 pt-xl-5 pb-2 pb-xl-3 text-center">Create Business Profile</h2>
+               
+         <div class="my-3" id="accordion">
+                                       <!--Business Creator-->
+                        <div class="accordion" id="accordionExample">
+                                <div class="accordion-item">
+                                    <h4 class="accordion-header" id="headingOne">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        <h4>
+                                            Entrepreneur
+                                        </h4>
+                                        </button>
+                                    </h4>
+                                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            <TestProfile />
+                                        </div>
+                                    </div>
+                                </div>
+                                                   <!--End Creator-->
+                                  <!--Business-->
+                                <div class="accordion-item">
+                                <h4 class="accordion-header" id="headingTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                        <h4>
+                                            Business Registration
+                                        </h4>
+                                    </button>
+                                </h4>
+                                <div id="collapseTwo" class="accordion-collapse collapsed" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <div class="row justify-content-lg-center" id="validation">
 
-    <article class="my-3 justify-content-center" id="validation">
+                                            <div class="col-lg-6">
+                                                <label for="validationServer01" class="form-label">Business name</label>
+                                                <input type="text" class="form-control is-valid" id="validationServer01" placeholder="Zee Holding/ ZM LTD PTY" required>
 
-        <div>
-            <div class="bd-example-snippet bd-code-snippet">
-                <div class="bd-example">
-                    <form class="row g-3">
-                        <div class="col-md-6">
-                            <label for="validationServer01" class="form-label">Business name</label>
-                            <input type="text" class="form-control is-valid"  id="validationServer01" placeholder="Zee Holding/ ZM LTD PTY" required>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                        </div>
+                                            </div>
 
-                        <div class="col-md-6">
-                            <label for="validationServer02" class="form-label">Business Description</label>
-                            <input type="text"  class="form-control is-valid" id="validationServer02" placeholder="What do you do?" required>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                        </div>
+                                            <div class="col-md-6">
+                                                <label for="validationServer02" class="form-label">Business Description</label>
+                                                <input type="text" class="form-control is-valid" id="validationServer02" placeholder="What do you do?" required>
 
-                        <!--Registration-->
+                                            </div>
+                                                <br />
+                                            <!--Registration-->
 
+                                                <div class="col-lg-12">
+                                                <label for="validationServer03" class="form-label">Registration Number</label>
+                                                <p><input type="text" class="form-control is-valid" @bind:set="@newBusiness.registration.regNumber" id="validationServer03" placeholder="#555-2245"  required/>
+                                                </p>
+                                            </div>
 
-                        <!--End Registration-->
+                                            <div class="col-md-12">
+                                                <label for="validationServer04" class="form-label">Tax Number</label>
+                                                <input type="text" class="form-control is-valid" id="validationServer04" placeholder="#37445784" required>
 
-                        <!--Address-->
-                        <div class="col-md-6">
-                            <label for="validationServer03" class="form-label">City</label>
-                            <input type="text" class="form-control is-invalid"  id="validationServer03" required>
-                            <div class="invalid-feedback">
-                                Please provide a valid city.
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="validationServer04" class="form-label">State</label>
-                            <select class="form-select is-invalid" id="validationServer04" required>
-                                <option selected disabled value="">Choose...</option>
-                                <option>...</option>
-                            </select>
-                            <div class="invalid-feedback">
-                                Please select a valid state.
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="validationServer05" class="form-label">Zip Code</label>
-                            <input type="text" class="form-control is-invalid" id="validationServer05" required>
-                            <div class="invalid-feedback">
-                                Please provide a valid zip.
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-check">
-                                <input class="form-check-input is-invalid" type="checkbox" value="" id="invalidCheck3" required>
-                                <label class="form-check-label" for="invalidCheck3">
-                                    Agree to terms and conditions
-                                </label>
-                                <div class="invalid-feedback">
-                                    You must agree before submitting.
+                                            </div>
+
+                                                    <div class="col-md-12">
+                                                    <label for="validationServer09" class="form-label">Type</label>
+                                                    <select class="form-select is-invalid" id="validationServer09">
+                                                    <option selected disabled value="">Choose...</option>
+                                                    <option value="1">Remote</option>
+                                                    <option value="2">In person</option>
+                                                </select>
+                                                <div class="invalid-feedback">
+                                                    Please select a Business Type.
+                                                </div>
+                                                </div>
+                                                    <!--End Registration-->
+                                                    <!--End Business-->
+                                                    <br/>
+                                                    <!--Address-->
+                                                    <div class="col-md-3">
+                                                        <label for="validationServer13" class="form-label">City</label>
+                                                        <input type="text" class="form-control is-invalid" id="validationServer13" placeholder="City Zee" required>
+                                                        <div class="invalid-feedback">
+                                                            Please provide a valid city.
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label for="validationServer24" class="form-label">State</label>
+                                                        <select class="form-select is-invalid" id="validationServer24">
+                                                            <option selected disabled value="0">Choose...</option>
+                                                            <option value="1">South Africa</option>
+                                                            <option value="2">Kuvuki Land</option>
+                                                        </select>
+                                                        <div class="invalid-feedback">
+                                                            Please select a valid state.
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="validationServer05" class="form-label">Zip Code</label>
+                                                         <input type="number" class="form-control is-invalid" id="validationServer05" placeholder="2000" required>
+                                                        <div class="invalid-feedback">
+                                                            Please provide a valid zip.
+                                                        </div>
+
+                                                    </div>
+                                                    
+                                                    <!---End address-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>    
+                                    <!--Services-->
+                                <div class="accordion-item">
+                                    <h4 class="accordion-header" id="headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                            <h4>
+                                                Services 
+                                            </h4>
+                                        </button>
+                                    </h4>
+                                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                      <div class="accordion-body">
+                                               
+                                                
+                                        <div class="list-group w-auto" style="height:350px;overflow-y:scroll">
+                                            @foreach (var service in services)
+                                            {
+                                                <div class="list-group">
+                                                    <button @onclick="@(()=>AddToNewServices(@service))" class="list-group-item  d-flex gap-3 py-3 btn">
+                                                        <img src="https://github.com/twbs.png" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
+                                                        <div class="d-flex gap-2 w-100 justify-content-between">
+                                                            <div>
+                                                                <h6 class="mb-0">@service.name</h6>
+                                                                <p class="mb-0 opacity-75">@service.category.description</p>
+                                                            </div>
+                                                            <small class="opacity-50 text-nowrap">now</small>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            }
+                                                  
+                                        </div>
+                                       </div>
                                 </div>
                             </div>
+                            <!--End Service-->
                         </div>
-                        <div class="col-12">
-                            <button class="btn btn-primary" type="submit">Submit form</button>
-                        </div>
-                    </form>
+          </div>
+             
+        <div class="col-12">
+            <div class="form-check">
+                <input class="form-check-input is-invalid" type="checkbox"  id="invalidCheck3" required>
+                <label class="form-check-label" for="invalidCheck3">
+                    Agree to terms and conditions
+                </label>
+                <div class="invalid-feedback">
+                    You must agree before submitting.
                 </div>
             </div>
-
         </div>
-    </article>
-</section>
-      
+
+        <div class="col-12">
+            <button @onclick="SubmitForm" class="btn btn-primary">Submit form</button>
+        </div>
+                   
+              
+
+<!--End Business accordion-->
 @code {
+    BusinessModel newBusiness = new()!;
+    string? ErrorMsg;
+   
+
+    IList<ServiceModel>? services;
+
+    protected override async Task OnInitializedAsync()
+    {
+        newBusiness.registration = new()!;
+        newBusiness.Employee = new()!;
+        newBusiness.Employee.Services = new List<ServiceModel>();
+        try
+        {
+            if (services == null)
+            {
+                services = new List<ServiceModel>()!;
+                services = await _servicesEP.GetServices();
+
+            }
+
+        }
+        catch (Exception ex)
+        {
+            ErrorMsg = ex.Message;
+        } 
+    }
+
+    void SubmitForm()
+    {
+        try
+        {
+            //var newProfile = (TestProfile.
+            //newBusiness.Employee.profile = new()!;
+            //newBusiness.Employee.profile = newProfile.providerModel.profile;
+        }
+        catch (Exception ex)
+        {
+            ErrorMsg = ex.Message;
+        }
+    }
+
+    void AddToNewServices(ServiceModel service)
+    {
+
+
+        if(!newBusiness.Employee.Services.Contains(service))
+        {
+            newBusiness.Employee.Services.Add(service);
+            StateHasChanged();
+        }
+
+    }
+
+
     
-    protected BusinessModel? newBusiness { get; set; }
 
 }

@@ -1,14 +1,13 @@
 ﻿@page "/service-provider"
 @page "/provider"
-
-@using HandymanProviderLibrary.Models;
 @using Handyman_SP_UI.Pages.Businesses.EmployeeComponent;
+
+
+@inject IServiceEndpoint _servicesEP;
 @inherits Employees
 
-<AuthorizeView>
-     <Authorized>
 
-    @if (context.User.IsInRole("ServiceProvider"))
+    @if (providerModel!=null)
     {
     <div class="d-flex text-muted pt-3">
         <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#007bff" /><text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text></svg>
@@ -21,31 +20,31 @@
     <div class="row mb-2">
        
     </div>
-       }
-        else
-        {
-        
-               <TestProfile>
+    }
 
-               </TestProfile>
-            
-        }
-
-     </Authorized>
-    <NotAuthorized>
-                <p>Not authorized!!!</p>
-    </NotAuthorized>
-</AuthorizeView>
+      
 
 @code {
 
     static ServiceProviderModel? providerModel;
     string? ErrorMsg = "something is wrong";
+    static IList<ServiceModel>? services;
+
     protected override async Task OnInitializedAsync()
     {
-
+        try
+        {
+            if (services == null)
+            {
+                services = await _servicesEP.GetServices();
+            }
+             
+        }
+        catch (Exception ex)
+        {
+            ErrorMsg = ex.Message;  
+        }
     }
-
 
     [Parameter]
     public ServiceProviderModel? serviceProvider { get => _  = providerModel; set {providerModel=value; } }
