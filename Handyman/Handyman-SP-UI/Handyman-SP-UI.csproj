@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Pages\Businesses\BizCreate.razor" />
     <Content Remove="Pages\Businesses\NewBusiness.razor" />
   </ItemGroup>
 
@@ -38,7 +39,7 @@
 
 
   <ItemGroup>
-    <None Include="Pages\Businesses\NewBusiness.razor" />
+    <None Include="Pages\Shared\NewBusiness.razor" />
     <None Include="Pages\Businesses\Stuff.razor" />
   </ItemGroup>
 
@@ -59,6 +60,18 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Businesses\BizCreate.razor" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\Businesses\BizCreate.razor" />
   </ItemGroup>
 
 </Project>

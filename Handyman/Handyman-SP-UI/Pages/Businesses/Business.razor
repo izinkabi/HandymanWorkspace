@@ -1,6 +1,8 @@
 ﻿@page "/business"
 @page "/bus"
 
+@using Microsoft.AspNetCore.Components.Web
+
 @inject IAuthorizationService AuthorizationService
 @inject NavigationManager NavManager
 @inject SignInManager<Handyman_SP_UIUser> signInManager
@@ -112,7 +114,7 @@ else
 }
 @if(!(ErrorMsg==null))
 {
-        <h4> Hi Please login</h4>
+        <h4> ErrorMsg</h4>
 }
    
 @code {
@@ -121,9 +123,6 @@ else
     string? ErrorMsg;
     string? role;
     bool isLoggedIn;
-
-
-
 
 
     enum Categories
@@ -142,21 +141,25 @@ else
     {
         try
         {
-           if(isLoggedIn==false)
-            await OpenBusiness();
-
+                await OpenBusiness();
+          
         }
         catch (Exception ex)
         {
             _business = null;
             ErrorMsg = ex.Message;
-            throw new Exception(ex.Message);
+            //throw new Exception(ex.Message);
         }
     }
 
     void displayServiceAlbum()
     {
         NavManager.NavigateTo("servicists");
+    }
+
+    void displayNewBiz()
+    {
+        NavManager.NavigateTo("new");
     }
 
     async Task OpenBusiness()
@@ -169,7 +172,7 @@ else
 
             if (user.IsInRole("ServiceProvider"))
             {
-               
+
                 try
                 {
                     if (business == null)
@@ -193,8 +196,9 @@ else
             }
             else
             {
-                NavManager.NavigateTo("nus",true);
+                displayNewBiz();
             }
+            
 
         }
 
