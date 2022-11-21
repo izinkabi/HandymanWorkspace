@@ -6,6 +6,6 @@ namespace Handyman_DataLibrary.DataAccess.Interfaces
     {
         void InsertServices(ServiceProviderModel provider);
         void RemoveService(int serviceId,string providerId);
-        void InsertProvider(ServiceProviderModel serviceProvider);
+        int InsertProvider(ServiceProviderModel serviceProvider);
     }
 }

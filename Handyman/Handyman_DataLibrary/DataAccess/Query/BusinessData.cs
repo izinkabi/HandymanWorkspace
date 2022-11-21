@@ -87,7 +87,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
 
             business.Id = businessRegistration.bus_Id;
             business.date = businessRegistration.bus_datecreated;
-            business.Employee = employee;
+            business.Employee = (ServiceProviderModel?)employee;
             //Populate registration
             business.registration.Id = businessRegistration.reg_Id;
             business.registration.name = businessRegistration.reg_name;
