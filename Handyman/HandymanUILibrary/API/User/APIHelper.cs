@@ -1,27 +1,23 @@
-﻿using HandymanUILibrary.Models;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
 
 namespace HandymanUILibrary.API
 {
-     public class APIHelper : IAPIHelper
+    public class APIHelper : IAPIHelper
     {
         //readonly IHttpClientFactory _clientFactory;
         private HttpClient _apiClient;
-       // private IloggedInUserModel _loggedInUserModel;
+        // private IloggedInUserModel _loggedInUserModel;
         IConfiguration _Configuration;
-       
+
         public APIHelper(IConfiguration configuration)
         {
             _Configuration = configuration;
             InitializeCLient();
             //_loggedInUserModel = loggedInUser;
-           
+
         }
 
         public HttpClient ApiClient
@@ -36,8 +32,8 @@ namespace HandymanUILibrary.API
         //We initialize the HTTP client and format the clients headings to pass the data as a json objet
         private void InitializeCLient()
         {
-           
-            
+
+
             //string api = "https://localhost:44308/api/";
 
             _apiClient = new HttpClient();
@@ -85,7 +81,7 @@ namespace HandymanUILibrary.API
         //    {
         //        if (httpResponseMessage.IsSuccessStatusCode)
         //        {
-                   
+
         //            var result = await httpResponseMessage.Content.ReadFromJsonAsync<loggedInUserModel>();
         //            _loggedInUserModel.Token = result.Token;
         //            _loggedInUserModel.Id = result.Id;
@@ -103,18 +99,18 @@ namespace HandymanUILibrary.API
         //            throw new Exception(httpResponseMessage.ReasonPhrase);
         //        }
         //    }
-           
+
 
         //}
 
 
-       
+
 
         public void LogOutuser()
         {
             _apiClient.DefaultRequestHeaders.Clear();
         }
 
-       
+
     }
 }

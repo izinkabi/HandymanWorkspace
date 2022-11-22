@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Dapper;
-using System.Configuration;
+﻿using Dapper;
+using Microsoft.Extensions.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using Microsoft.Extensions.Configuration;
 
 namespace Handyman_DataLibrary.Internal.DataAccess
 {
@@ -27,11 +21,9 @@ namespace Handyman_DataLibrary.Internal.DataAccess
         {
             string connectionString = GetConnectionString(connectionStringName);
 
-            using (IDbConnection connection = new SqlConnection(connectionString))
-            {
-                List<T> rows = connection.Query<T>(storedProcedure, parameters, commandType: CommandType.StoredProcedure).ToList();
-                return rows;
-            }
+            using IDbConnection connection = new SqlConnection(connectionString);
+            List<T> rows = connection.Query<T>(storedProcedure, parameters, commandType: CommandType.StoredProcedure).ToList();
+            return rows;
         }
 
         public int SaveData<T>(string storedProcedure, T parameters, string connectionStringName)

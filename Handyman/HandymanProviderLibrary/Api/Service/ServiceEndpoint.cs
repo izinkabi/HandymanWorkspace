@@ -1,4 +1,4 @@
-﻿using HandymanProviderLibrary.API;
+﻿using HandymanProviderLibrary.Api.ApiHelper;
 using HandymanProviderLibrary.Models;
 using System.Net.Http.Json;
 
@@ -7,8 +7,8 @@ namespace HandymanProviderLibrary.Api.Service;
 
 public class ServiceEndpoint : IServiceEndpoint
 {
-    private IAPIHelper _aPIHelper;
-
+    static IAPIHelper _aPIHelper;
+    static IList<ServiceModel>? services;
     /// <summary>
     /// Constractor for the API helper
     /// </summary>
@@ -28,14 +28,18 @@ public class ServiceEndpoint : IServiceEndpoint
     {
         try
         {
-            List<ServiceModel>? httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<List<ServiceModel>>("Services/GetServies");
-            return httpResponseMessage;
+            if (services == null)
+            {
+                services = await _aPIHelper.ApiClient.GetFromJsonAsync<List<ServiceModel>>("/api/services/GetServices");
+            }
+
+
         }
         catch (Exception ex)
         {
             throw new Exception(ex.Message);
         }
-
+        return services.ToList();
     }
 
 
@@ -72,11 +76,11 @@ public class ServiceEndpoint : IServiceEndpoint
     public async Task<string> CreateProviderService(ProviderServiceModel providerService)
     {
         string? result = null;
-        var ps = new 
+        var ps = new
         {
             ServiceId = providerService.ServiceId,
             ServiceProviderId = providerService.ServiceProviderId,
-            Id = providerService.Id 
+            Id = providerService.Id
         };
 
         try
@@ -84,10 +88,10 @@ public class ServiceEndpoint : IServiceEndpoint
             var httpResponseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync("/api/PostProvidersService", ps);
             if (httpResponseMessage.IsSuccessStatusCode)
             {
-                result =  httpResponseMessage.ReasonPhrase;
+                result = httpResponseMessage.ReasonPhrase;
                 return result;
             }
-            
+
         }
         catch (Exception ex)
         {

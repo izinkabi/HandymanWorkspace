@@ -1,39 +1,38 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using HandymanUILibrary.API;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using HandymanUILibrary.API;
 using HandymanUILibrary.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Handymen_UI_Consumer.Pages
 {
     public class IndexPageModel : PageModel
     {
- 
-     
+
+
         private IServiceEndPoint _serviceEndPoint;
-      
+
         private List<ServiceModel>? services;
         internal string? ErrorMsg;
 
         [BindProperty(SupportsGet = true)]
-        public string? searchString { get; set; }   
+        public string? searchString { get; set; }
         public SelectList? serviceCategorySelectList { get; set; }
-        
+
         public IndexPageModel(IServiceEndPoint serviceEndPoint)
         {
-          
+
             _serviceEndPoint = serviceEndPoint;
-            
-           
+
+
         }
 
         //The only method runing on ServicesHome soon to be index
         public async Task OnGetAsync()
         {
-            
+
             await LoadServices();
-            
+
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -47,12 +46,13 @@ namespace Handymen_UI_Consumer.Pages
             //}
             //Populate the select list, could have been done so easily
 
-           
+
         }
 
         //A local service list variable
-        [BindProperty(SupportsGet =true)]
-        public List<ServiceModel> ServiceList { 
+        [BindProperty(SupportsGet = true)]
+        public List<ServiceModel> ServiceList
+        {
             get
             {
                 return services;
@@ -66,7 +66,7 @@ namespace Handymen_UI_Consumer.Pages
         //Load the services from UILibrary then populate
         async Task LoadServices()
         {
-            
+
 
             try
             {
@@ -80,7 +80,7 @@ namespace Handymen_UI_Consumer.Pages
             }
 
         }
-        
-      
+
+
     }
 }

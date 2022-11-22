@@ -1,17 +1,17 @@
-﻿--/*
---Post-Deployment Script Template							
-----------------------------------------------------------------------------------------
--- This file contains SQL statements that will be appended to the build script.		
--- Use SQLCMD syntax to include a file in the post-deployment script.			
--- Example:      :r .\myfile.sql								
--- Use SQLCMD syntax to reference a variable in the post-deployment script.		
--- Example:      :setvar TableName MyTable							
---               SELECT * FROM [$(TableName)]					
-----------------------------------------------------------------------------------------
---*/
---/*script generated for free with OnlineDataGenerator available at: https://www.onlinedatagenerator.com */
---Use [Handyman_DB]
---Go
+﻿----/*
+----Post-Deployment Script Template							
+------------------------------------------------------------------------------------------
+---- This file contains SQL statements that will be appended to the build script.		
+---- Use SQLCMD syntax to include a file in the post-deployment script.			
+---- Example:      :r .\myfile.sql								
+---- Use SQLCMD syntax to reference a variable in the post-deployment script.		
+---- Example:      :setvar TableName MyTable							
+----               SELECT * FROM [$(TableName)]					
+------------------------------------------------------------------------------------------
+----*/
+----/*script generated for free with OnlineDataGenerator available at: https://www.onlinedatagenerator.com */
+----Use [Handyman_DB]
+----Go
 
 --INSERT INTO [Service].[Category] VALUES('Clerk','Work Under Pressure','Purchasing');
 --INSERT INTO [Service].[Category] VALUES('Steward','Self-motivation','Human Resources');

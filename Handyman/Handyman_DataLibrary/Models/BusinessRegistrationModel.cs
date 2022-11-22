@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Handyman_DataLibrary.Models
+﻿namespace Handyman_DataLibrary.Models
 {
     public class BusinessRegistrationModel
     {
@@ -13,13 +7,15 @@ namespace Handyman_DataLibrary.Models
         public int bus_registrationid { get; set; }
         public int bus_addressid { get; set; }
         public DateTime bus_datecreated { get; set; }
+        public string? bus_name { get; set; }
 
         //registration
+
         public int reg_Id { get; set; }
         public string? reg_name { get; set; }
         public string? reg_regnumber { get; set; }
         public string? reg_taxnumber { get; set; }
-        public string? reg_businesstype { get; set; }
+        public int reg_businesstype { get; set; }
 
         //Address
         public int add_Id { get; set; }

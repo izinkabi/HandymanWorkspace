@@ -1,65 +1,90 @@
-﻿using Handyman_DataLibrary.DataAccess.Interfaces;
+﻿using Handyman_DataLibrary;
 using Handyman_DataLibrary.DataAccess.Query;
 using Handyman_DataLibrary.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Handyman_Api.Controllers
+namespace Handyman_Api.Controllers;
+
+[Route("api/Delivery")]
+[ApiController]
+public class DeliveryController : ControllerBase
 {
+<<<<<<< HEAD
     [Route("api/Delivery")]
     [ApiController]
     public class DeliveryController : ControllerBase
+=======
+    IBusinessData _businessData;
+    public DeliveryController(IBusinessData business)
+>>>>>>> 1576c75f23d5518700009eba9f6c9919e7494c91
     {
-        IBusinessData _businessData;
-        public DeliveryController(IBusinessData business)
+        _businessData = business;
+    }
+
+    //Get the business under which the employee(userId) which is a provider is registered
+    [HttpGet]
+    [Route("Get")]
+    public BusinessModel Get(string employeeid)
+    {
+        try
         {
-            _businessData = business;
+            var business = _businessData.GetBusiness(employeeid);
+            return business;
         }
+<<<<<<< HEAD
 
         //Get the business under which the employee(userId) is registered
         [HttpGet]
         [Route("GetEmployee")]
         public EmployeeModel GetEmployee(string employeeid)
+=======
+        catch (Exception ex)
+>>>>>>> 1576c75f23d5518700009eba9f6c9919e7494c91
         {
-            try
-            {
-                var business = _businessData.GetBusiness(employeeid);
-                return business.Employee;
-            }
-            catch (Exception ex)
-            {
-
-                throw new Exception(ex.Message);
-            }
+            throw new Exception(ex.Message);
         }
+    }
 
-        //Register A business
-        [HttpPost]
-        public int Post(BusinessModel business)
+    //Register A business
+    [HttpPost]
+    [Route("Business/Create")]
+    public int CreateBusiness(BusinessModel business)
+    {
+        try
         {
-            try
-            {
-              int businessId = _businessData.CreateBusiness(business);
-                return businessId;
-            }catch(Exception ex) 
-            {
-                throw new Exception(ex.Message);    
-            }
+            int businessId = _businessData.CreateBusiness(business);
+            return businessId;
         }
-
-        //Update the business or its address
-        [HttpPut]
-        public void Update()
+        catch (Exception ex)
         {
-
+            throw new Exception(ex.Message);
         }
-        //Employ a new member
-        //public void Employ() 
-        //{
+    }
 
-        //}
-
-
+    //Update the business or its address
+    [HttpPut]
+    [Route("Business/Update")]
+    public void Update()
+    {
 
     }
+
+    //Employ a new member
+    [HttpPost]
+    [Route("Business/AddNewMember")]
+    public void AddNewMember(ServiceProviderModel serviceProvider)
+    {
+        try
+        {
+            _businessData.EmployMember(serviceProvider);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+
+    }
+
+
+
 }

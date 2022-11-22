@@ -1,12 +1,21 @@
 using Handyman_SP_UI.Areas.Identity;
 using Handyman_SP_UI.Areas.Identity.Data;
 using Handyman_SP_UI.Data;
+<<<<<<< HEAD
 using Handyman_SP_UI.Helpers;
 using HandymanProviderLibrary.Api.Stuff;
 using HandymanProviderLibrary.API;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
+=======
+using Handyman_SP_UI.Pages.Helpers;
+using HandymanProviderLibrary.Api.ApiHelper;
+using HandymanProviderLibrary.Api.EndPoints.Implementation;
+using HandymanProviderLibrary.Api.EndPoints.Interface;
+using HandymanProviderLibrary.Api.Service;
+using Microsoft.AspNetCore.ResponseCompression;
+>>>>>>> 1576c75f23d5518700009eba9f6c9919e7494c91
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,13 +30,40 @@ builder.Services.AddDefaultIdentity<Handyman_SP_UIUser>(options => options.SignI
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddSingleton<IAPIHelper, APIHelper>();
+builder.Services.AddScoped<IBusinessEndPoint, BusinessEndPoint>();
+builder.Services.AddScoped<EmployeeEndPoint>();
+builder.Services.AddScoped<IServiceProviderEndPoint, ServiceProviderEndPoint>();
+builder.Services.AddScoped<IBusinessEndPoint, BusinessEndPoint>();
+builder.Services.AddScoped<IBusinessHelper, BusinessHelper>();
+builder.Services.AddAntiforgery();
 builder.Services.AddScoped<TokenProvider>();
+<<<<<<< HEAD
 builder.Services.AddSingleton<IAPIHelper, APIHelper>();
 builder.Services.AddScoped<IDeliveryEndpoint, DeliveryEndpoint>();
 builder.Services.AddTransient<IEmployeeHelper, EmployeeHelper>();
+=======
+builder.Services.AddScoped<EmployeeHelper>();
+builder.Services.AddScoped<IServiceEndpoint, ServiceEndpoint>();
+
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.CheckConsentNeeded = context => true;
+    options.MinimumSameSitePolicy = SameSiteMode.None;
+    options.ConsentCookieValue = "true";
+});
+builder.Services.AddResponseCompression(opt =>
+{
+    opt.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+      new[] { "application/octet-stream" });
+});
+builder.Services.AddOptions();
+builder.Services.AddAuthorizationCore();
+
+>>>>>>> 1576c75f23d5518700009eba9f6c9919e7494c91
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -36,6 +72,7 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
 
 app.UseHttpsRedirection();
 

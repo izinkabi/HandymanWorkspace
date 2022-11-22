@@ -1,46 +1,88 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Handyman_SP_UI</RootNamespace>
+    <UserSecretsId>f7f65db5-005e-4030-80a8-0fb3eaa8b861</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Pages\Business\Stuff\Stuff.razor" />
+    <Compile Remove="Models\ServiceProvider\**" />
+    <Compile Remove="Pages\Businesses\Stuff\**" />
+    <Content Remove="Models\ServiceProvider\**" />
+    <Content Remove="Pages\Businesses\Stuff\**" />
+    <EmbeddedResource Remove="Models\ServiceProvider\**" />
+    <EmbeddedResource Remove="Pages\Businesses\Stuff\**" />
+    <None Remove="Models\ServiceProvider\**" />
+    <None Remove="Pages\Businesses\Stuff\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.10" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.10">
+    <Content Remove="Pages\Businesses\BizCreate.razor" />
+    <Content Remove="Pages\Businesses\NewBusiness.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.0" />
   </ItemGroup>
 
+<<<<<<< HEAD
   <ItemGroup>
     <ProjectReference Include="..\HandymanProviderLibrary\HandymanProviderLibrary.csproj" />
     <ProjectReference Include="..\HandymanUILibrary\HandymanUILibrary.csproj" />
   </ItemGroup>
+=======
+
+>>>>>>> 1576c75f23d5518700009eba9f6c9919e7494c91
 
   <ItemGroup>
-    <UpToDateCheckInput Remove="Pages\Business\Stuff\Stuff.razor" />
+    <None Include="Pages\Shared\NewBusiness.razor" />
+    <None Include="Pages\Businesses\Stuff.razor" />
   </ItemGroup>
 
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Pages\Business\Stuff\Stuff.razor" />
-  </ItemGroup>
+
 
   <ItemGroup>
-    <None Include="Pages\Business\Stuff.razor" />
+    <ProjectReference Include="..\HandymanProviderLibrary\HandymanProviderLibrary.csproj" />
   </ItemGroup>
 
+
+
   <ItemGroup>
+<<<<<<< HEAD
     <Folder Include="NewFolder\" />
+=======
+    <Content Update="wwwroot\assets\dist\css\blog.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\dist\css\headers.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Businesses\BizCreate.razor" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\Businesses\BizCreate.razor" />
+>>>>>>> 1576c75f23d5518700009eba9f6c9919e7494c91
   </ItemGroup>
 
 </Project>

@@ -1,20 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using HandymanUILibrary.API;
+﻿using HandymanUILibrary.API;
 using HandymanUILibrary.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Handymen_UI_Consumer.Pages
 {
 
     public class OrderModel : PageModel
     {
-      
-         HandymanUILibrary.Models.OrderModel order;
-         IServiceEndPoint _serviceEndPoint;
-         string ErrorMsg;
-         IList<ServiceModel> serviceDisplayList;
-        
-       
+
+        HandymanUILibrary.Models.OrderModel order;
+        IServiceEndPoint _serviceEndPoint;
+        string ErrorMsg;
+        IList<ServiceModel> serviceDisplayList;
+
+
         //Injecting the services 
         public OrderModel(IServiceEndPoint serviceEndPoint)
         {
@@ -35,22 +35,22 @@ namespace Handymen_UI_Consumer.Pages
             }
         }
 
-        
+
         //Get the order for display (the default method on OrderPage redirect or call)
         public async Task<IActionResult> OnGetAsync(int? id)
         {
 
-             await buildOrder(id);
+            await buildOrder(id);
 
             if (order.Id == id)
             {
                 return RedirectToPage("./Orders/OrderDetails");
             }
-            
+
 
             return Page();
         }
-      
+
         //Load / Create the Order 
         async Task buildOrder(int? id)
         {
@@ -63,20 +63,20 @@ namespace Handymen_UI_Consumer.Pages
                     order = new HandymanUILibrary.Models.OrderModel();
                     order.service = new();
                     order.service = service;
-                    
+
                 }
             }
-            
+
         }
         //Load Services from the IServiceEndPoint service
         async Task LoadServices()
         {
-           
+
             try
             {
                 //await the endpoint
                 serviceDisplayList = await _serviceEndPoint.GetServices();
-             
+
             }
             catch (Exception ex)
             {
@@ -90,6 +90,6 @@ namespace Handymen_UI_Consumer.Pages
             //implementation
         }
 
-        
+
     }
 }

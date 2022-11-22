@@ -1,6 +1,11 @@
 {
   "dependencies": {
+    "secrets1": {
+      "type": "secrets.user"
+    },
     "mssql1": {
+      "secretStore": "LocalSecretsFile",
+      "resourceId": null,
       "type": "mssql.local",
       "connectionId": "ConnectionStrings:Handyman_SP_UIContextConnection"
     }

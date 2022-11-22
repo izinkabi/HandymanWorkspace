@@ -30,7 +30,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
             {
                 ordertasks = _dataAccess.LoadData<OrderTaskModel, dynamic>("Request.spOrderLookUp_ByConsumerId_OrderByDateCreated",
                          new { consumerID = consumerID }, "Handyman_DB");
-                
+
                 //Braking down the ordertask entity
                 //First get get orders then get 
                 foreach (var ordertask in ordertasks)
@@ -44,7 +44,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
                     order.status = ordertask.ord_status;
 
                     Service_CategoryModel service = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Request.spServiceLookUpBy_Id",
-                         new { serviceId = ordertask.ord_service_id }, "Handyman_DB").First(); 
+                         new { serviceId = ordertask.ord_service_id }, "Handyman_DB").First();
                     //populate service of each order
                     order.service.name = service.serv_name;
                     order.service.status = service.serv_status;
@@ -63,14 +63,14 @@ namespace Handyman_DataLibrary.DataAccess.Query
                     //Check if the has been populated already
                     foreach (var o in orderSet)
                     {
-                        if (o.Id==order.Id)
+                        if (o.Id == order.Id)
                         {
                             orderSet.Remove(o);
                         }
                     }
                     orderSet.Add(order);
-                    
-                    
+
+
                 }
                 //populate task
 
@@ -88,12 +88,12 @@ namespace Handyman_DataLibrary.DataAccess.Query
                         task.title = ordertask.tas_title;
                         task.Id = ordertask.task_id;
                         //task.duration = ordertask.tas_duration;
-                        if(order.Id == ordertask.ord_id)
+                        if (order.Id == ordertask.ord_id)
                         {
                             order.Tasks.Add(task);
                         }
-                       
-                    } 
+
+                    }
                 }
             }
             catch (Exception ex)
@@ -112,7 +112,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
                 var DateCreated = DateTime.Now;
                 /*Save order*/
                 _dataAccess.StartTransaction("Handyman_DB");
-                int orderId = _dataAccess.LoadDataTransaction<int,dynamic>("Request.spOrderInsert", new
+                int orderId = _dataAccess.LoadDataTransaction<int, dynamic>("Request.spOrderInsert", new
                 {
                     ConsumerID = order.ConsumerID,
                     DateCreated = order.datecreated,
@@ -120,15 +120,15 @@ namespace Handyman_DataLibrary.DataAccess.Query
                     DueDate = order.duedate,
                     ServiceId = order.service.id
                 }).First();
-               
+
                 /*Saving the task*/
 
                 foreach (var item in order.Tasks)
                 {
                     //Save the task item
-                    
+
                     //get a new task id
-                  int taskId =  _taskData.InsertTask(item);
+                    int taskId = _taskData.InsertTask(item);
                     //save the order_task 
                     _dataAccess.SaveDataTransaction("Request.spOrder_Task_Insert",
                         new
@@ -137,7 +137,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
                             orderId = orderId
                         });
                 }
-               
+
 
                 _dataAccess.CommitTransation();
             }
@@ -147,17 +147,17 @@ namespace Handyman_DataLibrary.DataAccess.Query
                 throw;
             }
         }
-       
+
         //Update order and its tasks
         public void UpdateOrder(OrderModel order)
         {
             try
             {
-                _dataAccess.SaveData("Request.spOrderUpdate", 
-                    new 
+                _dataAccess.SaveData("Request.spOrderUpdate",
+                    new
                     {
                         ConsumerID = order.ConsumerID,
-                        DateCreated= order.datecreated,
+                        DateCreated = order.datecreated,
                         Status = order.status,
                         DueDate = order.duedate,
                         Id = order.Id
@@ -165,13 +165,13 @@ namespace Handyman_DataLibrary.DataAccess.Query
                     },
                     "Handyman_DB");
                 //
-                if(order.Tasks.Count() > 0)
+                if (order.Tasks.Count() > 0)
                 {
                     foreach (var task in order.Tasks)
                     {
                         _taskData.UpdateTask(task);
                     }
-                    
+
                 }
 
             }

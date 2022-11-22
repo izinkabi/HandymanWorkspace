@@ -1,34 +1,34 @@
-﻿--/*
---Post-Deployment Script Template							
-------------------------------------------------------------------------------------
--- This file contains SQL statements that will be appended to the build script.		
--- Use SQLCMD syntax to include a file in the post-deployment script.			
--- Example:      :r .\myfile.sql								
--- Use SQLCMD syntax to reference a variable in the post-deployment script.		
--- Example:      :setvar TableName MyTable							
---               SELECT * FROM [$(TableName)]					
-------------------------------------------------------------------------------------
---*/
---USE [Handyman_DB]
---GO
-
-----/****** Object:  Table [Service].[service]    Script Date: 2022/10/11 17:46:05 ******/
-
-----IF EXISTS(SELECT 1 FROM sys.tables WHERE object_id = OBJECT_ID('[Service].[service]'))
-----BEGIN;
-----    DROP TABLE [Service].[service];
-----END;
+﻿----/*
+----Post-Deployment Script Template							
+--------------------------------------------------------------------------------------
+---- This file contains SQL statements that will be appended to the build script.		
+---- Use SQLCMD syntax to include a file in the post-deployment script.			
+---- Example:      :r .\myfile.sql								
+---- Use SQLCMD syntax to reference a variable in the post-deployment script.		
+---- Example:      :setvar TableName MyTable							
+----               SELECT * FROM [$(TableName)]					
+--------------------------------------------------------------------------------------
+----*/
+----USE [Handyman_DB]
 ----GO
-----CREATE TABLE [Service].[service] (
-----    [serv_id] [int] NOT NULL IDENTITY(1, 1),
-----    [serv_name] VARCHAR(MAX) NULL,
-----    [serv_img] VARCHAR(255) NULL,
-----    [serv_categoryid] INTEGER NULL,
-----    [serv_datecreated] VARCHAR(255) NULL,
-----    [serv_status] VARCHAR(MAX) NULL,
-----    PRIMARY KEY ([serv_id])
-----);
-----GO
+
+------/****** Object:  Table [Service].[service]    Script Date: 2022/10/11 17:46:05 ******/
+
+------IF EXISTS(SELECT 1 FROM sys.tables WHERE object_id = OBJECT_ID('[Service].[service]'))
+------BEGIN;
+------    DROP TABLE [Service].[service];
+------END;
+------GO
+------CREATE TABLE [Service].[service] (
+------    [serv_id] [int] NOT NULL IDENTITY(1, 1),
+------    [serv_name] VARCHAR(MAX) NULL,
+------    [serv_img] VARCHAR(255) NULL,
+------    [serv_categoryid] INTEGER NULL,
+------    [serv_datecreated] VARCHAR(255) NULL,
+------    [serv_status] VARCHAR(MAX) NULL,
+------    PRIMARY KEY ([serv_id])
+------);
+------GO
 
 --INSERT INTO [Service].[service] (serv_name,serv_img,serv_categoryid,serv_datecreated,serv_status)
 --VALUES

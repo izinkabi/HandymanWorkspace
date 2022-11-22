@@ -10,18 +10,18 @@ namespace Handyman_DataLibrary.DataAccess.Query
         ISQLDataAccess _dataAccess;
         public ServiceData(ISQLDataAccess dataAccess)
         {
-            _dataAccess = dataAccess;   
+            _dataAccess = dataAccess;
         }
 
         //Get service, by sp query specifications
         public List<ServiceModel> GetAllServices()
         {
-           
+
             IList<Service_CategoryModel> output = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Service.spServiceLookUp_GroupByCategory", new { }, "Handyman_DB");
 
             //populate the service and its category
             var services = new List<ServiceModel>();
-            
+
             foreach (Service_CategoryModel outputItem in output)
             {
                 //populate service
