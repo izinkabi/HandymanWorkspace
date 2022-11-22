@@ -1,9 +1,9 @@
 ﻿using HandymanProviderLibrary.Models;
 
-namespace Handyman_SP_UI.Pages.Helpers
+namespace Handyman_SP_UI.Pages.Helpers;
+
+public interface IBusinessHelper
 {
-    public interface IBusinessHelper
-    {
-        Task<BusinessModel> GetBusinessLoggedInEmployee();
-    }
+    Task<BusinessModel> GetBusinessLoggedInEmployee();
+    Task CreateBusiness(BusinessModel newBiz);
 }

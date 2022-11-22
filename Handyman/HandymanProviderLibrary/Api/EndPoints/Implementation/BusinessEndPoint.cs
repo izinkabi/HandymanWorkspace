@@ -38,7 +38,7 @@ public class BusinessEndPoint : IBusinessEndPoint
     {
         try
         {
-            await _apiHelper.ApiClient.PostAsJsonAsync("/api/Delivery/Business/Post", business);
+            await _apiHelper.ApiClient.PostAsJsonAsync("/api/Delivery/Business/Create", business);
         }
         catch (Exception ex)
         {

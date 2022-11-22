@@ -22,6 +22,7 @@
   <ItemGroup>
     <Content Remove="Pages\Businesses\BizCreate.razor" />
     <Content Remove="Pages\Businesses\NewBusiness.razor" />
+    <Content Remove="Pages\ServiceProviderComponent\ProviderProfile.razor" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,6 +40,7 @@
 
 
   <ItemGroup>
+    <None Include="Pages\ServiceProviderComponent\ProviderProfile.razor" />
     <None Include="Pages\Shared\NewBusiness.razor" />
     <None Include="Pages\Businesses\Stuff.razor" />
   </ItemGroup>
@@ -72,6 +74,13 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Pages\Businesses\BizCreate.razor" />
+    <_ContentIncludedByDefault Remove="Pages\ServiceProviderComponent\ProviderProfile.razor" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\ServiceProviderComponent\ProviderProfile.razor" />
   </ItemGroup>
 
 </Project>

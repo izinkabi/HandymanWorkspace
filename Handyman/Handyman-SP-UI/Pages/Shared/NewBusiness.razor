@@ -1,15 +1,21 @@
 ﻿@page "/new-business"
 @page "/new"
 
+@using Microsoft.AspNetCore.Identity
+@using Handyman_SP_UI.Areas.Identity.Data
+
 @using HandymanProviderLibrary.Api.Service
 @using HandymanProviderLibrary.Models
 @using Handyman_SP_UI.Pages.ServiceProviderComponent
 @using Microsoft.AspNetCore.Components.Web
 
 @inject IServiceEndpoint _servicesEP
+@inject IBusinessHelper _businessHLP
+@inject SignInManager<Handyman_SP_UIUser> SignInManager
+@inject UserManager<Handyman_SP_UIUser> UserManager
 
 <!--New Businees accodion-->
-     
+
 <AuthorizeView>
     <Authorized>
         <h2 class="fw-bold pt-3 pt-xl-5 pb-2 pb-xl-3 text-center">Create Business Profile</h2>
@@ -27,7 +33,10 @@
                     </h4>
                     <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                            <TestProfile />
+
+
+
+                            <DynamicComponent Type="@typeof(TestProfile)" @ref="@profileComponent" />
                         </div>
                     </div>
                 </div>
@@ -47,35 +56,36 @@
 
                                 <div class="col-lg-6">
                                     <label for="validationServer01" class="form-label">Business name</label>
-                                    <input type="text" class="form-control is-valid" id="validationServer01" placeholder="Zee Holding/ ZM LTD PTY" required>
+                                    <input type="text" class="form-control is-valid" @bind="@newBusiness.Name" id="validationServer01" placeholder="Zee Holding/ ZM LTD PTY" required>
 
                                 </div>
 
                                 <div class="col-md-6">
                                     <label for="validationServer02" class="form-label">Business Description</label>
-                                    <input type="text" class="form-control is-valid" id="validationServer02" placeholder="What do you do?" required>
+                                    <input type="text" class="form-control is-valid" @bind="@newBusiness.Description" id="validationServer02" placeholder="What do you do?" required>
 
                                 </div>
                                 <br />
                                 <!--Registration-->
 
                                 <div class="col-lg-12">
-                                    <label for="validationServer03" class="form-label">Registration Number</label>
+                                    <label for="@newBusiness.registration.regNumber" class="form-label">Registration Number</label>
                                     <p>
-                                        <input type="text" class="form-control is-valid" @bind:set="@newBusiness.registration.regNumber" id="validationServer03" placeholder="#555-2245" required />
+                                        <input type="text" class="form-control is-valid" @bind="@newBusiness.registration.regNumber" id="v@newBusiness.registration.regNumber" placeholder="#555-2245" required />
                                     </p>
                                 </div>
 
                                 <div class="col-md-12">
                                     <label for="validationServer04" class="form-label">Tax Number</label>
-                                    <input type="text" class="form-control is-valid" id="validationServer04" placeholder="#37445784" required>
+
+                                    <input type="number" class="form-control is-valid" @bind="@newBusiness.registration.taxNumber" id="validationServer04" placeholder="#37445784" required>
 
                                 </div>
 
                                 <div class="col-md-12">
                                     <label for="validationServer09" class="form-label">Type</label>
-                                    <select class="form-select is-invalid" id="validationServer09">
-                                        <option selected disabled value="">Choose...</option>
+                                    <select type="text" class="form-select is-invalid" @onchange="SelectedBusinessType" id="validationServer09">
+                                        <option selected>Choose...</option>
                                         <option value="1">Remote</option>
                                         <option value="2">In person</option>
                                     </select>
@@ -85,21 +95,39 @@
                                 </div>
                                 <!--End Registration-->
                                 <!--End Business-->
+
+
                                 <br />
                                 <!--Address-->
+                                <div class="col-md-6">
+                                    <label for="validationServer18" class="form-label">Street Address</label>
+                                    <input type="text" @bind="newBusiness.address.add_street" class="form-control is-invalid" id="validationServer18" placeholder="4 First Ave" required>
+                                    <div class="invalid-feedback">
+                                        Please provide a valid street address.
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="validationServer44" class="form-label">Suburb</label>
+                                    <input type="text" @bind="newBusiness.address.add_suburb" class="form-control is-invalid" id="validationServer44" placeholder="Emadadeni" required>
+                                    <div class="invalid-feedback">
+                                        Please provide a valid suburb.
+                                    </div>
+                                </div>
                                 <div class="col-md-3">
                                     <label for="validationServer13" class="form-label">City</label>
-                                    <input type="text" class="form-control is-invalid" id="validationServer13" placeholder="City Zee" required>
+                                    <input type="text" @bind="newBusiness.address.add_city" class="form-control is-invalid" id="validationServer13" placeholder="City Zee" required>
                                     <div class="invalid-feedback">
                                         Please provide a valid city.
                                     </div>
                                 </div>
+
                                 <div class="col-md-3">
                                     <label for="validationServer24" class="form-label">State</label>
-                                    <select class="form-select is-invalid" id="validationServer24">
-                                        <option selected disabled value="0">Choose...</option>
-                                        <option value="1">South Africa</option>
-                                        <option value="2">Kuvuki Land</option>
+                                    <select type="text" @onchange="SelectedState" class="form-select is-invalid" id="validationServer24">
+                                        <option selected>Choose...</option>
+                                        <option value="GP">Gauteng Province</option>
+                                        <option value="EC">Eastern Cape</option>
+                                        <option value="MP">Mpumalanga</option>
                                     </select>
                                     <div class="invalid-feedback">
                                         Please select a valid state.
@@ -107,7 +135,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="validationServer05" class="form-label">Zip Code</label>
-                                    <input type="number" class="form-control is-invalid" id="validationServer05" placeholder="2000" required>
+                                    <input type="number" @bind="newBusiness.address.add_zip" class="form-control is-invalid" id="validationServer05" placeholder="2000" required>
                                     <div class="invalid-feedback">
                                         Please provide a valid zip.
                                     </div>
@@ -130,30 +158,44 @@
                     </h4>
                     <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
+                            <div>
+                                <h4 class="text-center">
+                                    Add Service To Business
+                                </h4>
+                            </div>
 
-
-                            <div class="list-group w-auto" style="height:350px;overflow-y:scroll">
-                                @foreach (var service in services)
+                            <div class="list-group w-auto" style="height:250px;overflow-y:scroll">
+                                @if (services.Count == 0)
                                 {
-                                    <div class="list-group">
-                                        <button @onclick="@(()=>AddToNewServices(@service))" class="list-group-item  d-flex gap-3 py-3 btn">
-                                            <img src="https://github.com/twbs.png" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
-                                            <div class="d-flex gap-2 w-100 justify-content-between">
-                                                <div>
-                                                    <h6 class="mb-0">@service.name</h6>
-                                                    <p class="mb-0 opacity-75">@service.category.description</p>
-                                                </div>
-                                                <small class="opacity-50 text-nowrap">now</small>
-                                            </div>
-                                        </button>
+                                    <div>
+                                        <p>Loading...</p>
                                     </div>
                                 }
+                                else
+                                {
+                                    @foreach (var service in services)
+                                    {
+                                        <div class="list-group">
+                                            <button @onclick="@(()=>AddToNewServices(@service))" class="list-group-item  d-flex gap-3 py-3 btn">
+                                                <img src="https://github.com/twbs.png" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
+                                                <div class="d-flex gap-2 w-100 justify-content-between">
+                                                    <div>
+                                                        <h6 class="mb-0">@service.name</h6>
+                                                        <p class="mb-0 opacity-75">@service.category.description</p>
+                                                    </div>
+                                                    <small class="opacity-50 text-nowrap">now</small>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    }
+                                }
+
 
                             </div>
                         </div>
                     </div>
                 </div>
-                <!--End Service-->
+                <!--End Services-->
             </div>
         </div>
 
@@ -175,27 +217,29 @@
 
     </Authorized>
 </AuthorizeView>
-    
-              
+
 
 <!--End Business accordion-->
 @code {
-    BusinessModel newBusiness = new()!;
-    string? ErrorMsg;
-   
 
+    BusinessModel? newBusiness;
+    string? ErrorMsg;
+    DynamicComponent? profileComponent;
     IList<ServiceModel>? services;
 
     protected override async Task OnInitializedAsync()
     {
+        newBusiness = new()!;
         newBusiness.registration = new()!;
         newBusiness.Employee = new()!;
         newBusiness.Employee.Services = new List<ServiceModel>();
+        newBusiness.address = new()!;
+
         try
         {
             if (services == null)
             {
-                services = new List<ServiceModel>()!;
+                services = new List<ServiceModel>();
                 services = await _servicesEP.GetServices();
 
             }
@@ -207,33 +251,82 @@
         } 
     }
 
-    void SubmitForm()
+    [CascadingParameter]
+    Task<AuthenticationState>? authenticationStateTask { get; set; }
+
+
+
+    void SelectedBusinessType(ChangeEventArgs e)
+    {
+        if (e.Value is not null)
+        {
+            if (e.Value.ToString() == "1")
+            {
+                //Remote
+                newBusiness.Type = 1;
+            }
+            else if (e.Value.ToString() == "2" )
+            {
+                //In person
+                newBusiness.Type = 2;
+            }
+
+        }
+    }
+
+    void SelectedState(ChangeEventArgs e)
+    {
+        if (e.Value is not null)
+        {
+            newBusiness.address.add_state = (string)e.Value;
+        }
+    }
+
+    async Task SubmitForm()
     {
         try
         {
-            //var newProfile = (TestProfile.
-            //newBusiness.Employee.profile = new()!;
-            //newBusiness.Employee.profile = newProfile.providerModel.profile;
+
+            var newProfile = (TestProfile) profileComponent?.Instance;
+
+            newBusiness.Employee.employeeProfile = newProfile?.providerModel?.employeeProfile;
+
+            //Add the provider role
+            var user = (await authenticationStateTask).User;
+
+            ////var sp = UserManager;
+
+            newBusiness.Employee.employeeProfile.EmailAddress = UserManager.GetUserName(user);
+            var localUser = await UserManager.GetUserAsync(user);
+            //if (!( await UserManager.IsInRoleAsync(localUser,"ServiceProvider")))
+            //{
+
+            if (!user.IsInRole("ServiceProvider"))
+            {
+                
+            
+                await _businessHLP.CreateBusiness(newBusiness);
+                //UserManager.AddToRoleAsync(UserManager.GetUserAsync(user).Result, "ServiceProvider");
+                    
+            }
+                
         }
         catch (Exception ex)
         {
             ErrorMsg = ex.Message;
         }
     }
-
+    
     void AddToNewServices(ServiceModel service)
     {
 
-
-        if(!newBusiness.Employee.Services.Contains(service))
+        if(!(newBusiness.Employee.Services.Contains(service)) && (service != null))
         {
             newBusiness.Employee.Services.Add(service);
-            StateHasChanged();
+            services.Remove(service);
         }
 
     }
 
-
-    
-
 }
+

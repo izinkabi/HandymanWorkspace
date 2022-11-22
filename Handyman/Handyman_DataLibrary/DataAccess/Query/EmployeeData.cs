@@ -15,13 +15,17 @@ namespace Handyman_DataLibrary.DataAccess.Query
         protected EmployeeModel GetEmployeeWithRatings(string EmployeeId)
         {
             EmployeeModel employee = new();
-            /// List<RatingsModel> ratings = new();
+
             RatingsModel rating = new();
             try
             {
-                //get the business , employee and the related ratings
-                var ers = _dataAccess.LoadData<Employee_Rating_Model, dynamic>("Delivery.spEmployeesLookUp", new { EmployeeId = EmployeeId }, "Handyman_DB");
+                //Get the profile of the service-provider
+                _dataAccess.StartTransaction("Handyman_DB");
+                employee.employeeProfile = _dataAccess.LoadDataTransaction<ProfileModel, dynamic>("dbo.spProfileLookUp", new { profileId = EmployeeId }).First();
 
+                //get the business , employee(with a profile) and the related ratings
+                var ers = _dataAccess.LoadDataTransaction<Employee_Rating_Model, dynamic>("Delivery.spEmployeesLookUp", new { EmployeeId = EmployeeId });
+                _dataAccess.CommitTransation();
                 //popolate the data in the following sequence
                 //Business
                 //Employee
@@ -33,6 +37,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
                     rating = new();
                     employee.employeeId = EmployeeId;
                     employee.BusinessId = er.emp_businessid;
+
                     rating.Id = er.rate_id;
                     rating.stars = er.rate_stars;
                     rating.review = er.rate_review;
@@ -41,11 +46,13 @@ namespace Handyman_DataLibrary.DataAccess.Query
 
                     employee.ratings.Add(rating);
 
-
                 }
+
+
             }
             catch (Exception)
             {
+                _dataAccess.RollBackTransaction();
                 employee = null;
                 throw;
             }
@@ -57,25 +64,45 @@ namespace Handyman_DataLibrary.DataAccess.Query
         {
             try
             {
+
+                _dataAccess.StartTransaction("Handyman_DB");
+
+                _dataAccess.SaveDataTransaction("dbo.spProfileInsert", new
+                {
+                    //Start with employee as employee' details profile 
+                    Names = employee.employeeProfile.Names,
+                    Surname = employee.employeeProfile.Surname,
+                    DateOfBirth = employee.employeeProfile.DateOfBirth.Date,
+                    AddressId = employee.employeeProfile.AddressId,
+                    PhoneNumber = employee.employeeProfile.PhoneNumber,
+                    EmailAddress = employee.employeeProfile.EmailAddress,
+                    profileGender = employee.employeeProfile.Gender,
+                    userId = employee.employeeId
+
+
+                });
+
+
                 //Insert the employee
-                _dataAccess.SaveData("Delivery.spEmployeeInsert",
+                _dataAccess.SaveDataTransaction("Delivery.spEmployeeInsert",
                        new
                        {
+                           //Then complete the employee  
                            employeeId = employee.employeeId,
                            BusinessId = employee.BusinessId,
-                           DateEmployed = employee.DateEmployed,
-                       }, "Handyman_DB");
+                           DateEmployed = DateTime.UtcNow,
 
-                //Insert the ratings
-                foreach (var er in employee.ratings)
-                {
-                    int id = InsertRating(er);
-                    _dataAccess.SaveData("Delivery.spEmployee_Rating_Insert",
-                        new { providerId = employee.employeeId, ratingId = id }, "Handyman_DB");
-                }
+                       });
 
+                _dataAccess.CommitTransation();
+
+                _dataAccess.SaveData("dbo.spUserRoleInsert", new { userId = employee.employeeId, RoleName = "ServiceProvider" }, "Handyman_DB");
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                _dataAccess.RollBackTransaction();
+                throw new Exception(ex.Message);
+            }
         }
 
         //Helper method for rating insert

@@ -114,6 +114,7 @@
     <Build Include="Stored Procedures\Business\Employee\spRatingInsert.sql" />
     <Build Include="Tables\Profile.sql" />
     <Build Include="Stored Procedures\Business\Employee\spProfileInsert.sql" />
+    <Build Include="Tables\dummytable.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Script\DevNathi_Handyman_DB.publish.publish.xml" />

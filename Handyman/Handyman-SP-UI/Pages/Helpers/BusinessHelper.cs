@@ -9,6 +9,7 @@ namespace Handyman_SP_UI.Pages.Helpers
         static IBusinessEndPoint _business;
         static AuthenticationStateProvider? _authenticationStateProvider;
         static string? userId;
+        static string? userName;
 
         public BusinessHelper(IBusinessEndPoint business, AuthenticationStateProvider? authenticationStateProvider)
         {
@@ -17,7 +18,7 @@ namespace Handyman_SP_UI.Pages.Helpers
         }
 
         //Get the logged in User Id
-        async Task<string> GetUserId()
+        async Task<string>? GetUserId()
         {
             try
             {
@@ -25,6 +26,7 @@ namespace Handyman_SP_UI.Pages.Helpers
                 {
                     var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
                     userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+
                 }
                 return userId;
             }
@@ -35,7 +37,7 @@ namespace Handyman_SP_UI.Pages.Helpers
         }
 
         //Get the business with the logged in user
-        public async Task<BusinessModel> GetBusinessLoggedInEmployee()
+        public async Task<BusinessModel>? GetBusinessLoggedInEmployee()
         {
             try
             {
@@ -51,6 +53,43 @@ namespace Handyman_SP_UI.Pages.Helpers
             {
                 throw new Exception(ex.Message);
             }
+        }
+
+
+        async Task IBusinessHelper.CreateBusiness(BusinessModel newBiz)
+        {
+            if (newBiz != null)
+            {
+                try
+                {
+                    await _business.CreateNewBusiness(StampBusinessUserAsync(newBiz).Result);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+
+
+            }
+
+        }
+
+
+        async Task<BusinessModel>? StampBusinessUserAsync(BusinessModel? newBiz)
+        {
+            if (newBiz != null)
+
+                newBiz.date = DateTime.Now;
+
+            newBiz.Employee.employeeId = await GetUserId();
+            newBiz.Employee.pro_providerId = await GetUserId();
+            newBiz.registration.businessType = newBiz.Type;
+            newBiz.registration.name = newBiz.Name;
+            newBiz.Employee.employeeProfile.UserId = newBiz.Employee.employeeId;
+            newBiz.address.add_country = "Sout Africa";
+
+            return newBiz;
+
         }
     }
 }

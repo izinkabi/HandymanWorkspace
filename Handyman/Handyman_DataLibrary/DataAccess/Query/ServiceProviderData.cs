@@ -36,6 +36,8 @@ namespace Handyman_DataLibrary.DataAccess.Query
 
                 //Get employee
                 var employee = this.GetEmployeeWithRatings(providerId);
+
+
                 //Get the service of the provider
                 List<Service_CategoryModel> service_category = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Delivery.spProvider_Service_LookUp",
                     new { providerId = providerId }, "Handyman_DB");
@@ -46,6 +48,8 @@ namespace Handyman_DataLibrary.DataAccess.Query
                 provider.employeeId = employee.employeeId;
                 provider.pro_providerId = employee.employeeId;
                 provider.DateEmployed = employee.DateEmployed;
+                provider.employeeProfile = employee.employeeProfile;
+
 
                 var services = new List<ServiceModel>();
                 foreach (Service_CategoryModel outputItem in service_category)

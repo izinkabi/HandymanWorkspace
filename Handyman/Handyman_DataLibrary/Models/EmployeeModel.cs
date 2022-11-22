@@ -8,7 +8,7 @@
         public string? employeeId { get; set; }
         public IList<RatingsModel>? ratings { get; set; }
         public int BusinessId { get; set; }
-        public string? FullName { get; set; }
         public DateTime DateEmployed { get; set; }
+        public ProfileModel? employeeProfile { get; set; }
     }
 }
