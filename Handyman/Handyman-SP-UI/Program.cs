@@ -38,11 +38,10 @@ builder.Services.AddScoped<IBusinessEndPoint, BusinessEndPoint>();
 builder.Services.AddScoped<IBusinessHelper, BusinessHelper>();
 builder.Services.AddAntiforgery();
 builder.Services.AddScoped<TokenProvider>();
-<<<<<<< HEAD
+
 builder.Services.AddSingleton<IAPIHelper, APIHelper>();
 builder.Services.AddScoped<IDeliveryEndpoint, DeliveryEndpoint>();
 builder.Services.AddTransient<IEmployeeHelper, EmployeeHelper>();
-=======
 builder.Services.AddScoped<EmployeeHelper>();
 builder.Services.AddScoped<IServiceEndpoint, ServiceEndpoint>();
 

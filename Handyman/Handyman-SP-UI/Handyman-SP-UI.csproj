@@ -36,15 +36,11 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.0" />
   </ItemGroup>
 
-<<<<<<< HEAD
+
   <ItemGroup>
     <ProjectReference Include="..\HandymanProviderLibrary\HandymanProviderLibrary.csproj" />
     <ProjectReference Include="..\HandymanUILibrary\HandymanUILibrary.csproj" />
   </ItemGroup>
-=======
-
->>>>>>> 1576c75f23d5518700009eba9f6c9919e7494c91
-
   <ItemGroup>
     <None Include="Pages\Shared\NewBusiness.razor" />
     <None Include="Pages\Businesses\Stuff.razor" />
