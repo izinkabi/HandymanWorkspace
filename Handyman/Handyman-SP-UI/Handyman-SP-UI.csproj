@@ -55,9 +55,7 @@
 
 
   <ItemGroup>
-<<<<<<< HEAD
     <Folder Include="NewFolder\" />
-=======
     <Content Update="wwwroot\assets\dist\css\blog.css">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -78,7 +76,6 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Pages\Businesses\BizCreate.razor" />
->>>>>>> 1576c75f23d5518700009eba9f6c9919e7494c91
   </ItemGroup>
 
 </Project>
