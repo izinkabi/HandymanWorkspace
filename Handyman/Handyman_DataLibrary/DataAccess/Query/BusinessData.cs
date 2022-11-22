@@ -98,6 +98,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
             business.Employee = employee;
 
 
+
             //Reistration
             business.registration = new()!;
 >>>>>>> 1576c75f23d5518700009eba9f6c9919e7494c91
@@ -157,7 +158,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
                     {
                         //Insert the employee
                         business.Employee.BusinessId = businessId;
-                        EmployMember(business.Employee);
+                        EmployServiceProvider(business.Employee);
                     }
 
                     return businessId;
@@ -173,7 +174,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
 
         //Create an employee in a business
 
-        public void EmployMember(ServiceProviderModel serviceProvider)
+        public void EmployServiceProvider(ServiceProviderModel serviceProvider)
         {
             try
             {
@@ -182,6 +183,10 @@ namespace Handyman_DataLibrary.DataAccess.Query
                 {
                     //Insert a provider and its employee details
                     _serviceProvider.InsertProvider(serviceProvider);
+
+                    //Give the an employee a role 'Service Provider'
+
+                    //_dataAccess.SaveData("spUserRoleInsert", new { userId = serviceProvider.pro_providerId, roleName = "ServiceProvider" }, "Handyman_DB");
                 }
 
             }

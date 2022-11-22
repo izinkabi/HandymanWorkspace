@@ -5,9 +5,14 @@
     @PhoneNumber NVARCHAR(100),
     @AddressId INT,
     @DateOfBirth DATETIME2(7),
-    @userId NVARCHAR(450)
+    @userId NVARCHAR(450),
+    @profileGender NVARCHAR(50)
+
+     
+     
 AS
 BEGIN
-	INSERT INTO [dbo].[Profile] ([Names],[Surname],[EmailAddress],[AddressId],[DateOfBirth],[userId],[PhoneNumber])
-    VALUES (@Names, @Surname, @EmailAddress , @AddressId, @DateOfBirth, @userId, @PhoneNumber)
+	IF NOT EXISTS(SELECT * FROM [dbo].[Profile] WHERE [UserId] = @userId)
+    INSERT INTO [dbo].[Profile] ([Names],[Surname],[EmailAddress],[AddressId],[DateOfBirth],[userId],[PhoneNumber],[Gender])
+    VALUES (@Names, @Surname, @EmailAddress , @AddressId, @DateOfBirth, @userId, @PhoneNumber,@profileGender)
 END

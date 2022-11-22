@@ -12,7 +12,7 @@
         <form class="row g-3">
           <div class="col-md-6">
             <label for="validationServer01" class="form-label">Full Name(s)</label>
-            <input type="text" @bind="@providerModel.profile.Names" class="form-control is-valid" id="validationServer01" placeholder="Zee" required>
+                    <input type="text" @bind="@providerModel.employeeProfile.Names" class="form-control is-valid" id="validationServer01" placeholder="Zee" required>
             <div class="valid-feedback">
               Looks good!
             </div>
@@ -21,21 +21,34 @@
           <!--Address-->
             <div class="col-md-6">
                 <label for="validationServer01" class="form-label">Last Name</label>
-                <input type="text" @bind="@providerModel.profile.Surname" class="form-control is-valid" id="validationServer01" placeholder="Majama" required>
+                    <input type="text" @bind="@providerModel.employeeProfile.Surname" class="form-control is-valid" id="validationServer01" placeholder="Maiana" required>
                 <div class="valid-feedback">
                     Looks good!
                 </div>
             </div>
+                <div class="col-md-12">
+                    <label for="validationServer09" class="form-label">Gender</label>
+                    <select type="text" class="form-select is-invalid" @onchange="SelectedGender" id="validationServer09">
+                        <option selected>Choose...</option>
+                        <option value="1">Male</option>
+                        <option value="2">Female</option>
+                        <option value="3">Other</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Please select a Business Type.
+                    </div>
+                </div>
             <div class="col-md-6">
                 <label for="validationServer02" class="form-label">Date Of Birth</label>
-                <input type="date" @bind="@providerModel.profile.DateOfBirth" class="form-control is-valid" id="validationServer02" placeholder="1990/5/5" required>
+                <input type="date" @bind="@providerModel.employeeProfile.DateOfBirth" class="form-control is-valid" id="validationServer02" placeholder="1990/5/5" required>
                 <div class="valid-feedback">
                     Looks good!
                 </div>
             </div>
+                
             <div class="col-md-6">
-                <label for="validationServer03" class="form-label">Phone Number</label>
-                <input type="number" @bind="@providerModel.profile.PhoneNumber" class="form-control is-valid" id="validationServer03" placeholder="0123456789" required>
+                <label for="validationServer033" class="form-label">Phone Number</label>
+                <input type="text" @bind="@providerModel.employeeProfile.PhoneNumber" class="form-control is-valid" id="validationServer33" placeholder="0123456789" required>
                 <div class="valid-feedback">
                     start with +27
                 </div>
@@ -50,13 +63,36 @@
 
 
 @code {
-    public ServiceProviderModel providerModel;
+    public ServiceProviderModel? providerModel;
 
     protected override async Task OnInitializedAsync()
     {
         providerModel = new()!;
         providerModel.Services = new List<ServiceModel>()!;
-        providerModel.profile = new ProfileModel()!;
+        providerModel.employeeProfile = new ProfileModel()!;
 
+    }
+
+    void SelectedGender(ChangeEventArgs e)
+    {
+        if(e.Value is not null)
+        {
+            switch ((string)e.Value)
+            {
+                case "1":
+                    providerModel.employeeProfile.Gender = "Male";
+
+                    break;
+                case "2":
+                    providerModel.employeeProfile.Gender = "Female";
+                    break;
+                case "3":
+                    providerModel.employeeProfile.Gender = "Other";
+                    break;
+
+            }
+            
+
+        }
     }
 }

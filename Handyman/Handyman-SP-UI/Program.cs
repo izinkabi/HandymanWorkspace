@@ -46,11 +46,15 @@ builder.Services.AddTransient<IEmployeeHelper, EmployeeHelper>();
 builder.Services.AddScoped<EmployeeHelper>();
 builder.Services.AddScoped<IServiceEndpoint, ServiceEndpoint>();
 
-builder.Services.Configure<CookiePolicyOptions>(options =>
+//builder.Services.AddIdentity<Handyman_SP_UIUser, IdentityRole>()
+//    .AddEntityFrameworkStores<Handyman_SP_UIContext>()
+//    .AddUserManager<AppUserManager>() // Add ApplicationUserManager
+//    .AddDefaultTokenProviders()
+//    .AddDefaultUI();
+
+builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.CheckConsentNeeded = context => true;
-    options.MinimumSameSitePolicy = SameSiteMode.None;
-    options.ConsentCookieValue = "true";
+    options.LoginPath = "/Identity/Account/Login";
 });
 builder.Services.AddResponseCompression(opt =>
 {

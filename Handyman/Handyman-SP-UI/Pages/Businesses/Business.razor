@@ -3,20 +3,20 @@
 
 @using Microsoft.AspNetCore.Components.Web
 
-@inject IAuthorizationService AuthorizationService
+
 @inject NavigationManager NavManager
 @inject SignInManager<Handyman_SP_UIUser> signInManager
 @inject UserManager<Handyman_SP_UIUser> UserManager 
 @inject IBusinessHelper _business
 
-
-
-@if (isLoggedIn)
-{
     
-   
-        if (role == "ServiceProvider")
+<AuthorizeView>
+
+<Authorized>
+        @if (business != null)
         {
+
+
             <!--Welcome-->
             <div class="p-4 p-md-3 mb-2 rounded text-bg-dark">
                 <div class="col-md-6 px-0">
@@ -44,11 +44,15 @@
 
                 <!--Business Component-->
 
-                <div class="col-md-3">
-                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                @if (business.Employee != null)
+                {
+
+
+                    <div class="col-md-3">
+                        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                         <div class="col p-4 d-flex flex-column position-static">
 
-                            <ServiceProvider Address="@business.address" serviceProvider="@business.Employee">
+                            <ServiceProvider  serviceProvider="@business.Employee">
 
                             </ServiceProvider>
 
@@ -57,28 +61,33 @@
                             <div class="mb-1 text-muted">3</div>
                         </div>
                     </div>
-                </div>
-
+                    </div>
+                  }
                 <!--End Business Component-->
 
-
-                <!--Addresses Component-->
-                <div class="col-md-3">
-                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                        <div class="col p-4 d-flex flex-column position-static">
-                            <strong class="d-inline-block mb-2 text-primary">Address</strong>
-                            <h3 class="mb-0">@business.address.add_city</h3>
-                            <p class="card-text mb-auto">This is a description for addresses</p>
-                            <a href="#" class="stretched-link">Edit</a>
-                            <div class="mb-1 text-muted">2</div>
+                @if(business.address!=null)
+                {
+                    <!--Addresses Component-->
+                    <div class="col-md-3">
+                        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                            <div class="col p-4 d-flex flex-column position-static">
+                                <strong class="d-inline-block mb-2 text-primary">Address</strong>
+                                <h3 class="mb-0">@business.address.add_city</h3>
+                                <p class="card-text mb-auto">This is a description for addresses</p>
+                                <a href="#" class="stretched-link">Edit</a>
+                                <div class="mb-1 text-muted">2</div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!--End Addresses Component-->
+                    <!--End Addresses Component-->
+                }
+                
 
                 <!--Services Component-->
+                @if (business.address != null && business.Employee.employeeProfile!=null)
+                {
 
-                <div class="col-md-3">
+                  <div class="col-md-3">
                     <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                         <div class="col p-4 d-flex flex-column position-static">
                             <strong class="d-inline-block mb-2 text-primary">World</strong>
@@ -88,30 +97,33 @@
                             <div class="mb-1 text-muted">12</div>
                         </div>
                     </div>
-                </div>
-
+                    </div>
+                  }
             </div>
             <!--End Services Component-->
 
             <!--Ratings Component-->
 
             <!--End Ratings Component-->
-
-            
-            
         }
-}
-else
-{
-    <div class="p-5 mb-4 bg-light rounded-3">
-        <div class="container-fluid py-5">
-            <h1 class="display-5 fw-bold">Welcome to Handymen</h1>
-            <p class="col-md-8 fs-4">All services you think you can provide are listed here choose at least one and become <strong>Handymen</strong>, become the best in what you do and get money out of it</p>
-            <button @onclick="displayServiceAlbum" class="btn btn-primary btn-lg">Check them out!</button>
-        </div>
-    </div>
-  
-}
+        else
+        {
+            <div>
+                <h4>Loading...</h4>
+            </div>
+        }
+
+        </Authorized>
+        <NotAuthorized>
+            <div class="p-5 mb-4 bg-light rounded-3">
+                <div class="container-fluid py-5">
+                    <h1 class="display-5 fw-bold">Welcome to Handymen</h1>
+                    <p class="col-md-8 fs-4">All services you think you can provide are listed here choose at least one and become <strong>Handymen</strong>, become the best in what you do and get money out of it</p>
+                    <button @onclick="displayServiceAlbum" class="btn btn-primary btn-lg">Check them out!</button>
+                </div>
+            </div>
+        </NotAuthorized>
+ </AuthorizeView>
 @if(!(ErrorMsg==null))
 {
         <h4> ErrorMsg</h4>
@@ -141,8 +153,9 @@ else
     {
         try
         {
-                await OpenBusiness();
-          
+            business = new BusinessModel()!;
+            await OpenBusiness();
+
         }
         catch (Exception ex)
         {
@@ -170,34 +183,32 @@ else
         {
             isLoggedIn = true;
 
-            if (user.IsInRole("ServiceProvider"))
-            {
 
-                try
-                {
-                    if (business == null)
+
+            try
+            {
+                
+                    if (_business != null)
                     {
-                        if (_business != null)
+                        var biz = await _business.GetBusinessLoggedInEmployee();
+                        if (biz != null)
                         {
-                            var biz = await _business.GetBusinessLoggedInEmployee();
-                            if (biz != null)
-                            {
-                                business = biz;
-                                role = "ServiceProvider";
-                            }
-
+                            business = biz;
+                            role = "ServiceProvider";
                         }
+                        else
+                        {
+                            displayNewBiz();
+                        }
+
                     }
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(ex.Message);
-                }
+                    
             }
-            else
+            catch (Exception ex)
             {
-                displayNewBiz();
+                throw new Exception(ex.Message);
             }
+           
             
 
         }
