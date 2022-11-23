@@ -18,16 +18,17 @@ public class DeliveryController : ControllerBase
     //Get the business under which the employee(userId) which is a provider is registered
     [HttpGet]
     [Route("Get")]
-    public BusinessModel Get(string employeeid)
+    public BusinessModel? Get(string employeeid)
     {
+        var business = new BusinessModel();
         try
         {
-            var business = _businessData.GetBusiness(employeeid);
+            business = _businessData.GetBusiness(employeeid);
             return business;
         }
         catch (Exception ex)
         {
-            throw new Exception(ex.Message);
+            return null;
         }
     }
 

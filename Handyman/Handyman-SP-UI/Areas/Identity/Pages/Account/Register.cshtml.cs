@@ -3,6 +3,7 @@
 #nullable disable
 
 using Handyman_SP_UI.Areas.Identity.Data;
+using Handyman_SP_UI.Pages.Shared;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -20,6 +21,7 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
         private readonly SignInManager<Handyman_SP_UIUser> _signInManager;
         private readonly UserManager<Handyman_SP_UIUser> _userManager;
         private readonly IUserStore<Handyman_SP_UIUser> _userStore;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUserEmailStore<Handyman_SP_UIUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
@@ -29,7 +31,8 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
             IUserStore<Handyman_SP_UIUser> userStore,
             SignInManager<Handyman_SP_UIUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -37,6 +40,7 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _roleManager = roleManager;
         }
 
         /// <summary>
@@ -112,8 +116,19 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
+
+
                 if (result.Succeeded)
                 {
+                    if (!await _roleManager.RoleExistsAsync("ServiceProvider"))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole("ServiceProvider"));
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, "ServiceProvider");
+                    }
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
@@ -130,12 +145,12 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        return RedirectToPage("new", new { email = Input.Email, returnUrl = returnUrl });
                     }
                     else
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        return RedirectToPage("~/" + nameof(NewBusiness));
                     }
                 }
                 foreach (var error in result.Errors)
