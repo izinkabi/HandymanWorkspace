@@ -14,6 +14,7 @@ using HandymanProviderLibrary.Api.ApiHelper;
 using HandymanProviderLibrary.Api.EndPoints.Implementation;
 using HandymanProviderLibrary.Api.EndPoints.Interface;
 using HandymanProviderLibrary.Api.Service;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 >>>>>>> 1576c75f23d5518700009eba9f6c9919e7494c91
 using Microsoft.EntityFrameworkCore;
@@ -24,8 +25,8 @@ var connectionString = builder.Configuration.GetConnectionString("Handyman_SP_UI
 builder.Services.AddDbContext<Handyman_SP_UIContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<Handyman_SP_UIUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<Handyman_SP_UIContext>();
+//builder.Services.AddDefaultIdentity<Handyman_SP_UIUser>(options => options.SignIn.RequireConfirmedAccount = true)
+//    .AddEntityFrameworkStores<Handyman_SP_UIContext>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -45,11 +46,11 @@ builder.Services.AddTransient<IEmployeeHelper, EmployeeHelper>();
 builder.Services.AddScoped<EmployeeHelper>();
 builder.Services.AddScoped<IServiceEndpoint, ServiceEndpoint>();
 
-//builder.Services.AddIdentity<Handyman_SP_UIUser, IdentityRole>()
-//    .AddEntityFrameworkStores<Handyman_SP_UIContext>()
-//    .AddUserManager<AppUserManager>() // Add ApplicationUserManager
-//    .AddDefaultTokenProviders()
-//    .AddDefaultUI();
+builder.Services.AddIdentity<Handyman_SP_UIUser, IdentityRole>()
+    .AddEntityFrameworkStores<Handyman_SP_UIContext>()
+    .AddUserManager<AppUserManager>() // Add ApplicationUserManager
+    .AddDefaultTokenProviders()
+    .AddDefaultUI();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {

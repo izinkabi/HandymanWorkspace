@@ -21,7 +21,8 @@ namespace Handyman_DataLibrary.DataAccess.Query
             {
                 //Get the profile of the service-provider
                 _dataAccess.StartTransaction("Handyman_DB");
-                employee.employeeProfile = _dataAccess.LoadDataTransaction<ProfileModel, dynamic>("dbo.spProfileLookUp", new { profileId = EmployeeId }).First();
+                employee.employeeProfile = new ProfileModel();
+                employee.employeeProfile = _dataAccess.LoadDataTransaction<ProfileModel, dynamic>("dbo.spProfileLookUp", new { profileId = EmployeeId }).FirstOrDefault();
 
                 //get the business , employee(with a profile) and the related ratings
                 var ers = _dataAccess.LoadDataTransaction<Employee_Rating_Model, dynamic>("Delivery.spEmployeesLookUp", new { EmployeeId = EmployeeId });
@@ -46,7 +47,6 @@ namespace Handyman_DataLibrary.DataAccess.Query
                     employee.ratings.Add(rating);
 
                 }
-
 
             }
             catch (Exception)
@@ -89,13 +89,12 @@ namespace Handyman_DataLibrary.DataAccess.Query
                            //Then complete the employee  
                            employeeId = employee.employeeId,
                            BusinessId = employee.BusinessId,
-                           DateEmployed = DateTime.UtcNow,
-
+                           DateEmployed = DateTime.UtcNow
                        });
 
                 _dataAccess.CommitTransation();
 
-                _dataAccess.SaveData("dbo.spUserRoleInsert", new { userId = employee.employeeId, RoleName = "ServiceProvider" }, "Handyman_DB");
+                //_dataAccess.SaveData("dbo.spUserRoleInsert", new { userId = employee.employeeId, RoleName = "ServiceProvider" }, "Handyman_DB");
             }
             catch (Exception ex)
             {
@@ -110,7 +109,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
 
             try
             {
-                int rate_id = _dataAccess.LoadData<int, dynamic>("Delivery.spRatingInsert", rating, "Handyman_DB").First();
+                int rate_id = _dataAccess.LoadData<int, dynamic>("Delivery.spRatingInsert", rating, "Handyman_DB").FirstOrDefault();
 
                 return rate_id;
             }

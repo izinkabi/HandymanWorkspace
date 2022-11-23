@@ -18,17 +18,16 @@ public class BusinessEndPoint : IBusinessEndPoint
     }
 
     //Get the business's employee(ServiceProvider)
-    public async Task<BusinessModel> GetLoggedInEmployee(string employeeid)
+    public async Task<BusinessModel>? GetLoggedInEmployee(string employeeid)
     {
         try
         {
-            business = await _apiHelper?.ApiClient.GetFromJsonAsync<BusinessModel>($"/api/Delivery/Get?employeeid={employeeid}");
+            business = await _apiHelper?.ApiClient?.GetFromJsonAsync<BusinessModel>($"/api/Delivery/Get?employeeid={employeeid}");
 
         }
         catch (Exception ex)
         {
-            ErrorMsg = ex.Message;
-            throw new Exception(ex.Message);
+            return null;
         }
         return business;
     }

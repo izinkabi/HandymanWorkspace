@@ -30,7 +30,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
                         reg_taxnumber = registration.taxNumber,
                         reg_businesstype = registration.businessType
 
-                    }, "Handyman_DB").First();
+                    }, "Handyman_DB").FirstOrDefault();
                 return registrationId;
             }
             catch (Exception ex)
@@ -76,7 +76,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
 
             //Get business, registration and address
             BusinessRegistrationModel businessRegistration = _dataAccess.LoadData<BusinessRegistrationModel, dynamic>("Delivery.spBusiness_Registration_LookUp",
-                new { businessId = employee.BusinessId }, "Handyman_DB").First();
+                new { businessId = employee.BusinessId }, "Handyman_DB").FirstOrDefault();
 
             //Populating business
             BusinessModel business = new()!;

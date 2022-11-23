@@ -51,7 +51,7 @@ namespace Handyman_SP_UI.Pages.Helpers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return null;
             }
         }
 
