@@ -1,22 +1,15 @@
 using Handyman_SP_UI.Areas.Identity;
 using Handyman_SP_UI.Areas.Identity.Data;
 using Handyman_SP_UI.Data;
-<<<<<<< HEAD
 using Handyman_SP_UI.Helpers;
-using HandymanProviderLibrary.Api.Stuff;
-using HandymanProviderLibrary.API;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Identity;
-=======
 using Handyman_SP_UI.Pages.Helpers;
 using HandymanProviderLibrary.Api.ApiHelper;
 using HandymanProviderLibrary.Api.EndPoints.Implementation;
 using HandymanProviderLibrary.Api.EndPoints.Interface;
 using HandymanProviderLibrary.Api.Service;
+using HandymanProviderLibrary.Api.Stuff;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
->>>>>>> 1576c75f23d5518700009eba9f6c9919e7494c91
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,8 +35,8 @@ builder.Services.AddScoped<TokenProvider>();
 
 builder.Services.AddSingleton<IAPIHelper, APIHelper>();
 builder.Services.AddScoped<IDeliveryEndpoint, DeliveryEndpoint>();
-builder.Services.AddTransient<IEmployeeHelper, EmployeeHelper>();
-builder.Services.AddScoped<EmployeeHelper>();
+builder.Services.AddTransient<IEmployeeHelper, Handyman_SP_UI.Helpers.EmployeeHelper>();
+builder.Services.AddScoped<Handyman_SP_UI.Helpers.EmployeeHelper>();
 builder.Services.AddScoped<IServiceEndpoint, ServiceEndpoint>();
 
 builder.Services.AddIdentity<Handyman_SP_UIUser, IdentityRole>()
@@ -63,8 +56,6 @@ builder.Services.AddResponseCompression(opt =>
 });
 builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();
-
->>>>>>> 1576c75f23d5518700009eba9f6c9919e7494c91
 
 var app = builder.Build();
 

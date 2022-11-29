@@ -80,22 +80,6 @@ namespace Handyman_DataLibrary.DataAccess.Query
                 throw new Exception(ex.Message);
             }
         }
-<<<<<<< HEAD
-        
-        //public int InsertProvider(ServiceProviderModel serviceProvider)
-        //{
-
-        //}
-
-        public void RemoveService(int serviceId, string providerId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int InsertProvider(ServiceProviderModel serviceProvider)
-        {
-            throw new NotImplementedException();
-=======
 
         //Insert the employee followed by provider 
         public void InsertProvider(ServiceProviderModel serviceProvider)
@@ -121,7 +105,6 @@ namespace Handyman_DataLibrary.DataAccess.Query
             {
                 throw new Exception(ex.Message);
             }
->>>>>>> 1576c75f23d5518700009eba9f6c9919e7494c91
         }
 
 

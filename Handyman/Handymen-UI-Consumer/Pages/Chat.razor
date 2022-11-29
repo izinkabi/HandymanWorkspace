@@ -35,7 +35,6 @@
     protected override async Task OnInitializedAsync()
     {
         hubConnection = new HubConnectionBuilder()
-        .WithUrl(NavManager.ToAbsoluteUri("/chathub"))
         .WithAutomaticReconnect()
         .Build();
 

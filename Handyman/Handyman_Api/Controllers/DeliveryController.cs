@@ -9,14 +9,8 @@ namespace Handyman_Api.Controllers;
 [ApiController]
 public class DeliveryController : ControllerBase
 {
-<<<<<<< HEAD
-    [Route("api/Delivery")]
-    [ApiController]
-    public class DeliveryController : ControllerBase
-=======
     IBusinessData _businessData;
     public DeliveryController(IBusinessData business)
->>>>>>> 1576c75f23d5518700009eba9f6c9919e7494c91
     {
         _businessData = business;
     }
@@ -32,15 +26,8 @@ public class DeliveryController : ControllerBase
             business = _businessData.GetBusiness(employeeid);
             return business;
         }
-<<<<<<< HEAD
-
-        //Get the business under which the employee(userId) is registered
-        [HttpGet]
-        [Route("GetEmployee")]
-        public EmployeeModel GetEmployee(string employeeid)
-=======
         catch (Exception ex)
->>>>>>> 1576c75f23d5518700009eba9f6c9919e7494c91
+
         {
             return null;
         }

@@ -7,11 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Handymen_UI_Consumer.Helpers
 {
-<<<<<<< HEAD
-    public class OrderHelper: IOrderHelper
-=======
     public class OrderHelper : PageModel, IOrderHelper
->>>>>>> 1576c75f23d5518700009eba9f6c9919e7494c91
     {
         AuthenticationStateProvider? _authenticationStateProvider;
         IOrderEndPoint? _orderEndpoint;
@@ -56,11 +52,8 @@ namespace Handymen_UI_Consumer.Helpers
             {
                 await LoadUserOrders();
             }
-<<<<<<< HEAD
-                           foreach(OrderModel o in ordersDisplayList)
-=======
+
             foreach (OrderModel o in ordersDisplayList)
->>>>>>> 1576c75f23d5518700009eba9f6c9919e7494c91
             {
                 if (o.Id == id)
                 {
