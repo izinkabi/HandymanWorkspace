@@ -25,6 +25,7 @@ builder.Services.AddScoped<IOrderTaskData, OrderTaskData>();
 builder.Services.AddTransient<EmployeeData>();
 builder.Services.AddTransient<IServiceProviderData, ServiceProviderData>();
 builder.Services.AddScoped<IBusinessData, BusinessData>();
+builder.Services.AddTransient<IRequestData, RequestData>();
 
 
 builder.Services.AddControllers();

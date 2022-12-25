@@ -6,6 +6,6 @@ namespace Handyman_DataLibrary.DataAccess.Interfaces
     {
         int InsertTask(TaskModel task);
         void UpdateTask(TaskModel taskUpdate);
-        //int GetNewTask(int orderId);
+        IList<OrderModel> GetOrderAndTasks(int orderId);
     }
 }

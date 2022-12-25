@@ -9,29 +9,33 @@ namespace HandymanProviderLibrary.Api.EndPoints.Implementation;
 public class RequestEndPoint : IRequestEndPoint
 {
 
-    private IAPIHelper? _apiHelper;
+    static IAPIHelper? _apiHelper;
     public RequestEndPoint(IAPIHelper? aPIHelper)
     {
         _apiHelper = aPIHelper;
     }
 
     //Get the orders relavant to the provider
-    public async Task<List<OrderModel>> GetAllOrdersByService(int serviceId)
+    //This allows an order filter by the provider's service(s)
+    public async Task<IList<OrderModel>> GetNewRequestsByService(int serviceId)
     {
-        List<OrderModel>? httpResponseMessage = new();
+        List<OrderModel>? httpResponse = new();
 
         try
         {
-            httpResponseMessage = await _apiHelper.ApiClient.GetFromJsonAsync<List<OrderModel>>($"/api/GetAllOrdersByService?serviceId={serviceId}");
-            return httpResponseMessage;
+            httpResponse = await _apiHelper.ApiClient.GetFromJsonAsync<List<OrderModel>>($"/api/Requests/GetNewRequests?serviceId={serviceId}");
+            return httpResponse;
         }
         catch (Exception ex)
         {
-            throw new Exception(ex.Message);
+            return null;
+            throw new Exception(ex.Message, ex.InnerException);
         }
 
     }
 
+    //Get the provider's request
+    //Using the ID of the service provider prompt for request
     public async Task<List<RequestModel>> GetRequestsByProvider(string? providerId)
     {
         List<RequestModel>? httpResponseMessage = new();
@@ -43,26 +47,22 @@ public class RequestEndPoint : IRequestEndPoint
         }
         catch (Exception ex)
         {
-            throw new Exception(ex.Message);
+            return null;
+            throw new Exception(ex.Message, ex.InnerException);
         }
 
     }
 
+    //Post a request
+    //This method is invoked when the provider accepts
+    //an order that was place by a consumer
     public async Task<string> PostRequest(RequestModel request)
     {
         string? result = string.Empty;
-        var req = new
-        {
-            request.ServiceId,
-            request.ProviderId,
-            request.OrderId,
-            DateCreated = request.DateAccepted,
-
-        };
 
         try
         {
-            var httpResponseMessage = await _apiHelper.ApiClient.PostAsJsonAsync("/api/Request/Post", req);
+            var httpResponseMessage = await _apiHelper.ApiClient.PostAsJsonAsync("/api/Request/Post", request);
             if (httpResponseMessage.IsSuccessStatusCode)
             {
                 result = httpResponseMessage.ReasonPhrase;
@@ -78,15 +78,17 @@ public class RequestEndPoint : IRequestEndPoint
         return null;
     }
 
-
+    //Update a request
+    //This method is called when there is a change in the request by the provider
+    //Change of state/stage, cancellation of completion by the service provider
     public async Task<string> UpdateRequest(RequestModel updateRequest)
     {
         string? result;
         var req = new
         {
-            updateRequest.Id,
-            updateRequest.ProviderId,
-            updateRequest.Status
+            updateRequest.req_id,
+            updateRequest.req_orderid,
+            updateRequest.req_status
         };
 
         try

@@ -43,12 +43,16 @@ namespace Handyman_SP_UI.Pages.Helpers
         {
             try
             {
+                BusinessModel? business = new()!;
                 if (userId == null)
                 {
                     userId = await GetUserId();
                 }
 
-                var business = await _business.GetLoggedInEmployee(userId);
+                if (userId != null)
+                {
+                    business = await _business.GetLoggedInEmployee(userId);
+                }
                 return business;
             }
             catch (Exception ex)
@@ -101,12 +105,14 @@ namespace Handyman_SP_UI.Pages.Helpers
 
             try
             {
-                return await _providerEndPoint.GetProvider(userId);
+                if (userId != null)
+                    provider = await _providerEndPoint.GetProvider(userId);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message, ex);
             }
+            return provider;
         }
     }
 }

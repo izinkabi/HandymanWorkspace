@@ -3,7 +3,7 @@ using HandymanProviderLibrary.Models;
 
 namespace Handyman_SP_UI.Pages.Helpers
 {
-    public class ProviderHelper
+    public class ProviderHelper : IProviderHelper
     {
         static IServiceProviderEndPoint? _providerEndPoint;
         ServiceProviderModel? providerModel;
@@ -43,7 +43,6 @@ namespace Handyman_SP_UI.Pages.Helpers
                 {
                     throw new Exception(ex.Message, ex);
                 }
-
 
             }
             return providerModel;

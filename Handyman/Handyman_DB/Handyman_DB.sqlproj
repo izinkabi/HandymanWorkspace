@@ -115,6 +115,10 @@
     <Build Include="Tables\Profile.sql" />
     <Build Include="Stored Procedures\Business\Employee\spProfileInsert.sql" />
     <Build Include="Tables\dummytable.sql" />
+    <Build Include="Stored Procedures\Request\spRequestInsert.sql" />
+    <Build Include="Stored Procedures\Request\spRequestLookUpByProvider.sql" />
+    <Build Include="Stored Procedures\Order\spOrderLookUpByService.sql" />
+    <Build Include="Stored Procedures\Task\spTaskLookUpByOrder.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Script\DevNathi_Handyman_DB.publish.publish.xml" />

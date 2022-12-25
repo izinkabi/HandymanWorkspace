@@ -1,6 +1,17 @@
 ﻿@page "/"
-@inject NavigationManager NavManager 
 
+@using Handyman_SP_UI.Pages.Services
+@using Microsoft.AspNetCore.Components.Web
+
+@inject NavigationManager NavManager
+@inject IRequestHelper _requestHelper
+@inject IBusinessHelper _businessHelper
+
+<AuthorizeView>
+
+<Authorized>
+@if(newRequests != null)
+{
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">       
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group me-2">
@@ -20,127 +31,28 @@
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">Title</th>
+              <th scope="col">status</th>
               <th scope="col">Date placed</th>
-              <th scope="col">Type</th>
-              <th scope="col">Location</th>
+              <th scope="col">Category</th>
+              <th scope="col">Task title</th>
             </tr>
           </thead>
           <!--Table body-->
           <tbody>
             <!--Rows-->
-            <tr onclick="@(()=> viewRequest(5))">  <!--Onclick test-->
-              <td>1,001</td>
-              <td>random</td>
-              <td>data</td>
-              <td>placeholder</td>
-              <td>text</td>
-            </tr>
-            <tr>
-              <td>1,002</td>
-              <td>placeholder</td>
-              <td>irrelevant</td>
-              <td>visual</td>
-              <td>layout</td>
-            </tr>
-            <tr>
-              <td>1,003</td>
-              <td>data</td>
-              <td>rich</td>
-              <td>dashboard</td>
-              <td>tabular</td>
-            </tr>
-            <tr>
-              <td>1,003</td>
-              <td>information</td>
-              <td>placeholder</td>
-              <td>illustrative</td>
-              <td>data</td>
-            </tr>
-            <tr>
-              <td>1,004</td>
-              <td>text</td>
-              <td>random</td>
-              <td>layout</td>
-              <td>dashboard</td>
-            </tr>
-            <tr>
-              <td>1,005</td>
-              <td>dashboard</td>
-              <td>irrelevant</td>
-              <td>text</td>
-              <td>placeholder</td>
-            </tr>
-            <tr>
-              <td>1,006</td>
-              <td>dashboard</td>
-              <td>illustrative</td>
-              <td>rich</td>
-              <td>data</td>
-            </tr>
-            <tr>
-              <td>1,007</td>
-              <td>placeholder</td>
-              <td>tabular</td>
-              <td>information</td>
-              <td>irrelevant</td>
-            </tr>
-            <tr>
-              <td>1,008</td>
-              <td>random</td>
-              <td>data</td>
-              <td>placeholder</td>
-              <td>text</td>
-            </tr>
-            <tr>
-              <td>1,009</td>
-              <td>placeholder</td>
-              <td>irrelevant</td>
-              <td>visual</td>
-              <td>layout</td>
-            </tr>
-            <tr>
-              <td>1,010</td>
-              <td>data</td>
-              <td>rich</td>
-              <td>dashboard</td>
-              <td>tabular</td>
-            </tr>
-            <tr>
-              <td>1,011</td>
-              <td>information</td>
-              <td>placeholder</td>
-              <td>illustrative</td>
-              <td>data</td>
-            </tr>
-            <tr>
-              <td>1,012</td>
-              <td>text</td>
-              <td>placeholder</td>
-              <td>layout</td>
-              <td>dashboard</td>
-            </tr>
-            <tr>
-              <td>1,013</td>
-              <td>dashboard</td>
-              <td>irrelevant</td>
-              <td>text</td>
-              <td>visual</td>
-            </tr>
-            <tr>
-              <td>1,014</td>
-              <td>dashboard</td>
-              <td>illustrative</td>
-              <td>rich</td>
-              <td>data</td>
-            </tr>
-            <tr>
-              <td>1,015</td>
-              <td>random</td>
-              <td>tabular</td>
-              <td>information</td>
-              <td>text</td>
-            </tr>
+            @foreach (var nr in @newRequests)
+            {
+                <tr onclick="@(()=> viewRequest(@nr.Id))">
+                    <!--Onclick test-->
+                    <td>@nr.Id</td>
+                    <td>@nr.status</td>
+                    <td>@nr.datecreated</td>
+                    <td>@nr.service.category</td>
+                    <td>@nr.Tasks.ElementAt(0).title</td>
+                </tr>
+            }
+            
+ 
             <!--End rows-->
           </tbody>
           <!--End body-->
@@ -149,7 +61,44 @@
       </div>
  <div class="b-example-divider b-example-vr"></div>
 
+  }else
+  {
+        <ServicesAlbum>
+
+        </ServicesAlbum>
+  }
+   </Authorized>
+    <NotAuthorized>
+        <ServicesAlbum>
+
+        </ServicesAlbum>
+    </NotAuthorized>
+    </AuthorizeView>
+
 @code{
+
+    List<OrderModel>? newRequests;
+    ServiceProviderModel? provider;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            provider = await _businessHelper.GetProvider();
+            newRequests = new()!;
+            if (provider != null)
+                
+            foreach (var service in provider.Services)
+            {
+                newRequests.AddRange(await _requestHelper.GetNewRequests(service.id));
+            }
+            
+        }catch(Exception ex)
+        {
+            throw new Exception(ex.Message, ex.InnerException);   
+        }
+    }
+
     void viewRequest(int id)
     {
         NavManager.NavigateTo(NavManager.GetUriWithQueryParameters("request", new Dictionary<string, object>()
