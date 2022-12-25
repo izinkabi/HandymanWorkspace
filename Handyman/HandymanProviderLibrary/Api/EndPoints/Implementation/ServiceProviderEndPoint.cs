@@ -9,7 +9,7 @@ namespace HandymanProviderLibrary.Api.EndPoints.Implementation
     {
 
         static IAPIHelper? _apiHelper;
-        static ServiceProviderModel? serviceProvider;
+        ServiceProviderModel? serviceProvider;
 
         public ServiceProviderEndPoint(IAPIHelper apiHelper) : base(apiHelper)
         {
@@ -51,6 +51,22 @@ namespace HandymanProviderLibrary.Api.EndPoints.Implementation
             {
                 throw new Exception(ex.Message);
             }
+        }
+
+        //Get a service provider of the given ID
+        public async Task<ServiceProviderModel> GetProvider(string userId)
+        {
+            try
+            {
+                ServiceProviderModel sp = await _apiHelper.ApiClient.GetFromJsonAsync<ServiceProviderModel>($"/api/Delivery/Business/GetProvider?employeeId={userId}");
+
+                return sp;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+
         }
     }
 }

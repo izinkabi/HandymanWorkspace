@@ -33,7 +33,7 @@ builder.Services.AddScoped<TokenProvider>();
 builder.Services.AddScoped<EmployeeHelper>();
 builder.Services.AddScoped<IServiceEndpoint, ServiceEndpoint>();
 
-builder.Services.AddIdentity<Handyman_SP_UIUser, IdentityRole>()
+builder.Services.AddIdentity<Handyman_SP_UIUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<Handyman_SP_UIContext>()
     .AddUserManager<AppUserManager>() // Add ApplicationUserManager
     .AddDefaultTokenProviders()

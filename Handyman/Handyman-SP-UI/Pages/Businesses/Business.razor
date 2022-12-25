@@ -1,6 +1,5 @@
 ﻿@page "/business"
 @page "/bus"
-
 @using Microsoft.AspNetCore.Components.Web
 
 @inject NavigationManager NavManager
@@ -16,7 +15,7 @@
             <!--Welcome-->
             <div class="p-4 p-md-3 mb-2 rounded text-bg-dark">
                 <div class="col-md-6 px-0">
-                    <h1 class="display-4 fst-italic">Hi</h1>
+                    <h1 class="display-4 fst-italic">Hi   </h1>
                     <p class="lead my-3">Welcome to Handyman's @business.Name</p>
                 </div>
             </div>
@@ -42,19 +41,15 @@
 
                 @if (business.Employee != null)
                 {
-
-
                     <div class="col-md-3">
                         <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                         <div class="col p-2 d-flex flex-column position-static">
 
-                            <ServiceProvider  serviceProvider="@business.Employee">
+                            <Stuff providerParam="@business.Employee">
 
-                            </ServiceProvider>
+                            </Stuff>
 
-                            <a href="provider" class="stretched-link"></a>
-
-                           
+                            <a href="profile" class="stretched-link"></a>
                         </div>
                     </div>
                     </div>
@@ -155,7 +150,7 @@
     {
         try
         {
-            business = new BusinessModel()!;
+            business = new();
             await OpenBusiness();
         }
         catch (Exception ex)

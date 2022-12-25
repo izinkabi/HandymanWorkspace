@@ -3,6 +3,7 @@
 #nullable disable
 
 using Handyman_SP_UI.Areas.Identity.Data;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -14,10 +15,14 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
     public class ConfirmEmailModel : PageModel
     {
         private readonly UserManager<Handyman_SP_UIUser> _userManager;
+        private readonly SignInManager<Handyman_SP_UIUser> _signInManager;
 
-        public ConfirmEmailModel(UserManager<Handyman_SP_UIUser> userManager)
+        private NavigationManager _NavManager;
+        public ConfirmEmailModel(UserManager<Handyman_SP_UIUser> userManager, NavigationManager navigation, SignInManager<Handyman_SP_UIUser> signInManager)
         {
             _userManager = userManager;
+            _NavManager = navigation;
+            _signInManager = signInManager;
         }
 
         /// <summary>
@@ -42,7 +47,9 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
             var result = await _userManager.ConfirmEmailAsync(user, code);
             StatusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
-            return Page();
+            //_NavManager.NavigateTo();
+            await _signInManager.RefreshSignInAsync(user);
+            return LocalRedirect(Url.Content("~/new"));
         }
     }
 }

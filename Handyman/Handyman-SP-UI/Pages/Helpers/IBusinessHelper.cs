@@ -6,4 +6,5 @@ public interface IBusinessHelper
 {
     Task<BusinessModel> GetBusinessLoggedInEmployee();
     Task CreateBusiness(BusinessModel newBiz);
+    Task<ServiceProviderModel> GetProvider();
 }

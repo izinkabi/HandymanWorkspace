@@ -195,5 +195,17 @@ namespace Handyman_DataLibrary.DataAccess.Query
             //Also from _employeeData
         }
 
+        //Get a service provider of the given employee ID
+        public ServiceProviderModel GetProvider(string employeeId)
+        {
+            try
+            {
+                return _serviceProvider.GetServiceProvider(employeeId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex.InnerException);
+            }
+        }
     }
 }

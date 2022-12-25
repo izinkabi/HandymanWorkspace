@@ -3,7 +3,6 @@
 #nullable disable
 
 using Handyman_SP_UI.Areas.Identity.Data;
-using Handyman_SP_UI.Pages.Shared;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -129,6 +128,8 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
                         await _userManager.AddToRoleAsync(user, "ServiceProvider");
                     }
 
+
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
@@ -145,12 +146,12 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("new", new { email = Input.Email, returnUrl = returnUrl });
+                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                     }
                     else
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
-                        return RedirectToPage("~/" + nameof(NewBusiness));
+                        return LocalRedirect(returnUrl);
                     }
                 }
                 foreach (var error in result.Errors)

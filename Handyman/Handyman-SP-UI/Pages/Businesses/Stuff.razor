@@ -1,112 +1,29 @@
-﻿@page "/test"
+﻿@page "/stuff"
+@page "/test"
 
 @using Microsoft.AspNetCore.Components.Web
-<div class="p-4 p-md-5 mb-4 rounded text-bg-dark">
 
-    <!--Welcome section-->
-    <div class="col-md-6 px-0">
-      <h1 class="display-4 fst-italic"> Welcome: @providerParam.employeeProfile.Names</h1>
-      </div>
-  </div>
-  <!--End welcome section-->
+@if (employee != null)
+{
+
+    <div class="p-4 p-md-5 mb-4 rounded text-bg-dark">
+
+        <!--Welcome section-->
+        <div class="col-md-3 px-0">
+            <strong class="display-4 fst-italic">@employee.employeeProfile.Names</strong>
+        </div>
+    </div>
+    <!--End welcome section-->
+
     
-  <!--Employee Profile-->
-  <div class="row mb-2">
-    <div class="col-md-6">
-      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-        <div class="col p-4 d-flex flex-column position-static">
-          <strong class="d-inline-block mb-2 text-primary">Personal Information</strong>
-          
-        </div>
-        <div class="col-auto d-none d-lg-block">
-          <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Picture</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-
-        </div>
-      </div>
-    </div>
-    <!--End Employee profile-->
-
-
-    <div class="col-md-6">
-        <div class="position-sticky" style="top: 2rem;">
-            <div class="p-4 mb-3 bg-light rounded">
-                <h4 class="fst-italic">About</h4>
-                <h3 class="mb-0">Provider Job Description :@providerParam.Services.ElementAt(0).category.description</h3>
-                <div class="mb-1 text-muted">Date Employed:@providerParam.DateEmployed</div>
-            </div>
-        </div>
-    </div>
-  </div>
-
-  <div class="row g-5">
-    <div class="col-md-12">
-      
-
-      <article class="blog-post">
-        
-        <h3 class="text-center">List of your Services</h3>
-        <p>You can add more services to broaden your field</p>
-        <p class="blog-post-meta">Date Employed:@providerParam.DateEmployed</p>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Category</th>
-            </tr>
-          </thead>
-          <tbody>
-              @foreach(var service in @providerParam.Services)
-              {
-                <tr>
-                  <td>@service.name</td>
-                  <td>@service.category.description</td>
-                  <td>@service.category.name</td>
-                </tr>
-              }
-          </tbody>
-          <tfoot>
-            <tr>
-              <td>Totals</td>
-              <td>21</td>
-              <td>23</td>
-            </tr>
-          </tfoot>
-        </table>
-
-        <p>This is some additional paragraph placeholder content. It's a slightly shorter version of the other highly repetitive body text used throughout.</p>
-      </article>
-
-      <article class="blog-post">
-        <h2 class="blog-post-title mb-1">New feature</h2>
-        <p class="blog-post-meta">December 14, 2020 by <a href="#">Chris</a></p>
-
-        <p>This is some additional paragraph placeholder content. It has been written to fill the available space and show how a longer snippet of text affects the surrounding content. We'll repeat it often to keep the demonstration flowing, so be on the lookout for this exact same string of text.</p>
-        <ul>
-          <li>First list item</li>
-          <li>Second list item with a longer description</li>
-          <li>Third list item to close it out</li>
-        </ul>
-        <p>This is some additional paragraph placeholder content. It's a slightly shorter version of the other highly repetitive body text used throughout.</p>
-      </article>
-
-      <nav class="blog-pagination" aria-label="Pagination">
-        <a class="btn btn-outline-primary rounded-pill" href="#">Older</a>
-        <a class="btn btn-outline-secondary rounded-pill disabled">Newer</a>
-      </nav>
-
-    </div>
-
-
-  </div>
-
+}
 
 @code {
-    
 
+    ServiceProviderModel? employee;
 
     [Parameter]
-    public ServiceProviderModel? providerParam { get; set; }
+    public ServiceProviderModel? providerParam { get { return employee;} set { employee = value; } }
 
    
 

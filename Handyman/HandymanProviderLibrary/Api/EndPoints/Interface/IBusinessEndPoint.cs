@@ -7,5 +7,6 @@ namespace HandymanProviderLibrary.Api.EndPoints.Interface
         Task CreateNewBusiness(BusinessModel business);
         Task EmployMember(ServiceProviderModel serviceProvider);
         Task<BusinessModel> GetLoggedInEmployee(string employeeid);
+        //Task<ServiceProviderModel> GetProvider(string employeeId);
     }
 }

@@ -8,13 +8,15 @@ namespace Handyman_SP_UI.Pages.Helpers
     {
         static IBusinessEndPoint _business;
         static AuthenticationStateProvider? _authenticationStateProvider;
-        static string? userId;
-        static string? userName;
+        string? userId;
+        IServiceProviderEndPoint _providerEndPoint;
+        ServiceProviderModel? provider;
 
-        public BusinessHelper(IBusinessEndPoint business, AuthenticationStateProvider? authenticationStateProvider)
+        public BusinessHelper(IBusinessEndPoint business, AuthenticationStateProvider? authenticationStateProvider, IServiceProviderEndPoint providerEndPoint)
         {
             _business = business;
             _authenticationStateProvider = authenticationStateProvider;
+            _providerEndPoint = providerEndPoint;
         }
 
         //Get the logged in User Id
@@ -69,11 +71,9 @@ namespace Handyman_SP_UI.Pages.Helpers
                     throw new Exception(ex.Message);
                 }
 
-
             }
 
         }
-
 
         async Task<BusinessModel>? StampBusinessUserAsync(BusinessModel? newBiz)
         {
@@ -90,6 +90,23 @@ namespace Handyman_SP_UI.Pages.Helpers
 
             return newBiz;
 
+        }
+
+        public async Task<ServiceProviderModel>? GetProvider()
+        {
+            if (userId == null)
+            {
+                await GetUserId();
+            }
+
+            try
+            {
+                return await _providerEndPoint.GetProvider(userId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
         }
     }
 }

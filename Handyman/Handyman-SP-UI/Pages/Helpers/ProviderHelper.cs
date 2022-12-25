@@ -6,7 +6,8 @@ namespace Handyman_SP_UI.Pages.Helpers
     public class ProviderHelper
     {
         static IServiceProviderEndPoint? _providerEndPoint;
-        static ServiceProviderModel? providerModel;
+        ServiceProviderModel? providerModel;
+        EmployeeModel? employeeModel;
         string? ErrorMsg;
         public ProviderHelper(IServiceProviderEndPoint providerEndPoint)
         {
@@ -14,11 +15,13 @@ namespace Handyman_SP_UI.Pages.Helpers
 
         }
 
+        //Add new service
         public async Task AddService(ServiceProviderModel provider)
         {
             try
             {
                 await _providerEndPoint.AddService(provider);
+
             }
             catch (Exception ex)
             {
@@ -26,6 +29,24 @@ namespace Handyman_SP_UI.Pages.Helpers
             }
         }
 
+        //Get the loggedIn employee if they have an ID
+        public async Task<ServiceProviderModel>? GetProvider(string userId)
+        {
+            if ((userId != null) && (employeeModel == null))
+            {
+                try
+                {
+                    providerModel = await _providerEndPoint.GetProvider(userId);
 
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message, ex);
+                }
+
+
+            }
+            return providerModel;
+        }
     }
 }

@@ -13,6 +13,7 @@
 @inject IBusinessHelper _businessHLP
 @inject SignInManager<Handyman_SP_UIUser> SignInManager
 @inject UserManager<Handyman_SP_UIUser> UserManager
+@inject NavigationManager NavManager
 
 <!--New Businees accodion-->
 
@@ -301,13 +302,11 @@
             //if (!( await UserManager.IsInRoleAsync(localUser,"ServiceProvider")))
             //{
 
-            if (!user.IsInRole("ServiceProvider"))
+            if (user.IsInRole("ServiceProvider"))
             {
                 
-            
                 await _businessHLP.CreateBusiness(newBusiness);
-                //UserManager.AddToRoleAsync(UserManager.GetUserAsync(user).Result, "ServiceProvider");
-                    
+                NavManager.NavigateTo("bus");
             }
                 
         }

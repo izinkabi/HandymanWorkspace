@@ -7,7 +7,7 @@ namespace Handyman_SP_UI.Pages.Helpers
     {
 
         static EmployeeEndPoint? _employee;
-        static EmployeeModel? employeeModel;
+        EmployeeModel? employeeModel;
 
         public EmployeeHelper(EmployeeEndPoint? employee)
         {

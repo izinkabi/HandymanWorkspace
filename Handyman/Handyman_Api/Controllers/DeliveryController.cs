@@ -69,9 +69,19 @@ public class DeliveryController : ControllerBase
         {
             throw new Exception(ex.Message);
         }
-
     }
 
-
-
+    [HttpGet]
+    [Route("Business/GetProvider")]
+    public ServiceProviderModel GetProvider(string employeeId)
+    {
+        try
+        {
+            return _businessData.GetProvider(employeeId);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
 }

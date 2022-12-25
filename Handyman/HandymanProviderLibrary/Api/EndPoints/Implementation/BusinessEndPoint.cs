@@ -22,12 +22,13 @@ public class BusinessEndPoint : IBusinessEndPoint
     {
         try
         {
+            business = new();
             business = await _apiHelper?.ApiClient?.GetFromJsonAsync<BusinessModel>($"/api/Delivery/Get?employeeid={employeeid}");
 
         }
         catch (Exception ex)
         {
-            return null;
+            throw new Exception(ex.Message);
         }
         return business;
     }
@@ -59,5 +60,6 @@ public class BusinessEndPoint : IBusinessEndPoint
             throw new Exception(ex.Message);
         }
     }
+
 
 }

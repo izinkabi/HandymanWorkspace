@@ -9,5 +9,6 @@ namespace Handyman_DataLibrary.DataAccess.Query
         BusinessModel GetBusiness(string userId);
         //int Register(RegistrationModel registration);
         void ReleaseEmployee();
+        ServiceProviderModel GetProvider(string employeeId);
     }
 }

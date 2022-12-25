@@ -6,9 +6,9 @@ namespace HandymanProviderLibrary.Api.EndPoints.Implementation;
 public class EmployeeEndPoint
 {
     static IAPIHelper? _apiHelper;
-    static EmployeeModel? employee;
+    EmployeeModel? employee;
     string? Error;
-    static IList<RatingsModel>? ratings;
+    IList<RatingsModel>? ratings;
     public EmployeeEndPoint(IAPIHelper apiHelper)
     {
         _apiHelper = apiHelper;
@@ -21,6 +21,7 @@ public class EmployeeEndPoint
     {
 
     }
+
 
     //Update profile
     protected async Task UpdateProfile()
