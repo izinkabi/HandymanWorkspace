@@ -1,32 +1,31 @@
 ﻿@page "/services-album"
 @page "/servicists"
 
-
+@using Microsoft.AspNetCore.Components.Web
 @inject IServiceEndpoint _serviceEP
 @inject NavigationManager NavManager 
-   
-   <section class="py-5 text-center container">
-   <div class="p-5 mb-4 bg-light rounded-3">
-      <div class="container-fluid py-5">
-            <h1 class="fw-light">Offered Services</h1>
-            <p class="lead text-muted">These are all service you need to add your business and start up on tha money making </p>
-      </div>
-    </div>
-  </section>
+  
+    <section class="py-5 text-center container">
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="container-fluid py-5">
+                <h1 class="fw-light">Offered Services</h1>
+                <p class="lead text-muted">These are all service you need to add your business and start up on tha money making </p>
+            </div>
+        </div>
+    </section>
     <div class="b-example-divider"></div>
     <div class="album py-5 bg-light">
         <div class="container">
-
+        @if (services != null)
+        {
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                @foreach(var service in services)
-                {
-                    @*<div @onclick="@(()=>ViewServiceDetails(service))">*@
-                        <MyService serviceModel="@service"/>
-                    @*</div>*@
-                    
-                }
-                
+                @foreach(var service in @services)
+                {                   
+                    <MyService serviceModel="@service" >
+                        </MyService>
+                }                
             </div>
+        }
         </div>
     </div>
 
@@ -38,7 +37,6 @@
     enum ServiceTypes{
         Indoor,
         Outdoor,
-
     }
 
     enum TaskTypes
@@ -47,13 +45,15 @@
         Inhouse,
         Remote,
     }
+
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            services = new List<ServiceModel>(); services = new List<ServiceModel>();
+            //services = new List<ServiceModel>(); 
+            //services = new List<ServiceModel>();
             services = await _serviceEP.GetServices();
-    //                            public int id { get; set; }
+    //public int id { get; set; }
     //public string name { get; set; }
     //public string img { get; set; }
     //public ServiceCategoryModel category { get; set; }

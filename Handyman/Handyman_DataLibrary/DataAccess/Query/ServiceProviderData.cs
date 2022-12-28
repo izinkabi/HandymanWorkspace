@@ -13,13 +13,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
             _dataAccess = dataAccess;
         }
 
-        public void InsertServices(ServiceProviderModel provider)
-        {
-            foreach (var service in provider.ratings)
-            {
 
-            }
-        }
 
         //Remove a service of a provider
         public void RemoveService(int serviceId, string providerId)
@@ -87,7 +81,11 @@ namespace Handyman_DataLibrary.DataAccess.Query
             try
             {
                 //insert the employee details 
-                this.InsertEmployee(serviceProvider);
+                if (serviceProvider.employeeId != null && serviceProvider.employeeProfile != null)
+                {
+                    this.InsertEmployee(serviceProvider);
+                }
+
 
                 foreach (var service in serviceProvider.Services)
                 {

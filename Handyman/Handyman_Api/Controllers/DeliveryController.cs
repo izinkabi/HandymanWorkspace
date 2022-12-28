@@ -84,4 +84,18 @@ public class DeliveryController : ControllerBase
             throw new Exception(ex.Message, ex.InnerException);
         }
     }
+
+    [HttpPost]
+    [Route("Business/PostProviderService")]
+    public void PostProviderService(ServiceProviderModel serviceProvider)
+    {
+        try
+        {
+            _businessData.AddProviderServices(serviceProvider);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
 }

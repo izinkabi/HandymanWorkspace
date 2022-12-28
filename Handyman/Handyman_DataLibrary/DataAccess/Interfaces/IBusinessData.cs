@@ -7,7 +7,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
         int CreateBusiness(BusinessModel business);
         void EmployServiceProvider(ServiceProviderModel serviceProvider);
         BusinessModel GetBusiness(string userId);
-        //int Register(RegistrationModel registration);
+        void AddProviderServices(ServiceProviderModel provider);
         void ReleaseEmployee();
         ServiceProviderModel GetProvider(string employeeId);
     }

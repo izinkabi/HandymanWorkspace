@@ -207,5 +207,17 @@ namespace Handyman_DataLibrary.DataAccess.Query
                 throw new Exception(ex.Message, ex.InnerException);
             }
         }
+
+        public void AddProviderServices(ServiceProviderModel provider)
+        {
+            try
+            {
+                _serviceProvider.InsertProvider(provider);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex.InnerException);
+            }
+        }
     }
 }

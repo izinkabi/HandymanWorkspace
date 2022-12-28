@@ -34,6 +34,7 @@ builder.Services.AddScoped<EmployeeHelper>();
 builder.Services.AddScoped<IServiceEndpoint, ServiceEndpoint>();
 builder.Services.AddTransient<IRequestHelper, RequestHelper>();
 builder.Services.AddTransient<IRequestEndPoint, RequestEndPoint>();
+builder.Services.AddTransient<IProviderHelper, ProviderHelper>();
 
 builder.Services.AddIdentity<Handyman_SP_UIUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<Handyman_SP_UIContext>()

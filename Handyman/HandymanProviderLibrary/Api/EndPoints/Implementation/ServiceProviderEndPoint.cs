@@ -20,7 +20,7 @@ namespace HandymanProviderLibrary.Api.EndPoints.Implementation
         {
             try
             {
-                await _apiHelper.ApiClient.PostAsJsonAsync("/api/AddServices", provider);
+                await _apiHelper.ApiClient.PostAsJsonAsync("/api/Delivery/Business/PostProviderService", provider);
             }
             catch (Exception ex)
             {
