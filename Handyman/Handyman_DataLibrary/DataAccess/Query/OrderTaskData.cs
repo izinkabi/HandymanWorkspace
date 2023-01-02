@@ -33,18 +33,18 @@ namespace Handyman_DataLibrary.DataAccess.Query
             int taskId = 0;
             try
             {
-                task.dateStarted = DateTime.Now;
-                task.dateFinished = DateTime.Now;
+                task.tas_date_started = DateTime.Now;
+                task.tas_date_finished = DateTime.Now;
 
                 taskId = _dataAccess.LoadData<int, dynamic>("Request.spTaskInsert", new
                 {
-                    dateStarted = task.dateFinished,
-                    title = task.title,
-                    duration = task.duration,
-                    status = task.status,
-                    description = task.description,
-                    serviceId = task.serviceId,
-                    dateFinished = task.dateFinished,
+                    dateStarted = task.tas_date_finished,
+                    title = task.tas_title,
+                    duration = task.tas_duration,
+                    status = task.tas_status,
+                    description = task.tas_description,
+                    serviceId = task.tas_service_id,
+                    dateFinished = task.tas_date_finished,
 
                 }, "Handyman_DB").First();
 
@@ -117,11 +117,11 @@ namespace Handyman_DataLibrary.DataAccess.Query
                         var task = new TaskModel()!;
 
                         //populate task
-                        task.description = ordertask.tas_description;
-                        task.dateFinished = ordertask.tas_date_finished;
-                        task.dateStarted = ordertask.tas_date_started;
-                        task.title = ordertask.tas_title;
-                        task.Id = ordertask.task_id;
+                        task.tas_description = ordertask.tas_description;
+                        task.tas_date_finished = ordertask.tas_date_finished;
+                        task.tas_date_started = ordertask.tas_date_started;
+                        task.tas_title = ordertask.tas_title;
+                        task.task_id = ordertask.task_id;
                         //task.duration = ordertask.tas_duration;
                         if (order.Id == ordertask.ord_id)
                         {

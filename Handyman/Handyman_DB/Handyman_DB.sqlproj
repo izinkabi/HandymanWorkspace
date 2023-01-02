@@ -119,6 +119,7 @@
     <Build Include="Stored Procedures\Request\spRequestLookUpByProvider.sql" />
     <Build Include="Stored Procedures\Order\spOrderLookUpByService.sql" />
     <Build Include="Stored Procedures\Task\spTaskLookUpByOrder.sql" />
+    <Build Include="Stored Procedures\Order\spOrderUpdateByRequest.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Script\DevNathi_Handyman_DB.publish.publish.xml" />

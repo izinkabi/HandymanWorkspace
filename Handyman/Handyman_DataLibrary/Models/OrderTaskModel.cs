@@ -11,7 +11,7 @@
         public string? tas_title { get; set; }
         public DateTime tas_date_started { get; set; }
         public DateTime tas_date_finished { get; set; }
-        public string? tas_duration { get; set; }
+        public int tas_duration { get; set; }
         public int order_id { get; set; }
         public string? tas_description { get; set; }
     }

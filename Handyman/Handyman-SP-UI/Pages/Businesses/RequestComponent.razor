@@ -1,121 +1,225 @@
 ﻿<!--This component deals with requests for service providers-->
 @page "/request-c"
-@page "/request"
+@page "/request/"
 
 @using Microsoft.AspNetCore.Components.Web
+@inject NavigationManager NavManager;
+@inject IRequestHelper _requestHelper
 
-<div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
-    <div class="col">
-        <div class="card mb-4 rounded-3 shadow-sm">
-            <div class="card-header py-3">
-                <h4 class="my-0 fw-normal">Free</h4>
-            </div>
-            <div class="card-body">
-                <h1 class="card-title pricing-card-title">$0<small class="text-muted fw-light">/mo</small></h1>
-                <ul class="list-unstyled mt-3 mb-4">
-                    <li>10 users included</li>
-                    <li>2 GB of storage</li>
-                    <li>Email support</li>
-                    <li>Help center access</li>
-                </ul>
-                <button type="button" class="w-100 btn btn-lg btn-outline-primary">Sign up for free</button>
+    <style>
+        .b-example-divider {
+            height: 3rem;
+            background-color: rgba(0, 0, 0, .1);
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+    </style>
+@if (@newRequest != null)
+{
+
+    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center justify-content-center">
+        <div class="col">
+            <div class="card mb-4 rounded-3 shadow-sm">
+                <div class="card-header py-3">
+                    <h4 class="my-0 fw-normal">New Request</h4>
+                </div>
+                @if(newRequest.service!=null && newRequest.service.category!=null)  
+                {
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title"></h1>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li>@newRequest.service.name</li>
+                            <li>@newRequest.service.category.description</li>
+                            <li>@newRequest.service.category.type</li>
+                        </ul>
+                        @if (!isAccepted)
+                        {
+                            <button type="button" @onclick="AcceptRequest" class="w-100 btn btn-lg btn-outline-primary">Accept</button>
+                        }
+                   </div>
+                }
             </div>
         </div>
+
     </div>
-    <div class="col">
-        <div class="card mb-4 rounded-3 shadow-sm">
-            <div class="card-header py-3">
-                <h4 class="my-0 fw-normal">Pro</h4>
-            </div>
-            <div class="card-body">
-                <h1 class="card-title pricing-card-title">$15<small class="text-muted fw-light">/mo</small></h1>
-                <ul class="list-unstyled mt-3 mb-4">
-                    <li>20 users included</li>
-                    <li>10 GB of storage</li>
-                    <li>Priority email support</li>
-                    <li>Help center access</li>
-                </ul>
-                <button type="button" class="w-100 btn btn-lg btn-primary">Get started</button>
+            
+    <h4 class="display-8 text-center mb-4">Tasks</h4>
+
+    <div class="table-responsive">
+        <table class="table text-center">
+            <thead>
+                <tr>
+                    <th style="width: 34%;"></th>
+                    <th style="width: 22%;">Title</th>
+                    <th style="width: 22%;">Type</th>
+                    <th style="width: 22%;">Description</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                @if (newRequest.Tasks!=null && newRequest.Tasks.Count > 0)
+                {
+                    @foreach (var task in @newRequest.Tasks)
+                    {
+
+                        <tr>
+                            <th scope="row" class="text-start">@newRequest.status</th>
+                            <td>@task.tas_title<svg class="bi" width="24" height="24"><use xlink:href="#check" /></svg></td>
+                            <td>@task.tas_duration<svg class="bi" width="24" height="24"><use xlink:href="#check" /></svg></td>
+                            <td>@task.tas_description<svg class="bi" width="24" height="24"><use xlink:href="#check" /></svg></td>
+                        </tr>
+                    }
+
+                }
+
+            </tbody>
+        </table>
+    </div>
+}
+else if(@ownRequest!=null && @isAccepted)
+{
+    <!--Own / Accepted request-->
+    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center justify-content-center">
+        <div class="col">
+            <div class="card mb-4 rounded-3 shadow-sm">
+                <div class="card-header py-3">
+                    <h4 class="my-0 fw-normal">Own Request</h4>
+                </div>
+                
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title"></h1>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li>@ownRequest.req_datecreated</li>
+                            <li>@ownRequest.req_status</li>                           
+                        </ul>
+                       
+                    </div>
+                
             </div>
         </div>
+
     </div>
-    <div class="col">
-        <div class="card mb-4 rounded-3 shadow-sm border-primary">
-            <div class="card-header py-3 text-white bg-primary border-primary">
-                <h4 class="my-0 fw-normal">Enterprise</h4>
-            </div>
-            <div class="card-body">
-                <h1 class="card-title pricing-card-title">$29<small class="text-muted fw-light">/mo</small></h1>
-                <ul class="list-unstyled mt-3 mb-4">
-                    <li>30 users included</li>
-                    <li>15 GB of storage</li>
-                    <li>Phone and email support</li>
-                    <li>Help center access</li>
-                </ul>
-                <button type="button" class="w-100 btn btn-lg btn-primary">Contact us</button>
-            </div>
-        </div>
+
+    <h4 class="display-8 text-center mb-4">Tasks</h4>
+
+    <div class="table-responsive">
+        <table class="table text-center">
+            <thead>
+                <tr>
+                    <th style="width: 34%;"></th>
+                    <th style="width: 22%;">Title</th>
+                    <th style="width: 22%;">Type</th>
+                    <th style="width: 22%;">Description</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @if (ownRequest.tasks.Count > 0)
+                {
+                    @foreach (var task in ownRequest.tasks)
+                    {
+
+                        <tr @onclick="@(()=>ViewTask(@task.task_id))">
+                            <th scope="row" class="text-start">@task.tas_duration</th>
+                            <td>@task.tas_title<svg class="bi" width="24" height="24"><use xlink:href="#check" /></svg></td>
+                            <td>@task.tas_duration<svg class="bi" width="24" height="24"><use xlink:href="#check" /></svg></td>
+                            <td>@task.tas_description<svg class="bi" width="24" height="24"><use xlink:href="#check" /></svg></td>
+                        </tr>
+                    }
+
+                }
+
+            </tbody>
+        </table>
     </div>
-</div>
-
-<h2 class="display-6 text-center mb-4">Compare plans</h2>
-
-<div class="table-responsive">
-    <table class="table text-center">
-        <thead>
-            <tr>
-                <th style="width: 34%;"></th>
-                <th style="width: 22%;">Free</th>
-                <th style="width: 22%;">Pro</th>
-                <th style="width: 22%;">Enterprise</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th scope="row" class="text-start">Public</th>
-                <td><svg class="bi" width="24" height="24"><use xlink:href="#check" /></svg></td>
-                <td><svg class="bi" width="24" height="24"><use xlink:href="#check" /></svg></td>
-                <td><svg class="bi" width="24" height="24"><use xlink:href="#check" /></svg></td>
-            </tr>
-            <tr>
-                <th scope="row" class="text-start">Private</th>
-                <td></td>
-                <td><svg class="bi" width="24" height="24"><use xlink:href="#check" /></svg></td>
-                <td><svg class="bi" width="24" height="24"><use xlink:href="#check" /></svg></td>
-            </tr>
-        </tbody>
-
-        <tbody>
-            <tr>
-                <th scope="row" class="text-start">Permissions</th>
-                <td><svg class="bi" width="24" height="24"><use xlink:href="#check" /></svg></td>
-                <td><svg class="bi" width="24" height="24"><use xlink:href="#check" /></svg></td>
-                <td><svg class="bi" width="24" height="24"><use xlink:href="#check" /></svg></td>
-            </tr>
-            <tr>
-                <th scope="row" class="text-start">Sharing</th>
-                <td></td>
-                <td><svg class="bi" width="24" height="24"><use xlink:href="#check" /></svg></td>
-                <td><svg class="bi" width="24" height="24"><use xlink:href="#check" /></svg></td>
-            </tr>
-            <tr>
-                <th scope="row" class="text-start">Unlimited members</th>
-                <td></td>
-                <td><svg class="bi" width="24" height="24"><use xlink:href="#check" /></svg></td>
-                <td><svg class="bi" width="24" height="24"><use xlink:href="#check" /></svg></td>
-            </tr>
-            <tr>
-                <th scope="row" class="text-start">Extra security</th>
-                <td></td>
-                <td></td>
-                <td><svg class="bi" width="24" height="24"><use xlink:href="#check" /></svg></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+}
 
 @code {
+    OrderModel? newRequest;
+    RequestModel? ownRequest;
 
+    int ownRequestId;
+    int newRequestId;
+    int serviceId;
+
+    bool isAccepted;
+
+    //Service ID
     [Parameter]
-    public int Id { get; set; }
+    [SupplyParameterFromQuery]
+    public int SId 
+    {
+        get { return serviceId; }
+        set { serviceId = value; }
+    }
+    //New Request / Order ID
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public int NRId 
+    {
+        get {return newRequestId; }
+        set {newRequestId = value; } 
+    }
+
+    //Own / real request ID
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public int ORId 
+    { 
+        get {return  ownRequestId; } 
+        set { ownRequestId = value; } 
+    } 
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        //newRequest = new()!;
+        //ownRequest = new()!;
+
+        try
+        {
+            if(newRequestId != 0 && SId != 0)
+            {
+                newRequest = await _requestHelper.GetNewRequest(serviceId, newRequestId);
+            }
+
+
+            if (ownRequestId != 0)
+            {
+                ownRequest = await _requestHelper.GetOwnRequest(ownRequestId);
+                isAccepted = true;
+            }
+
+        }catch(Exception ex)
+        {
+            throw new Exception(ex.Message,ex.InnerException);
+        }
+    }
+
+    //Accept the new request
+    async Task AcceptRequest()
+    {
+        try
+        {
+            await _requestHelper.AcceptRequest(newRequest);
+            isAccepted = true;
+        }catch(Exception ex)
+        {
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
+
+    //View a task of your request
+    async Task ViewTask(int taskId)
+    {
+        
+            NavManager.NavigateTo(NavManager.GetUriWithQueryParameters("task", new Dictionary<string, object>()
+            {
+                ["id"] = taskId
+            }));
+        
+        
+    }
+
 }

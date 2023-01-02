@@ -22,7 +22,7 @@
                 @foreach(var service in @services)
                 {                   
                     <MyService serviceModel="@service" >
-                        </MyService>
+                    </MyService>
                 }                
             </div>
         }
@@ -50,16 +50,7 @@
     {
         try
         {
-            //services = new List<ServiceModel>(); 
-            //services = new List<ServiceModel>();
             services = await _serviceEP.GetServices();
-    //public int id { get; set; }
-    //public string name { get; set; }
-    //public string img { get; set; }
-    //public ServiceCategoryModel category { get; set; }
-    //public DateTime datecreated { get; set; }
-    //public string status { get; set; }
-
         }catch(Exception ex)
         {
             ErrorMsg = ex.Message;

@@ -114,5 +114,22 @@ namespace Handyman_SP_UI.Pages.Helpers
             }
             return provider;
         }
+
+        //Get the employee Id hence the provider Id (stamping the request)
+        public async Task<RequestModel> StampNewRequest(RequestModel newRequest)
+        {
+            if (userId == null)
+            {
+                userId = await GetUserId();
+            }
+            if (newRequest != null && userId != null)
+            {
+                newRequest.req_employeeid = userId;
+            }
+            return newRequest;
+
+        }
+
+
     }
 }

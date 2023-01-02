@@ -4,5 +4,5 @@ AS
 BEGIN
 	SELECT *
     FROM [Delivery].[request]
-    WHERE [employeeId] = @providerId
+    WHERE [req_employeeId] = @providerId
 END

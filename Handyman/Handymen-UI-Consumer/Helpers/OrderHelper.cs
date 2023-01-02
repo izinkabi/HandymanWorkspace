@@ -102,8 +102,7 @@ namespace Handymen_UI_Consumer.Helpers
             {
                 try
                 {
-
-                    // await _orderEndpoint.DeleteOrder(Id);
+                    //Implement achieve
 
                 }
                 catch (Exception ex)

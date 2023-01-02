@@ -42,7 +42,7 @@ public class RequestEndPoint : IRequestEndPoint
 
         try
         {
-            httpResponseMessage = await _apiHelper.ApiClient.GetFromJsonAsync<List<RequestModel>>($"/api/GetRequestsByProviderId?providerId={providerId}");
+            httpResponseMessage = await _apiHelper.ApiClient.GetFromJsonAsync<List<RequestModel>>($"/api/Requests/GetProviderRequests?providerId={providerId}");
             return httpResponseMessage;
         }
         catch (Exception ex)
@@ -62,7 +62,7 @@ public class RequestEndPoint : IRequestEndPoint
 
         try
         {
-            var httpResponseMessage = await _apiHelper.ApiClient.PostAsJsonAsync("/api/Request/Post", request);
+            var httpResponseMessage = await _apiHelper.ApiClient.PostAsJsonAsync("/api/Requests", request);
             if (httpResponseMessage.IsSuccessStatusCode)
             {
                 result = httpResponseMessage.ReasonPhrase;

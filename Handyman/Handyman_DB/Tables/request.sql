@@ -1,4 +1,4 @@
-﻿CREATE TABLE [Request].[request]
+﻿CREATE TABLE [Delivery].[request]
 (
 	[req_id] [int] IDENTITY(1,1) NOT NULL,
 	[req_datecreated] [datetime2](7) NOT NULL,

@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [Delivery].[spTaskLookUpByOrder]
+﻿CREATE PROCEDURE [Request].[spTaskLookUpByOrder]
 	@orderId int = 0
 AS
 BEGIN

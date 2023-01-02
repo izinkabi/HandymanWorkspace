@@ -70,12 +70,12 @@
            {
                 
                 <OrderTasksComponent isNew="false" 
-                             description="@item.description"
-                             dateStarted="@item.dateStarted" 
-                             duration="@item.duration" Id="@item.Id" 
-                             serviceId="@item.serviceId" 
-                             status="@item.status" dateFinished="@item.dateFinished"
-                             title="@item.title">
+                             description="@item.tas_description"
+                             dateStarted="@item.tas_date_started" 
+                             duration="@item.tas_duration" 
+                             serviceId="@item.tas_service_id" 
+                             status="@item.tas_status" 
+                             title="@item.tas_title">
                 </OrderTasksComponent>
            }
         </div>
@@ -145,13 +145,13 @@
         
         //Tasks population
         newTask = new()!;
-        newTask.title = tasksComponent?.NewTask.title;
-        newTask.status = tasksComponent.NewTask.status;
-        newTask.duration = tasksComponent.duration;
-        newTask.description = tasksComponent?.NewTask.description;
-        newTask.dateFinished = DateTime.UtcNow;
-        newTask.dateStarted = DateTime.UtcNow;
-        newTask.serviceId = order.service.id;
+        newTask.tas_title = tasksComponent?.NewTask.tas_title;
+        newTask.tas_status = tasksComponent.NewTask.tas_status;
+        newTask.tas_duration = tasksComponent.duration;
+        newTask.tas_description = tasksComponent?.NewTask.tas_description;
+        newTask.tas_date_finished = tasksComponent.NewTask.tas_date_finished;
+        newTask.tas_date_started = DateTime.UtcNow;
+        newTask.tas_service_id = order.service.id;
 
         taskList.Add(newTask);
 

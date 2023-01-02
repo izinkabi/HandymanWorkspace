@@ -24,8 +24,8 @@
             </div>
         </div>
         <!--End Employee profile-->
-
-
+        @if (@providerModel.Services.Count > 0)
+        {
         <div class="col-md-6">
             <div class="position-sticky" style="top: 2rem;">
                 <div class="p-4 mb-3 bg-light rounded">
@@ -35,6 +35,7 @@
                 </div>
             </div>
         </div>
+        }
     </div>
 
     <div class="row g-5">
@@ -46,24 +47,26 @@
                 <h3 class="text-center">List of your Services</h3>
                 <p>You can add more services to broaden your field</p>
                 <p class="blog-post-meta">Date Employed:@providerModel.DateEmployed</p>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Category</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var service in @providerModel.Services)
-                        {
+                @if (providerModel.Services.Count > 0)
+                {
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td>@service.name</td>
-                                <td>@service.category.description</td>
-                                <td>@service.category.name</td>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Category</th>
                             </tr>
-                        }
-                    </tbody>
+                        </thead>
+                        <tbody>
+                            @foreach (var service in @providerModel.Services)
+                            {
+                                <tr>
+                                    <td>@service.name</td>
+                                    <td>@service.category.description</td>
+                                    <td>@service.category.name</td>
+                                </tr>
+                            }
+                        </tbody>
                 <tfoot>
                     <tr>
                         <td>Totals</td>
@@ -71,6 +74,8 @@
                     </tr>
                 </tfoot>
             </table>
+            }
+
         </article>
 
        <Handyman_SP_UI.Pages.Services.ServicesAlbum>

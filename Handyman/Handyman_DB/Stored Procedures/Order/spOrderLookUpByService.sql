@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE [Delivery].[spOrderLookUpByService]
 	--Getting all orders of the given service and its tasks
-   @orderId NVARCHAR(MAX)
+   @serviceId INT = 0
 AS
 BEGIN
 	SELECT 
@@ -10,6 +10,6 @@ BEGIN
   FROM [Handyman_DB].[Request].[order] o
   inner join [Handyman_DB].[Request].[order_task] s ON s.[order_id] = o.[ord_id] 
   inner join [Handyman_DB].[Request].[task] t ON t.[task_id] = s.[task_id]
-  WHERE o.[ord_id] = @orderId 
+  WHERE o.[ord_service_id] = @serviceId 
   ORDER by o.[ord_datecreated] asc
   END

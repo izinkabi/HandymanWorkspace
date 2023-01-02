@@ -10,12 +10,12 @@ namespace Handyman_Api.Controllers;
 public class RequestsController : ControllerBase
 {
     IRequestData _requestData;
-    IOrderTaskData _orderData;
+    //IOrderTaskData _orderData;
 
-    public RequestsController(IRequestData requestData, IOrderTaskData orderData)
+    public RequestsController(IRequestData requestData)
     {
         _requestData = requestData;
-        _orderData = orderData;
+        //_orderData = orderData;
     }
 
     // GET: api/<RequestsController>/5
@@ -25,7 +25,7 @@ public class RequestsController : ControllerBase
     {
         try
         {
-            IList<OrderModel> newRequests = _orderData.GetOrderAndTasks(serviceId);
+            IList<OrderModel> newRequests = _requestData.GetNewRequests(serviceId);
             return newRequests;
         }
         catch (Exception ex)
@@ -68,11 +68,11 @@ public class RequestsController : ControllerBase
 
     // POST api/<RequestsController>
     [HttpPost]
-    public void Post(RequestModel request)
+    public void Post(RequestModel requestModel)
     {
         try
         {
-            _requestData.InsertRequest(request);
+            _requestData.InsertRequest(requestModel);
         }
         catch (Exception ex)
         {
