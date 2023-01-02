@@ -51,20 +51,20 @@ public class RequestsController : ControllerBase
     }
 
     // GET api/<RequestsController>/string
-    //[HttpGet]
-    //[Route("GetTasks")]
-    //public IList<TaskModel> GetTasks(int orderId)
-    //{
-    //    try
-    //    {
-    //        IList<TaskModel> requests = _requestData.GetTasks(orderId);
-    //        return requests;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        throw new Exception(ex.Message, ex.InnerException);
-    //    }
-    //}
+    [HttpGet]
+    [Route("GetTask")]
+    public TaskModel GetTask(int Id)
+    {
+        try
+        {
+            TaskModel request = _requestData.GetTask(Id);
+            return request;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
 
     // POST api/<RequestsController>
     [HttpPost]

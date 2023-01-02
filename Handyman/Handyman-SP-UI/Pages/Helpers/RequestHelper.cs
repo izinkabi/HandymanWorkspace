@@ -120,4 +120,18 @@ public class RequestHelper : IRequestHelper
             throw new Exception(ex.Message, ex.InnerException);
         }
     }
+
+    public async Task<TaskModel> GetTask(int id)
+    {
+        TaskModel taskModel = new()!;
+        try
+        {
+            taskModel = await _requestEndPoint.GetTask(id);
+            return taskModel;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
 }

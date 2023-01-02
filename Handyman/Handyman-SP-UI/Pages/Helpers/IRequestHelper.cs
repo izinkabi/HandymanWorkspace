@@ -9,5 +9,6 @@ namespace Handyman_SP_UI.Pages.Helpers
         Task AcceptRequest(OrderModel newRequest);
         Task<IList<RequestModel>> GetOwnRequests();
         Task<RequestModel> GetOwnRequest(int id);
+        Task<TaskModel> GetTask(int id);
     }
 }

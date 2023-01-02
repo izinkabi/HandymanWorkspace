@@ -7,7 +7,7 @@ namespace Handyman_DataLibrary.DataAccess.Interfaces
         IList<OrderModel> GetNewRequests(int serviceId);
         void InsertRequest(RequestModel request);
         IList<RequestModel> GetRequests(string providerId);
-        //IList<TaskModel> GetTasks(int orderId);
+        TaskModel GetTask(int Id);
     }
 
 }

@@ -112,6 +112,20 @@ public class RequestData : IRequestData
         }
     }
 
+    //Get Task by ID
+    public TaskModel GetTask(int Id)
+    {
+        try
+        {
+            TaskModel taskModel = _dataAccess.LoadData<TaskModel, dynamic>("Request.spTaskLookUp", new { taskId = Id }, "Handyman_DB").First();
+            return taskModel;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
+
     //Get the request(s) of the given provider and their tasks
     public IList<RequestModel> GetRequests(string providerId)
     {

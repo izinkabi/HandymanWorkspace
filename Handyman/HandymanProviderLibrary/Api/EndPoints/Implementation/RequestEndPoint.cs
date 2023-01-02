@@ -108,5 +108,20 @@ public class RequestEndPoint : IRequestEndPoint
         return null;
     }
 
+    //Get a task by its ID
+    public async Task<TaskModel> GetTask(int id)
+    {
+
+        try
+        {
+            TaskModel taskmodel = await _apiHelper.ApiClient.GetFromJsonAsync<TaskModel>($"/api/Requests/GetTask?Id={id}");
+            return taskmodel;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
+
 }
 
