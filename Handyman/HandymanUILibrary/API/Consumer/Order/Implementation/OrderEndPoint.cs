@@ -2,6 +2,7 @@
 using HandymanUILibrary.Models;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
@@ -96,24 +97,24 @@ public class OrderEndPoint : IOrderEndPoint
     /// <param name="Id"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    //public async Task DeleteOrder(int Id)
-    //{
-    //    try
-    //    {
-    //        HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.DeleteAsync($"/api/Delete?Id={Id}");
+    public async Task DeleteOrder(OrderModel order)
+    {
+        try
+        {
+            HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.DeleteAsync($"/api/Orders?consumerId={order.ConsumerID}&orderId={order.Id}");
 
-    //        if (httpResponseMessage.IsSuccessStatusCode)
-    //        {
-    //            var result = await httpResponseMessage.Content.ReadFromJsonAsync<OrderModel>();
-    //        }
-    //        else
-    //        {
-    //            throw new Exception(httpResponseMessage.ReasonPhrase);
-    //        }
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        throw new Exception(ex.Message);
-    //    }
-    //}
+            if (httpResponseMessage.IsSuccessStatusCode)
+            {
+                var result = await httpResponseMessage.Content.ReadFromJsonAsync<OrderModel>();
+            }
+            else
+            {
+                throw new Exception(httpResponseMessage.ReasonPhrase);
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
 }

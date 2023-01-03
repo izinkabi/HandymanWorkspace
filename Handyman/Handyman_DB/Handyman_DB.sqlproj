@@ -98,7 +98,6 @@
     <Build Include="Stored Procedures\Order\spOrderUpdate.sql" />
     <Build Include="Stored Procedures\Order_Task\spOrder_Task_Insert.sql" />
     <Build Include="Stored Procedures\Order_Task\spDeleteOrderTask.sql" />
-    <Build Include="Stored Procedures\Order\spDeleteOrder.sql" />
     <Build Include="Stored Procedures\Service\spServiceLookUpBy_Id.sql" />
     <Build Include="Schemas\dbo.sql" />
     <Build Include="Stored Procedures\Business\Employee\spEmployeesLookUp.sql" />
@@ -121,6 +120,7 @@
     <Build Include="Stored Procedures\Task\spTaskLookUpByOrder.sql" />
     <Build Include="Stored Procedures\Order\spOrderUpdateByRequest.sql" />
     <Build Include="Stored Procedures\Task\spTaskLookUp.sql" />
+    <Build Include="Stored Procedures\Request\spRequestDelete.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Script\DevNathi_Handyman_DB.publish.publish.xml" />

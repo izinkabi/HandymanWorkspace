@@ -95,14 +95,15 @@ namespace Handymen_UI_Consumer.Helpers
         }
 
         //Load all orders then select the one you want to delete
-        public async Task DeleteOrder(int Id)
+        public async Task DeleteOrder(OrderModel order)
         {
 
             if (_orderEndpoint != null)
             {
                 try
                 {
-                    //Implement achieve
+                    order.ConsumerID = await GetUserId();
+                    await _orderEndpoint.DeleteOrder(order);
 
                 }
                 catch (Exception ex)

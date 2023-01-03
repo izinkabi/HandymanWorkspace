@@ -216,12 +216,12 @@
     }
 
     [Authorize]
-    public async Task DeleteOrder(int Id)
+    public async Task DeleteOrder(OrderModel order)
     {
         try
         {
 
-            await _orderHelper.DeleteOrder(Id);
+            await _orderHelper.DeleteOrder(order);
             NavManager.ToAbsoluteUri("/index");
             await InvokeAsync(StateHasChanged);
         }

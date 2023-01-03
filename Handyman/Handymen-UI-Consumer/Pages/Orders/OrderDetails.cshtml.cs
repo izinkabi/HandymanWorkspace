@@ -5,10 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-
-
-
-
 namespace Handymen_UI_Consumer.Pages;
 
 [Authorize]
@@ -65,17 +61,15 @@ public class OrderDetailsModel : PageModel
     }
 
 
-    public async Task<RedirectResult> OnPostAsync(int Id)
+    public async Task<RedirectResult> OnPostAsync()
     {
         try
         {
-            await _orderHelper.DeleteOrder(Id);
-
+            await _orderHelper.DeleteOrder(order);
         }
         catch (Exception ex)
         {
             ErrorMsg = ex.Message;
-
         }
         return Redirect("./Index");
 

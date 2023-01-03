@@ -190,11 +190,20 @@ namespace Handyman_DataLibrary.DataAccess.Query
         {
             try
             {
-                _dataAccess.SaveData("spDeleteOrderTask", new { consumerId = consumerId, OrderId = orderId }, "Handyman_DB");
+                _dataAccess.StartTransaction("Handyman_DB");
+                //Delete the request first
+                _dataAccess.SaveDataTransaction("Request.spRequestDelete", new { orderId = orderId });
+                //Then delete order and it's tasks
+                _dataAccess.SaveDataTransaction("Request.spDeleteOrderTask", new { consumerId = consumerId, OrderId = orderId });
+                //Commit the transaction
+                _dataAccess.CommitTransation();
             }
             catch (Exception ex)
             {
+                _dataAccess.RollBackTransaction();
+
                 throw new Exception(ex.Message);
+                _dataAccess.Dispose();
             }
         }
     }

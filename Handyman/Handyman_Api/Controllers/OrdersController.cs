@@ -70,11 +70,17 @@ namespace Handyman_Api.Controllers
         }
 
         // DELETE api/<OrdersController>/5
-        // !!!Not yet implemented
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public void Delete(string consumerId, int orderId)
         {
-            _orderData.DeleteOrderAndTasks(consumerId, orderId);
+            try
+            {
+                _orderData.DeleteOrderAndTasks(consumerId, orderId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex.InnerException);
+            }
         }
     }
 }
