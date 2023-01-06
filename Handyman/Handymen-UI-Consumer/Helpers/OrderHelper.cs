@@ -52,6 +52,7 @@ namespace Handymen_UI_Consumer.Helpers
             {
                 await LoadUserOrders();
             }
+
             foreach (OrderModel o in ordersDisplayList)
             {
                 if (o.Id == id)

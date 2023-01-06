@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,8 +16,9 @@ var connectionString = builder.Configuration.GetConnectionString("Handyman_DB") 
 builder.Services.AddDbContext<IdentityDataContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<IdentityDataContext>();
+
+//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+//                .AddEntityFrameworkStores<IdentityDataContext>();
 
 // Add services to the container
 builder.Services.AddSingleton<ISQLDataAccess, SQLDataAccess>();

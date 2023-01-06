@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <Folder Include="Models\ServiceProvider\" />
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>

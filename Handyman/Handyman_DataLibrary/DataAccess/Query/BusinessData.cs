@@ -86,8 +86,6 @@ namespace Handyman_DataLibrary.DataAccess.Query
             business.Type = businessRegistration.reg_businesstype;
             business.Name = businessRegistration.bus_name;
 
-
-
             //Employee
 
             business.Employee = new()!;
