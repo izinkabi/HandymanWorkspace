@@ -10,13 +10,9 @@
 
   <ItemGroup>
     <Compile Remove="Models\ServiceProvider\**" />
-    <Compile Remove="Pages\Businesses\Stuff\**" />
     <Content Remove="Models\ServiceProvider\**" />
-    <Content Remove="Pages\Businesses\Stuff\**" />
     <EmbeddedResource Remove="Models\ServiceProvider\**" />
-    <EmbeddedResource Remove="Pages\Businesses\Stuff\**" />
     <None Remove="Models\ServiceProvider\**" />
-    <None Remove="Pages\Businesses\Stuff\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -54,6 +50,9 @@
 
 
   <ItemGroup>
+    <Content Update="Pages\EmployeeComponent\Employees.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
     <Content Update="wwwroot\assets\dist\css\blog.css">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

@@ -1,13 +1,11 @@
 using Handyman_SP_UI.Areas.Identity;
 using Handyman_SP_UI.Areas.Identity.Data;
 using Handyman_SP_UI.Data;
-using Handyman_SP_UI.Helpers;
 using Handyman_SP_UI.Pages.Helpers;
 using HandymanProviderLibrary.Api.ApiHelper;
 using HandymanProviderLibrary.Api.EndPoints.Implementation;
 using HandymanProviderLibrary.Api.EndPoints.Interface;
 using HandymanProviderLibrary.Api.Service;
-using HandymanProviderLibrary.Api.Stuff;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -30,17 +28,13 @@ builder.Services.AddScoped<EmployeeEndPoint>();
 builder.Services.AddScoped<IServiceProviderEndPoint, ServiceProviderEndPoint>();
 builder.Services.AddScoped<IBusinessEndPoint, BusinessEndPoint>();
 builder.Services.AddScoped<IBusinessHelper, BusinessHelper>();
-builder.Services.AddAntiforgery();
-builder.Services.AddScoped<TokenProvider>();
-
-builder.Services.AddSingleton<IAPIHelper, APIHelper>();
-builder.Services.AddScoped<IDeliveryEndpoint, DeliveryEndpoint>();
-builder.Services.AddTransient<IEmployeeHelper, Handyman_SP_UI.Helpers.EmployeeHelper>();
-builder.Services.AddScoped<Handyman_SP_UI.Helpers.EmployeeHelper>();
+builder.Services.AddTransient<EmployeeHelper>();
 builder.Services.AddScoped<IServiceEndpoint, ServiceEndpoint>();
 builder.Services.AddTransient<IRequestHelper, RequestHelper>();
 builder.Services.AddTransient<IRequestEndPoint, RequestEndPoint>();
 builder.Services.AddTransient<IProviderHelper, ProviderHelper>();
+builder.Services.AddAntiforgery();
+builder.Services.AddScoped<TokenProvider>();
 
 builder.Services.AddIdentity<Handyman_SP_UIUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<Handyman_SP_UIContext>()

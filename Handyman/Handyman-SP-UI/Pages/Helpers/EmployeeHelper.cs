@@ -1,42 +1,41 @@
 ﻿using HandymanProviderLibrary.Models;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace Handyman_SP_UI.Pages.Helpers
+namespace Handyman_SP_UI.Pages.Helpers;
+
+public class EmployeeHelper
 {
-    public class EmployeeHelper
+    AuthenticationStateProvider? _authenticationStateProvider;
+    protected EmployeeModel? employeeModel;
+    protected string? userId;
+
+    public EmployeeHelper(AuthenticationStateProvider stateProvider)
     {
-        AuthenticationStateProvider? _authenticationStateProvider;
-        protected EmployeeModel? employeeModel;
-        protected string? userId;
+        _authenticationStateProvider = stateProvider;
+    }
 
-        public EmployeeHelper(AuthenticationStateProvider stateProvider)
+    public EmployeeModel Employee { get => _ = Employee; }
+
+    /// <summary>
+    /// This method get the employee's user ID
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    protected async Task<string>? GetUserId()
+    {
+        try
         {
-            _authenticationStateProvider = stateProvider;
+            if (userId == null)
+            {
+                var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
+                userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+
+            }
+            return userId;
         }
-
-        public EmployeeModel Employee { get => _ = Employee; }
-
-        /// <summary>
-        /// This method get the employee's user ID
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        protected async Task<string>? GetUserId()
+        catch (Exception ex)
         {
-            try
-            {
-                if (userId == null)
-                {
-                    var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
-                    userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
-
-                }
-                return userId;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            throw new Exception(ex.Message);
         }
     }
 }
