@@ -5,7 +5,7 @@ namespace HandymanProviderLibrary.Api.EndPoints.Implementation;
 
 public class EmployeeEndPoint
 {
-    static IAPIHelper? _apiHelper;
+    IAPIHelper? _apiHelper;
     EmployeeModel? employee;
     string? Error;
     IList<RatingsModel>? ratings;

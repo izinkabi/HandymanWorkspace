@@ -23,13 +23,13 @@
                     
                 @if(!(Model.OrderProperty.status==0))
                 {
-                <div class="col-5 justify-content-start">
+                    <div class="col-5 justify-content-start">
 
 
-                    <form asp-page-handler="CancelOrder">
-                        <a type="submit" asp-area="" asp-page="/Index" class="btn-outline-secondary">Close</a>
-                    </form>
-                </div>
+                        <form asp-page-handler="CancelOrder">
+                            <a type="submit" asp-area="" asp-page="/Index" class="btn-outline-secondary">Close</a>
+                        </form>
+                    </div>
                 <div class="col-7 ">
                    
                     @*<button type="submit" class="btn btn-outline-success">Confirm</button> <!--data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"-->

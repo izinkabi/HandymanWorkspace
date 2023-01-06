@@ -67,14 +67,24 @@
     </svg>
     <div class="col">
         <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+                
+                <rect width="100%" height="100%" fill="#55595c" />
+                <text x="40%" y="50%" fill="#eceeef">@svc.name</text>
+            </svg>
             <div class="card-body">
                 <p class="card-text">@svc.category.description</p>
                 <div class="d-flex justify-content-between align-items-center">                
                     <small class="text-muted">Available from:@svc.datecreated</small>
                     <AuthorizeView>
                         <Authorized>
-                            <button @onclick="AddService">Add</button>
+                            @if(!isAdded)
+                            {
+                                <button type="submit" @onclick="AddService">Add</button>
+                            }else if(isAdded)
+                            {
+                                <p>Added</p>
+                            }
                         </Authorized>
                          <NotAuthorized>
                              <hr/>
@@ -88,22 +98,43 @@
 }
 @code{
 
+    ServiceProviderModel sp = new()!;
     [Parameter]
-    public ServiceModel? serviceModel { get; set; }
-    ServiceModel? svc;
+    public ServiceModel? serviceModel { get {return svc; } set {svc = value; } }
 
+    bool isAdded; 
+    ServiceModel? svc;
 
     protected override async Task OnInitializedAsync()
     {
-        svc = new()!;
-        svc = serviceModel;
+        try
+        {
+
+            if(svc!=null)
+            {
+                if(await _providerHelper.IsServiceProvided(svc))
+                {
+                    isAdded = true;
+                }
+            }
+            
+        }catch(Exception ex)
+        {
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+        //Check if the service exists
+        
     }
 
+    /// <summary>
+    /// Add this service to the provider's services
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
     async Task AddService()
-    {
-        ServiceProviderModel sp = new()!;
+    {       
         sp.Services = new List<ServiceModel>();
-        
+
         try
         {
             sp.Services.Add(svc);

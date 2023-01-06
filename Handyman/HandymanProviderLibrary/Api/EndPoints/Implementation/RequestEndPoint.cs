@@ -9,7 +9,7 @@ namespace HandymanProviderLibrary.Api.EndPoints.Implementation;
 public class RequestEndPoint : IRequestEndPoint
 {
 
-    static IAPIHelper? _apiHelper;
+    IAPIHelper? _apiHelper;
     public RequestEndPoint(IAPIHelper? aPIHelper)
     {
         _apiHelper = aPIHelper;

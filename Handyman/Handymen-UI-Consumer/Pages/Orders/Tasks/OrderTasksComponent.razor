@@ -44,10 +44,10 @@
                                                     <textarea @bind="@newTask.tas_description" class="form-control" id="exampleFormControlTextarea1" rows="3"  placeholder="Description..."></textarea>
                                                 </div>
                                         </div>
-                                        @*<div class="card-footer">
-                                            <button  @onclick="CreateNewTask" class="btn btn-primary m-3">Add</button>
-                                        </div>*@
-                                       
+                                        <div>                                   
+                                            <button type="submit" @onclick="@(()=>OnAddToTasks.InvokeAsync(newTask))" class="btn btn-primary m-3">Add</button>
+                                        </div>
+
                                     </div>
 
                                 </div>
@@ -73,7 +73,7 @@
                     </div>
                 </li>
                 <li class="list-group-item px-3 py-1 d-flex align-items-center flex-grow-1 border-0 bg-transparent">
-                    <p class="lead fw-normal mb-0">@title</p>
+                    <p class="lead fw-normal mb-0">@newTask.tas_title</p>
                 </li>
                
             </ul>
@@ -93,48 +93,25 @@
 
 <!--End task-item -->
 
+<!--This component need more fielsd / UI input components to completely fill up the Task Model-->
 @code {
-    TaskModel task = new()!;
-    TaskModel newTask = new()!;
+  
+    
     string? ErrorMsg;
     bool isnew;
 
     [Parameter]
-    public int Id { get; set; }
-    [Parameter]
-    public string? title { get; set; }
-    [Parameter]
-    public string? description { get; set; }
-    [Parameter]
-    public int duration { get; set; }
-    [Parameter]
-    public int status { get; set; }
-    [Parameter]
-    public bool isNew 
-    { 
-        get{ return isnew; } 
-        set{ isnew = value; } 
-    }
-    [Parameter]
-    public int serviceId { get; set; }
-    [Parameter]
-    public DateTime dateStarted { get; set; }
-    [Parameter]
-    public DateTime dateFinished { get; set; }
-    private bool shouldRender = true;
+    public TaskModel? newTask { get; set; }
 
-    protected override bool ShouldRender()
+    [Parameter]
+    public bool isNew
     {
-        return shouldRender;
+        get{ return isnew; }
+        set{ isnew = value; }
     }
 
-
-
-    public TaskModel? NewTask
-    {
-        get { return newTask; }
-
-    }
+    [Parameter] 
+    public EventCallback<TaskModel> OnAddToTasks { get; set; }
 
     void IDisposable.Dispose()
     {

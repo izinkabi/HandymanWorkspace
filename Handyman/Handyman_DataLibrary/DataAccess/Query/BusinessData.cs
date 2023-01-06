@@ -6,8 +6,8 @@ namespace Handyman_DataLibrary.DataAccess.Query
 {
     public class BusinessData : IBusinessData
     {
-        ISQLDataAccess _dataAccess;
-        IServiceProviderData _serviceProvider;
+        ISQLDataAccess? _dataAccess;
+        IServiceProviderData? _serviceProvider;
         public BusinessData(ISQLDataAccess dataAccess, IServiceProviderData serviceProvider)
         {
             _dataAccess = dataAccess;
@@ -200,7 +200,8 @@ namespace Handyman_DataLibrary.DataAccess.Query
         {
             try
             {
-                return _serviceProvider.GetServiceProvider(employeeId);
+                ServiceProviderModel sp = _serviceProvider.GetServiceProvider(employeeId);
+                return sp;
             }
             catch (Exception ex)
             {

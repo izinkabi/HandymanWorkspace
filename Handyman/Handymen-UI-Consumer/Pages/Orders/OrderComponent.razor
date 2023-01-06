@@ -30,57 +30,48 @@
             </div>
           </div>
         </div>
-            @*
-                ### Button display logic in a re-usable component###
-                If the order is confirmed by the consumer and by the service provider accepted --display tracking button
-                If the order is not confirmed by the consumer (and ofcourse by default cannot be accepted by a service provider) --display confirm button
-            *@
-
-            @if(order.status > 3)
-            {
-                <button  class="btn btn-outline-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Track Order</button>
-            
-            }
-            
-            @if (order.status < 1)
-            {
-                <button @onclick="ConfirmOrder" type="button" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#staticBackdropConfirmorder"> Confirm </button>
-            }
-       
-   
 </dl>
+
     @if (order.status < 1)
     {
-       
-        <DynamicComponent Type="@typeof(OrderTasksComponent)" @ref="@orderTasksComponent" Parameters="@taskParam" />
-                    
-        <div>
-            <button @onclick="AddToTasks" class="btn btn-primary m-3">Add</button>
-        </div>
-            
-        
+        <OrderTasksComponent isNew="true"
+                         newTask="new TaskModel()!"
+                         OnAddToTasks="AddToTasks">
+        </OrderTasksComponent>
     }
+
     @if (order.status > 0 || taskList.Count() > 0)
     {
         <!--List of task-items in the confirmed order-->
         <div class="list-group list-group-flush align-content-lg-center">
-
-
            @foreach (var item in taskList)
-           {
-                
+           {                
                 <OrderTasksComponent isNew="false" 
-                             description="@item.tas_description"
-                             dateStarted="@item.tas_date_started" 
-                             duration="@item.tas_duration" 
-                             serviceId="@item.tas_service_id" 
-                             status="@item.tas_status" 
-                             title="@item.tas_title">
+                             newTask="item" 
+                             OnAddToTasks="AddToTasks">
                 </OrderTasksComponent>
            }
         </div>
         <!--End List-->
     }
+
+    @*
+    ### Button display logic in a re-usable component###
+    If the order is confirmed by the consumer and by the service provider accepted --display tracking button
+    If the order is not confirmed by the consumer (and ofcourse by default cannot be accepted by a service provider) --display confirm button
+    *@
+
+    @if (order.status > 3)
+    {
+        <button class="btn btn-outline-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Track Order</button>
+
+    }
+
+    @if (order.status < 1)
+    {
+        <button @onclick="ConfirmOrder" type="button" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#staticBackdropConfirmorder"> Confirm </button>
+    }
+
 </div>
 @if (ErrorMsg != null)
 {
@@ -92,16 +83,11 @@
 @code {
 
     OrderModel order = new()!;
-    TaskModel newTask = new()!;
-
     string? ErrorMsg;
-
-    DynamicComponent? orderTasksComponent;
-    IDictionary<string, object>? taskParam;
     List<TaskModel>? taskList = new()!;
 
     [Parameter]
-    public OrderModel? OrderComponentModel
+    public OrderModel OrderComponentModel
     {
         get
         {
@@ -117,45 +103,31 @@
 
     protected override async Task OnInitializedAsync()
     {
-        //NavManager.LocationChanged += HandleLocationChanged;
-        if(order.status == 0)
-        {
-            taskParam = new Dictionary<string, object>()
-                {
-                    ["title"] = "123",
-                    ["description"] = "321",
-                    ["duration"] = 111,
-                    ["status"] = 111,
-                    ["isNew"] = true,
-                    ["serviceId"] = order.service.id,
-                    ["dateStarted"] = DateTime.Now,
-                    ["Id"] = 0,
-                    ["dateFinished"] = DateTime.Now
 
-                };
-        }else
+        if(order.status != 0)
         {
             taskList = order?.Tasks?.ToList();
         }
+        NavManager.LocationChanged += HandleLocationChanged;
     }
 
-    void AddToTasks()
+
+    /// <summary>
+    ///  Add the new tasks to the order's task list
+    /// </summary>
+    /// <param name="newTaskModel"></param>
+    void AddToTasks(TaskModel newTaskModel)
     {
-        var tasksComponent = (OrderTasksComponent)orderTasksComponent?.Instance;//cast the dynamic component...finders cross x
-        
-        //Tasks population
-        newTask = new()!;
-        newTask.tas_title = tasksComponent?.NewTask.tas_title;
-        newTask.tas_status = tasksComponent.NewTask.tas_status;
-        newTask.tas_duration = tasksComponent.duration;
-        newTask.tas_description = tasksComponent?.NewTask.tas_description;
-        newTask.tas_date_finished = tasksComponent.NewTask.tas_date_finished;
-        newTask.tas_date_started = DateTime.UtcNow;
-        newTask.tas_service_id = order.service.id;
 
-        taskList.Add(newTask);
+        if (newTaskModel != null)
+        {
+            newTaskModel.tas_service_id = order.service.id;
+            taskList.Add(newTaskModel);
+            StateHasChanged();
+        }
 
     }
+
     //Redirection in razor component
     void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
     {
@@ -166,38 +138,14 @@
     public void Dispose()
     {
         NavManager.LocationChanged -= HandleLocationChanged;
-
+        order = null;        
     }
 
-    //Initiate the order track --soon to be in load orders
-    //void TrackOrder()
-    //{
-
-    //    //order.IsTracking = true;
-    //    // NavManager.NavigateTo($"/orderdetails?id={@order.Id}", true);
-    //    NavManager.NavigateTo("/orders/ordertracker",true);
-    //}
-
-    //Cancelling --soon to be in Helper orders
-    async Task CancelOrder()
-    {
-
-        Dispose();
-
-    }
-
-    //Completing the order on certain --loaders class 
-    async Task FinishOrder()
-    {
-
-    }
-
-    async Task UpateOrder()
-    {
-
-    }
-
-    //Confirming the order placement--soon to be in ordershelper by all means
+    /// </summary>
+    /// Confirming the order placement--soon to be in ordershelper by all means
+    /// <returns></returns> 
+    /// <summary>
+    
     async Task ConfirmOrder()
     {
         try
@@ -205,22 +153,29 @@
             order.Tasks = taskList;
             order.datecreated = DateTime.Now;
             order.duedate = DateTime.Now;
-            order.status = 1;
+            order.status = 1; //Thus confirmed
             await _orderHelper.CreateOrder(order);
         }
         catch (Exception ex)
         {
             ErrorMsg = ex.Message;
         }
-    
+
     }
 
+
+    /// <summary>
+    /// This method is under construction
+    /// Deleting / Cancelling the order, its tasks and its request
+    /// Be careful of notifying the Service provider of the deleted request
+    /// </summary>
+    /// <param name="order"></param>
+    /// <returns>Complete task / Handled Exception</returns>
     [Authorize]
     public async Task DeleteOrder(OrderModel order)
     {
         try
         {
-
             await _orderHelper.DeleteOrder(order);
             NavManager.ToAbsoluteUri("/index");
             await InvokeAsync(StateHasChanged);

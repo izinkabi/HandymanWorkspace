@@ -9,26 +9,35 @@ namespace Handyman_Api.Controllers;
 [ApiController]
 public class DeliveryController : ControllerBase
 {
-    IBusinessData _businessData;
+    IBusinessData? _businessData;
     public DeliveryController(IBusinessData business)
     {
         _businessData = business;
     }
+    ServiceProviderModel? providermodel;
+    BusinessModel? business;
 
     //Get the business under which the employee(userId) which is a provider is registered
     [HttpGet]
     [Route("Get")]
     public BusinessModel? Get(string employeeid)
     {
-        var business = new BusinessModel();
+
         try
         {
-            business = _businessData.GetBusiness(employeeid);
+            if (employeeid != null && business == null)
+            {
+                business = new()!;
+                business = _businessData.GetBusiness(employeeid);
+                return business;
+            }
+
             return business;
         }
         catch (Exception ex)
         {
             return null;
+            throw new Exception(ex.Message, ex.InnerException);
         }
     }
 
@@ -44,6 +53,7 @@ public class DeliveryController : ControllerBase
         }
         catch (Exception ex)
         {
+            return 0;
             throw new Exception(ex.Message);
         }
     }
@@ -63,7 +73,8 @@ public class DeliveryController : ControllerBase
     {
         try
         {
-            _businessData.EmployServiceProvider(serviceProvider);
+            if (serviceProvider != null)
+                _businessData.EmployServiceProvider(serviceProvider);
         }
         catch (Exception ex)
         {
@@ -75,12 +86,19 @@ public class DeliveryController : ControllerBase
     [Route("Business/GetProvider")]
     public ServiceProviderModel GetProvider(string employeeId)
     {
+
         try
         {
-            return _businessData.GetProvider(employeeId);
+            if (providermodel == null && employeeId != null)
+            {
+                providermodel = _businessData.GetProvider(employeeId);
+                return providermodel;
+            }
+            return providermodel;
         }
         catch (Exception ex)
         {
+            return null;
             throw new Exception(ex.Message, ex.InnerException);
         }
     }
@@ -91,7 +109,8 @@ public class DeliveryController : ControllerBase
     {
         try
         {
-            _businessData.AddProviderServices(serviceProvider);
+            if (serviceProvider != null)
+                _businessData.AddProviderServices(serviceProvider);
         }
         catch (Exception ex)
         {

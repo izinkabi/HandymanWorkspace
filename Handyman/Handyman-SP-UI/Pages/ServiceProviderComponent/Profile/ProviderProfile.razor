@@ -1,12 +1,16 @@
 ﻿@page "/provider-profile"
 @page "/profile"
-@inject IBusinessHelper _businessHelper
+
 
 @using HandymanProviderLibrary.Models;
 @using Handyman_SP_UI.Pages.Helpers;
 @using Microsoft.AspNetCore.Components.Web
 
-@if (providerModel != null)
+@inject IBusinessHelper _businessHelper
+<AuthorizeView>
+
+<Authorized>
+@if (providerModel != null && providerModel.employeeProfile!=null)
 {
     <div class="row mb-2">
         <div class="col-md-6">
@@ -24,7 +28,8 @@
             </div>
         </div>
         <!--End Employee profile-->
-        @if (@providerModel.Services.Count > 0)
+
+        @if (providerModel.Services.Count > 0)
         {
         <div class="col-md-6">
             <div class="position-sticky" style="top: 2rem;">
@@ -83,17 +88,26 @@
        </Handyman_SP_UI.Pages.Services.ServicesAlbum>
 
     </div>
+ </div>
+        }
+        else
+        {
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border" role="status">
+                    <span class="visually-visible">Loading...</span>
+                </div>
+            </div>
+        }
+    </Authorized>
+         <NotAuthorized>>
 
-    </div>
-}
-else
-{
-     <article class="blog-post">
-        <h4>
-            Please login
-        </h4>
-    </article>
-}
+             <article class="blog-post">
+                <h4>
+                    Please login
+                </h4>
+            </article>
+         </NotAuthorized>
+</AuthorizeView>
 
 @code {
     ServiceProviderModel? providerModel;

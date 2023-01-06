@@ -3,70 +3,72 @@ using HandymanProviderLibrary.Api.EndPoints.Interface;
 using HandymanProviderLibrary.Models;
 using System.Net.Http.Json;
 
-namespace HandymanProviderLibrary.Api.EndPoints.Implementation
+namespace HandymanProviderLibrary.Api.EndPoints.Implementation;
+
+public class ServiceProviderEndPoint : EmployeeEndPoint, IServiceProviderEndPoint
 {
-    public class ServiceProviderEndPoint : EmployeeEndPoint, IServiceProviderEndPoint
+
+    IAPIHelper? _apiHelper;
+    ServiceProviderModel? serviceProvider;
+
+    public ServiceProviderEndPoint(IAPIHelper apiHelper) : base(apiHelper)
     {
-
-        static IAPIHelper? _apiHelper;
-        ServiceProviderModel? serviceProvider;
-
-        public ServiceProviderEndPoint(IAPIHelper apiHelper) : base(apiHelper)
+        _apiHelper = apiHelper;
+    }
+    //Add service(s) of business's provider
+    async Task IServiceProviderEndPoint.AddService(ServiceProviderModel provider)
+    {
+        try
         {
-            _apiHelper = apiHelper;
+            await _apiHelper.ApiClient.PostAsJsonAsync("/api/Delivery/Business/PostProviderService", provider);
         }
-        //Add service(s) of business's provider
-        async Task IServiceProviderEndPoint.AddService(ServiceProviderModel provider)
+        catch (Exception ex)
         {
-            try
-            {
-                await _apiHelper.ApiClient.PostAsJsonAsync("/api/Delivery/Business/PostProviderService", provider);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            throw new Exception(ex.Message);
         }
-        //Remove the service of a provider
-        async Task IServiceProviderEndPoint.RemoveService(ServiceModel service, string providerId)
+    }
+    //Remove the service of a provider
+    async Task IServiceProviderEndPoint.RemoveService(ServiceModel service, string providerId)
+    {
+        try
         {
-            try
-            {
-                await _apiHelper.ApiClient.DeleteAsync($"/api/Delivery/Delete?Id={service.id}");
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-
+            await _apiHelper.ApiClient.DeleteAsync($"/api/Delivery/Delete?Id={service.id}");
         }
-        //Adding a new service provider
-        async Task IServiceProviderEndPoint.CreateServiceProvider(ServiceProviderModel provider)
+        catch (Exception ex)
         {
-            try
-            {
-                await _apiHelper.ApiClient.PostAsJsonAsync("/api/Delivery/Business/AddMember", provider);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            throw new Exception(ex.Message);
         }
 
-        //Get a service provider of the given ID
-        public async Task<ServiceProviderModel> GetProvider(string userId)
+    }
+    //Adding a new service provider
+    async Task IServiceProviderEndPoint.CreateServiceProvider(ServiceProviderModel provider)
+    {
+        try
         {
-            try
-            {
-                ServiceProviderModel sp = await _apiHelper.ApiClient.GetFromJsonAsync<ServiceProviderModel>($"/api/Delivery/Business/GetProvider?employeeId={userId}");
-
-                return sp;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message, ex);
-            }
-
+            await _apiHelper.ApiClient.PostAsJsonAsync("/api/Delivery/Business/AddMember", provider);
         }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    //Get a service provider of the given ID
+    public async Task<ServiceProviderModel> GetProvider(string userId)
+    {
+        try
+        {
+            if (serviceProvider == null)
+            {
+                serviceProvider = await _apiHelper.ApiClient.GetFromJsonAsync<ServiceProviderModel>($"/api/Delivery/Business/GetProvider?employeeId={userId}");
+            }
+
+            return serviceProvider;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+
     }
 }

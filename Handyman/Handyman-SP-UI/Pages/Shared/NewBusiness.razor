@@ -37,7 +37,7 @@
 
 
 
-                            <DynamicComponent Type="@typeof(TestProfile)" @ref="@profileComponent" />
+                            <DynamicComponent Type="@typeof(NewProfile)" @ref="@profileComponent" />
                         </div>
                     </div>
                 </div>
@@ -288,19 +288,16 @@
         try
         {
 
-            var newProfile = (TestProfile) profileComponent?.Instance;
+            var newProfile = (NewProfile) profileComponent?.Instance;
 
             newBusiness.Employee.employeeProfile = newProfile?.providerModel?.employeeProfile;
 
             //Add the provider role
             var user = (await authenticationStateTask).User;
 
-            ////var sp = UserManager;
-
             newBusiness.Employee.employeeProfile.EmailAddress = UserManager.GetUserName(user);
             var localUser = await UserManager.GetUserAsync(user);
-            //if (!( await UserManager.IsInRoleAsync(localUser,"ServiceProvider")))
-            //{
+            
 
             if (user.IsInRole("ServiceProvider"))
             {

@@ -171,29 +171,30 @@
 
     async Task OpenBusiness()
     {
-        var user = (await authenticationStateTask).User;
+        //var user = (await authenticationStateTask).User;
 
-        if (user.Identity.IsAuthenticated)
+        //if (user.Identity.IsAuthenticated)
+        //{
+        isLoggedIn = true;
+
+        try
         {
-            isLoggedIn = true;
-
-            try
+            if (_business != null)
             {
-                if (_business != null)
+                var biz = await _business.GetBusiness();
+                if (biz != null)
                 {
-                    var biz = await _business.GetBusinessLoggedInEmployee();
-                    if (biz != null)
-                    {
-                        business = biz;
-                    }
-                    
-                }   
-            }
-            catch (Exception ex)
-            {
-                ErrorMsg = ex.Message;
-            }          
+                    business = biz;
+                }
+
+            }   
         }
+        catch (Exception ex)
+        {
+            ErrorMsg = ex.Message;
+            throw new Exception(ex.Message, ex.InnerException);
+        }          
+        //}
     }
 
    void CreateBusiness()

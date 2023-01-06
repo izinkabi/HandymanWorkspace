@@ -2,78 +2,146 @@
 using HandymanProviderLibrary.Models;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace Handyman_SP_UI.Pages.Helpers
+namespace Handyman_SP_UI.Pages.Helpers;
+
+public class ProviderHelper : EmployeeHelper, IProviderHelper
 {
-    public class ProviderHelper : IProviderHelper
+    IServiceProviderEndPoint? _providerEndPoint;
+    AuthenticationStateProvider? _authenticationStateProvider;
+    ServiceProviderModel? providerModel;
+
+
+    public ProviderHelper(IServiceProviderEndPoint providerEndPoint, AuthenticationStateProvider authenticationStateProvider) : base(authenticationStateProvider)
     {
-        static IServiceProviderEndPoint? _providerEndPoint;
-        static AuthenticationStateProvider? _authenticationStateProvider;
-        ServiceProviderModel? providerModel;
-        EmployeeModel? employeeModel;
-        string? ErrorMsg;
-        string? userId;
-        public ProviderHelper(IServiceProviderEndPoint providerEndPoint, AuthenticationStateProvider authenticationStateProvider)
-        {
-            _providerEndPoint = providerEndPoint;
-            _authenticationStateProvider = authenticationStateProvider;
+        _providerEndPoint = providerEndPoint;
+        _authenticationStateProvider = authenticationStateProvider;
 
-        }
+    }
 
-        //Add new service--this should be in business or business show encapsulate a provider to protect the user ID
-        public async Task AddService(ServiceProviderModel provider)
+    /// <summary>
+    /// Add new service using the employee's ID hence the provider's ID
+    /// </summary>
+    /// <param name="provider"></param>
+    /// <returns></returns>
+    public async Task AddService(ServiceProviderModel provider)
+    {
+        try
         {
-            try
+            if (provider.pro_providerId == null)
             {
-                if (provider.pro_providerId == null)
-                {
-                    await GetUserId();
-                    provider.pro_providerId = userId;
-                }
-
-                await _providerEndPoint.AddService(provider);
+                await GetUserId();
+                provider.pro_providerId = userId;
             }
-            catch (Exception ex)
-            {
-                ErrorMsg = ex.Message;
-            }
+
+            await _providerEndPoint.AddService(provider);
         }
-
-        //Get the loggedIn employee if they have an ID
-        public async Task<ServiceProviderModel>? GetProvider(string userId)
+        catch (Exception ex)
         {
-            if ((userId != null) && (employeeModel == null))
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
+    /// <summary>
+    /// Check if the service is being provided
+    /// </summary>
+    /// <param name="service"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    public async Task<bool> IsServiceProvided(ServiceModel service)
+    {
+        try
+        {
+            if (providerModel == null)
             {
-                try
+                providerModel = await GetProvider();
+            }
+
+            if (providerModel.Services.Count > 0)
+            {
+                foreach (var serviceModel in providerModel.Services)
                 {
-                    providerModel = await _providerEndPoint.GetProvider(userId);
+                    if (serviceModel.id == service.id)
+                    {
+                        return true;
+                    }
 
                 }
-                catch (Exception ex)
-                {
-                    throw new Exception(ex.Message, ex);
-                }
 
+            }
+
+            return false;
+        }
+        catch (Exception ex)
+        {
+            return false;
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
+
+    /// <summary>
+    /// Get the loggedIn employee if they have an ID
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    public async Task<ServiceProviderModel> GetProvider()
+    {
+
+        try
+        {
+            if (userId == null)
+            {
+                userId = await GetUserId();
+            }
+
+            if (providerModel == null && userId != null)
+            {
+                providerModel = await _providerEndPoint?.GetProvider(userId);
             }
             return providerModel;
         }
-
-
-        async Task<string>? GetUserId()
+        catch (Exception ex)
         {
-            try
-            {
-                if (userId == null)
-                {
-                    var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
-                    userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
-
-                }
-                return userId;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            return null;
+            throw new Exception(ex.Message, ex);
         }
+
+    }
+    /// <summary>
+    /// Stamp the new business with the owner's details / IDs
+    /// </summary>
+    /// <param name="newBiz"></param>
+    /// <returns></returns>
+    public async Task<BusinessModel> StampBusinessUserAsync(BusinessModel? newBiz)
+    {
+        if (newBiz != null)
+
+            newBiz.date = DateTime.Now;
+
+        newBiz.Employee.employeeId = await GetUserId();
+        newBiz.Employee.pro_providerId = await GetUserId();
+        newBiz.registration.businessType = newBiz.Type;
+        newBiz.Employee.employeeProfile.UserId = newBiz.Employee.employeeId;
+
+
+        return newBiz;
+
+    }
+
+    /// <summary>
+    /// Get the employee ID hence the provider ID and stamping the request
+    /// </summary>
+    /// <param name="newRequest"></param>
+    /// <returns></returns>
+    public async Task<RequestModel> StampNewRequest(RequestModel newRequest)
+    {
+        if (userId == null)
+        {
+            userId = await GetUserId();
+        }
+        if (newRequest != null && userId != null)
+        {
+            newRequest.req_employeeid = userId;
+        }
+        return newRequest;
+
     }
 }

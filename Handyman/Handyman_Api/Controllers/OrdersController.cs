@@ -3,84 +3,83 @@ using Handyman_DataLibrary.Models;
 using Microsoft.AspNetCore.Mvc;
 
 
-namespace Handyman_Api.Controllers
+namespace Handyman_Api.Controllers;
+
+[Route("api/orders")]
+[ApiController]
+public class OrdersController : ControllerBase
 {
-    [Route("api/orders")]
-    [ApiController]
-    public class OrdersController : ControllerBase
+    IOrderData _orderData;
+    IEnumerable<OrderModel>? orders;
+    public OrdersController(IOrderData orderData)
     {
-        IOrderData _orderData;
-        IEnumerable<OrderModel>? orders;
-        public OrdersController(IOrderData orderData)
+        _orderData = orderData;
+    }
+    // GET: api/<OrdersController>
+    [HttpGet]
+    [Route("GetOrders")]
+    public IEnumerable<OrderModel> Get(string consumerId)
+    {
+        try
         {
-            _orderData = orderData;
+            orders = _orderData.GetConsumerOrderAndTasks(consumerId);
+            return orders;
         }
-        // GET: api/<OrdersController>
-        [HttpGet]
-        [Route("GetOrders")]
-        public IEnumerable<OrderModel> Get(string consumerId)
+        catch (Exception ex)
         {
-            try
-            {
-                orders = _orderData.GetConsumerOrderAndTasks(consumerId);
-                return orders;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-
+            throw new Exception(ex.Message);
         }
 
-        // POST api/<OrdersController>
-        [HttpPost]
-        [Route("Post")]
-        public void Post(OrderModel order)
-        {
-            try
-            {
-                if (order == null)
-                {
-                    return;
-                }
-                _orderData.SaveOrder(order);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
+    }
 
-        // PUT api/<OrdersController>/5
-        [HttpPut]
-        public void Put(OrderModel orderUpdate)
+    // POST api/<OrdersController>
+    [HttpPost]
+    [Route("Post")]
+    public void Post(OrderModel order)
+    {
+        try
         {
-            try
+            if (order == null)
             {
-                if (orderUpdate == null)
-                {
-                    return;
-                }
-                _orderData.UpdateOrder(orderUpdate);
+                return;
             }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            _orderData.SaveOrder(order);
         }
-
-        // DELETE api/<OrdersController>/5
-        [HttpDelete]
-        public void Delete(string consumerId, int orderId)
+        catch (Exception ex)
         {
-            try
+            throw new Exception(ex.Message);
+        }
+    }
+
+    // PUT api/<OrdersController>/5
+    [HttpPut]
+    public void Put(OrderModel orderUpdate)
+    {
+        try
+        {
+            if (orderUpdate == null)
             {
-                _orderData.DeleteOrderAndTasks(consumerId, orderId);
+                return;
             }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message, ex.InnerException);
-            }
+            _orderData.UpdateOrder(orderUpdate);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    // DELETE api/<OrdersController>/5
+    [HttpDelete]
+    public void Delete(string consumerId, int orderId)
+    {
+        try
+        {
+            _orderData.DeleteOrderAndTasks(consumerId, orderId);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex.InnerException);
         }
     }
 }
