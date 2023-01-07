@@ -21,7 +21,8 @@
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 @foreach(var service in @services)
                 {                   
-                    <MyService serviceModel="@service" >
+                    <MyService serviceModel="@service"  OnAddService="OnAddService">
+
                     </MyService>
                 }                
             </div>
@@ -33,6 +34,9 @@
 @code {
     IList<ServiceModel>? services;
     string? ErrorMsg;
+
+    [Parameter]
+    public EventCallback<ServiceModel> OnAddService { get; set; }
 
     enum ServiceTypes{
         Indoor,
@@ -57,6 +61,7 @@
         }
     }
 
+  
 
     void ViewServiceDetails(ServiceModel s)
     {

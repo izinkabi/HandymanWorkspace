@@ -189,10 +189,36 @@
                                             </button>
                                         </div>
                                     }
+                                    
                                 }
 
 
                             </div>
+                            <hr />
+                            <!--Provider's added services-->
+                            @if (newBusiness.Employee.Services.Count > 0)
+                            {
+
+                                @foreach (var service in newBusiness.Employee.Services)
+                                {
+
+                                    <ol class="list-group list-group-numbered">
+                                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                                            <div class="ms-2 me-auto">
+                                                <div class="fw-bold">@service.name</div>
+                                                @service.category.description
+                                            </div>
+                                            <span class="badge bg-primary rounded-pill">@service.id</span>
+                                        </li>
+
+                                    </ol>
+                                }
+                            }
+                            else
+                            {
+                                <p>Loading...</p>
+                            }
+                            <!--End provider's added services-->
                         </div>
                     </div>
                 </div>
@@ -283,12 +309,19 @@
         }
     }
 
+    /// This is the only method I have allowed to remain messy thus far but it is not uniques nor correct**
+    /// It consists of a currently complex mechanism of getting a newly registered user
+    /// It can be handled in a user/profile helper class, but it works almost perfectly for now,
+    /// since the email confirmation is not yet enabled it plays an important part
+    /// </summary>
+    /// <returns></returns> <summary>
+    /// 
     async Task SubmitForm()
     {
         try
         {
 
-            var newProfile = (NewProfile) profileComponent?.Instance;
+            var newProfile = (NewProfile) profileComponent?.Instance;//Embeded profileComponent
 
             newBusiness.Employee.employeeProfile = newProfile?.providerModel?.employeeProfile;
 
@@ -301,7 +334,6 @@
 
             if (user.IsInRole("ServiceProvider"))
             {
-                
                 await _businessHLP.CreateBusiness(newBusiness);
                 NavManager.NavigateTo("bus");
             }
@@ -313,9 +345,9 @@
         }
     }
     
+    //Adding services for a newly registered service-provider under a business
     void AddToNewServices(ServiceModel service)
     {
-
         if(!(newBusiness.Employee.Services.Contains(service)) && (service != null))
         {
             newBusiness.Employee.Services.Add(service);

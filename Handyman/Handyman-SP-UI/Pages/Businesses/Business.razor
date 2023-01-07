@@ -12,85 +12,103 @@
 <Authorized>
         @if (context.User.IsInRole("ServiceProvider"))
         {
-            <!--Welcome-->
-            <div class="p-4 p-md-3 mb-2 rounded text-bg-dark">
-                <div class="col-md-6 px-0">
-                    <h1 class="display-4 fst-italic">Hi   </h1>
-                    <p class="lead my-3">Welcome to Handyman's @business.Name</p>
-                </div>
-            </div>
-            <!--End Welcome-->
-
-            <!--Business Component-->
-            <div class="row mb-2">
-                <div class="col-md-3">
-                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                        <div class="col p-4 d-flex flex-column position-static">
-                            <strong class="d-inline-block mb-2 text-primary">Company details </strong>
-                            <h3 class="mb-0">@business.Name</h3>
-
-                            <p class="card-text mb-auto">This is a business description</p> <!--Should come from db -->
-                            <a href="#" class="stretched-link">Edit</a>
-                            
-                        </div>
+            @if (business != null && business.registration!=null)
+            {
+                <!--Welcome-->
+                <div class="p-4 p-md-3 mb-2 rounded text-bg-dark">
+                    <div class="col-md-6 px-0">
+                        <h1 class="display-4 fst-italic">Hi   </h1>
+                        <p class="lead my-3">Welcome to Handyman's @business.Name</p>
                     </div>
                 </div>
-                <!--End Business Component-->
+                <!--End Welcome-->
 
                 <!--Business Component-->
-
-                @if (business.Employee != null)
-                {
+                <div class="row mb-2">
                     <div class="col-md-3">
-                        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                        <div class="col p-2 d-flex flex-column position-static">
-
-                            <Stuff providerParam="@business.Employee">
-
-                            </Stuff>
-
-                            <a href="profile" class="stretched-link"></a>
-                        </div>
-                    </div>
-                    </div>
-                  }
-                <!--End Business Component-->
-
-                @if(business.address!=null)
-                {
-                    <!--Addresses Component-->
-                    <div class="col-md-3">
-                        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-absolute">
                             <div class="col p-4 d-flex flex-column position-static">
-                                <strong class="d-inline-block mb-2 text-primary">Address</strong>
-                                <h3 class="mb-0">@business.address.add_city</h3>
-                                <p class="card-text mb-auto">This is a description for addresses</p>
-                                <a href="#" class="stretched-link"></a>
-                                <div class="mb-1 text-muted">2</div>
+                                <strong class="d-inline-block mb-2 text-primary">Company details </strong>
+                                <h3 class="mb-0">@business.Name</h3>
+
+                                <p class="card-text mb-auto"><strong>Reg Number: </strong>@business.registration.regNumber</p> <!--Should come from db -->
+
+
                             </div>
                         </div>
                     </div>
-                    <!--End Addresses Component-->
-                }
-                
+                    <!--End Business Component-->
 
-                <!--Services Component-->
-                @if (business.address != null && business.Employee.employeeProfile!=null)
-                {
+                    <!--Business Component-->
 
-                  <div class="col-md-3">
-                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                        <div class="col p-4 d-flex flex-column position-static">
-                            <strong class="d-inline-block mb-2 text-primary">World</strong>
-                            <h3 class="mb-0">@business.Employee.Services.ElementAt(0).name</h3>
-                            <p class="card-text mb-auto">@business.Employee.Services.ElementAt(0).category.description...and more</p>
-                            <a href="#" class="stretched-link">Edit</a>
-                            <div class="mb-1 text-muted">12</div>
+                    @if (business.Employee != null)
+                    {
+                        <div class="col-md-3">
+                            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                                <div class="col p-2 d-flex flex-column position-static">
+
+                                    <Stuff providerParam="@business.Employee">
+
+                                    </Stuff>
+
+                                    <a href="profile" class="stretched-link"></a>
+                                </div>
+                            </div>
                         </div>
+                    }
+                    <!--End Business Component-->
+
+                    @if (business.address != null)
+                    {
+                        <!--Addresses Component-->
+                        <div class="col-md-3">
+                            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                                <div class="col p-4 d-flex flex-column position-static">
+                                    <strong class="d-inline-block mb-2 text-primary">Address</strong>
+                                    <h3 class="mb-0">@business.address.add_suburb</h3>
+                                    <h4 class="card-text mb-auto">@business.address.add_state.ToUpper()</h4>
+                                    <br/>
+                                    <p class="card-text mb-auto">@business.address.add_country.ToUpper()</p>
+                                    <p class="card-text mb-auto">@business.address.add_zip</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--End Addresses Component-->
+                    }
+
+
+                    <!--Services Component-->
+                    @if (business.address != null && business.Employee.employeeProfile != null)
+                    {
+
+                        <div class="col-md-3">
+                            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                                <div class="col p-4 d-flex flex-column position-static">
+                                    <strong class="d-inline-block mb-2 text-primary">Services</strong>
+                                    @if (business.Employee.Services.Count > 0)
+                                    {
+                                        @foreach (var service in business.Employee.Services)
+                                        {
+                                            <p class="mb-0">@service.name</p>
+                                            <hr/>
+                                        }
+                                        <div class="mb-1 text-muted">@business.Employee.Services.Count</div>
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-visible">Loading...</span>
                     </div>
-                    </div>
-                  }
-            </div>
+                </div>
+            }
             <!--End Services Component-->
             <!--Ratings Component-->
             <!--End Ratings Component-->

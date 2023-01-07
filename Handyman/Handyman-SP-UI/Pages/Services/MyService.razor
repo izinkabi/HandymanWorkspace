@@ -5,7 +5,7 @@
 @inject NavigationManager NavManager
 @inject IProviderHelper _providerHelper
 
-@if (@svc!=null)
+@if (@svc != null)
 {
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
         <symbol id="bootstrap" viewBox="0 0 118 94">
@@ -68,7 +68,7 @@
     <div class="col">
         <div class="card shadow-sm">
             <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
-                
+
                 <rect width="100%" height="100%" fill="#55595c" />
                 <text x="40%" y="50%" fill="#eceeef">@svc.name</text>
             </svg>
@@ -78,29 +78,32 @@
                     <small class="text-muted">Available from:@svc.datecreated</small>
                     <AuthorizeView>
                         <Authorized>
-                            @if(!isAdded)
+                            @if (!isAdded)
                             {
-                                <button type="submit" @onclick="AddService">Add</button>
-                            }else if(isAdded)
+                                <button class="btn btn-primary justify-content-start" type="reset" @onclick="@(() => OnAddService.InvokeAsync(svc))">Add</button>
+
+                            } else if (isAdded)
                             {
-                                <p>Added</p>
+                                <p class="text-center mb-1 text-muted fst-italic">Added</p>
                             }
                         </Authorized>
-                         <NotAuthorized>
-                             <hr/>
-                         </NotAuthorized>
+                        <NotAuthorized>
+                            <hr/>
+                        </NotAuthorized>
                     </AuthorizeView>
                 </div>
-               
+
             </div>
         </div>
     </div>
 }
 @code{
-
     ServiceProviderModel sp = new()!;
     [Parameter]
-    public ServiceModel? serviceModel { get {return svc; } set {svc = value; } }
+    public ServiceModel? serviceModel { get { return svc; } set { svc = value; } }
+
+    [Parameter]
+    public EventCallback<ServiceModel> OnAddService { get; set;  }
 
     bool isAdded; 
     ServiceModel? svc;
@@ -117,34 +120,16 @@
                     isAdded = true;
                 }
             }
-            
+
         }catch(Exception ex)
         {
             throw new Exception(ex.Message, ex.InnerException);
         }
-        //Check if the service exists
         
+
     }
 
-    /// <summary>
-    /// Add this service to the provider's services
-    /// </summary>
-    /// <returns></returns>
-    /// <exception cref="Exception"></exception>
-    async Task AddService()
-    {       
-        sp.Services = new List<ServiceModel>();
-
-        try
-        {
-            sp.Services.Add(svc);
-            await _providerHelper.AddService(sp);
-            StateHasChanged();
-        }
-        catch(Exception ex)
-        {
-            throw new Exception(ex.Message, ex.InnerException);
-        }
-    }
+    
+ 
 
 }
