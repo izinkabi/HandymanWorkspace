@@ -58,6 +58,10 @@
         -webkit-overflow-scrolling: touch;
       }
       </style>
+<AuthorizeView>
+      <Authorized>
+
+      
 @if (@newRequest != null)
 {
 
@@ -175,8 +179,23 @@ else if(@ownRequest!=null && @isAccepted)
 
             </tbody>
         </table>
-    </div>
-}
+            </div>
+        }
+        else
+        {
+            <div class="d-flex justify-content-center">
+                <span class="visually-visible">Loading...</span>
+                <div class="spinner-border" role="status">    
+                </div>
+            </div>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <h1>
+            Please LogIn
+        </h1>
+    </NotAuthorized>
+</AuthorizeView>
 
 @code {
     OrderModel? newRequest;
