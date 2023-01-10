@@ -1,4 +1,4 @@
-﻿<!--This component deals with requests for service providers-->
+﻿<!--This component deals with requests for service providers, specifically a new request-->
 @page "/request-c"
 @page "/request/"
 
@@ -175,6 +175,8 @@ else if(@ownRequest!=null && @isAccepted)
                         </tr>
                     }
 
+                }else{
+                   <p>This request has no task </p>
                 }
 
             </tbody>
@@ -183,10 +185,12 @@ else if(@ownRequest!=null && @isAccepted)
         }
         else
         {
+            
             <div class="d-flex justify-content-center">
-                <span class="visually-visible">Loading...</span>
+                
                 <div class="spinner-border" role="status">    
                 </div>
+                <span class="visually-visible">Loading...</span>
             </div>
         }
     </Authorized>
