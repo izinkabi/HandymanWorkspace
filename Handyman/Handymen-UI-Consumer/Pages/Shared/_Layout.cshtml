@@ -78,8 +78,9 @@
 </head>
 
 
-<!--NavBar-->
+
 <body>
+    <!--NavBar-->
     <header class="p-3 sticky-top bg-light bg-opacity-75">
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -124,7 +125,6 @@
     <!--End NavBar-->
       <div class="b-example-divider"></div>
     <!--right Menu-->
-   
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header">
             <h5 id="offcanvasRightLabel">Orders </h5>
@@ -200,14 +200,6 @@
 
    </div>
     <!--end right menu-->
-    <header class="py-3 mb-4 boarder-bottom">
-    <div class="container d-flex flex-wrap justify-content-center">
-  
-      <form class="col-12 col-lg-auto mb-3 mb-lg-0" role="search">
-        <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-      </form>
-    </div>
-  </header>
 
     <!--End NavBar-->
 
@@ -217,7 +209,6 @@
     
 
     <!-- Modal -->
-
   @if (SignInManager.IsSignedIn(User))
   {
     var ods = await _orderHelper.LoadUserOrders();
@@ -246,7 +237,6 @@
     <!--End Delete order Modal-->
 
 
-   
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

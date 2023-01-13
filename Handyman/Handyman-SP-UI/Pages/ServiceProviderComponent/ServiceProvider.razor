@@ -34,22 +34,7 @@
     string? ErrorMsg = "something is wrong";
     static IList<ServiceModel>? services;
 
-    protected override async Task OnInitializedAsync()
-    {
-        try
-        {
-            if (services == null)
-            {
-                services = await _servicesEP.GetServices();
-            }
-             
-        }
-        catch (Exception ex)
-        {
-            ErrorMsg = ex.Message;  
-        }
-    }
-
-    [Parameter]
+    
+    [CascadingParameter]
     public ServiceProviderModel? serviceProvider { get => _  = providerModel; set {providerModel=value; } }
 }
