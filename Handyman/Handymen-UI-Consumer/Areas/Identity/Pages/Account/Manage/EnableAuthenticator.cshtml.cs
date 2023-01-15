@@ -177,7 +177,7 @@ namespace Handymen_UI_Consumer.Areas.Identity.Pages.Account.Manage
             return string.Format(
                 CultureInfo.InvariantCulture,
                 AuthenticatorUriFormat,
-                _urlEncoder.Encode("Microsoft.AspNetCore.Identity.UI"),
+                _urlEncoder.Encode("Handyman"),
                 _urlEncoder.Encode(email),
                 unformattedKey);
         }
