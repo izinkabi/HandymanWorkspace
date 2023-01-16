@@ -101,14 +101,7 @@
                     }
                 </div>
             }
-            else
-            {
-                <div class="d-flex justify-content-center">
-                    <div class="spinner-border" role="status">
-                        <span class="visually-visible">Loading...</span>
-                    </div>
-                </div>
-            }
+         
             <!--End Services Component-->
             <!--Ratings Component-->
             <!--End Ratings Component-->
@@ -168,8 +161,8 @@
     { 
         try
         {
-            business = new();
-            await OpenBusiness();
+            if(business==null)
+                await OpenBusiness();
         }
         catch (Exception ex)
         {
@@ -203,6 +196,10 @@
                 if (biz != null)
                 {
                     business = biz;
+                }
+                else
+                {
+                    biz = await _business.GetBusiness();
                 }
 
             }   

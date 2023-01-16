@@ -11,8 +11,7 @@
 AS
 BEGIN
 	UPDATE [Request].[task]
-    SET  [tas_title] = @title, 
-    [tas_date_started] = @dateStarted , 
+    SET  [tas_title] = @title,  
     [tas_date_finished] = @dateFinished , 
     [tas_duration] = @duration, 
     [tas_status] = @status, 

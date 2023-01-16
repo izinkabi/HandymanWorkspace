@@ -9,6 +9,7 @@ namespace Handyman_SP_UI.Pages.Helpers
         private string? userId;
         IProviderHelper _providerHelper;
         ServiceProviderModel? provider;
+        BusinessModel? business;
 
         public BusinessHelper(IBusinessEndPoint business, IProviderHelper providerH)
         {
@@ -27,18 +28,24 @@ namespace Handyman_SP_UI.Pages.Helpers
         {
             try
             {
-                BusinessModel? business = new()!;
-                ServiceProviderModel? provider = new()!;
-                provider = await _providerHelper.GetProvider();
-                if (provider != null)
+
+                if (business == null && provider != null)
                 {
-                    business = await _business.GetLoggedInEmployee(provider.pro_providerId);
+                    //provider = provider;
+                    if (provider != null)
+                    {
+                        business = await _business.GetLoggedInEmployee(provider.employeeId);
+                    }
+
                 }
+
+
                 return business;
             }
             catch (Exception ex)
             {
                 return null;
+
                 throw new Exception(ex.Message, ex.InnerException);
             }
         }

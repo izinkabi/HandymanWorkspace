@@ -26,13 +26,12 @@ builder.Services.AddSingleton<IAPIHelper, APIHelper>();
 builder.Services.AddScoped<IBusinessEndPoint, BusinessEndPoint>();
 builder.Services.AddScoped<EmployeeEndPoint>();
 builder.Services.AddScoped<IServiceProviderEndPoint, ServiceProviderEndPoint>();
-builder.Services.AddScoped<IBusinessEndPoint, BusinessEndPoint>();
 builder.Services.AddScoped<IBusinessHelper, BusinessHelper>();
 builder.Services.AddTransient<EmployeeHelper>();
 builder.Services.AddScoped<IServiceEndpoint, ServiceEndpoint>();
 builder.Services.AddTransient<IRequestHelper, RequestHelper>();
 builder.Services.AddTransient<IRequestEndPoint, RequestEndPoint>();
-builder.Services.AddTransient<IProviderHelper, ProviderHelper>();
+builder.Services.AddScoped<IProviderHelper, ProviderHelper>();
 builder.Services.AddAntiforgery();
 builder.Services.AddScoped<TokenProvider>();
 

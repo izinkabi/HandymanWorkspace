@@ -7,7 +7,7 @@ public class EmployeeHelper
 {
     AuthenticationStateProvider? _authenticationStateProvider;
     protected EmployeeModel? employeeModel;
-    static protected string? userId;
+    protected string? userId;
 
     public EmployeeHelper(AuthenticationStateProvider stateProvider)
     {

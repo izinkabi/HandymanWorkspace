@@ -23,7 +23,8 @@ public class BusinessEndPoint : IBusinessEndPoint
         try
         {
             business = new();
-            business = await _apiHelper?.ApiClient?.GetFromJsonAsync<BusinessModel>($"/api/Delivery/Get?employeeid={employeeid}");
+            if (employeeid != null)
+                business = await _apiHelper?.ApiClient?.GetFromJsonAsync<BusinessModel>($"/api/Delivery/Get?employeeid={employeeid}");
 
         }
         catch (Exception ex)

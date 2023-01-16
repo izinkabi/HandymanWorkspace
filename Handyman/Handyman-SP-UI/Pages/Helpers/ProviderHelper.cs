@@ -8,7 +8,7 @@ public class ProviderHelper : EmployeeHelper, IProviderHelper
 {
     IServiceProviderEndPoint? _providerEndPoint;
     AuthenticationStateProvider? _authenticationStateProvider;
-    static ServiceProviderModel? providerModel;
+    ServiceProviderModel? providerModel;
 
 
     public ProviderHelper(IServiceProviderEndPoint providerEndPoint, AuthenticationStateProvider authenticationStateProvider) : base(authenticationStateProvider)

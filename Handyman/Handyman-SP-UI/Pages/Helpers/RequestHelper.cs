@@ -10,12 +10,24 @@ public class RequestHelper : IRequestHelper
     IRequestEndPoint? _requestEndPoint;
     IProviderHelper _providerHelper;
     IList<OrderModel> orders;
+    IList<RequestModel> _requests;
     public RequestHelper(IRequestEndPoint requestEndPoint, IProviderHelper providerHelper)
     {
         _requestEndPoint = requestEndPoint;
         _providerHelper = providerHelper;
     }
 
+    List<RequestModel> NewRequests = new()!;
+    List<RequestModel> StartedRequests = new()!;
+    List<RequestModel> AcceptedRequests = new()!;
+    List<RequestModel> FinishedRequests = new()!;
+
+    enum RequestStage
+    {
+        None = 0,
+        Accepted = 1,
+        Started = 2
+    }
     /// <summary>
     /// Helper method for getting all the orders of the given service
     /// These orders will be turned to requests when accepted by provider(s)
@@ -121,6 +133,80 @@ public class RequestHelper : IRequestHelper
             throw new Exception(ex.Message, ex.InnerException);
         }
     }
+    /// <summary>
+    /// This method categorises a requests by progess
+    /// </summary>
+    /// <param name="progress"> This is the progress parameter</param>
+    /// <returns></returns>
+    public List<RequestModel>? GetRequestsInCategory(int progress)
+    {
+        try
+        {
+
+
+            //List<RequestModel> NewRequests = new()!;
+            //List<RequestModel> StartedRequests = new()!;
+            //List<RequestModel> AcceptedRequests = new()!;
+            //List<RequestModel> FinishedRequests = new()!;
+
+            if (_requests.Count > 0)
+            {
+                foreach (var request in _requests)
+                {
+                    if (request.req_progress == progress && progress == 1)
+                    {
+                        //Accepted
+                        StartedRequests.Add(request);
+                    }
+
+                    if (request.req_progress == progress && progress == 0)
+                    {
+                        //New
+                        NewRequests.Add(request);
+                    }
+                    if (request.req_progress == progress && progress == 2)
+                    {
+                        //Started
+                        StartedRequests.Add(request);
+
+                    }
+                    if (request.req_progress == progress && progress == 3)
+                    {
+                        //Finished
+                        FinishedRequests.Add(request);
+                    }
+                }
+
+                switch (progress)
+                {
+                    case 0: return NewRequests;
+                    case 1:
+                        {
+                            return AcceptedRequests;
+                            break;
+                        }
+                    case 2:
+                        {
+                            return StartedRequests;
+                            break;
+                        }
+                    case 3:
+                        {
+                            return FinishedRequests;
+                            break;
+                        }
+
+                }
+
+
+            }
+            return null;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
 
     /// <summary>
     /// Look for the request of the given ID
@@ -166,4 +252,6 @@ public class RequestHelper : IRequestHelper
             throw new Exception(ex.Message, ex.InnerException);
         }
     }
+
+
 }
