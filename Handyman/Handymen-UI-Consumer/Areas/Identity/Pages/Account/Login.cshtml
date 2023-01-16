@@ -5,7 +5,7 @@
     Layout = "/Areas/Identity/Pages/_Layout.cshtml";
 }
 <h2 class="text-center">Use a local account to log in.</h2>
-<hr />
+
 <!--Login page-->
 <div class="row g-0 bg-body-secondary position-relative">
   <div class="col-md-6 mb-md-0 p-md-4">
@@ -42,7 +42,7 @@
                     <button id="login-submit" type="submit" type="button" class="btn btn-outline-secondary">Login</button>
                     <button type="button" class="btn btn-outline-secondary">Sign Up</button>
                 </div>
-                @*<p>
+                <p>
                     <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
                 </p>
                 <p>
@@ -50,14 +50,16 @@
                 </p>
                 <p>
                     <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
-                </p>*@
+                </p>
+                <p>
+                    <a id="google-login" asp-page="./ExternalLogin">google login</a>
+                </p>
             </div>
         </form>
         </div>
         <div class="col-md-6 ms-sm-auto">
             
         </div>
-
   </div>
   <!--End Login Form-->
 </div>

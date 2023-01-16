@@ -1,10 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Handymen_UI_Consumer</RootNamespace>
+    <UserSecretsId>7e0b2d03-1409-4877-a8a0-d43eb6cb98d3</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -39,6 +40,13 @@
     <None Include="wwwroot\Images\handyman.jpg" />
     <None Include="wwwroot\Images\oven.jpg" />
     <None Include="wwwroot\Images\pipe.jpg" />
+    <None Include="wwwroot\lib\qrcodeGenerator\.gitignore" />
+    <None Include="wwwroot\lib\qrcodeGenerator\index.svg" />
+    <None Include="wwwroot\lib\qrcodeGenerator\jquery.min.js" />
+    <None Include="wwwroot\lib\qrcodeGenerator\LICENSE" />
+    <None Include="wwwroot\lib\qrcodeGenerator\qrcode.js" />
+    <None Include="wwwroot\lib\qrcodeGenerator\qrcode.min.js" />
+    <None Include="wwwroot\lib\qrcodeGenerator\README.md" />
   </ItemGroup>
 
 
@@ -52,6 +60,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.Apis" Version="1.58.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="7.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.2" />
