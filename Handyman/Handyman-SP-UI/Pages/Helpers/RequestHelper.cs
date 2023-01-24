@@ -254,4 +254,15 @@ public class RequestHelper : IRequestHelper
     }
 
 
+    public void UpdateRequest()
+    {
+        try
+        {
+
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
 }

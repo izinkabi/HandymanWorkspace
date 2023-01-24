@@ -24,6 +24,7 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<Handyman_SP_UIUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IRoleStore<IdentityRole> _roleStore;
 
         public RegisterModel(
             UserManager<Handyman_SP_UIUser> userManager,
@@ -31,7 +32,7 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
             SignInManager<Handyman_SP_UIUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager, IRoleStore<IdentityRole> roleStore)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -40,6 +41,7 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _roleManager = roleManager;
+            _roleStore = roleStore;
         }
 
         /// <summary>
@@ -119,6 +121,7 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    //edit section 
                     if (!await _roleManager.RoleExistsAsync("ServiceProvider"))
                     {
                         await _roleManager.CreateAsync(new IdentityRole("ServiceProvider"));
@@ -185,6 +188,20 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<Handyman_SP_UIUser>)_userStore;
+        }
+
+        private Task<IdentityRole> GetRoleStore()
+        {
+            try
+            {
+                return _roleStore.FindByNameAsync("ServiceProvider", CancellationToken.None);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

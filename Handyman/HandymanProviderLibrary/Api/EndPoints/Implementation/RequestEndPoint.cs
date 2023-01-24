@@ -84,16 +84,17 @@ public class RequestEndPoint : IRequestEndPoint
     public async Task<string> UpdateRequest(RequestModel updateRequest)
     {
         string? result;
-        var req = new
-        {
-            updateRequest.req_id,
-            updateRequest.req_orderid,
-            updateRequest.req_status
-        };
+        //var req = new
+        //{
+        //    updateRequest.req_id,
+        //    updateRequest.req_orderid,
+        //    updateRequest.req_status,
+        //    updateRequest.tasks
+        //};
 
         try
         {
-            var httpResponseMessage = await _apiHelper.ApiClient.PutAsJsonAsync("/api/Request/Update", req);
+            var httpResponseMessage = await _apiHelper.ApiClient.PutAsJsonAsync<RequestModel>("/api/Requests/Update", updateRequest);
             if (httpResponseMessage.IsSuccessStatusCode)
             {
                 result = httpResponseMessage.ReasonPhrase;
@@ -122,6 +123,8 @@ public class RequestEndPoint : IRequestEndPoint
             throw new Exception(ex.Message, ex.InnerException);
         }
     }
+
+
 
 }
 

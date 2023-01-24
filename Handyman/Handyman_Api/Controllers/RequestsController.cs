@@ -81,10 +81,17 @@ public class RequestsController : ControllerBase
     }
 
     // PUT api/<RequestsController>/5
-    [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
+    [HttpPut]
+    public void Update(RequestModel requestUpdate)
     {
-        //Implementation
+        try
+        {
+            _requestData.UpdateRequest(requestUpdate);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex.InnerException);
+        }
     }
 
 }

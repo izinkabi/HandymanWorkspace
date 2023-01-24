@@ -2,11 +2,9 @@ using Handyman_Api.Areas.Identity.Data;
 using Handyman_DataLibrary.DataAccess.Interfaces;
 using Handyman_DataLibrary.DataAccess.Query;
 using Handyman_DataLibrary.Internal.DataAccess;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,7 +22,6 @@ builder.Services.AddDbContext<IdentityDataContext>(options =>
 builder.Services.AddSingleton<ISQLDataAccess, SQLDataAccess>();
 builder.Services.AddScoped<IServiceData, ServiceData>();
 builder.Services.AddScoped<IOrderData, OrderData>();
-builder.Services.AddScoped<IOrderTaskData, OrderTaskData>();
 builder.Services.AddTransient<EmployeeData>();
 builder.Services.AddTransient<IServiceProviderData, ServiceProviderData>();
 builder.Services.AddScoped<IBusinessData, BusinessData>();

@@ -22,7 +22,7 @@ public class OrdersController : ControllerBase
     {
         try
         {
-            orders = _orderData.GetConsumerOrderAndTasks(consumerId);
+            orders = _orderData.GetOrders(consumerId);
             return orders;
         }
         catch (Exception ex)
@@ -43,7 +43,7 @@ public class OrdersController : ControllerBase
             {
                 return;
             }
-            _orderData.SaveOrder(order);
+            _orderData.InsertOrder(order);
         }
         catch (Exception ex)
         {

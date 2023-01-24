@@ -1,16 +1,19 @@
 ﻿using Handyman_DataLibrary.DataAccess.Interfaces;
 using Handyman_DataLibrary.Internal.DataAccess;
 using Handyman_DataLibrary.Models;
+using static Handyman_DataLibrary.DataAccess.Query.OrderData;
 
 namespace Handyman_DataLibrary.DataAccess.Query;
 
 public class RequestData : IRequestData
 {
     ISQLDataAccess _dataAccess;
+    TaskData taskData;
 
     public RequestData(ISQLDataAccess dataAccess)
     {
         _dataAccess = dataAccess;
+        taskData = new(dataAccess);
     }
 
     //Get all the requests for the given service and their tasks
@@ -96,35 +99,10 @@ public class RequestData : IRequestData
 
         return orderSet.ToList();
     }
-
     //Get the tasks of a given order
-    public IList<TaskModel> GetTasks(int orderId)
-    {
-        try
-        {
-            List<TaskModel> tasks = _dataAccess.LoadData<TaskModel, dynamic>("Delivery.spTaskLookUpByOrder", new { orderId = orderId }, "Handyman_DB");
-            return tasks;
-
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message, ex.InnerException);
-        }
-    }
 
     //Get Task by ID
-    public TaskModel GetTask(int Id)
-    {
-        try
-        {
-            TaskModel taskModel = _dataAccess.LoadData<TaskModel, dynamic>("Request.spTaskLookUp", new { taskId = Id }, "Handyman_DB").First();
-            return taskModel;
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message, ex.InnerException);
-        }
-    }
+    public TaskModel GetTask(int Id) => taskData.GetTask(Id);
 
     //Get the request(s) of the given provider and their tasks
     public IList<RequestModel> GetRequests(string providerId)
@@ -137,7 +115,7 @@ public class RequestData : IRequestData
             if (requests.Count > 0)
                 foreach (RequestModel request in requests)
                 {
-                    request.tasks = GetTasks(request.req_orderid).ToList();
+                    request.tasks = taskData.GetTasks(request.req_orderid).ToList();
                     //_dataAccess.LoadData<TaskModel, dynamic>("Request.spTaskLookUpByOrder", new { orderId = request.req_orderid }, "Handyman_DB");
                 }
 
@@ -150,7 +128,11 @@ public class RequestData : IRequestData
         }
     }
 
-    //Post or insert a new request and it's tasks
+    /// <summary>
+    /// Post or insert a new request and it's tasks
+    /// </summary>
+    /// <param name="request"></param>
+    /// <exception cref="Exception"></exception>
     //This can only be made by the provider given
     //the fact that it is an order accepted by the provider
     public void InsertRequest(RequestModel request)
@@ -179,4 +161,31 @@ public class RequestData : IRequestData
             throw new Exception(ex.Message, ex.InnerException);
         }
     }
+
+    /// <summary>
+    /// Update a task for a given request
+    /// </summary>
+    /// <param name="task"></param>
+    public void UpdateRequest(RequestModel requestUpdate)
+    {
+        try
+        {
+            if (requestUpdate != null)
+            {
+                _dataAccess.StartTransaction("Handyman_DB");
+                _dataAccess.SaveDataTransaction("Delivery.spRequestUpdate", requestUpdate);
+
+                foreach (var item in requestUpdate.tasks)
+                {
+                    _dataAccess.SaveDataTransaction("Request.spTaskUpdate", item);
+                }
+
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
 }
+
