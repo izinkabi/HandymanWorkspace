@@ -64,8 +64,8 @@
       
 @if (@newRequest != null)
 {
-
-    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center justify-content-center">
+            <!--New request / Unaccepted request-->
+    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center justify-content-center ">
         <div class="col">
             <div class="card mb-4 rounded-3 shadow-sm">
                 <div class="card-header py-3">
@@ -127,7 +127,7 @@
 else if(@ownRequest!=null && @isAccepted)
 {
     <!--Own / Accepted request-->
-    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center justify-content-center">
+    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center justify-content-center alert-success">
         <div class="col">
             <div class="card mb-4 rounded-3 shadow-sm">
                 <div class="card-header py-3">
@@ -279,13 +279,28 @@ else if(@ownRequest!=null && @isAccepted)
     //View a task of your request
     async Task ViewTask(int taskId)
     {
-        
-            NavManager.NavigateTo(NavManager.GetUriWithQueryParameters("task", new Dictionary<string, object>()
+
+        NavManager.NavigateTo(NavManager.GetUriWithQueryParameters("task", new Dictionary<string, object>()
             {
                 ["id"] = taskId
             }));
-        
-        
+
+
+    }
+
+
+    //Updating the request and its relevent tasks
+    async Task UpdateRequest(RequestModel requestUpdate)
+    {
+        try
+        {
+            await _requestHelper.UpdateRequest(requestUpdate);
+        }
+        catch (Exception)
+        {
+                
+            throw;
+        }
     }
 
 }

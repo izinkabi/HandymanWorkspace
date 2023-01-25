@@ -333,7 +333,7 @@ public class OrderData : IOrderData
             TaskModel task = null;
             if (id != 0)
             {
-                task = _dataAccess.LoadData<TaskModel, dynamic>("Order.spTaskLookUp", id, "Handyman_DB").First();
+                task = _dataAccess.LoadData<TaskModel, dynamic>("Request.spTaskLookUp", new { taskId = id }, "Handyman_DB").First();
             }
             if (task != null) { return task; }
             return null;

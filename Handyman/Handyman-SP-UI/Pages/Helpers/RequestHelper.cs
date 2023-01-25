@@ -253,12 +253,20 @@ public class RequestHelper : IRequestHelper
         }
     }
 
-
-    public void UpdateRequest()
+    /// <summary>
+    /// Update a given Request (Update the tasks in the request)
+    /// </summary>
+    /// <param name="requestUpdate"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    public async Task UpdateRequest(RequestModel requestUpdate)
     {
         try
         {
-
+            if (requestUpdate != null)
+            {
+                await _requestEndPoint.UpdateRequest(requestUpdate);
+            }
         }
         catch (Exception ex)
         {

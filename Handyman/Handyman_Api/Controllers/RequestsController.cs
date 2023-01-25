@@ -57,8 +57,12 @@ public class RequestsController : ControllerBase
     {
         try
         {
-            TaskModel request = _requestData.GetTask(Id);
-            return request;
+            if (Id > 0)
+            {
+                TaskModel request = _requestData.GetTask(Id);
+                return request;
+            }
+            return null;
         }
         catch (Exception ex)
         {

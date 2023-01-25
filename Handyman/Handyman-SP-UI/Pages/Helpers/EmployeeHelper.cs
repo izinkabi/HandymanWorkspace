@@ -5,9 +5,10 @@ namespace Handyman_SP_UI.Pages.Helpers;
 
 public class EmployeeHelper
 {
-    AuthenticationStateProvider? _authenticationStateProvider;
+    private AuthenticationStateProvider? _authenticationStateProvider;
     protected EmployeeModel? employeeModel;
     protected string? userId;
+
 
     public EmployeeHelper(AuthenticationStateProvider stateProvider)
     {
@@ -17,7 +18,7 @@ public class EmployeeHelper
     public EmployeeModel Employee { get => _ = Employee; }
 
     /// <summary>
-    /// This method get the employee's user ID
+    /// This method gets the employee's user ID / the ID of the logged in user
     /// </summary>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
@@ -29,7 +30,6 @@ public class EmployeeHelper
             {
                 var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
                 userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
-
             }
             return userId;
         }
