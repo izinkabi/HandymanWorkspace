@@ -163,13 +163,19 @@ else if(@ownRequest!=null && @isAccepted)
                                     <h2>Progress</h2>
                                     @if (ownRequest.tasks.Count > 0)
                                     {
-                                        <div class="progress">
-                                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: @ownRequest.req_progress%">@ownRequest.req_progress%</div>
-                                        </div>
+                                        @if (ownRequest.req_status == 3)
+                                        {
+                                            <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                                <div class="progress-bar" style="width: @ownRequest.req_progress%">@ownRequest.req_progress%</div>  <!--This will be implemented by duration of the task-->
+                                            </div>
+                                        }else{
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: @ownRequest.req_progress%">@ownRequest.req_progress%</div>
+                                            </div>
+                                        }
+                                       
+                                        
 
-                                        @*<div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                            <div class="progress-bar" style="width: @ownRequest.req_progress%">@ownRequest.req_progress%</div>  <!--This will be implemented by duration of the task-->
-                                        </div>*@
                                     }
                                 </div>
                             </div>
@@ -184,8 +190,8 @@ else if(@ownRequest!=null && @isAccepted)
 
 
 
-    <h4 class="display-8 text-center mb-4">Tasks</h4>
-
+   
+                <!--Table for tasks-->
     <div class="table-responsive">
                 <table class="table text-center table-hover">
                     <thead class="table-light">
