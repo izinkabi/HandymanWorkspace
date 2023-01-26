@@ -98,11 +98,19 @@
                     }
                 }else
                 {
-                    <div class="card text-dark">
-                        <img src="./images/handymangif.gif" class="card-img" height="400" alt="...">
-                        <div class="card-img-overlay text-center">
-                            <p class="card-text">You have been working on this task for: <small class="text-muted"> @taskModel.tas_duration days</small></p>
-                            <button @onclick="Update" class="btn btn-outline-secondary btn-md" type="button">Update</button>
+                 
+                    <div class="card mb-3" style="max-width: 540px;">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="./images/handymangif.gif" class="img-fluid rounded-start" alt="...">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <p class="card-text text-decoration-underline">Keep on working on it, you are getting closer to finish</p>
+                                    <button @onclick="Update" class="btn btn-outline-secondary btn-md mb-2" type="button">Update</button>  <br />
+                                    <small class="text-muted py-2 fst-italic">Hours worked @TimeOnly.FromTimeSpan(DateTime.Now - taskModel.tas_date_started) hr</small>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 }
@@ -138,6 +146,9 @@
                         }
                         @if (taskModel.tas_status == 3)
                         {
+                            <div>
+                                <p class="text-center mb-1 text-muted fst-italic">Finished on @taskModel.tas_date_finished</p>
+                                </div>
                             <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                                 <div class="progress-bar" style="width: 100%">100%</div>  <!--This will be implemented by duration of the task-->
                             </div>
@@ -178,6 +189,7 @@
 
     int TaskId;
     TaskModel? taskModel;
+    TimeOnly lastModeified;
 
     //Timer taskTtimer;
 
@@ -205,7 +217,7 @@
         if(taskModel.tas_status < 3)
         {
             //the task is not yet complete       
-            taskModel.tas_duration = (DateTime.UtcNow - taskModel.tas_date_started).Days;
+            taskModel.tas_duration = (taskModel.tas_date_finished - taskModel.tas_date_started).Days;
         }
     }
 
@@ -244,6 +256,7 @@
         if (taskModel != null && (taskModel.tas_status == 2))
         {
             taskModel.tas_status = 3;
+            taskModel.tas_date_finished = DateTime.UtcNow;
             isWorkingOnTask = false;
             Update();
         }
@@ -260,8 +273,10 @@
         isWorkingOnTask = false;
         try
         {
-            if(taskModel!=null)
-                await _requestHelper.UpdateTask(taskModel);
+            if (taskModel != null)
+                taskModel.tas_date_finished = DateTime.Now;
+            await _requestHelper.UpdateTask(taskModel);
+                lastModeified = TimeOnly.FromDateTime(DateTime.Now);
             StateHasChanged();
         }
         catch (Exception)

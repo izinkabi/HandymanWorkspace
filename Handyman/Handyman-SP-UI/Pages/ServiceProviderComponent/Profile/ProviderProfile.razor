@@ -85,10 +85,24 @@
             }
 
         </article>
+                <div class="accordion accordion-flush" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button px-6" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <strong class="text-capitalize text-center fa-italic">ADD SERVICES</strong>
+                                    <hr/>
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" >
+                            <div class="accordion-body">
+                                <Handyman_SP_UI.Pages.Services.ServicesAlbum OnAddService="AddService">
 
-                    <Handyman_SP_UI.Pages.Services.ServicesAlbum OnAddService="AddService">
-
-                    </Handyman_SP_UI.Pages.Services.ServicesAlbum>
+                                </Handyman_SP_UI.Pages.Services.ServicesAlbum>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                   
 
     </div>
  </div>

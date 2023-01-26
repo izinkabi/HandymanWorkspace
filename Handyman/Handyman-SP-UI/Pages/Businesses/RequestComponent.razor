@@ -89,7 +89,7 @@
                         </ul>
                         @if (!isAccepted)
                         {
-                            <button type="button" @onclick="AcceptRequest" class="w-100 btn btn-lg btn-outline-primary">Accept</button>
+                            <button type="submit" @onclick="AcceptRequest" class="w-100 btn btn-lg btn-outline-primary">Accept</button>
                         }
                    </div>
                 }
@@ -317,7 +317,7 @@ else if(@ownRequest!=null && @isAccepted)
             await _requestHelper.AcceptRequest(newRequest);
             //switch label to accepted
             isAccepted = true;
-             
+
             //Make new instance of an accepted request
             ownRequest = new RequestModel()!;
             ownRequest.tasks = new()!;
@@ -329,6 +329,7 @@ else if(@ownRequest!=null && @isAccepted)
 
             //make sure there is no new request anymore
             newRequest = null;
+            this.OnInitializedAsync();
 
         }catch(Exception ex)
         {
