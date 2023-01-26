@@ -8,8 +8,8 @@ namespace Handyman_DataLibrary.DataAccess.Interfaces
         void InsertRequest(RequestModel request);
         IList<RequestModel> GetRequests(string providerId);
         TaskModel GetTask(int Id);
-        void UpdateRequest(RequestModel requestUpdate);
-
+        //void UpdateRequest(RequestModel requestUpdate);
+        void UpdateTask(TaskModel taskUpdate);
     }
 
 }

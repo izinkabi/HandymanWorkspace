@@ -331,11 +331,11 @@
             newBusiness.Employee.employeeProfile.EmailAddress = UserManager.GetUserName(user);
             var localUser = await UserManager.GetUserAsync(user);
             
-
+            //Using roles to 
             if (user.IsInRole("ServiceProvider"))
             {
                 await _businessHLP.CreateBusiness(newBusiness);
-                NavManager.NavigateTo("bus");
+                NavManager.NavigateTo("bus",true);
             }
                 
         }

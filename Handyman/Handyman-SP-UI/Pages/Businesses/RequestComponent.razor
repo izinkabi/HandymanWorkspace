@@ -142,11 +142,28 @@ else if(@ownRequest!=null && @isAccepted)
                         </ul>
                        
                     </div>
+                        <div class="row align-items-md-stretch justify-content-center">
+                            <div class=" ">
+                                <div class="p-2 mb-3 text-bg-dark rounded-3">
+                                    <h2>Progress</h2>
+                                    @if (ownRequest.tasks.Count > 0)
+                                    {
+                                        <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                            <div class="progress-bar" style="width: @ownRequest.req_progress%">@ownRequest.req_progress%</div>  <!--This will be implemented by duration of the task-->
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
                 
             </div>
+                   
+            
         </div>
 
     </div>
+
+
 
     <h4 class="display-8 text-center mb-4">Tasks</h4>
 
@@ -185,12 +202,12 @@ else if(@ownRequest!=null && @isAccepted)
         }
         else
         {
-            
+            <span class="visually-visible">Loading...</span>
             <div class="d-flex justify-content-center">
                 
                 <div class="spinner-border" role="status">    
                 </div>
-                <span class="visually-visible">Loading...</span>
+                
             </div>
         }
     </Authorized>
@@ -255,7 +272,10 @@ else if(@ownRequest!=null && @isAccepted)
             {
                 ownRequest = await _requestHelper.GetOwnRequest(ownRequestId);
                 isAccepted = true;
+                UpdateRequests();
             }
+
+
 
         }catch(Exception ex)
         {
@@ -268,8 +288,23 @@ else if(@ownRequest!=null && @isAccepted)
     {
         try
         {
+            //Update the DB 
             await _requestHelper.AcceptRequest(newRequest);
+            //switch label to accepted
             isAccepted = true;
+             
+            //Make new instance of an accepted request
+            ownRequest = new RequestModel()!;
+            ownRequest.tasks = new()!;
+            //Populate the request
+            ownRequest.req_datecreated = newRequest.datecreated;
+            ownRequest.req_orderid = newRequest.Id;
+            ownRequest.tasks = newRequest.Tasks.ToList();
+            ownRequest.req_status = 1;
+
+            //make sure there is no new request anymore
+            newRequest = null;
+
         }catch(Exception ex)
         {
             throw new Exception(ex.Message, ex.InnerException);
@@ -290,11 +325,15 @@ else if(@ownRequest!=null && @isAccepted)
 
 
     //Updating the request and its relevent tasks
-    async Task UpdateRequest(RequestModel requestUpdate)
+    async Task UpdateRequests()
     {
         try
         {
-            await _requestHelper.UpdateRequest(requestUpdate);
+            if(ownRequest!=null)
+            ownRequest.req_status = _requestHelper.CheckStatus(ownRequest);
+            ownRequest.req_progress = _requestHelper.GetProgress(ownRequest);
+
+            //await _requestHelper.UpdateRequest(requestUpdate);
         }
         catch (Exception)
         {

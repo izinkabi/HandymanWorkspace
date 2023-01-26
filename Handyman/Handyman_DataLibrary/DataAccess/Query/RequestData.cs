@@ -166,26 +166,28 @@ public class RequestData : IRequestData
     /// Update a task for a given request
     /// </summary>
     /// <param name="task"></param>
-    public void UpdateRequest(RequestModel requestUpdate)
-    {
-        try
-        {
-            if (requestUpdate != null)
-            {
-                _dataAccess.StartTransaction("Handyman_DB");
-                _dataAccess.SaveDataTransaction("Delivery.spRequestUpdate", requestUpdate);
+    //public void UpdateRequest(RequestModel requestUpdate)
+    //{
+    //    try
+    //    {
+    //        if (requestUpdate != null)
+    //        {
+    //            _dataAccess.StartTransaction("Handyman_DB");
+    //            _dataAccess.SaveDataTransaction("Delivery.spRequestUpdate", requestUpdate);
 
-                foreach (var item in requestUpdate.tasks)
-                {
-                    _dataAccess.SaveDataTransaction("Request.spTaskUpdate", item);
-                }
+    //            foreach (var item in requestUpdate.tasks)
+    //            {
+    //                _dataAccess.SaveDataTransaction("Request.spTaskUpdate", item);
+    //            }
+    //        }
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        throw new Exception(ex.Message, ex.InnerException);
+    //    }
+    //}
 
-            }
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message, ex.InnerException);
-        }
-    }
+
+    public void UpdateTask(TaskModel taskUpdate) => taskData.UpdateTask(taskUpdate);
 }
 

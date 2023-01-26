@@ -7,7 +7,7 @@ namespace HandymanProviderLibrary.Api.EndPoints.Interface
         Task<IList<OrderModel>> GetNewRequestsByService(int serviceId);
         Task<List<RequestModel>> GetRequestsByProvider(string? providerId);
         Task<string> PostRequest(RequestModel request);
-        Task UpdateRequest(RequestModel updateRequest);
+        Task UpdateTask(TaskModel taskUpdate);
         Task<TaskModel> GetTask(int id);
     }
 }

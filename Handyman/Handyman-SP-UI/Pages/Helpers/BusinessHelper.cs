@@ -6,7 +6,6 @@ namespace Handyman_SP_UI.Pages.Helpers
     public class BusinessHelper : IBusinessHelper
     {
         IBusinessEndPoint _business;
-        private string? userId;
         IProviderHelper _providerHelper;
         ServiceProviderModel? provider;
         BusinessModel? business;
@@ -28,18 +27,19 @@ namespace Handyman_SP_UI.Pages.Helpers
         {
             try
             {
-
-                if (business == null && provider != null)
+                if (business == null)
                 {
-                    //provider = provider;
-                    if (provider != null)
+                    //provider = null;
+                    if (provider == null)
+                    {
+                        GetProvider();
+                    }
+                    if (provider.employeeProfile != null)
                     {
                         business = await _business.GetLoggedInEmployee(provider.employeeId);
+
                     }
-
                 }
-
-
                 return business;
             }
             catch (Exception ex)
