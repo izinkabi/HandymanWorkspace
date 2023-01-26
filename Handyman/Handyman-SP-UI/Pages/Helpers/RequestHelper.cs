@@ -306,7 +306,7 @@ public class RequestHelper : IDisposable, IRequestHelper
 
 
         //Return the request stage
-        public int CheckStatus(RequestModel request)
+        internal int CheckStatus(RequestModel request)
         {
 
             if (request != null)
@@ -315,6 +315,7 @@ public class RequestHelper : IDisposable, IRequestHelper
                 startedTasks = new()!;
                 inprogressTasks = new()!;
                 finishedTasks = new()!;
+
                 //Check for task status
                 foreach (var t in request.tasks)
                 {
@@ -341,7 +342,7 @@ public class RequestHelper : IDisposable, IRequestHelper
                 {
                     return 1;
                 }
-                else if (startedTasks.Count == 0 && inprogressTasks.Count == 0 && finishedTasks.Count == 3)//Request closed
+                else if (startedTasks.Count == 0 && inprogressTasks.Count == 0 && finishedTasks.Count > 0)//Request closed
                 {
                     return 3;
                 }
@@ -372,7 +373,7 @@ public class RequestHelper : IDisposable, IRequestHelper
                 {
                     return 30;
                 }
-                if (startedTasks.Count + finishedTasks.Count == request.tasks.Count && (finishedTasks.Count > 0 && startedTasks.Count > 0))
+                if (startedTasks.Count + finishedTasks.Count == request.tasks.Count && (startedTasks.Count > finishedTasks.Count && finishedTasks.Count > 0))
                 {
                     return 40;
                 }

@@ -61,6 +61,15 @@
 
 @if (taskModel != null)
 {
+    <!--Breadcrum-->
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="##" onclick="history.go(-2); return false;">Home</a></li>
+            <li class="breadcrumb-item"><a href="##" onclick="history.go(-1); return false;">Request</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Task</li>
+        </ol>
+    </nav>
+   
     <!--Task Header-->
     <div class="container py-4">
 
