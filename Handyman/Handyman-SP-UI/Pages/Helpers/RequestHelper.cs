@@ -12,6 +12,8 @@ public class RequestHelper : IDisposable, IRequestHelper
     IList<OrderModel> orders;
     IList<RequestModel> _requests;
     StatusCheckHelper statusCheckHelper;
+    RequestModel newRequest;
+
     public RequestHelper(IRequestEndPoint requestEndPoint, IProviderHelper providerHelper)
     {
         _requestEndPoint = requestEndPoint;
@@ -22,7 +24,7 @@ public class RequestHelper : IDisposable, IRequestHelper
 
     List<RequestModel> NewRequests = new()!;
     List<RequestModel> StartedRequests = new()!;
-    List<RequestModel> AcceptedRequests = new()!;
+    List<RequestModel> AcceptedRequests;
     List<RequestModel> FinishedRequests = new()!;
 
     enum RequestStage
@@ -95,12 +97,60 @@ public class RequestHelper : IDisposable, IRequestHelper
         }
     }
 
+    //Confirm if the request is accepted
+    public async Task<RequestModel> ConfirmAccepted(OrderModel requestChecked)
+    {
+        if (requestChecked != null)
+        {
+            if (await IsAccepted(requestChecked))
+            {
+                return newRequest;
+            }
+        }
+        return null;
+    }
+
+
+    /// <summary>
+    /// Check if the order has been accepted
+    /// </summary>
+    /// <param name="order"></param>
+    /// <returns></returns>
+    public async Task<bool> IsAccepted(OrderModel order)
+    {
+        try
+        {
+            if (AcceptedRequests == null || AcceptedRequests.Count == 0)
+            {
+                AcceptedRequests = (List<RequestModel>?)await GetOwnRequests();
+            }
+
+            if (AcceptedRequests != null && AcceptedRequests.Count > 0)
+            {
+                foreach (var item in AcceptedRequests)
+                {
+                    if (item.req_orderid == order.Id)
+                    {
+                        newRequest = item;
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
     /// <summary>
     /// Make / create a new request
     /// </summary>
     /// <param name="newRequest"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
+
     public async Task AcceptRequest(OrderModel newRequest)
     {
         RequestModel nr = new()!;
@@ -112,8 +162,12 @@ public class RequestHelper : IDisposable, IRequestHelper
 
         try
         {
-            //save the accepted request
-            await _requestEndPoint.PostRequest(await _providerHelper.StampNewRequest(nr));
+            if (!await IsAccepted(newRequest))
+            {
+                //save the accepted request
+                await _requestEndPoint.PostRequest(await _providerHelper.StampNewRequest(nr));
+
+            }
 
         }
         catch (Exception ex)
@@ -145,80 +199,16 @@ public class RequestHelper : IDisposable, IRequestHelper
             throw new Exception(ex.Message, ex.InnerException);
         }
     }
-    /// <summary>
-    /// This method categorises a requests by progess
-    /// </summary>
-    /// <param name="progress"> This is the progress parameter</param>
-    /// <returns></returns>
-    public List<RequestModel>? GetRequestsInCategory(int progress)
-    {
-        try
-        {
-
-            if (_requests.Count > 0)
-            {
-                foreach (var request in _requests)
-                {
-                    if (request.req_progress == progress && progress == 1)
-                    {
-                        //Accepted
-                        StartedRequests.Add(request);
-                    }
-
-                    if (request.req_progress == progress && progress == 0)
-                    {
-                        //New
-                        NewRequests.Add(request);
-                    }
-                    if (request.req_progress == progress && progress == 2)
-                    {
-                        //Started
-                        StartedRequests.Add(request);
-
-                    }
-                    if (request.req_progress == progress && progress == 3)
-                    {
-                        //Finished
-                        FinishedRequests.Add(request);
-                    }
-                }
-
-                switch (progress)
-                {
-                    case 0: return NewRequests;
-                    case 1:
-                        {
-                            return AcceptedRequests;
-                            break;
-                        }
-                    case 2:
-                        {
-                            return StartedRequests;
-                            break;
-                        }
-                    case 3:
-                        {
-                            return FinishedRequests;
-                            break;
-                        }
-
-                }
 
 
-            }
-            return null;
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message, ex.InnerException);
-        }
-    }
 
     //------------------------Updating a request--------------------------//
     public int GetProgress(RequestModel request) => statusCheckHelper.calculateProgress(request);
     public int CheckStatus(RequestModel request) => statusCheckHelper.CheckStatus(request);
 
     //------------------------End Updating a request--------------------------//
+
+
 
     /// <summary>
     /// Look for the request of the given ID

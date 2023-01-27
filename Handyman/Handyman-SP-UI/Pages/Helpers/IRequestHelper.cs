@@ -13,5 +13,7 @@ namespace Handyman_SP_UI.Pages.Helpers
         Task UpdateTask(TaskModel requestUpdate);
         int GetProgress(RequestModel request);
         int CheckStatus(RequestModel request);
+        Task<RequestModel> ConfirmAccepted(OrderModel request);
+        Task<bool> IsAccepted(OrderModel order);
     }
 }

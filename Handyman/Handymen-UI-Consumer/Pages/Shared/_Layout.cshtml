@@ -129,7 +129,7 @@
         </div>
         
         
-       <!--Order Components list scrollable-->
+       <!--Order Components list Right-side-bar-->
         
     @if (SignInManager.IsSignedIn(User))
         {
@@ -144,12 +144,13 @@
                 </div>
             }else 
             {
+                     //Get orders
                      var orders = await _orderHelper.LoadUserOrders();
                    
                 <div class="offcanvas-body" heightoverflow-y:scroll>
                  <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" class="scrollspy-example bg-light p-3 rounded-2" tabindex="0">
                         
-
+                     <!--No orders-->
                      @if(orders.Count==0)
                      {
                             <div class="card bg-dark text-white">
@@ -159,36 +160,37 @@
                                 </div>
                             </div>
 
-                     }
-
-                @foreach (var order in @orders)
-                {
+                     }else
+                     {
+                        @foreach (var order in @orders)
+                        {
                       
-                    if (@order.status < 2)
-                    {
+                            if (@order.status < 2)
+                            {
                        
-                       <div class="alert alert-warning alert-dismissible fade show" role="alert" id="@order.Id">
-                                <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(order.Id)" aria-label="Close"></button>
-                            <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@order" >
-                            <div class="row justify-content-center">
-                                            <a href="/OrderDetails?id=@(order.Id)" class="btn btn-info">View</a>
-                            </div>
-                     </div>
-                    }else if (@order.status == 2)
-                    {
-                         <div class="alert alert-success alert-dismissible fade show" role="alert" id="@order.Id">
-                                <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(order.Id)" aria-label="Close"></button>
-                            <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@order" >
-                            <div class="row justify-content-center">
-                                <a href="/OrderDetails?Id=@{@order.Id}"  class="btn btn-info">View</a>
-                            </div>
-                     </div>
-                    }
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert" id="@order.Id">
+                                        <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(order.Id)" aria-label="Close"></button>
+                                    <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@order" >
+                                    <div class="row justify-content-center">
+                                                    <a href="/OrderDetails?id=@(order.Id)" class="btn btn-info">View</a>
+                                    </div>
+                                </div>
+                            }else if (@order.status == 2)
+                            {
+                                <div class="alert alert-success alert-dismissible fade show" role="alert" id="@order.Id">
+                                        <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(order.Id)" aria-label="Close"></button>
+                                    <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@order" >
+                                    <div class="row justify-content-center">
+                                        <a href="/OrderDetails?Id=@{@order.Id}"  class="btn btn-info">View</a>
+                                    </div>
+                                </div>
+                            }
                    
-                            ViewData["oid"] = order.Id;
-                            ViewData[$"name{order.Id}"] = order.service.name;
-                            ViewData[$"id{order.Id}"] = order.Id;
-                  }
+                                ViewData["oid"] = order.Id;
+                                ViewData[$"name{order.Id}"] = order.service.name;
+                                ViewData[$"id{order.Id}"] = order.Id;
+                        }
+                     }
                 </div>
              </div>
             }

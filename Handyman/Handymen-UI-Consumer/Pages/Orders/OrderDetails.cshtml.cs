@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Handymen_UI_Consumer.Pages;
 
@@ -11,7 +12,7 @@ namespace Handymen_UI_Consumer.Pages;
 public class OrderDetailsModel : PageModel
 {
     SignInManager<Handymen_UI_ConsumerUser> _signInManager;
-    HandymanUILibrary.Models.OrderModel order = new()!;
+    HandymanUILibrary.Models.OrderModel order;
     IOrderHelper? _orderHelper;
     string? ErrorMsg;
 
@@ -24,7 +25,7 @@ public class OrderDetailsModel : PageModel
 
     //The OrderModel as a class property
     [BindProperty(SupportsGet = true)]
-    public HandymanUILibrary.Models.OrderModel Order
+    public HandymanUILibrary.Models.OrderModel OrderProperty
     {
         get { return order; }
         set
@@ -39,7 +40,7 @@ public class OrderDetailsModel : PageModel
     public async Task<IActionResult> OnGetAsync(int? id)
     {
 
-        order.service = new()!;
+        //order.service = new()!;
 
         if (id == 0)
         {
@@ -48,8 +49,11 @@ public class OrderDetailsModel : PageModel
 
         try
         {
-            if (_signInManager.IsSignedIn(User))
+            if (_signInManager.IsSignedIn(User) && order.Tasks.IsNullOrEmpty())
+            {
                 order = await _orderHelper.GetOrderById(id.Value);
+            }
+
         }
         catch (Exception ex)
         {

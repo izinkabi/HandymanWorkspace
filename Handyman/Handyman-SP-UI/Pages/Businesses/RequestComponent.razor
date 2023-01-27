@@ -174,8 +174,6 @@ else if(@ownRequest!=null && @isAccepted)
                                             </div>
                                         }
                                        
-                                        
-
                                     }
                                 </div>
                             </div>
@@ -289,13 +287,31 @@ else if(@ownRequest!=null && @isAccepted)
         {
             if(newRequestId != 0 && SId != 0)
             {
-                newRequest = await _requestHelper.GetNewRequest(serviceId, newRequestId);
+                if (ownRequest==null && newRequest==null)
+                {
+                    var req = await _requestHelper.GetNewRequest(serviceId, newRequestId);
+
+                    if (await _requestHelper.IsAccepted(req))
+                    {
+
+                        ownRequest = await _requestHelper.ConfirmAccepted(req);
+                        isAccepted = true;
+                        UpdateRequests();
+                        newRequest = null;
+                    }
+                    else
+                    {
+                        newRequest = req;
+                    }
+                }
+
             }
 
 
             if (ownRequestId != 0)
             {
-                ownRequest = await _requestHelper.GetOwnRequest(ownRequestId);
+                if(newRequest==null && ownRequest==null)
+                    ownRequest = await _requestHelper.GetOwnRequest(ownRequestId);
                 isAccepted = true;
                 UpdateRequests();
             }
@@ -314,9 +330,9 @@ else if(@ownRequest!=null && @isAccepted)
         try
         {
             //Update the DB 
-            await _requestHelper.AcceptRequest(newRequest);
+            await _requestHelper.AcceptRequest(newRequest); ///----should return the accepted request
             //switch label to accepted
-            isAccepted = true;
+
 
             //Make new instance of an accepted request
             ownRequest = new RequestModel()!;
@@ -329,8 +345,9 @@ else if(@ownRequest!=null && @isAccepted)
 
             //make sure there is no new request anymore
             newRequest = null;
-            this.OnInitializedAsync();
-
+            isAccepted = true;
+            NRId = 0;
+            StateHasChanged();
         }catch(Exception ex)
         {
             throw new Exception(ex.Message, ex.InnerException);
