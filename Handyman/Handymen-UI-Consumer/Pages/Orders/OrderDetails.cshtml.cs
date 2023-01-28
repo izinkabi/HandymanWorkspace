@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Handymen_UI_Consumer.Pages;
 
@@ -42,17 +41,15 @@ public class OrderDetailsModel : PageModel
 
         //order.service = new()!;
 
-        if (id == 0)
+        if (id == null)
         {
             return NotFound();
         }
 
         try
         {
-            if (_signInManager.IsSignedIn(User) && order.Tasks.IsNullOrEmpty())
-            {
-                order = await _orderHelper.GetOrderById(id.Value);
-            }
+
+            order = await _orderHelper.GetOrderById(id.Value, _signInManager.UserManager.GetUserId(User));
 
         }
         catch (Exception ex)

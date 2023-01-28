@@ -1,28 +1,29 @@
 ﻿using HandymanUILibrary.API.Consumer.Order.Interface;
 using HandymanUILibrary.Models;
+using Handymen_UI_Consumer.Areas.Identity.Data;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
-
+using System.Security.Claims;
 
 namespace Handymen_UI_Consumer.Helpers
 {
     public class OrderHelper : PageModel, IOrderHelper
     {
-        AuthenticationStateProvider? _authenticationStateProvider;
+        SignInManager<Handymen_UI_ConsumerUser> signInManager;
         IOrderEndPoint? _orderEndpoint;
         OrderModel? order;
         List<OrderModel>? ordersDisplayList;
-
+        AuthenticationStateProvider _authenticationStateProvider;
 
         string? ErrorMsg;
-        static string? userId;
+        string? userId;
         public OrderHelper(IOrderEndPoint orderEndPoint,
-            AuthenticationStateProvider authenticationState)
+            SignInManager<Handymen_UI_ConsumerUser> signInMan, AuthenticationStateProvider authenticationStateProvider)
         {
             _orderEndpoint = orderEndPoint;
-            _authenticationStateProvider = authenticationState;
-
+            signInManager = signInMan;
+            _authenticationStateProvider = authenticationStateProvider;
         }
 
 
@@ -32,8 +33,21 @@ namespace Handymen_UI_Consumer.Helpers
             {
                 if (userId == null)
                 {
-                    var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
-                    userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+                    var user = new ClaimsPrincipal();
+
+                    //(await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
+                    if (User != null)
+                    {
+                        if (User.Identity.IsAuthenticated)
+                            userId = signInManager.UserManager.GetUserId(User);  //userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+
+                    }
+                    else
+                    {
+                        user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
+                        if (user.Identity.IsAuthenticated)
+                            userId = signInManager.UserManager.GetUserId(user);
+                    }
                 }
 
             }
@@ -46,11 +60,11 @@ namespace Handymen_UI_Consumer.Helpers
         }
 
         //Get the order the order by its id
-        public async Task<OrderModel> GetOrderById(int id)
+        public async Task<OrderModel> GetOrderById(int id, string userId)
         {
             if (ordersDisplayList == null)
             {
-                await LoadUserOrders();
+                await LoadUserOrders(userId);
             }
 
             foreach (OrderModel o in ordersDisplayList)
@@ -65,13 +79,14 @@ namespace Handymen_UI_Consumer.Helpers
         }
 
         //Load all the orders that belong to the given user's id
-        public async Task<List<OrderModel>> LoadUserOrders()
+        public async Task<List<OrderModel>> LoadUserOrders(string userId)
         {
-            if (userId == null)
-            {
-                userId = GetUserId().Result;
-            }
-            ordersDisplayList = (List<OrderModel>?)await _orderEndpoint?.GetOrders(userId);
+            //if (userId == null)
+            //{
+            //    userId = await GetUserId();
+            //}
+            if (userId != null)
+                ordersDisplayList = (List<OrderModel>?)await _orderEndpoint?.GetOrders(userId);
             return ordersDisplayList;
 
         }

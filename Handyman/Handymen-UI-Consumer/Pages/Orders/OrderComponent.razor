@@ -2,6 +2,7 @@
 @page "/order-c"
 @using HandymanUILibrary.Models
 @using Handymen_UI_Consumer.Helpers
+@using Handymen_UI_Consumer.Models;
 @using Handymen_UI_Consumer.Pages.Orders.Tasks
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Routing
@@ -13,66 +14,72 @@
 
 
 <!--Order Component MarkUp-->
-<div class="row">
-<dl class="col align-content-center">
-        
-        <div class="card mb-3 ">
-          <div class="row g-0">
-            <div class="col-md-4">
-                <img src="/Images/@(order.service.img)" class="img-fluid rounded-start" alt="...">
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                    <h5 class="card-title" id="orderName">@order.service.name</h5>
-                    <p class="card-text" id="orderDescription"> @order.service.category.description</p>
-                    <p class="card-text"><small class="text-muted">@order.datecreated.ToString("MMMM dd, yyyy")</small></p>
-              </div>
-            </div>
-          </div>
-        </div>
-</dl>
+@if (order.service != null)
+{
 
-    @if (order.status < 1)
-    {
-        <OrderTasksComponent isNew="true"
+
+    <div class="row">
+
+        <dl class="col align-content-center">
+
+            <div class="card mb-3 ">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="/Images/@(order.service.img)" class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title" id="orderName">@order.service.name</h5>
+                            <p class="card-text" id="orderDescription"> @order.service.category.description</p>
+                            <p class="card-text"><small class="text-muted">@order.datecreated.ToString("MMMM dd, yyyy")</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </dl>
+
+        @if (order.status < 1)
+        {
+            <OrderTasksComponent isNew="true"
                          newTask="new TaskModel()!"
                          OnAddToTasks="AddToTasks">
-        </OrderTasksComponent>
-    }
+            </OrderTasksComponent>
+        }
 
-    @if (order.status > 0 || order.Tasks.Count() > 0)
-    {
-        <!--List of task-items in the confirmed order-->
-        <div class="list-group list-group-flush align-content-lg-center">
-           @foreach (var item in taskList)
-           {                
-                <OrderTasksComponent isNew="false" 
+        @*@if (order.status > 0 || taskList != null)
+        {*@
+            <!--List of task-items in the confirmed order-->
+            <div class="list-group list-group-flush align-content-lg-center">
+                @foreach (var item in taskList)
+                {
+                    <OrderTasksComponent isNew="false" 
                              newTask="item" 
                              OnAddToTasks="AddToTasks">
-                </OrderTasksComponent>
-           }
-        </div>
-        <!--End List-->
-    }
+                    </OrderTasksComponent>
+                }
+            </div>
+            <!--End List-->
+        @*//}*@
 
-    @*
+        @*
     ### Button display logic in a re-usable component###
     If the order is confirmed by the consumer and by the service provider accepted --display tracking button
     If the order is not confirmed by the consumer (and ofcourse by default cannot be accepted by a service provider) --display confirm button
     *@
 
-    @if (order.status > 3)
-    {
-        <button class="btn btn-outline-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Track Order</button>
+        @if (order.status > 3)
+        {
+            <button class="btn btn-outline-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Track Order</button>
 
-    }
+        }
 
-    @if (order.status < 1)
-    {
-        <button @onclick="ConfirmOrder" type="button" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#staticBackdropConfirmorder"> Confirm </button>
-    }
+        @if (order.status < 1)
+        {
+            <button @onclick="ConfirmOrder" type="button" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#staticBackdropConfirmorder"> Confirm </button>
+        }
 
-</div>
+    </div>
+}
 @if (ErrorMsg != null)
 {
     <p>

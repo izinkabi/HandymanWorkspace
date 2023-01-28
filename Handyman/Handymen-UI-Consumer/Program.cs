@@ -4,6 +4,7 @@ using HandymanUILibrary.API.Consumer.Order.Interface;
 using Handymen_UI_Consumer.Areas.Identity.Data;
 using Handymen_UI_Consumer.Data;
 using Handymen_UI_Consumer.Helpers;
+using Handymen_UI_Consumer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -14,14 +15,17 @@ var connectionString = builder.Configuration.GetConnectionString("Handymen_UI_Co
 builder.Services.AddDbContext<Handymen_UI_ConsumerContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<Handymen_UI_ConsumerUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<Handymen_UI_ConsumerContext>();
-
+builder.Services.AddIdentity<Handymen_UI_ConsumerUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<Handymen_UI_ConsumerContext>()
+    .AddUserManager<UserManager<Handymen_UI_ConsumerUser>>() // Add ApplicationUserManager
+    .AddDefaultTokenProviders()
+    .AddDefaultUI();
 
 builder.Services.AddSingleton<IAPIHelper, APIHelper>();
 builder.Services.AddScoped<IServiceEndPoint, ServiceEndPoint>();
 builder.Services.AddScoped<IOrderEndPoint, OrderEndPoint>();
 builder.Services.AddScoped<IOrderHelper, OrderHelper>();
+builder.Services.AddScoped<AppState>();
 
 //External Login
 builder.Services.AddAuthentication().AddGoogle(googleOptions =>

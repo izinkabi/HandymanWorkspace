@@ -97,15 +97,19 @@
           <li><a href="#" class="nav-link px-2 link-dark">Records</a></li>
           <li><a href="#" class="nav-link px-2 link-dark">Ratings</a></li>
         </ul>
-            @if (SignInManager.IsSignedIn(User))
-            {
-                var orders = await _orderHelper.LoadUserOrders();
+                
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    var orders = await _orderHelper.LoadUserOrders(SignInManager.UserManager.GetUserId(User));
+
+                    @if (orders!=null)
+                    {
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end sticky-top">
                             <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                   
-                                       @orders.Count() <!--Total value of Orders-->
-                                   
+
+                                    @orders.Count() <!--Total value of Orders-->
+
                                     <span class="visually-hidden">unread messages</span>
                                 </span>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-basket" viewBox="0 0 16 16">
@@ -114,8 +118,8 @@
                             </button>
                         </div>
 
-
-            }
+                    }
+                }
                     <partial name="_LoginPartial" />
                 </div>
     </header>
@@ -145,13 +149,13 @@
             }else 
             {
                      //Get orders
-                     var orders = await _orderHelper.LoadUserOrders();
+                var orders = await _orderHelper.LoadUserOrders(SignInManager.UserManager.GetUserId(User));
                    
                 <div class="offcanvas-body" heightoverflow-y:scroll>
                  <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" class="scrollspy-example bg-light p-3 rounded-2" tabindex="0">
                         
                      <!--No orders-->
-                     @if(orders.Count==0)
+                     @if(orders == null || orders.Count == 0)
                      {
                             <div class="card bg-dark text-white">
                                 <img src="/Images/handymanGIF.gif" class="card-img" alt="gif image">
@@ -160,36 +164,42 @@
                                 </div>
                             </div>
 
-                     }else
-                     {
-                        @foreach (var order in @orders)
+                        }else
                         {
-                      
-                            if (@order.status < 2)
+                            if (orders.Count > 0)
                             {
-                       
-                                <div class="alert alert-warning alert-dismissible fade show" role="alert" id="@order.Id">
-                                        <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(order.Id)" aria-label="Close"></button>
-                                    <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@order" >
-                                    <div class="row justify-content-center">
+
+
+                                @foreach (var order in orders)
+                                {
+
+                                    if (@order.status < 2)
+                                    {
+
+                                        <div class="alert alert-warning alert-dismissible fade show" role="alert" id="@order.Id">
+                                            <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(order.Id)" aria-label="Close"></button>
+                                                <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@order" >
+                                                <div class="row justify-content-center">
                                                     <a href="/OrderDetails?id=@(order.Id)" class="btn btn-info">View</a>
-                                    </div>
-                                </div>
-                            }else if (@order.status == 2)
-                            {
-                                <div class="alert alert-success alert-dismissible fade show" role="alert" id="@order.Id">
-                                        <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(order.Id)" aria-label="Close"></button>
-                                    <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@order" >
-                                    <div class="row justify-content-center">
-                                        <a href="/OrderDetails?Id=@{@order.Id}"  class="btn btn-info">View</a>
-                                    </div>
-                                </div>
+                                                </div>
+                                        </div>
+                                    }
+                                    else if (@order.status == 2)
+                                    {
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert" id="@order.Id">
+                                            <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(order.Id)" aria-label="Close"></button>
+                                                <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@order" >
+                                                <div class="row justify-content-center">
+                                                    <a href="/OrderDetails?id=@{@order.Id}"  class="btn btn-info">View</a>
+                                                </div>
+                                        </div>
+                                    }
+
+                                    ViewData["oid"] = order.Id;
+                                    ViewData[$"name{order.Id}"] = order.service.name;
+                                    ViewData[$"id{order.Id}"] = order.Id;
+                                }
                             }
-                   
-                                ViewData["oid"] = order.Id;
-                                ViewData[$"name{order.Id}"] = order.service.name;
-                                ViewData[$"id{order.Id}"] = order.Id;
-                        }
                      }
                 </div>
              </div>
@@ -210,7 +220,7 @@
     <!-- Modal -->
   @if (SignInManager.IsSignedIn(User))
   {
-    var ods = await _orderHelper.LoadUserOrders();
+    var ods = await _orderHelper.LoadUserOrders(SignInManager.UserManager.GetUserId(User));
     @if (ods!=null)
     {
             foreach (var order in ods)

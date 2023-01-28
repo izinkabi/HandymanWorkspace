@@ -61,9 +61,13 @@ public class OrderEndPoint : IOrderEndPoint
     {
         try
         {
-            IList<OrderModel> httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<IList<OrderModel>>($"/api/orders/GetOrders?consumerId={customerId}");
+            if (customerId != null)
+            {
+                IList<OrderModel> httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<IList<OrderModel>>($"/api/orders/GetOrders?consumerId={customerId}");
+                return httpResponseMessage;
+            }
 
-            return httpResponseMessage;
+            return null;
 
         }
         catch (Exception ex)
