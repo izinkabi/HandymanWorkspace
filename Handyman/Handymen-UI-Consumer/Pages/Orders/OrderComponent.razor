@@ -1,5 +1,5 @@
 ﻿@page "/order-component"
-@page "/order-c"
+@page "/order"
 @using HandymanUILibrary.Models
 @using Handymen_UI_Consumer.Helpers
 @using Handymen_UI_Consumer.Models;
@@ -32,6 +32,7 @@
                             <h5 class="card-title" id="orderName">@order.service.name</h5>
                             <p class="card-text" id="orderDescription"> @order.service.category.description</p>
                             <p class="card-text"><small class="text-muted">@order.datecreated.ToString("MMMM dd, yyyy")</small></p>
+
                         </div>
                     </div>
                 </div>
@@ -46,8 +47,8 @@
             </OrderTasksComponent>
         }
 
-        @*@if (order.status > 0 || taskList != null)
-        {*@
+        @if (taskList != null)
+        {
             <!--List of task-items in the confirmed order-->
             <div class="list-group list-group-flush align-content-lg-center">
                 @foreach (var item in taskList)
@@ -59,7 +60,7 @@
                 }
             </div>
             <!--End List-->
-        @*//}*@
+        }
 
         @*
     ### Button display logic in a re-usable component###
@@ -67,11 +68,7 @@
     If the order is not confirmed by the consumer (and ofcourse by default cannot be accepted by a service provider) --display confirm button
     *@
 
-        @if (order.status > 3)
-        {
-            <button class="btn btn-outline-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Track Order</button>
-
-        }
+     
 
         @if (order.status < 1)
         {
@@ -104,21 +101,11 @@
         set
         {
             order = value;
-
+            taskList = order?.Tasks?.ToList();
         }
     }
 
-    protected override void OnInitialized()
-    {
-        if(order!=null)
-            if(order.status != 0)
-            {
-                taskList = order?.Tasks?.ToList();
-                //StateHasChanged();
-            }
-       
-        // NavManager.LocationChanged += HandleLocationChanged;
-    }
+
 
 
     /// <summary>
@@ -131,6 +118,10 @@
         if (newTaskModel != null)
         {
             newTaskModel.tas_service_id = order.service.id;
+            if (taskList==null)
+            {
+                taskList = new()!;
+            }
             taskList.Add(newTaskModel);
             StateHasChanged();
         }

@@ -108,7 +108,7 @@
                                 <div class="card-body">
                                     <p class="card-text text-decoration-underline">Keep on working on it, you are getting closer to finish</p>
                                     <button @onclick="Update" class="btn btn-outline-secondary btn-md mb-2" type="button">Update</button>  <br />
-                                    <small class="text-muted py-2 fst-italic">Hours worked @TimeOnly.FromTimeSpan(DateTime.Now - taskModel.tas_date_started) hr</small>
+                                    <small class="text-muted py-2 fst-italic">Last modified: @lastModeified.ToLongTimeString() </small>
                                 </div>
                             </div>
                         </div>
@@ -276,7 +276,7 @@
             if (taskModel != null)
                 taskModel.tas_date_finished = DateTime.Now;
             await _requestHelper.UpdateTask(taskModel);
-                lastModeified = TimeOnly.FromDateTime(DateTime.Now);
+                lastModeified = TimeOnly.FromDateTime(taskModel.tas_date_finished);
             StateHasChanged();
         }
         catch (Exception)

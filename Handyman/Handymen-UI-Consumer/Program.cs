@@ -4,7 +4,6 @@ using HandymanUILibrary.API.Consumer.Order.Interface;
 using Handymen_UI_Consumer.Areas.Identity.Data;
 using Handymen_UI_Consumer.Data;
 using Handymen_UI_Consumer.Helpers;
-using Handymen_UI_Consumer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -24,8 +23,8 @@ builder.Services.AddIdentity<Handymen_UI_ConsumerUser, IdentityRole>(options => 
 builder.Services.AddSingleton<IAPIHelper, APIHelper>();
 builder.Services.AddScoped<IServiceEndPoint, ServiceEndPoint>();
 builder.Services.AddScoped<IOrderEndPoint, OrderEndPoint>();
-builder.Services.AddScoped<IOrderHelper, OrderHelper>();
-builder.Services.AddScoped<AppState>();
+builder.Services.AddTransient<IOrderHelper, OrderHelper>();
+
 
 //External Login
 builder.Services.AddAuthentication().AddGoogle(googleOptions =>
@@ -59,7 +58,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     // Cookie settings
     options.Cookie.HttpOnly = true;
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
 
     options.LoginPath = "/Identity/Account/Login";
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
@@ -73,8 +72,9 @@ builder.Services.AddResponseCompression(opt =>
 });
 
 // Add services to the container.
-builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddRazorPages();
+
 
 var app = builder.Build();
 
@@ -90,7 +90,6 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.MapControllers();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

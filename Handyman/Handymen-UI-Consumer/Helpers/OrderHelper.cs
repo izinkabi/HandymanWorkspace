@@ -27,6 +27,7 @@ namespace Handymen_UI_Consumer.Helpers
         }
 
 
+        //Get the current logged in user's ID
         async Task<string> GetUserId()
         {
             try
@@ -86,7 +87,15 @@ namespace Handymen_UI_Consumer.Helpers
             //    userId = await GetUserId();
             //}
             if (userId != null)
+            {
                 ordersDisplayList = (List<OrderModel>?)await _orderEndpoint?.GetOrders(userId);
+                if (ordersDisplayList != null)
+                    foreach (var item in ordersDisplayList)
+                    {
+                        item.status = CheckStatus(item);
+                    }
+            }
+
             return ordersDisplayList;
 
         }
@@ -108,6 +117,62 @@ namespace Handymen_UI_Consumer.Helpers
             {
                 throw new Exception(ex.Message);
             }
+        }
+
+
+
+        List<TaskModel>? Accepted;
+        List<TaskModel>? inprogressTasks;
+        List<TaskModel>? finishedTasks;
+
+        //Return the request stage
+        internal int CheckStatus(OrderModel order)
+        {
+
+            if (order != null)
+            {
+                //initialize attributes
+                Accepted = new()!;
+                inprogressTasks = new()!;
+                finishedTasks = new()!;
+
+                //Check for task status
+                foreach (var t in order.Tasks)
+                {
+                    //STATUS STARTED
+                    if (t.tas_status == 1)
+                    {
+                        Accepted.Add(t);
+                    }
+                    //STATUS IN PROGRESS
+                    if (t.tas_status == 2)
+                    {
+                        inprogressTasks.Add(t);
+                    }
+                    //STATUS CLOSED
+                    if (t.tas_status == 3)
+                    {
+                        finishedTasks.Add(t);
+                    }
+                    //STATUS CANCELLED
+                }
+
+                //Request not started
+                if (Accepted.Count == 0 && inprogressTasks.Count == 0 && finishedTasks.Count == 0)
+                {
+                    return 1;
+                }
+                else if (Accepted.Count == 0 && inprogressTasks.Count == 0 && finishedTasks.Count > 0)//Request closed
+                {
+                    return 3;
+                }
+                else //Request inprogress
+                {
+                    return 2;
+                }
+            }
+            return 0;//Error
+
         }
 
         //Load all orders then select the one you want to delete

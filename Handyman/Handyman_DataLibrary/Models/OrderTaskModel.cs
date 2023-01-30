@@ -14,5 +14,6 @@
         public int tas_duration { get; set; }
         public int order_id { get; set; }
         public string? tas_description { get; set; }
+        public int tas_status { get; set; }
     }
 }

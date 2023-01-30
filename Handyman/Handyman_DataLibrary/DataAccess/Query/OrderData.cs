@@ -88,6 +88,7 @@ public class OrderData : IOrderData
                     task.tas_title = ordertask.tas_title;
                     task.task_id = ordertask.task_id;
                     task.tas_duration = ordertask.tas_duration;
+                    task.tas_status = ordertask.tas_status;
                     if (order.Id == ordertask.ord_id)
                     {
                         order.Tasks.Add(task);
