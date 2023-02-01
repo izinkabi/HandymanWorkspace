@@ -1,11 +1,14 @@
 ﻿using HandymanUILibrary.API;
 using HandymanUILibrary.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Data;
 
 namespace Handymen_UI_Consumer.Pages
 {
+    [Authorize(Roles = "Consumer")]
     public class IndexPageModel : PageModel
     {
 
@@ -26,7 +29,7 @@ namespace Handymen_UI_Consumer.Pages
 
 
         }
-
+        
         //The only method runing on ServicesHome soon to be index
         public async Task OnGetAsync()
         {
