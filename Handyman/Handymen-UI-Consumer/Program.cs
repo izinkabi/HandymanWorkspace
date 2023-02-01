@@ -17,9 +17,10 @@ var connectionString = builder.Configuration.GetConnectionString("Handymen_UI_Co
 builder.Services.AddDbContext<Handymen_UI_ConsumerContext>(options =>   
     options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<Handymen_UI_ConsumerUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<Handymen_UI_ConsumerContext>();
-
+builder.Services.AddIdentity<Handymen_UI_ConsumerUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<Handymen_UI_ConsumerContext>()
+    .AddDefaultUI()
+    .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IAPIHelper, APIHelper>();
 builder.Services.AddTransient<IServiceEndPoint, ServiceEndPoint>();
