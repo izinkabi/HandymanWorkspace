@@ -1,11 +1,13 @@
 ﻿using HandymanUILibrary.API;
 using HandymanUILibrary.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Data;
 
 namespace Handymen_UI_Consumer.Pages
 {
-
+    [Authorize(Roles = "Consumer")]
     public class OrderModel : PageModel
     {
 

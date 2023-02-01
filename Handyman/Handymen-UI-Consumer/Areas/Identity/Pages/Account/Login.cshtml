@@ -11,7 +11,7 @@
   </div>
   <!--Login Form-->
   <div class="col-md-6 p-3 ps-md-0">
-      <div class="col-md-6 m-3">
+      <div class="col-md-9 m-3">
         <form id="account" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -40,23 +40,23 @@
                     <button id="login-submit" type="submit" type="button" class="btn btn-outline-secondary">Login</button>
                     <button type="button" class="btn btn-outline-secondary">Sign Up</button>
                 </div>
-                <p>
-                    <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                </p>
-                <p>
-                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                </p>
-                <p>
-                    <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
-                </p>
-                <p>
-                    <a id="google-login" asp-page="./ExternalLogin">google login</a>
-                </p>
+
             </div>
         </form>
         </div>
-        <div class="col-md-6 ms-sm-auto">
-            
+        <div class="col-md-9 m-3">
+            <p>
+                <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+            </p>
+            <p>
+                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+            </p>
+            <p>
+                <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
+            </p>
+            <p>
+                <a id="google-login" id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">google login</a>
+            </p>
         </div>
   </div>
   <!--End Login Form-->
