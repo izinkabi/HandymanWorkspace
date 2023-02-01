@@ -10,7 +10,7 @@ namespace Handyman_Api.Controllers;
 public class RequestsController : ControllerBase
 {
     IRequestData _requestData;
-    //IOrderTaskData _orderData;
+
 
     public RequestsController(IRequestData requestData)
     {
@@ -57,8 +57,12 @@ public class RequestsController : ControllerBase
     {
         try
         {
-            TaskModel request = _requestData.GetTask(Id);
-            return request;
+            if (Id > 0)
+            {
+                TaskModel request = _requestData.GetTask(Id);
+                return request;
+            }
+            return null;
         }
         catch (Exception ex)
         {
@@ -82,11 +86,12 @@ public class RequestsController : ControllerBase
 
     // PUT api/<RequestsController>/5
     [HttpPut]
-    public void Update(RequestModel requestUpdate)
+    [Route("Update")]
+    public void Update(TaskModel taskUpdate)
     {
         try
         {
-            _requestData.UpdateRequest(requestUpdate);
+            _requestData.UpdateTask(taskUpdate);
         }
         catch (Exception ex)
         {

@@ -8,5 +8,6 @@ namespace Handyman_DataLibrary.DataAccess.Interfaces
         void InsertOrder(OrderModel order);
         void UpdateOrder(OrderModel orderUpdate);
         void DeleteOrderAndTasks(string consumerId, int orderId);
+
     }
 }

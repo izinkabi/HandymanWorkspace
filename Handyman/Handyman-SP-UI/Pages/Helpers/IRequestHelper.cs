@@ -10,5 +10,8 @@ namespace Handyman_SP_UI.Pages.Helpers
         Task<IList<RequestModel>> GetOwnRequests();
         Task<RequestModel> GetOwnRequest(int id);
         Task<TaskModel> GetTask(int id);
+        Task UpdateTask(TaskModel requestUpdate);
+        int GetProgress(RequestModel request);
+        int CheckStatus(RequestModel request);
     }
 }

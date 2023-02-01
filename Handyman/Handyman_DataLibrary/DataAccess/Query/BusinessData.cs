@@ -8,6 +8,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
     {
         ISQLDataAccess? _dataAccess;
         IServiceProviderData? _serviceProvider;
+        ServiceProviderModel employee;
         public BusinessData(ISQLDataAccess dataAccess, IServiceProviderData serviceProvider)
         {
             _dataAccess = dataAccess;
@@ -72,7 +73,11 @@ namespace Handyman_DataLibrary.DataAccess.Query
             //Return business Model
 
             //Get the provider as an employee
-            ServiceProviderModel employee = _serviceProvider.GetServiceProvider(userId);
+            if (employee == null)
+            {
+                employee = _serviceProvider.GetServiceProvider(userId);
+            }
+
 
             //Get business, registration and address
             BusinessRegistrationModel businessRegistration = _dataAccess.LoadData<BusinessRegistrationModel, dynamic>("Delivery.spBusiness_Registration_LookUp",

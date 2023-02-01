@@ -5,16 +5,19 @@ namespace Handyman_SP_UI.Pages.Helpers;
 /// <summary>
 /// This class is responsible for the requests of a service provider
 /// </summary>
-public class RequestHelper : IRequestHelper
+public class RequestHelper : IDisposable, IRequestHelper
 {
     IRequestEndPoint? _requestEndPoint;
     IProviderHelper _providerHelper;
     IList<OrderModel> orders;
     IList<RequestModel> _requests;
+    StatusCheckHelper statusCheckHelper;
     public RequestHelper(IRequestEndPoint requestEndPoint, IProviderHelper providerHelper)
     {
         _requestEndPoint = requestEndPoint;
         _providerHelper = providerHelper;
+        orders = new List<OrderModel>();
+        statusCheckHelper = new StatusCheckHelper();
     }
 
     List<RequestModel> NewRequests = new()!;
@@ -42,7 +45,11 @@ public class RequestHelper : IRequestHelper
         try
         {
             orders = await _requestEndPoint?.GetNewRequestsByService(serviceId);
-            return orders;
+            if (orders != null)
+            {
+                return orders;
+            }
+            return null;
         }
         catch (Exception ex)
         {
@@ -60,19 +67,24 @@ public class RequestHelper : IRequestHelper
     public async Task<OrderModel> GetNewRequest(int serviceId, int orderId)
     {
         OrderModel newRequest = new()!;
-        newRequest.service = new()!;
+
         try
         {
-            if (orders == null)
+            if (orders.Count < 1)
             {
                 orders = await GetNewRequests(serviceId);
             }
 
-            foreach (var nr in orders)
+            if (orders != null && orders.Count > 0)
             {
-                if (nr.Id == orderId)
+                foreach (var o in orders)
                 {
-                    newRequest = nr;
+                    if (o.Id == orderId)
+                    {
+                        newRequest = o;
+                        return newRequest;
+                    }
+
                 }
             }
             return newRequest;
@@ -95,7 +107,7 @@ public class RequestHelper : IRequestHelper
         //populate a request without a provider ID
         nr.req_orderid = newRequest.Id;
         nr.req_datecreated = DateTime.Now;
-        nr.req_status = "1";
+        nr.req_status = 1;
         nr.req_progress = 1;
 
         try
@@ -142,12 +154,6 @@ public class RequestHelper : IRequestHelper
     {
         try
         {
-
-
-            //List<RequestModel> NewRequests = new()!;
-            //List<RequestModel> StartedRequests = new()!;
-            //List<RequestModel> AcceptedRequests = new()!;
-            //List<RequestModel> FinishedRequests = new()!;
 
             if (_requests.Count > 0)
             {
@@ -208,6 +214,12 @@ public class RequestHelper : IRequestHelper
         }
     }
 
+    //------------------------Updating a request--------------------------//
+    public int GetProgress(RequestModel request) => statusCheckHelper.calculateProgress(request);
+    public int CheckStatus(RequestModel request) => statusCheckHelper.CheckStatus(request);
+
+    //------------------------End Updating a request--------------------------//
+
     /// <summary>
     /// Look for the request of the given ID
     /// </summary>
@@ -253,16 +265,136 @@ public class RequestHelper : IRequestHelper
         }
     }
 
-
-    public void UpdateRequest()
+    /// <summary>
+    /// Update a given Request (Update the tasks in the request)
+    /// </summary>
+    /// <param name="requestUpdate"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    public async Task UpdateTask(TaskModel taskUpdate)
     {
         try
         {
-
+            if (taskUpdate != null)
+            {
+                await _requestEndPoint.UpdateTask(taskUpdate);
+            }
         }
         catch (Exception ex)
         {
             throw new Exception(ex.Message, ex.InnerException);
         }
     }
+
+    void IDisposable.Dispose()
+    {
+        statusCheckHelper = null;
+    }
+
+
+    ///////////////////////////////////////////////Status Class//////////////////
+    /// <summary>
+    /// //Status class
+    /// </summary>
+    internal class StatusCheckHelper
+    {
+
+        List<TaskModel>? startedTasks;
+        List<TaskModel>? inprogressTasks;
+        List<TaskModel>? finishedTasks;
+
+
+
+        //Return the request stage
+        internal int CheckStatus(RequestModel request)
+        {
+
+            if (request != null)
+            {
+                //initialize attributes
+                startedTasks = new()!;
+                inprogressTasks = new()!;
+                finishedTasks = new()!;
+
+                //Check for task status
+                foreach (var t in request.tasks)
+                {
+                    //STATUS STARTED
+                    if (t.tas_status == 1)
+                    {
+                        startedTasks.Add(t);
+                    }
+                    //STATUS IN PROGRESS
+                    if (t.tas_status == 2)
+                    {
+                        inprogressTasks.Add(t);
+                    }
+                    //STATUS CLOSED
+                    if (t.tas_status == 3)
+                    {
+                        finishedTasks.Add(t);
+                    }
+                    //STATUS CANCELLED
+                }
+
+                //Request not started
+                if (startedTasks.Count == 0 && inprogressTasks.Count == 0 && finishedTasks.Count == 0)
+                {
+                    return 1;
+                }
+                else if (startedTasks.Count == 0 && inprogressTasks.Count == 0 && finishedTasks.Count > 0)//Request closed
+                {
+                    return 3;
+                }
+                else //Request inprogress
+                {
+                    return 2;
+                }
+            }
+            return 0;//Error
+
+        }
+
+        /// <summary>
+        /// a psudo algorithm for getting progress using number of tasks per list
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        internal int calculateProgress(RequestModel request)
+        {
+
+            if (request != null && request.tasks.Count > 0)
+            {
+                if (startedTasks.Count == request.tasks.Count)
+                {
+                    return 10;
+                }
+                if (startedTasks.Count + inprogressTasks.Count == request.tasks.Count && (startedTasks.Count > 0 && inprogressTasks.Count > 0))
+                {
+                    return 30;
+                }
+                if (startedTasks.Count + finishedTasks.Count == request.tasks.Count && (startedTasks.Count > finishedTasks.Count && finishedTasks.Count > 0))
+                {
+                    return 40;
+                }
+                if ((inprogressTasks.Count + finishedTasks.Count == request.tasks.Count && inprogressTasks.Count != 0) || inprogressTasks.Count == request.tasks.Count && finishedTasks.Count != request.tasks.Count)
+                {
+                    return 50;
+                }
+                if (finishedTasks.Count == request.tasks.Count)
+                {
+                    return 100;
+                }
+            }
+            return 0;
+        }
+
+
+
+    }
+
+
+
+
 }
+

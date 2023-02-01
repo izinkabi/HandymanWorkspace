@@ -304,6 +304,9 @@ public class OrderData : IOrderData
     /// <returns></returns>
     public int InsertTask(TaskModel task) => taskData.InsertTask(task);
 
+    //Updating a task alone
+
+
 
     /////////////////////////////////////////////////
     /// / <summary>
@@ -333,7 +336,7 @@ public class OrderData : IOrderData
             TaskModel task = null;
             if (id != 0)
             {
-                task = _dataAccess.LoadData<TaskModel, dynamic>("Order.spTaskLookUp", id, "Handyman_DB").First();
+                task = _dataAccess.LoadData<TaskModel, dynamic>("Request.spTaskLookUp", new { taskId = id }, "Handyman_DB").First();
             }
             if (task != null) { return task; }
             return null;
@@ -367,11 +370,22 @@ public class OrderData : IOrderData
         /// <exception cref="Exception"></exception>
         internal void UpdateTask(TaskModel taskUpdate)
         {
+
+
             try
             {
                 if (taskUpdate != null)
                 {
-                    var result = _dataAccess.SaveData<TaskModel>("Request.spTaskUpdate", taskUpdate, "Handyman_DB");
+                    var result = _dataAccess.SaveData("Request.spTaskUpdate",
+                        new
+                        {
+                            task_id = taskUpdate.task_id,
+                            tas_date_started = taskUpdate.tas_date_started,
+                            tas_date_finished = taskUpdate.tas_date_finished,
+                            tas_duration = taskUpdate.tas_duration,
+                            tas_status = taskUpdate.tas_status
+
+                        }, "Handyman_DB");
                 }
 
             }

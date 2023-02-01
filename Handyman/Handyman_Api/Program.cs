@@ -21,9 +21,9 @@ builder.Services.AddDbContext<IdentityDataContext>(options =>
 // Add services to the container
 builder.Services.AddSingleton<ISQLDataAccess, SQLDataAccess>();
 builder.Services.AddScoped<IServiceData, ServiceData>();
-builder.Services.AddScoped<IOrderData, OrderData>();
-builder.Services.AddTransient<EmployeeData>();
-builder.Services.AddTransient<IServiceProviderData, ServiceProviderData>();
+builder.Services.AddTransient<IOrderData, OrderData>();
+builder.Services.AddScoped<EmployeeData>();
+builder.Services.AddScoped<IServiceProviderData, ServiceProviderData>();
 builder.Services.AddScoped<IBusinessData, BusinessData>();
 builder.Services.AddTransient<IRequestData, RequestData>();
 

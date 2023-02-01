@@ -1,21 +1,18 @@
 ﻿CREATE PROCEDURE [Request].[spTaskUpdate]
-	@id int = 0,
-	@title VARCHAR(150),
-    @dateStarted DATETIME2(7),
-    @dateFinished DATETIME2(7),
-    @duration NVARCHAR(150),
-    @status INT,
-    @description VARCHAR(MAX),
-    @serviceId INT
-
+	@task_id int = 0,
+    @tas_date_started DATETIME2(7),
+    @tas_date_finished DATETIME2(7),
+    @tas_duration NVARCHAR(150),
+    @tas_status INT
 AS
 BEGIN
 	UPDATE [Request].[task]
-    SET  [tas_title] = @title,  
-    [tas_date_finished] = @dateFinished , 
-    [tas_duration] = @duration, 
-    [tas_status] = @status, 
-    [tas_description] = @description
+    SET   
+    [tas_date_finished] = @tas_date_finished , 
+    [tas_date_started] = tas_date_started,
+    [tas_duration] = @tas_duration, 
+    [tas_status] = @tas_status
+   
 
-    WHERE [task_id] = @id
+    WHERE [task_id] = @task_id
 END

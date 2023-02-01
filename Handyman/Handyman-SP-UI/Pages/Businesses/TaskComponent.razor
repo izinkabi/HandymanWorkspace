@@ -1,6 +1,8 @@
 ﻿@page "/task-c"
 @page "/task"
 
+@using Microsoft.AspNetCore.Components.Web
+@implements IDisposable
 @inject IRequestHelper _requestHelper              
 
 <style>
@@ -59,82 +61,218 @@
 
 @if (taskModel != null)
 {
+    <!--Breadcrum-->
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="##" onclick="history.go(-2); return false;">Home</a></li>
+            <li class="breadcrumb-item"><a href="##" onclick="history.go(-1); return false;">Request</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Task</li>
+        </ol>
+    </nav>
+   
+    <!--Task Header-->
     <div class="container py-4">
-        <header class="pb-3 mb-4 border-bottom">
-            <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" class="me-2" viewBox="0 0 118 94" role="img"><title>Bootstrap</title><path fill-rule="evenodd" clip-rule="evenodd" d="M24.509 0c-6.733 0-11.715 5.893-11.492 12.284.214 6.14-.064 14.092-2.066 20.577C8.943 39.365 5.547 43.485 0 44.014v5.972c5.547.529 8.943 4.649 10.951 11.153 2.002 6.485 2.28 14.437 2.066 20.577C12.794 88.106 17.776 94 24.51 94H93.5c6.733 0 11.714-5.893 11.491-12.284-.214-6.14.064-14.092 2.066-20.577 2.009-6.504 5.396-10.624 10.943-11.153v-5.972c-5.547-.529-8.934-4.649-10.943-11.153-2.002-6.484-2.28-14.437-2.066-20.577C105.214 5.894 100.233 0 93.5 0H24.508zM80 57.863C80 66.663 73.436 72 62.543 72H44a2 2 0 01-2-2V24a2 2 0 012-2h18.437c9.083 0 15.044 4.92 15.044 12.474 0 5.302-4.01 10.049-9.119 10.88v.277C75.317 46.394 80 51.21 80 57.863zM60.521 28.34H49.948v14.934h8.905c6.884 0 10.68-2.772 10.68-7.727 0-4.643-3.264-7.207-9.012-7.207zM49.948 49.2v16.458H60.91c7.167 0 10.964-2.876 10.964-8.281 0-5.406-3.903-8.178-11.425-8.178H49.948z" fill="currentColor"></path></svg>
-                <span class="fs-4">@taskModel.tas_title</span>
-            </a>
-        </header>
 
-        <div class="p-5 mb-4 bg-light rounded-3">
-            <div class="container-fluid py-5">
-                <h1 class="display-5 fw-bold">Time Started: @taskModel.tas_date_started</h1>
-                <hr/>
-                <p class="col-md-8 fs-4">@taskModel.tas_description</p>
-                @if (taskModel.tas_status < 3)
-                {
-                    <button class="btn btn-primary btn-lg" type="button">Work on it</button>
-                }
+              <!--Task Details-->
+        <div class="p-3 mb-4 bg-light rounded-3">
+            <div class="container-fluid">
+                <h1 class="display-5 fw-bold"> @taskModel.tas_title </h1>
                 
+                <p class="fs-4"><strong>Time Started:</strong> @taskModel.tas_date_started</p>
+                <p class="col-md-8 fs-4"><strong>Description:</strong> @taskModel.tas_description</p>
+                <hr />
+                @if (!isWorkingOnTask)
+                {
+
+                    @if (taskModel.tas_status == 0)
+                    {
+                        <button @onclick="StartTask" class="btn btn-primary btn-lg alert-info" type="button">Start Task</button>
+                    }
+                    @if (taskModel.tas_status == 1)
+                    {
+                        <button @onclick="WorkOnTask"  class="btn btn-primary btn-lg alert-secondary" type="button">Work on it</button>
+                    }
+                    @if (taskModel.tas_status == 2)
+                    {
+                        <button @onclick="FinishTask" class="btn btn-primary btn-lg alert-success" type="button">Finish it</button>
+                    }
+                }else
+                {
+                    <div class="card text-dark">
+                        <img src="./images/handymangif.gif" class="card-img" height="400" alt="...">
+                        <div class="card-img-overlay text-center">
+                            <p class="card-text">You have been working on this task for: <small class="text-muted"> @taskModel.tas_duration days</small></p>
+                            <button @onclick="Update" class="btn btn-outline-secondary btn-md" type="button">Update</button>
+                        </div>
+                    </div>
+                }
+
             </div>
         </div>
 
-        <div class="row align-items-md-stretch">
-            <div class="col-md-6">
-                <div class="h-100 p-5 text-bg-dark rounded-3">
+        <!--Task duration-->
+        @if (!isWorkingOnTask)
+        {
+        <div class="row align-items-md-stretch justify-content-center">
+            <div class="col-md-6 align-content-center">
+                <div class="p-3 text-bg-dark rounded-3">
                     <h2>Duration</h2>
-                    <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar" style="width: 25%">25%</div>  <!--This will be implemented by duration of the task-->
-                    </div>
-                    
-                </div>
-            </div>
-            <!--Finished task-->
-            @if (taskModel.tas_status < 3)
-            {
-                <div class="col-md-6">
-                    <div class="card" aria-hidden="true">
-                      <img src="..." class="card-img-top" alt="...">
-                      <div class="card-body">
-                        <h5 class="card-title placeholder-glow">
-                          <span class="placeholder col-6"></span>
-                        </h5>
+                   
+                        @if (taskModel.tas_status == 0)
+                        {
+                            <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar" style="width: 0%">0%</div>  <!--This will be implemented by duration of the task-->
+                            </div>
+                        }
+                        @if (taskModel.tas_status == 1)
+                        {
+                            <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar" style="width: 25%">25%</div>  <!--This will be implemented by duration of the task-->
+                            </div>
+                        }
+                        @if (taskModel.tas_status == 2)
+                        {
+                            <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar" style="width: 50%">50%</div>  <!--This will be implemented by duration of the task-->
+                            </div>
+                        }
+                        @if (taskModel.tas_status == 3)
+                        {
+                            <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar" style="width: 100%">100%</div>  <!--This will be implemented by duration of the task-->
+                            </div>
+                        }
 
-                        <p class="card-text placeholder-glow">
-                          <span class="placeholder col-7"></span>
-                          <span class="placeholder col-4"></span>
-                          <span class="placeholder col-4"></span>
-                          <span class="placeholder col-6"></span>
-                          <span class="placeholder col-8"></span>
-                        </p>
-                        <a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>
-                      </div>
-                    </div>
                 </div>
-            }
-            <!--End Finished task-->
+               
+            </div>
+           
+        </div>
+        }
+    </div>
+}else
+{
+    <!--Task placeholder-->
+    <div class="col-md-6">
+        <div class="card" aria-hidden="true">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title placeholder-glow">
+                    <span class="placeholder col-6"></span>
+                </h5>
+
+                <p class="card-text placeholder-glow">
+                    <span class="placeholder col-7"></span>
+                    <span class="placeholder col-4"></span>
+                    <span class="placeholder col-4"></span>
+                    <span class="placeholder col-6"></span>
+                    <span class="placeholder col-8"></span>
+                </p>
+                <a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>
+            </div>
         </div>
     </div>
 }
-@code {
 
+@code {
 
     int TaskId;
     TaskModel? taskModel;
 
+    //Timer taskTtimer;
+
     [Parameter]
     [SupplyParameterFromQuery]
     public int Id { get { return TaskId; } set { TaskId = value; } }
+
+    [Parameter]
+    public EventCallback<TaskModel> OnTaskUpdate { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
             taskModel = await _requestHelper.GetTask(TaskId);
+            DeliverTask();
         }catch(Exception ex)
         {
             throw new Exception(ex.Message, ex.InnerException);
         }
+    }
+
+    void DeliverTask()
+    {
+        if(taskModel.tas_status < 3)
+        {
+            //the task is not yet complete       
+            taskModel.tas_duration = (DateTime.UtcNow - taskModel.tas_date_started).Days;
+        }
+    }
+
+    //**********************Updating the task methods******************************//
+
+    /// <summary>
+    /// Start working a task
+    /// </summary>
+    void StartTask()
+    {
+        if (taskModel != null && taskModel.tas_status < 1)
+        {
+            taskModel.tas_status = 1;
+            isWorkingOnTask = true;
+        }
+    }
+
+    /// <summary>
+    /// Continue working with a started task
+    /// </summary>
+    bool isWorkingOnTask;
+    void WorkOnTask()
+    {
+        if (taskModel != null && (taskModel.tas_status == 1))
+        {
+            taskModel.tas_status = 2;
+            isWorkingOnTask = true;
+        }
+    } 
+
+    /// <summary>
+    /// Finish the task
+    /// </summary>
+    void FinishTask()
+    {
+        if (taskModel != null && (taskModel.tas_status == 2))
+        {
+            taskModel.tas_status = 3;
+            isWorkingOnTask = false;
+            Update();
+        }
+
+    }
+
+    //**********************End Updating the task methods******************************//
+
+    /// <summary>
+    /// Pause the task / temporarily stop working on the task
+    /// </summary>
+    async Task Update()
+    {
+        isWorkingOnTask = false;
+        try
+        {
+            if(taskModel!=null)
+                await _requestHelper.UpdateTask(taskModel);
+            StateHasChanged();
+        }
+        catch (Exception)
+        {
+            
+            throw;
+        }
+    }
+
+    public void Dispose()
+    {
+       // taskTtimer.Dispose();
     }
 }

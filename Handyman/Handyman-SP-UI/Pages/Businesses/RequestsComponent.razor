@@ -47,14 +47,14 @@
                             {
                                 @if (nr.status < 2)
                                 {
-                                                    <tr onclick="@(()=> viewNewRequest(@nr.service.id,@nr.Id))">
-                                                        <!--Onclick test-->
+                                    <tr onclick="@(()=> viewNewRequest(@nr.service.id,@nr.Id))">
+                                        <!--Onclick test-->
 
-                                                        <td>@nr.status</td>
-                                                        <td>@nr.datecreated</td>
-                                                        <td>@nr.service.category.name</td>
-                                                        <td>@nr.service.name</td>
-                                                    </tr>
+                                        <td>@nr.status</td>
+                                        <td>@nr.datecreated</td>
+                                        <td>@nr.service.category.name</td>
+                                        <td>@nr.service.name</td>
+                                    </tr>
                                 }
                             }
 
@@ -71,29 +71,53 @@
 
                 <!--Own requests -->
                 <h4 class="fa-square-font-awesome">Own Requests</h4>
-                <table class="table table-hover">
+            <table class="table table-hover table-bordered align-middle">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">status</th>
+                           
+                            <th scope="col">Completion</th>
                             <th scope="col">Date Accepted</th>
 
                         </tr>
                     </thead>
                 @if (requests != null && requests.Count > 0)
                 {
-                            <tbody> 
+                    <tbody> 
+                        
                         @foreach (var request in requests)
                         {
-                                        <tr @onclick="@(()=>viewOwnRequest(@request.req_id))">
-                                            <th scope="row">@request.req_progress</th>
-                                            <td>@request.req_status</td>
-                                            <td>@request.req_datecreated</td>
 
-                                        </tr>
+                            @if(request.req_status == 3)
+                            {
+                                <tr class="table-secondary" @onclick="@(()=>viewOwnRequest(@request.req_id))">
+                                <td>@request.req_progress%</td>
+                                <td>@request.req_datecreated</td>
+
+                                </tr>
+                            }
+                            @if (request.req_status == 2)
+                            {
+                                <tr class="table-warning" @onclick="@(()=>viewOwnRequest(@request.req_id))">
+
+                                    
+                                    <td>@request.req_progress%</td>
+                                    <td>@request.req_datecreated</td>
+
+                                </tr>
+                            }
+                            @if (request.req_status == 1)
+                            {
+                                <tr class="table-light" @onclick="@(()=>viewOwnRequest(@request.req_id))">
+
+                                    
+                                    <td>@request.req_progress%</td>
+                                    <td>@request.req_datecreated</td>
+
+                                </tr>
+                            }
                         }
 
-                            </tbody>
+                    </tbody>
                 }
                     </table>
 
@@ -129,6 +153,13 @@
         {
             await LoadOwnRequests();
             await LoadNewRequests();
+
+            if(requests!=null && requests.Count>0)
+                foreach (var r in requests)
+                {
+                    r.req_status = _requestHelper.CheckStatus(r);
+                    r.req_progress = _requestHelper.GetProgress(r);
+                }
 
         }
         catch (Exception ex)

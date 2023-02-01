@@ -81,32 +81,17 @@ public class RequestEndPoint : IRequestEndPoint
     //Update a request
     //This method is called when there is a change in the request by the provider
     //Change of state/stage, cancellation of completion by the service provider
-    public async Task<string> UpdateRequest(RequestModel updateRequest)
+    public async Task UpdateTask(TaskModel taskUpdate)
     {
-        string? result;
-        //var req = new
-        //{
-        //    updateRequest.req_id,
-        //    updateRequest.req_orderid,
-        //    updateRequest.req_status,
-        //    updateRequest.tasks
-        //};
-
         try
         {
-            var httpResponseMessage = await _apiHelper.ApiClient.PutAsJsonAsync<RequestModel>("/api/Requests/Update", updateRequest);
-            if (httpResponseMessage.IsSuccessStatusCode)
-            {
-                result = httpResponseMessage.ReasonPhrase;
-                return result;
-            }
-
+            await _apiHelper.ApiClient.PutAsJsonAsync<TaskModel>("/api/Requests/Update", taskUpdate);
         }
         catch (Exception ex)
         {
             throw new Exception(ex.Message);
         }
-        return null;
+
     }
 
     //Get a task by its ID
