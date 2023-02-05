@@ -86,7 +86,7 @@ public class OrderEndPoint : IOrderEndPoint
     {
         try
         {
-            var result = await _aPIHelper.ApiClient.PutAsJsonAsync<OrderModel>("/api/Orders/Put", orderUpdate);
+            var result = await _aPIHelper.ApiClient.PutAsJsonAsync<OrderModel>("/api/Orders/Update", orderUpdate);
 
         }
         catch (Exception ex)

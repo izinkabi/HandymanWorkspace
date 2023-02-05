@@ -55,7 +55,7 @@ public class ProviderHelper : EmployeeHelper, IProviderHelper
                 providerModel = await GetProvider();
             }
 
-            if (providerModel.Services.Count > 0)
+            if (providerModel != null && providerModel.Services.Count > 0)
             {
                 foreach (var serviceModel in providerModel.Services)
                 {

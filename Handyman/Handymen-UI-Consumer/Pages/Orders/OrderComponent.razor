@@ -18,11 +18,11 @@
 {
 
 
-    <div class="row">
+    <div class="row m-3 rounded-4 box-shadow" role="document">
 
-        <dl class="col align-content-center">
+        <dl class="col align-content-center bg-info bg-opacity-10">
 
-            <div class="card mb-3 ">
+            <div class="card m-3 bg-transparent border-0">
                 <div class="row g-0">
                     <div class="col-md-4">
                         <img src="/Images/@(order.service.img)" class="img-fluid rounded-start" alt="...">
@@ -42,24 +42,46 @@
         @if (order.status < 1)
         {
             <OrderTasksComponent isNew="true"
-                         newTask="new TaskModel()!"
+                         NewTask="@(new TaskModel())"
                          OnAddToTasks="AddToTasks">
             </OrderTasksComponent>
         }
 
-        @if (taskList != null)
+        @if (order.status < 2 && taskList != null && taskList.Count > 0)
         {
             <!--List of task-items in the confirmed order-->
             <div class="list-group list-group-flush align-content-lg-center">
+
                 @foreach (var item in taskList)
                 {
-                    <OrderTasksComponent isNew="false" 
-                             newTask="item" 
-                             OnAddToTasks="AddToTasks">
+                    <OrderTasksComponent isNew="false"
+                             NewTask="@item"
+                             OnAddToTasks="AddToTasks" 
+                             OnRemoveTask="RemoveTaskOnList">
+                             
                     </OrderTasksComponent>
                 }
             </div>
             <!--End List-->
+        }
+        @if (taskList!=null)
+        {
+            @if (taskList.Count == 0)
+            {
+                          <p class="font-monospace fst-italic">
+                               There are no orders
+                          </p>
+
+            }
+        }
+
+        @if (taskList != null)
+        {
+            
+            @if (order.status < 1)
+            {
+                <button @onclick="ConfirmOrder" type="button" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#staticBackdropConfirmorder"> Confirm </button>
+            }
         }
 
         @*
@@ -70,10 +92,7 @@
 
      
 
-        @if (order.status < 1)
-        {
-            <button @onclick="ConfirmOrder" type="button" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#staticBackdropConfirmorder"> Confirm </button>
-        }
+        
 
     </div>
 }
@@ -110,6 +129,7 @@
 
     /// <summary>
     ///  Add the new tasks to the order's task list
+    ///  Method called when calling click the button to add a task to a list
     /// </summary>
     /// <param name="newTaskModel"></param>
     void AddToTasks(TaskModel newTaskModel)
@@ -123,7 +143,7 @@
                 taskList = new()!;
             }
             taskList.Add(newTaskModel);
-            StateHasChanged();
+
         }
 
     }
@@ -134,7 +154,15 @@
         Logger.LogInformation("URL of new location: {Location}", e.Location);
     }
 
-    
+     //Remove a task
+    void RemoveTaskOnList(TaskModel taskRemoved)
+    {
+        if(taskRemoved!=null)
+        if (taskList.Contains(taskRemoved))
+        {
+            taskList.Remove(taskRemoved);
+        } 
+    }
 
     /// </summary>
     /// Confirming the order placement--soon to be in ordershelper by all means

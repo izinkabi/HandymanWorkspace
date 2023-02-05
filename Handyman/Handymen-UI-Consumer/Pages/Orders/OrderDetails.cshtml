@@ -11,23 +11,28 @@
     ViewData["Title"] = "Order's Details";
 }
 
-<h1 class="text-center">Order Details</h1>
+
+
 @if(Model.OrderProperty != null)
 {
 
     @if(Model.OrderProperty.status == 1)
     {
-        <div class="alert-info">
+        <div class="alert-info m-3">
 
-        <div class="justify-content-md-center m-3  card">
-            <div class="card-header">
-                <button class="justify-content-end" type="submit" asp-action="post" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(Model.OrderProperty.Id)" aria-label="Close">
+        <div class="justify-content-md-center card border-0">
+            <div class="border-0">
+                    <button class="float-start bg-transparent border-0 btn-outline-danger" type="submit" asp-action="post" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(Model.OrderProperty.Id)" aria-label="Close">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                         <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
                     </svg>
-                </button>
+                 </button>
+                 <h4 class="font-monospace text-center">Order Details</h4>
+                 <hr/>
+
             </div>
             <div class="card-body align-content-center">
+                    
                 <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@(Model.OrderProperty)" />@*param-OrderComponentModel="@(@Model.OrderProperty)"*@
             </div>
         </div>
@@ -37,14 +42,16 @@
 
     @if (Model.OrderProperty.status == 2)
     {
-        <div class="alert-warning">
-        <div class="justify-content-md-center  card">
-            <div class="card-header">
-                <button class="justify-content-end" type="submit" asp-action="post" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(Model.OrderProperty.Id)" aria-label="Close">
+        <div class="alert-warning m-3">
+            <div class="justify-content-md-center  card border-0">
+            <div class="border-0">
+                <button class="float-lg-start border-0 bg-transparent btn-outline-danger" type="submit" asp-action="post" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(Model.OrderProperty.Id)" aria-label="Close">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                         <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
                     </svg>
                 </button>
+                    <h4 class="font-monospace text-center">Order Details</h4>
+                    <hr />
             </div>
             <div class="card-body align-content-center">
                 <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@(Model.OrderProperty)" />@*param-OrderComponentModel="@(@Model.OrderProperty)"*@
@@ -53,21 +60,146 @@
         </div>
     }
 
-    @if (Model.OrderProperty.status == 3)
+
+    @if (Model.OrderProperty.status >= 3)
     {
-        <div class="alert-success">
-        <div class="justify-content-md-center  card">
-            <div class="card-header">
-                <button class="justify-content-end" type="submit" asp-action="post" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(Model.OrderProperty.Id)" aria-label="Close">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                        <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+        <!--Modal -->
+        @* <div class="modal fade" tabindex="-1" role="dialog" id="details-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Done Deal?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        @if (Model.OrderProperty!=null)
+                        {
+                            <p class="fst-italic ms-sm-auto">This Order is finished, it is waiting for your confirmation, just letting you know</p>
+                            <hr/>
+
+                        }
+
+                    </div>
+                </div>
+            </div>
+         </div>
+
+
+                <!--Modal Script-->
+
+                    @section scripts
+                    {
+                    <script>
+                        $(function () { 
+                            if($('#searchResultTable').length > 0){
+                                $('#details-modal').modal('show');
+                            }
+                        }
+                        });
+                    </script>
+                    }*@
+
+
+        <!--/End Modal-->
+
+        <!-- Finished order Alert-->
+        @if (!Model.IsConfirmed)
+        {
+
+
+            <div class="alert alert-success d-flex align-items-center row m-3 p-0" role="alert">
+
+                <div class="col-11">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                        <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
                     </svg>
-                </button>
+                    Your order is finished please confirm 
+                </div>
+                <div class="col-1 m-0 float-end">
+                    <!--Thumb up button to confirm-->
+                    <form asp-page-handler="Confirm" method="post" asp-route-id="@Model.OrderProperty.Id">
+                        <button type="submit"  class="btn border-0 bg-transparent btn-outline-danger">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hand-thumbs-up" viewBox="0 0 16 16">
+                                <path d="M8.864.046C7.908-.193 7.02.53 6.956 1.466c-.072 1.051-.23 2.016-.428 2.59-.125.36-.479 1.013-1.04 1.639-.557.623-1.282 1.178-2.131 1.41C2.685 7.288 2 7.87 2 8.72v4.001c0 .845.682 1.464 1.448 1.545 1.07.114 1.564.415 2.068.723l.048.03c.272.165.578.348.97.484.397.136.861.217 1.466.217h3.5c.937 0 1.599-.477 1.934-1.064a1.86 1.86 0 0 0 .254-.912c0-.152-.023-.312-.077-.464.201-.263.38-.578.488-.901.11-.33.172-.762.004-1.149.069-.13.12-.269.159-.403.077-.27.113-.568.113-.857 0-.288-.036-.585-.113-.856a2.144 2.144 0 0 0-.138-.362 1.9 1.9 0 0 0 .234-1.734c-.206-.592-.682-1.1-1.2-1.272-.847-.282-1.803-.276-2.516-.211a9.84 9.84 0 0 0-.443.05 9.365 9.365 0 0 0-.062-4.509A1.38 1.38 0 0 0 9.125.111L8.864.046zM11.5 14.721H8c-.51 0-.863-.069-1.14-.164-.281-.097-.506-.228-.776-.393l-.04-.024c-.555-.339-1.198-.731-2.49-.868-.333-.036-.554-.29-.554-.55V8.72c0-.254.226-.543.62-.65 1.095-.3 1.977-.996 2.614-1.708.635-.71 1.064-1.475 1.238-1.978.243-.7.407-1.768.482-2.85.025-.362.36-.594.667-.518l.262.066c.16.04.258.143.288.255a8.34 8.34 0 0 1-.145 4.725.5.5 0 0 0 .595.644l.003-.001.014-.003.058-.014a8.908 8.908 0 0 1 1.036-.157c.663-.06 1.457-.054 2.11.164.175.058.45.3.57.65.107.308.087.67-.266 1.022l-.353.353.353.354c.043.043.105.141.154.315.048.167.075.37.075.581 0 .212-.027.414-.075.582-.05.174-.111.272-.154.315l-.353.353.353.354c.047.047.109.177.005.488a2.224 2.224 0 0 1-.505.805l-.353.353.353.354c.006.005.041.05.041.17a.866.866 0 0 1-.121.416c-.165.288-.503.56-1.066.56z" />
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+
             </div>
-            <div class="card-body align-content-center">
-                <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@(Model.OrderProperty)" />@*param-OrderComponentModel="@(@Model.OrderProperty)"*@
+
+            <!--End alert-->
+
+
+            <!--Order Details-->
+            <div class="bg-light bg-opacity-10 m-3">
+                <div class="justify-content-md-center card border-0 bg-transparent ">
+                    <div class="card-header border-0">
+                       <h4 class="font-monospace text-center">Finished Order Details</h4>
+                    </div>
+                    <div class="card-body align-content-center">
+                        <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@(Model.OrderProperty)" />
+               
+                    </div>
+                </div>
             </div>
-        </div>
-        </div>
+         }
+        <!--Finished and Confirmed order-->
+        @if (Model.IsConfirmed)
+        {
+            @if(Model.OrderProperty.status == 4)
+            {
+                <div class="text-bg-white shadow m-3 rounded-2" role="document">
+                    <div class="justify-content-md-center card border-0 bg-transparent bg-opacity-50 placeholder-glow">
+                        <div class="card-header text-bg-light border-0">
+                            <h4 class="font-monospace text-center">Finished and Confirmed Order Details</h4>
+                        </div>
+                       
+                        <div class="card-body align-content-center bg-transparent placeholder-glow m-3 p-3">
+                            <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@(Model.OrderProperty)" />
+                            <button href="/Checkout?id=@Model.OrderProperty.Id" class="btn btn-success">Checkout</button>
+                        </div>
+                        <!--List of task-items in the confirmed order-->
+                        <div class="list-group list-group-flush align-content-lg-center">
+
+                            @foreach (var item in Model.OrderProperty.Tasks)
+                            {
+                                <component type="typeof(Tasks.OrderTasksComponent)" render-mode="ServerPrerendered" param-IsNew="false" param-NewTask="@(item)" />
+
+                            }
+                        </div>
+                        <!--End List-->
+                    </div>
+                </div>
+
+            }
+             <!--Paid order-->
+            @if (Model.OrderProperty.status == 5)
+            {
+                <div class="text-bg-light m-3" role="img">
+                    <div class="justify-content-md-center card border-0 bg-primary bg-opacity-50 placeholder-glow">
+                        <div class="card-header text-bg-light bg-gradient border-0">
+                            <h4 class="font-monospace text-center">Invoice Details</h4>
+                        </div>
+
+                        <div class="card-body align-content-center bg-transparent placeholder-glow m-3 p-3">
+                            <p class="text-sm-center fst-italic">Details of an invoice</p>
+                            <button class="btn btn-success">View Document</button>
+                        </div>
+                    </div>
+                </div>
+            }
+            
+        }
+
+       
     }
+   
+
+
+
 }

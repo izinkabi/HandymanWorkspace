@@ -11,6 +11,7 @@ namespace Handymen_UI_Consumer.Helpers
         Task<OrderModel> GetOrderById(int id, string userId);
         Task DeleteOrder(OrderModel order);
         Task CreateOrder(OrderModel newOrder);
+        Task UpdateOrderStatus(OrderModel order);
 
     }
 }

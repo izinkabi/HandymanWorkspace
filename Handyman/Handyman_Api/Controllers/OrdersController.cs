@@ -53,7 +53,8 @@ public class OrdersController : ControllerBase
 
     // PUT api/<OrdersController>/5
     [HttpPut]
-    public void Put(OrderModel orderUpdate)
+    [Route("Update")]
+    public void Update(OrderModel orderUpdate)
     {
         try
         {

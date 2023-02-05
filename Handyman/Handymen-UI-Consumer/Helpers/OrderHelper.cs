@@ -120,7 +120,7 @@ namespace Handymen_UI_Consumer.Helpers
         }
 
 
-
+        //Lists of stages 
         List<TaskModel>? Accepted;
         List<TaskModel>? inprogressTasks;
         List<TaskModel>? finishedTasks;
@@ -136,42 +136,46 @@ namespace Handymen_UI_Consumer.Helpers
                 inprogressTasks = new()!;
                 finishedTasks = new()!;
 
-                //Check for task status
-                foreach (var t in order.Tasks)
+                if (order.status <= 3)
                 {
-                    //STATUS STARTED
-                    if (t.tas_status == 1)
+                    //Check for task status
+                    foreach (var t in order.Tasks)
                     {
-                        Accepted.Add(t);
+                        //STATUS STARTED
+                        if (t.tas_status == 1)
+                        {
+                            Accepted.Add(t);
+                        }
+                        //STATUS IN PROGRESS
+                        if (t.tas_status == 2)
+                        {
+                            inprogressTasks.Add(t);
+                        }
+                        //STATUS CLOSED
+                        if (t.tas_status == 3)
+                        {
+                            finishedTasks.Add(t);
+                        }
+                        //STATUS CANCELLED
                     }
-                    //STATUS IN PROGRESS
-                    if (t.tas_status == 2)
-                    {
-                        inprogressTasks.Add(t);
-                    }
-                    //STATUS CLOSED
-                    if (t.tas_status == 3)
-                    {
-                        finishedTasks.Add(t);
-                    }
-                    //STATUS CANCELLED
-                }
 
-                //Request not started
-                if (Accepted.Count == 0 && inprogressTasks.Count == 0 && finishedTasks.Count == 0)
-                {
-                    return 1;
-                }
-                else if (Accepted.Count == 0 && inprogressTasks.Count == 0 && finishedTasks.Count > 0)//Request closed
-                {
-                    return 3;
-                }
-                else //Request inprogress
-                {
-                    return 2;
+
+                    //Request not started
+                    if (Accepted.Count == 0 && inprogressTasks.Count == 0 && finishedTasks.Count == 0)
+                    {
+                        return 1;
+                    }
+                    else if (Accepted.Count == 0 && inprogressTasks.Count == 0 && finishedTasks.Count > 0)//Request closed
+                    {
+                        return 3;
+                    }
+                    else //Request inprogress
+                    {
+                        return 2;
+                    }
                 }
             }
-            return 0;//Error
+            return order.status;//Error
 
         }
 
@@ -179,11 +183,15 @@ namespace Handymen_UI_Consumer.Helpers
         public async Task DeleteOrder(OrderModel order)
         {
 
-            if (_orderEndpoint != null)
+            if (order != null)
             {
                 try
                 {
-                    order.ConsumerID = await GetUserId();
+                    if (order.ConsumerID == null)
+                    {
+                        order.ConsumerID = await GetUserId();
+                    }
+
                     await _orderEndpoint.DeleteOrder(order);
 
                 }
@@ -193,6 +201,23 @@ namespace Handymen_UI_Consumer.Helpers
                     throw new Exception(ex.Message);
                 }
 
+            }
+        }
+
+        //Update order status
+        public async Task UpdateOrderStatus(OrderModel order)
+        {
+            if (order != null)
+            {
+                try
+                {
+                    await _orderEndpoint.UpdateOrder(order);
+                }
+                catch (Exception ex)
+                {
+
+                    throw new Exception(ex.Message, ex.InnerException);
+                }
             }
         }
     }

@@ -7,18 +7,18 @@
 }
 
 
-<h1 class="text-capitalize text-center">Confirm Order</h1>
+<h3 class="text-capitalize font-monospace text-center">Confirm Order</h3>
 
 
 <hr/>
     @*OrderComponent Section*@
     @if(@Model.OrderProperty!=null)
     {
-
+               <!--Go back button-->
               <a href="##" onclick="history.go(-1); return false;">Go back</a>
               <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@(@Model.OrderProperty)" />
               <!--Buttons-->
-              <div class="row">
+              <div class="row shadow " role="document">
 
                     
                 @if(!(Model.OrderProperty.status==0))
@@ -30,14 +30,14 @@
                             <a type="submit" asp-area="" asp-page="/Index" class="btn-outline-secondary">Close</a>
                         </form>
                     </div>
-                <div class="col-7 ">
+                    <div class="col-7 ">
                    
                     @*<button type="submit" class="btn btn-outline-success">Confirm</button> <!--data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"-->
                   *@  <!-- Button trigger modal -->
                    
                 
                
-                </div>
+                    </div>
                 }
               </div>
             }

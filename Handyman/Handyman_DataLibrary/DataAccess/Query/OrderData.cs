@@ -105,7 +105,10 @@ public class OrderData : IOrderData
         return orderSet.ToList();
     }
 
-
+    /// <summary>
+    /// Insert an order
+    /// </summary>
+    /// <param name="order"></param>
     public void InsertOrder(OrderModel order)
     {
         try
@@ -158,7 +161,6 @@ public class OrderData : IOrderData
                 new
                 {
                     ConsumerID = order.ConsumerID,
-                    DateCreated = order.datecreated,
                     Status = order.status,
                     DueDate = order.duedate,
                     Id = order.Id
