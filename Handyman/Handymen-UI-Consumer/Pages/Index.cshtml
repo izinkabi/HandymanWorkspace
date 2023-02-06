@@ -55,7 +55,7 @@
     </style>
 
 
-<div class="row p-3 m-1">
+<div class="row py-3 m-1 box-shadow bg-transparent">
 
     <!--SearchBar-->     
             <form>
@@ -64,10 +64,10 @@
                  <option value="default">All</option>
                 </select>-->
 
-                    <div class="input-group">
+                    <div class="input-group rounded-4">
                       <input type="text" class="form-control" asp-for="searchString" placeholder="Search here..." aria-label="Search for services">
-                      <button class="btn btn-outline-success shadow-sm bg-light" type="submit">Filter</button>
-                      <button class="btn btn-outline-danger shadow-sm bg-light" type="reset">Reset</button>
+                      <button class="btn btn-outline-success shadow-sm bg-light rounded-1" type="submit">Filter</button>
+                      <button class="btn btn-outline-danger shadow-sm bg-light rounded-1" type="reset">Reset</button>
                       <br/>
                       <hr/>
                     </div>
@@ -78,15 +78,15 @@
 <!--Carousel-->
 
 <!--End of Carousel-->
-<div class="row justify-content-center alert-heading text-capitalize p-2 m-1 text-center">
-    <h4>
+<div class="row justify-content-center alert-heading text-capitalize p-2 m-1 text-center box-shadow">
+    <h4 class="font-monospace">
         Available Services
     </h4>
 
 </div>
 
 <!--lIST OF SERVICES-->
-  <div class="album py-5 bg-light">
+  <div class="album py-5 bg-light shadow" role="document">
     <div class="container">
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -104,18 +104,25 @@
                 {
                     
                 <div class="col">
-                    <div class="card shadow-sm">
-                    <img src="~/Images/@item.img"  class="bd-placeholder-img card-img-top" width="100%" height="225"/>
+                        <div class="card border-0 shadow text-center ">
+                    <img src="~/Images/@item.img"  class="bd-placeholder-img card-img-top border-0 rounded-4"  width="100%" height="225"/>
                     @*<title>@item.Name l</title>*@
-                    <rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">@item.name</text>
-                    <div class="card-body">
-                      <p class="card-text">@item.category.description</p>
-                      <div class="d-flex justify-content-between align-items-center">
-                        <div class="btn-group">
-                            <a  asp-page="./Services/Details" class="btn btn-sm btn-outline-secondary" asp-route-id="@item.id">Details</a>
+                    <rect width="100%" height="100%" fill="#55595c"/><text class="font-monospace shadow" x="70%" y="70%" fill="#eceeef" dy=".3em">@item.name</text>
+                            <div class="card-body rounded-4 align-content-center">
+                      <p class="card-text fst-italic">@item.category.description</p>
+                      <hr/>
+                      <div class="d-flex justify-content-center">
+                          <div class="btn-group justify-content-center btn-outline-primary">
+                            <a  asp-page="./Services/Details" class="btn border-0 bg-transparent" asp-route-id="@item.id">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-basket" viewBox="0 0 16 16">
+                                  <path d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1v4.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 13.5V9a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h1.217L5.07 1.243a.5.5 0 0 1 .686-.172zM2 9v4.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V9H2zM1 7v1h14V7H1zm3 3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 4 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 6 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 8 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5z"/>
+                                </svg>
+                            </a>
                         </div>
-                        <small class="text-muted">9 mins</small>
+                        <br/>
+                          
                       </div>
+                      <small class="text-muted">9 mins</small> 
                     </div>
                   </div>
                 </div>

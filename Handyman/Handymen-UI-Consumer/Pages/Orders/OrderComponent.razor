@@ -14,7 +14,7 @@
 
 
 <!--Order Component MarkUp-->
-@if (order.service != null)
+@if (order!=null && order.service != null)
 {
 
 
@@ -39,16 +39,10 @@
             </div>
         </dl>
 
-        @if (order.status < 1)
-        {
-            <OrderTasksComponent isNew="true"
-                         NewTask="@(new TaskModel())"
-                         OnAddToTasks="AddToTasks">
-            </OrderTasksComponent>
-        }
 
-        @if (order.status < 2 && taskList != null && taskList.Count > 0)
+        @if (taskList != null && taskList.Count > 0 && isOnDetails || order.status == 0 && taskList != null)
         {
+            <!--/End Modal-->
             <!--List of task-items in the confirmed order-->
             <div class="list-group list-group-flush align-content-lg-center">
 
@@ -56,14 +50,25 @@
                 {
                     <OrderTasksComponent isNew="false"
                              NewTask="@item"
-                             OnAddToTasks="AddToTasks" 
+                             OnAddToTasks="AddToTasks"
                              OnRemoveTask="RemoveTaskOnList">
-                             
+
                     </OrderTasksComponent>
                 }
             </div>
             <!--End List-->
         }
+
+        @if (order.status < 1)
+        {
+            <!--Creating new tasks-->
+            <OrderTasksComponent isNew="true"
+                         NewTask="@(new TaskModel())"
+                         OnAddToTasks="AddToTasks">
+            </OrderTasksComponent>
+        }
+
+        
         @if (taskList!=null)
         {
             @if (taskList.Count == 0)
@@ -75,12 +80,14 @@
             }
         }
 
-        @if (taskList != null)
+        @if (taskList != null )
         {
             
             @if (order.status < 1)
             {
-                <button @onclick="ConfirmOrder" type="button" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#staticBackdropConfirmorder"> Confirm </button>
+                <div class="m-3 justify-content-center">
+                    <button @onclick="ConfirmOrder" type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#staticBackdropConfirmorder"> Confirm </button>
+                </div>
             }
         }
 
@@ -96,18 +103,16 @@
 
     </div>
 }
-@if (ErrorMsg != null)
-{
-    <p>
-        @ErrorMsg
-    </p>
-}
+
 
 @code {
 
     OrderModel order;
-    string? ErrorMsg;
+    bool isOnDetails;
     List<TaskModel>? taskList = new()!;
+
+    [Parameter]
+    public bool IsOnDetails { get {return isOnDetails; } set { isOnDetails = value; } }
 
     [Parameter]
     public OrderModel OrderComponentModel
@@ -154,34 +159,34 @@
         Logger.LogInformation("URL of new location: {Location}", e.Location);
     }
 
-     //Remove a task
+    //Remove a task
     void RemoveTaskOnList(TaskModel taskRemoved)
     {
         if(taskRemoved!=null)
-        if (taskList.Contains(taskRemoved))
-        {
-            taskList.Remove(taskRemoved);
-        } 
+            if (taskList.Contains(taskRemoved))
+            {
+                taskList.Remove(taskRemoved);
+            } 
     }
 
     /// </summary>
     /// Confirming the order placement--soon to be in ordershelper by all means
     /// <returns></returns> 
     /// <summary>
-    
+
     async Task ConfirmOrder()
     {
         try
         {
             order.Tasks = taskList;
-            order.datecreated = DateTime.Now;
+            order.datecreated = DateTime.UtcNow;
             order.duedate = DateTime.Now;
             order.status = 1; //Thus confirmed
             await _orderHelper.CreateOrder(order);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            ErrorMsg = ex.Message;
+            throw;
         }
 
     }
@@ -195,17 +200,21 @@
     /// <param name="order"></param>
     /// <returns>Complete task / Handled Exception</returns>
     [Authorize]
-    public async Task DeleteOrder(OrderModel order)
+    public async Task CancelOrder(OrderModel order)
     {
         try
         {
-            await _orderHelper.DeleteOrder(order);
-            NavManager.ToAbsoluteUri("/index");
-            await InvokeAsync(StateHasChanged);
+            if (order != null)
+            {
+                _orderHelper.CancelOrder(order);
+                NavManager.ToAbsoluteUri("/index");
+                await InvokeAsync(StateHasChanged);
+            }
+
         }
         catch (Exception ex)
         {
-            ErrorMsg = ex.Message;
+            throw;
 
         }
     }

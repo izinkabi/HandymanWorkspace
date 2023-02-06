@@ -9,11 +9,12 @@ namespace Handyman_DataLibrary.DataAccess.Query;
 public class OrderData : IOrderData
 {
     ISQLDataAccess _dataAccess;
-    TaskData taskData;
-    public OrderData(ISQLDataAccess dataAccess)
+    ITaskData _taskData;
+    public OrderData(ISQLDataAccess dataAccess, ITaskData taskData)
     {
         _dataAccess = dataAccess;
-        taskData = new TaskData(dataAccess);
+        _taskData = taskData;
+
     }
 
     /// <summary>
@@ -126,21 +127,24 @@ public class OrderData : IOrderData
             }).First();
 
             /*Saving the task*/
-
-            foreach (var item in order.Tasks)
+            if (order.Tasks != null && order.Tasks.Count > 0)
             {
-                //Save the task item
+                foreach (var item in order.Tasks)
+                {
+                    //Save the task item
 
-                //get a new task id
-                int taskId = taskData.InsertTask(item);
-                //save the order_task 
-                _dataAccess.SaveDataTransaction("Request.spOrder_Task_Insert",
-                    new
-                    {
-                        taskId = taskId,
-                        orderId = orderId
-                    });
+                    //get a new task id
+                    int taskId = _taskData.InsertTask(item);
+                    //save the order_task 
+                    _dataAccess.SaveDataTransaction("Request.spOrder_Task_Insert",
+                        new
+                        {
+                            taskId = taskId,
+                            orderId = orderId
+                        });
+                }
             }
+
 
 
             _dataAccess.CommitTransation();
@@ -173,7 +177,7 @@ public class OrderData : IOrderData
                 foreach (var task in order.Tasks)
                 {
                     if (task != null)
-                        taskData.UpdateTask(task);
+                        _taskData.UpdateTask(task);
                 }
 
             }
@@ -305,7 +309,7 @@ public class OrderData : IOrderData
     /// </summary>
     /// <param name="task"></param>
     /// <returns></returns>
-    public int InsertTask(TaskModel task) => taskData.InsertTask(task);
+    public int InsertTask(TaskModel task) => _taskData.InsertTask(task);
 
     //Updating a task alone
 
@@ -318,9 +322,9 @@ public class OrderData : IOrderData
     /////////////////////////////////////////////////
 
 
-    internal class TaskData
+    public class TaskData : ITaskData
     {
-        static ISQLDataAccess? _dataAccess;
+        ISQLDataAccess? _dataAccess;
 
         public TaskData(ISQLDataAccess dataAccess)
         {
@@ -339,7 +343,17 @@ public class OrderData : IOrderData
             TaskModel task = null;
             if (id != 0)
             {
-                task = _dataAccess.LoadData<TaskModel, dynamic>("Request.spTaskLookUp", new { taskId = id }, "Handyman_DB").First();
+                try
+                {
+                    var t = _dataAccess.LoadData<TaskModel, dynamic>("Request.spTaskLookUp", new { taskId = id }, "Handyman_DB").FirstOrDefault();
+                    task = t;
+                }
+                catch (Exception)
+                {
+                    throw;
+                    return null;
+                }
+
             }
             if (task != null) { return task; }
             return null;
@@ -371,9 +385,8 @@ public class OrderData : IOrderData
         /// </summary>
         /// <param name="taskUpdate"></param>
         /// <exception cref="Exception"></exception>
-        internal void UpdateTask(TaskModel taskUpdate)
+        public void UpdateTask(TaskModel taskUpdate)
         {
-
 
             try
             {
@@ -431,6 +444,23 @@ public class OrderData : IOrderData
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Delete the task and it's links
+        /// </summary>
+        /// <param name="id"></param>
+        public void DeleteTask(int id)
+        {
+            try
+            {
+                _dataAccess.SaveData("Request.DeleteTask", new { taskId = id }, "Handyman_DB");
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
     }

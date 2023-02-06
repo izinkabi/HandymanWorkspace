@@ -1,5 +1,6 @@
 ﻿using Handymen_UI_Consumer.Areas.Identity.Data;
 using Handymen_UI_Consumer.Helpers;
+using Handymen_UI_Consumer.Helpers.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,17 +14,22 @@ public class OrderDetailsModel : PageModel
     SignInManager<Handymen_UI_ConsumerUser> _signInManager;
     HandymanUILibrary.Models.OrderModel order;
     IOrderHelper? _orderHelper;
+    ITasksHelper? _taskHelper;
+
+
     string? ErrorMsg;
     bool isConfirmed;
     bool isBilled;
     bool isClosed;
     bool isCanceled;
 
+
     public OrderDetailsModel(IOrderHelper orderHelper,
-        SignInManager<Handymen_UI_ConsumerUser> signInManager)
+        SignInManager<Handymen_UI_ConsumerUser> signInManager, ITasksHelper tasksHelper)
     {
         _orderHelper = orderHelper;
         _signInManager = signInManager;
+        _taskHelper = tasksHelper;
     }
 
     public bool IsConfirmed { get { return isConfirmed; } set { isConfirmed = value; } }
@@ -81,17 +87,25 @@ public class OrderDetailsModel : PageModel
     }
 
     //Deleting an order
-    public async Task<RedirectResult> OnPostAsync()
+    public async Task<RedirectResult> OnPostCancelOrderAsync(int? id)
     {
         try
         {
-            if (order != null)
+            if (id != null)
                 if (User != null)
                 {
-                    order.ConsumerID = _signInManager.UserManager.GetUserId(User);
-                    if (order.ConsumerID != null)
+                    var cancellationOrderModel = await _orderHelper.GetOrderById(id.Value, _signInManager.UserManager.GetUserId(User));
+                    if (cancellationOrderModel != null)
                     {
-                        await _orderHelper.DeleteOrder(order);
+                        if (cancellationOrderModel.ConsumerID == null)
+                        {
+                            cancellationOrderModel.ConsumerID = _signInManager.UserManager.GetUserId(User);
+                        }
+
+                        if (cancellationOrderModel.ConsumerID != null)
+                        {
+                            _orderHelper.CancelOrder(cancellationOrderModel);
+                        }
                     }
                 }
 
@@ -141,5 +155,24 @@ public class OrderDetailsModel : PageModel
             throw new Exception(ex.Message, ex.InnerException);
         }
         return Page();
+    }
+
+    //Cancel a task in an order
+    public async Task<RedirectResult> OnPostCancelTaskAsync(int? Id)
+    {
+        try
+        {
+            if (Id != 0)
+            {
+                var cancelTask = await _taskHelper.GetTask(Id.Value);
+                _taskHelper.CancelTask(cancelTask);
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMsg = ex.Message;
+        }
+
+        return Redirect("./Index");
     }
 }

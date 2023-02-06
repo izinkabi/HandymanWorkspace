@@ -4,20 +4,18 @@ using HandymanUILibrary.API.Consumer.Order.Interface;
 using Handymen_UI_Consumer.Areas.Identity.Data;
 using Handymen_UI_Consumer.Data;
 using Handymen_UI_Consumer.Helpers;
+using Handymen_UI_Consumer.Helpers.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("Handymen_UI_ConsumerContextConnection") ?? throw new InvalidOperationException("Connection string 'Handymen_UI_ConsumerContextConnection' not found.");
 
-builder.Services.AddDbContext<Handymen_UI_ConsumerContext>(options =>   
+builder.Services.AddDbContext<Handymen_UI_ConsumerContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddIdentity<Handymen_UI_ConsumerUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddIdentity<Handymen_UI_ConsumerUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<Handymen_UI_ConsumerContext>()
     .AddDefaultUI()
     .AddDefaultTokenProviders();
@@ -26,9 +24,13 @@ builder.Services.AddSingleton<IAPIHelper, APIHelper>();
 builder.Services.AddTransient<IServiceEndPoint, ServiceEndPoint>();
 builder.Services.AddTransient<IOrderEndPoint, OrderEndPoint>();
 builder.Services.AddScoped<IOrderHelper, OrderHelper>();
+builder.Services.AddTransient<ITasksEndPoint, TasksEndPoint>();
+builder.Services.AddTransient<ITasksHelper, TasksHelper>();
+
 
 //External Login
-builder.Services.AddAuthentication().AddGoogle(googleOptions=>{
+builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+{
     googleOptions.ClientId = "1073851415525-6b5javce4n7umbggs3pie8ubfid3mbb0.apps.googleusercontent.com";
     googleOptions.ClientSecret = "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";
 });

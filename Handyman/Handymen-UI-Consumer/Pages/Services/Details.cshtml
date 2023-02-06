@@ -10,9 +10,16 @@
     <!-- Custom styles for this template -->
 <link href="features.css" rel="stylesheet">
 <hr/>
-<div class="container px-4 py-5" id="custom-cards">
-    <a asp-page="./ServicesHome" class="btn-outline-secondary">Go back</a>
-    <h2 class="pb-2 border-bottom">New Order</h2>
+<div class="container px-4 py-2" id="custom-cards">
+   <!--Breadcrumbs-->
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="##" onclick="history.go(-1); return false;">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Service Details</li>
+        </ol>
+    </nav>
+   <!--EndBreadCrumbs-->
+    <h2 class="pb-2 border-bottom font-monospace shadow text-center">Service Details</h2>
 
     <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
       <div class="col">
@@ -41,7 +48,9 @@
           <h4 class="fw-bold mb-0"> Agree</h4>
           <p>@Html.DisplayFor(modelItem => modelItem.Service.category.description).</p>
           
-            <a asp-page="/Orders/Order" asp-route-id="@Model.Service.id"  class="btn btn-outline-success justify-content-content"> Order </a>
+            <a asp-page="/Orders/Order" asp-route-id="@Model.Service.id"  class="btn btn-outline-success justify-content-content"> 
+                Order 
+                </a>
           
           </div>
           </div>

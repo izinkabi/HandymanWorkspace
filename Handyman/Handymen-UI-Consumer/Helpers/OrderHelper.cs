@@ -124,6 +124,7 @@ namespace Handymen_UI_Consumer.Helpers
         List<TaskModel>? Accepted;
         List<TaskModel>? inprogressTasks;
         List<TaskModel>? finishedTasks;
+        List<TaskModel>? canceledTasks;
 
         //Return the request stage
         internal int CheckStatus(OrderModel order)
@@ -135,6 +136,7 @@ namespace Handymen_UI_Consumer.Helpers
                 Accepted = new()!;
                 inprogressTasks = new()!;
                 finishedTasks = new()!;
+                canceledTasks = new()!;
 
                 if (order.status <= 3)
                 {
@@ -157,6 +159,10 @@ namespace Handymen_UI_Consumer.Helpers
                             finishedTasks.Add(t);
                         }
                         //STATUS CANCELLED
+                        if (t.tas_status == 11)
+                        {
+                            canceledTasks.Add(t);
+                        }
                     }
 
 
@@ -169,10 +175,16 @@ namespace Handymen_UI_Consumer.Helpers
                     {
                         return 3;
                     }
+                    else if (canceledTasks.Count > 0)//Request canceled
+                    {
+                        return 11;
+                    }
                     else //Request inprogress
                     {
                         return 2;
                     }
+
+
                 }
             }
             return order.status;//Error
@@ -205,20 +217,17 @@ namespace Handymen_UI_Consumer.Helpers
         }
 
         //Update order status
-        public async Task UpdateOrderStatus(OrderModel order)
-        {
-            if (order != null)
-            {
-                try
-                {
-                    await _orderEndpoint.UpdateOrder(order);
-                }
-                catch (Exception ex)
-                {
+        public async Task UpdateOrderStatus(OrderModel order) => _orderEndpoint.UpdateOrder(order);
 
-                    throw new Exception(ex.Message, ex.InnerException);
-                }
+        //Cancel order, order put order stage 11
+        public void CancelOrder(OrderModel order)
+        {
+            if (order != null && order.status != 0 && order.status < 6)
+            {
+                order.status = 11;//Canceled stage
+                UpdateOrderStatus(order);
             }
         }
+
     }
 }

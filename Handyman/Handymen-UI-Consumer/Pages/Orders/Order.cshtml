@@ -7,7 +7,7 @@
 }
 
 
-<h3 class="text-capitalize font-monospace text-center">Confirm Order</h3>
+
 
 
 <hr/>
@@ -15,10 +15,19 @@
     @if(@Model.OrderProperty!=null)
     {
                <!--Go back button-->
-              <a href="##" onclick="history.go(-1); return false;">Go back</a>
+             <!--Breadcrumbs-->
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="##" onclick="history.go(-2); return false;">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"><a href="##" onclick="history.go(-1); return false;">Service Details</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Confirmation</li>
+                    </ol>
+                </nav>
+             <!--EndBreadCrumbs-->
+    <h3 class="text-capitalize font-monospace shadow text-center">Confirm Order</h3>
               <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@(@Model.OrderProperty)" />
               <!--Buttons-->
-              <div class="row shadow " role="document">
+              <div class="row shadow" role="document">
 
                     
                 @if(!(Model.OrderProperty.status==0))

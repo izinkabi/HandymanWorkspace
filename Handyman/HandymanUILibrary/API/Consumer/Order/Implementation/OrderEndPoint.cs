@@ -10,7 +10,7 @@ namespace HandymanUILibrary.API.Consumer.Order.Implementation;
 
 public class OrderEndPoint : IOrderEndPoint
 {
-    IAPIHelper _aPIHelper;
+    IAPIHelper _apiHelper;
 
     /// <summary>
     /// This method is used to construct a the API helper
@@ -19,7 +19,7 @@ public class OrderEndPoint : IOrderEndPoint
 
     public OrderEndPoint(IAPIHelper aPIHelper)
     {
-        _aPIHelper = aPIHelper;
+        _apiHelper = aPIHelper;
     }
 
     /// <summary>
@@ -32,7 +32,7 @@ public class OrderEndPoint : IOrderEndPoint
     {
         try
         {
-            var httpResponseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync<OrderModel>("/api/orders/Post", /*new
+            var httpResponseMessage = await _apiHelper.ApiClient.PostAsJsonAsync<OrderModel>("/api/orders/Post", /*new
         {
             order.ConsumerID,
             order.service,
@@ -63,7 +63,7 @@ public class OrderEndPoint : IOrderEndPoint
         {
             if (customerId != null)
             {
-                IList<OrderModel> httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<IList<OrderModel>>($"/api/orders/GetOrders?consumerId={customerId}");
+                IList<OrderModel> httpResponseMessage = await _apiHelper.ApiClient.GetFromJsonAsync<IList<OrderModel>>($"/api/orders/GetOrders?consumerId={customerId}");
                 return httpResponseMessage;
             }
 
@@ -86,7 +86,7 @@ public class OrderEndPoint : IOrderEndPoint
     {
         try
         {
-            var result = await _aPIHelper.ApiClient.PutAsJsonAsync<OrderModel>("/api/Orders/Update", orderUpdate);
+            var result = await _apiHelper.ApiClient.PutAsJsonAsync<OrderModel>("/api/Orders/Update", orderUpdate);
 
         }
         catch (Exception ex)
@@ -105,7 +105,7 @@ public class OrderEndPoint : IOrderEndPoint
     {
         try
         {
-            HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.DeleteAsync($"/api/Orders?consumerId={order.ConsumerID}&orderId={order.Id}");
+            HttpResponseMessage httpResponseMessage = await _apiHelper.ApiClient.DeleteAsync($"/api/Orders?consumerId={order.ConsumerID}&orderId={order.Id}");
 
             if (httpResponseMessage.IsSuccessStatusCode)
             {

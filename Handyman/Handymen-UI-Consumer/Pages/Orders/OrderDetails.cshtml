@@ -21,19 +21,24 @@
         <div class="alert-info m-3">
 
         <div class="justify-content-md-center card border-0">
-            <div class="border-0">
-                    <button class="float-start bg-transparent border-0 btn-outline-danger" type="submit" asp-action="post" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(Model.OrderProperty.Id)" aria-label="Close">
+                <div class="border-0 box-shadow m-2 rounded-4">
+                    <button class="float-start bg-white border-0 btn-outline-danger" type="submit" asp-action="post" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(Model.OrderProperty.Id)" aria-label="Close">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                         <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
                     </svg>
                  </button>
+                    <button class="float-end border-0 bg-white py-2 btn-outline-info" role="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-person" viewBox="0 0 16 16">
+                            <path d="M11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                            <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2v9.255S12 12 8 12s-5 1.755-5 1.755V2a1 1 0 0 1 1-1h5.5v2z" />
+                        </svg>
+                    </button>
                  <h4 class="font-monospace text-center">Order Details</h4>
-                 <hr/>
-
+                 
             </div>
             <div class="card-body align-content-center">
-                    
-                <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@(Model.OrderProperty)" />@*param-OrderComponentModel="@(@Model.OrderProperty)"*@
+
+                    <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-IsOnDetails="true" param-OrderComponentModel="@(Model.OrderProperty)" />@*param-OrderComponentModel="@(@Model.OrderProperty)"*@
             </div>
         </div>
         </div>
@@ -42,19 +47,28 @@
 
     @if (Model.OrderProperty.status == 2)
     {
-        <div class="alert-warning m-3">
-            <div class="justify-content-md-center  card border-0">
-            <div class="border-0">
-                <button class="float-lg-start border-0 bg-transparent btn-outline-danger" type="submit" asp-action="post" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(Model.OrderProperty.Id)" aria-label="Close">
+        <div class="bg-warning m-3">
+            <div class="justify-content-md-center  card  border-0">
+                <div class="border-0 bg-transparent rounded-4 shadow">
+                <button class="float-lg-start border-0  btn-outline-danger" type="submit" asp-action="post" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(Model.OrderProperty.Id)" aria-label="Close">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                         <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
                     </svg>
                 </button>
+
+                
+                <button class="float-end border-0 btn-outline-info" role="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-person" viewBox="0 0 16 16">
+                        <path d="M11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                        <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2v9.255S12 12 8 12s-5 1.755-5 1.755V2a1 1 0 0 1 1-1h5.5v2z" />
+                    </svg>
+                </button>
                     <h4 class="font-monospace text-center">Order Details</h4>
-                    <hr />
+                    
+                    
             </div>
             <div class="card-body align-content-center">
-                <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@(Model.OrderProperty)" />@*param-OrderComponentModel="@(@Model.OrderProperty)"*@
+                    <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-IsOnDetails="true" param-OrderComponentModel="@(Model.OrderProperty)" />@*param-OrderComponentModel="@(@Model.OrderProperty)"*@
             </div>
         </div>
         </div>
@@ -63,55 +77,16 @@
 
     @if (Model.OrderProperty.status >= 3)
     {
-        <!--Modal -->
-        @* <div class="modal fade" tabindex="-1" role="dialog" id="details-modal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Done Deal?</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        @if (Model.OrderProperty!=null)
-                        {
-                            <p class="fst-italic ms-sm-auto">This Order is finished, it is waiting for your confirmation, just letting you know</p>
-                            <hr/>
-
-                        }
-
-                    </div>
-                </div>
-            </div>
-         </div>
-
-
-                <!--Modal Script-->
-
-                    @section scripts
-                    {
-                    <script>
-                        $(function () { 
-                            if($('#searchResultTable').length > 0){
-                                $('#details-modal').modal('show');
-                            }
-                        }
-                        });
-                    </script>
-                    }*@
-
-
-        <!--/End Modal-->
+        
 
         <!-- Finished order Alert-->
-        @if (!Model.IsConfirmed)
+        @if (Model.OrderProperty.status == 3 && !Model.IsConfirmed)
         {
 
 
             <div class="alert alert-success d-flex align-items-center row m-3 p-0" role="alert">
 
-                <div class="col-11">
+                <div class="col-11 box-shadow rounded-3">
 
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
@@ -139,10 +114,10 @@
             <div class="bg-light bg-opacity-10 m-3">
                 <div class="justify-content-md-center card border-0 bg-transparent ">
                     <div class="card-header border-0">
-                       <h4 class="font-monospace text-center">Finished Order Details</h4>
+                       <h4 class="font-monospace text-center box-shadow">Finished Order Details</h4>
                     </div>
                     <div class="card-body align-content-center">
-                        <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@(Model.OrderProperty)" />
+                        <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-IsOnDetails="true" param-OrderComponentModel="@(Model.OrderProperty)" />
                
                     </div>
                 </div>
@@ -160,19 +135,20 @@
                         </div>
                        
                         <div class="card-body align-content-center bg-transparent placeholder-glow m-3 p-3">
-                            <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@(Model.OrderProperty)" />
+                           
+                            <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-IsOnDetails="true" param-OrderComponentModel="@(Model.OrderProperty)" />
+                            <!--List of task-items in the confirmed order-->
+                           @* <div class="list-group list-group-flush align-content-lg-center">
+
+                                @foreach (var item in Model.OrderProperty.Tasks)
+                                {
+                                    <component type="typeof(Tasks.OrderTasksComponent)" render-mode="ServerPrerendered" param-IsNew="false" param-NewTask="@(item)" />
+                                }
+                            </div>*@
+                            <!--End List-->
                             <button href="/Checkout?id=@Model.OrderProperty.Id" class="btn btn-success">Checkout</button>
                         </div>
-                        <!--List of task-items in the confirmed order-->
-                        <div class="list-group list-group-flush align-content-lg-center">
-
-                            @foreach (var item in Model.OrderProperty.Tasks)
-                            {
-                                <component type="typeof(Tasks.OrderTasksComponent)" render-mode="ServerPrerendered" param-IsNew="false" param-NewTask="@(item)" />
-
-                            }
-                        </div>
-                        <!--End List-->
+                       
                     </div>
                 </div>
 
@@ -198,7 +174,6 @@
 
        
     }
-   
 
 
 

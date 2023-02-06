@@ -121,6 +121,7 @@
     <Build Include="Stored Procedures\Order\spOrderUpdateByRequest.sql" />
     <Build Include="Stored Procedures\Task\spTaskLookUp.sql" />
     <Build Include="Stored Procedures\Request\spRequestDelete.sql" />
+    <Build Include="Stored Procedures\Task\spTaskDelete.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Script\DevNathi_Handyman_DB.publish.publish.xml" />
