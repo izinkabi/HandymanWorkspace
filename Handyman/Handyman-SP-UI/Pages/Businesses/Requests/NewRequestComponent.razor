@@ -1,0 +1,83 @@
+﻿@page "/new-request"
+@page  "/new-r"
+@using HandymanProviderLibrary.Models
+@using Microsoft.AspNetCore.Components.Web
+
+
+<div class="container container-fluid">
+
+
+<!--New Order Details-->
+<div class="container container-fluid text-center justify-content-center">
+    <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm border-0 ">
+            <div class="card-header shadow">
+                <h4 class="my-0 fw-normal font-monospace">@newRequest.service.name</h4>
+            </div>
+            @if (newRequest.service != null && newRequest.service.category != null)
+            {
+                <div class="card-body bg-success bg-opacity-25">
+                    <h1 class="card-title pricing-card-title"></h1>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>@newRequest.service.name</li>
+                        <li>@newRequest.service.category.description</li>
+                        <li>@newRequest.service.category.type</li>
+                    </ul>
+                    
+                </div>
+            }
+        </div>
+    </div>
+
+</div>
+<!--End Details-->
+
+<!--New Order Tasks-->
+
+<div class="container container-fluid" style="height:250px;overflow-y:scroll">
+
+
+    <div class="table-responsive align-items-center rounded" >
+    <h4 class="display-8 text-center mb-4 rounded shadow">Tasks</h4>
+
+        <table class="table text-center">
+        <thead>
+            <tr>
+                <th style="width: 34%;"></th>
+                <th style="width: 22%;">Title</th>
+                
+                <th style="width: 22%;">Description</th>
+
+            </tr>
+        </thead>
+        <tbody class="border-0">
+            @if (newRequest.Tasks != null && newRequest.Tasks.Count > 0)
+            {
+                @foreach (var task in @newRequest.Tasks)
+                {
+
+                    <tr class="border-0 bg-light btn-outline-info">
+                        <td class="border-success">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16">
+                                <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" />
+                            </svg>
+                        </td>
+                        <td>@task.tas_title<svg class="bi" width="24" height="24"><use xlink:href="#check" /></svg></td>
+                        <td>@task.tas_description<svg class="bi" width="24" height="24"><use xlink:href="#check" /></svg></td>
+                    </tr>
+                }
+
+            }
+
+        </tbody>
+    </table>
+</div>
+<!--End Tasks-->
+   </div>
+</div>
+@code {
+    OrderModel newRequest;
+  
+    [Parameter]
+    public OrderModel NewRequestModelProperty { get { return newRequest; } set{newRequest=value;} }
+}

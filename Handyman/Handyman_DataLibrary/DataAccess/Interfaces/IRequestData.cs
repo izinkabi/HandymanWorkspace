@@ -10,6 +10,7 @@ namespace Handyman_DataLibrary.DataAccess.Interfaces
         TaskModel GetTask(int Id);
         //void UpdateRequest(RequestModel requestUpdate);
         void UpdateTask(TaskModel taskUpdate);
+        RequestModel GetRequest(int id);
     }
 
 }

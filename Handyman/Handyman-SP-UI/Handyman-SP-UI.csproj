@@ -38,7 +38,6 @@
   <ItemGroup>
     <None Include="Pages\ServiceProviderComponent\Profile\ProviderProfile.razor" />
     <None Include="Pages\Shared\NewBusiness.razor" />
-    <None Include="Pages\Businesses\Stuff.razor" />
   </ItemGroup>
 
 

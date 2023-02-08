@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -52,9 +51,9 @@ namespace Handymen_UI_Consumer.Areas.Identity.Pages.Account
         public string ReturnUrl { get; set; }
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-/// <summary>
-/// This is a Register Model Binded to the Register UI page
-/// </summary>
+        /// <summary>
+        /// This is a Register Model Binded to the Register UI page
+        /// </summary>
         public class InputModel
         {
             [Required]
@@ -112,7 +111,7 @@ namespace Handymen_UI_Consumer.Areas.Identity.Pages.Account
                             await _signInManager.UserManager.AddToRoleAsync(user, "Consumer");
                         }
                         else
-                        { 
+                        {
                             await _roleManager.CreateAsync(new IdentityRole("Consumer"));
                         }
                     }
@@ -121,7 +120,7 @@ namespace Handymen_UI_Consumer.Areas.Identity.Pages.Account
 
                         throw;
                     }
-   
+
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -195,7 +194,7 @@ namespace Handymen_UI_Consumer.Areas.Identity.Pages.Account
 
         //        throw;
         //    }
-           
+
         //    //Return a 
         //}
     }

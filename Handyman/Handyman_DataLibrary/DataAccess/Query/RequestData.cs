@@ -1,19 +1,21 @@
 ﻿using Handyman_DataLibrary.DataAccess.Interfaces;
 using Handyman_DataLibrary.Internal.DataAccess;
 using Handyman_DataLibrary.Models;
-using static Handyman_DataLibrary.DataAccess.Query.OrderData;
 
 namespace Handyman_DataLibrary.DataAccess.Query;
 
 public class RequestData : IRequestData
 {
     ISQLDataAccess _dataAccess;
-    TaskData taskData;
+    ITaskData _taskData;
+    IServiceData _serviceData;
 
-    public RequestData(ISQLDataAccess dataAccess)
+    public RequestData(ISQLDataAccess dataAccess, ITaskData taskData, IServiceData serviceData)
     {
         _dataAccess = dataAccess;
-        taskData = new(dataAccess);
+        _taskData = taskData;
+        _serviceData = serviceData;
+
     }
 
     //Get all the requests for the given service and their tasks
@@ -28,7 +30,7 @@ public class RequestData : IRequestData
                      new { serviceId = serviceId }, "Handyman_DB");
 
             //Braking down the ordertask entity
-            //First get get orders then get 
+            //First get get orders then get services
             foreach (var ordertask in ordertasks)
             {
                 var order = new OrderModel();
@@ -39,22 +41,9 @@ public class RequestData : IRequestData
                 order.duedate = ordertask.ord_duedate;
                 order.status = ordertask.ord_status;
 
-                Service_CategoryModel service = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Request.spServiceLookUpBy_Id",
-                     new { serviceId = ordertask.ord_service_id }, "Handyman_DB").First();
+
                 //populate service of each order
-                order.service.name = service.serv_name;
-                order.service.status = service.serv_status;
-                order.service.datecreated = service.serv_datecreated;
-                order.service.img = service.serv_img;
-                order.service.id = service.serv_id;
-
-
-                order.service.category = new ServiceCategoryModel();
-
-                //populate category
-                order.service.category.name = service.cat_name;
-                order.service.category.description = service.cat_description;
-                order.service.category.type = service.cat_type;
+                order.service = _serviceData.GetService(serviceId);
 
                 //Check if the has been populated already
                 foreach (var o in orderSet)
@@ -99,10 +88,11 @@ public class RequestData : IRequestData
 
         return orderSet.ToList();
     }
-    //Get the tasks of a given order
+    //Service of the given Request
+
 
     //Get Task by ID
-    public TaskModel GetTask(int Id) => taskData.GetTask(Id);
+    public TaskModel GetTask(int Id) => _taskData.GetTask(Id);
 
     //Get the request(s) of the given provider and their tasks
     public IList<RequestModel> GetRequests(string providerId)
@@ -111,13 +101,26 @@ public class RequestData : IRequestData
         {
             //Get the requests first
             List<RequestModel> requests = _dataAccess.LoadData<RequestModel, dynamic>("Delivery.spRequestLookUpByProvider", new { providerId = providerId }, "Handyman_DB");
+
+
             //Get tasks for each order, hence for each request 
             if (requests.Count > 0)
+            {
                 foreach (RequestModel request in requests)
                 {
-                    request.tasks = taskData.GetTasks(request.req_orderid).ToList();
-                    //_dataAccess.LoadData<TaskModel, dynamic>("Request.spTaskLookUpByOrder", new { orderId = request.req_orderid }, "Handyman_DB");
+                    //Get the service
+                    if (request != null && request.req_orderid != 0)
+                    {
+                        request.Service = _serviceData.GetServiceByOrder(request.req_orderid);
+
+                    }
+
+                    //Get tasks
+                    request.tasks = _taskData.GetTasks(request.req_orderid).ToList();
+
                 }
+            }
+
 
             return requests;
         }
@@ -187,7 +190,35 @@ public class RequestData : IRequestData
     //    }
     //}
 
+    public RequestModel GetRequest(int id)
+    {
+        try
+        {
+            RequestModel request = new()!;
+            if (id > 0)
+            {
+                request = _dataAccess.LoadData<RequestModel, dynamic>("Delivery.spRequestLookUpByProvider", new { orderId = id }, "Handyman_DB").FirstOrDefault();
+            }
 
-    public void UpdateTask(TaskModel taskUpdate) => taskData.UpdateTask(taskUpdate);
+
+            if (request != null && request.req_orderid != 0)
+            {
+                //Get a service
+                request.Service = _serviceData.GetServiceByOrder(request.req_orderid);
+                //Get tasks
+                request.tasks = _taskData.GetTasks(request.req_orderid).ToList();
+
+                return request;
+            }
+            return request;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex.InnerException);
+            throw;
+        }
+    }
+
+    public void UpdateTask(TaskModel taskUpdate) => _taskData.UpdateTask(taskUpdate);
 }
 

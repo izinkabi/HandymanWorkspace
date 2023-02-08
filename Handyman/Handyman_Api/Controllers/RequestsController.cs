@@ -18,6 +18,24 @@ public class RequestsController : ControllerBase
         //_orderData = orderData;
     }
 
+
+    // GET: api/<RequestsController>/5
+    [HttpGet]
+    [Route("GetRequest")]
+    public RequestModel GetRequest(int Id)
+    {
+        try
+        {
+            RequestModel newRequest = _requestData.GetRequest(Id);
+            return newRequest;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
+
+
     // GET: api/<RequestsController>/5
     [HttpGet]
     [Route("GetNewRequests")]
@@ -25,8 +43,13 @@ public class RequestsController : ControllerBase
     {
         try
         {
-            IList<OrderModel> newRequests = _requestData.GetNewRequests(serviceId);
-            return newRequests;
+            if (serviceId > 0)
+            {
+                IList<OrderModel> newRequests = _requestData.GetNewRequests(serviceId);
+                return newRequests;
+            }
+
+            return null;
         }
         catch (Exception ex)
         {

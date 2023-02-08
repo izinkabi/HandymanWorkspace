@@ -7,15 +7,14 @@
 @inject UserManager<Handyman_SP_UIUser> UserManager 
 @inject IBusinessHelper _business
 
-<AuthorizeView>
+<AuthorizeView Roles="ServiceProvider">
 
 <Authorized>
-        @if (context.User.IsInRole("ServiceProvider"))
-        {
+        
             @if (business != null && business.registration!=null)
             {
                 <!--Welcome-->
-                <div class="p-4 p-md-3 mb-2 rounded text-bg-dark">
+                <div class="p-4 p-md-3 mb-2 rounded-4 text-bg-dark" role="document">
                     <div class="col-md-6 px-0">
                         <h1 class="display-4 fst-italic">Hi   </h1>
                         <p class="lead my-3">Welcome to Handyman's @business.Name</p>
@@ -24,17 +23,17 @@
                 <!--End Welcome-->
 
                 <!--Business Component-->
-                <div class="row mb-2">
-                    <div class="col-md-3">
-                        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-absolute">
-                            <div class="col p-4 d-flex flex-column position-static">
-                                <strong class="d-inline-block mb-2 text-primary">Company details </strong>
-                                <h3 class="mb-0">@business.Name</h3>
+                <div class="row mb-2 box-shadow">
+                    <div class="col-md-3 rounded-4 shadow bg-light" role="document">
+                    <div class="row g-0 overflow-hidden mt-2 rounded-4 btn-outline-warning flex-md-row mb-4 shadow-sm h-md-250">
 
-                                <p class="card-text mb-auto"><strong>Reg Number: </strong>@business.registration.regNumber</p> <!--Should come from db -->
+                        <a href="business-dashboard" class="col p-4 d-flex flex-column btn-outline-warning">
+                            <strong class="d-inline-block mb-2">Business details </strong>
+                            <h3 class="mb-0">@business.Name</h3>
 
+                            <p class="card-text mb-auto"><strong>Reg Number: </strong>@business.registration.regNumber</p> <!--Should come from db -->
 
-                            </div>
+                        </a>
                         </div>
                     </div>
                     <!--End Business Component-->
@@ -43,15 +42,15 @@
 
                     @if (business.Employee != null)
                     {
-                        <div class="col-md-3">
-                            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                                <div class="col p-2 d-flex flex-column position-static">
+                        <div class="col-md-3 shadow rounded-4 p-2" role="document">
+                            <div class="row g-0 border rounded-4 overflow-hidden flex-md-row mb-4  shadow-sm h-md-250 ">
+                            <div class="col p-2 d-flex  h-md-250 flex-column mt-4 position-static">
+                                <a href="profile" class="">
+                                    <Handyman_SP_UI.Pages.Businesses.Employee.Stuff providerParam="@business.Employee">
 
-                                    <Stuff providerParam="@business.Employee">
+                                    </Handyman_SP_UI.Pages.Businesses.Employee.Stuff>
 
-                                    </Stuff>
-
-                                    <a href="profile" class="stretched-link"></a>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -61,8 +60,8 @@
                     @if (business.address != null)
                     {
                         <!--Addresses Component-->
-                        <div class="col-md-3">
-                            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col-md-3 shadow rounded-4 p-2 " role="document">
+                            <div class="row g-0 border rounded-4 overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                                 <div class="col p-4 d-flex flex-column position-static">
                                     <strong class="d-inline-block mb-2 text-primary">Address</strong>
                                     <h3 class="mb-0">@business.address.add_suburb</h3>
@@ -81,7 +80,7 @@
                     @if (business.address != null && business.Employee.employeeProfile != null)
                     {
 
-                        <div class="col-md-3">
+                        <div class="col-md-3 shadow rounded-4" role="document">
                             <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                                 <div class="col p-4 d-flex flex-column position-static">
                                     <strong class="d-inline-block mb-2 text-primary">Services</strong>
@@ -99,26 +98,25 @@
                             </div>
                         </div>
                     }
-                </div>
-            }
-         
-            <!--End Services Component-->
-            <!--Ratings Component-->
-            <!--End Ratings Component-->
+            </div>
         }
         else
         {
-            <div>
-                <h3>
-                    No Business
-                </h3>
-                <p>
-                    Create New Business
-                </p>
-                <button @onclick="displayNewBiz" class="btn btn-primary btn-lg">Create One!</button>
-
+            <span class="visually-visible">Loading...</span>
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden"></span>
+                </div>
+                
             </div>
         }
+
+            <!--End Services Component-->
+            <!--Ratings Component-->
+            <!--End Ratings Component-->
+        
+       
+        
 
         </Authorized>
         <NotAuthorized>
@@ -132,17 +130,11 @@
         </NotAuthorized>
 
  </AuthorizeView>
-@if(!(ErrorMsg==null))
-{
-        <h4> ErrorMsg</h4>
-}
+
    
 @code {
 
     BusinessModel? business;
-    string? ErrorMsg;
-    string? role;
-    bool isLoggedIn;
 
 
     enum Categories
@@ -161,8 +153,7 @@
     { 
         try
         {
-            if(business==null)
-                await OpenBusiness();
+            business = await _business.GetBusiness();
         }
         catch (Exception ex)
         {
@@ -170,60 +161,34 @@
         }
     }
 
+    /// <summary>
+    /// Display Services
+    /// </summary>
     void displayServiceAlbum()
     {
         NavManager.NavigateTo("servicists");
     }
-
+    /// <summary>
+    /// Display New-Business-Component 
+    /// </summary>
     void displayNewBiz()
     {
         NavManager.NavigateTo("new");
     }
 
+
+   
+    /// </summary>
+    /// Loading the business data linked
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception> <summary>
+    ///
     async Task OpenBusiness()
     {
-        //var user = (await authenticationStateTask).User;
-
-        //if (user.Identity.IsAuthenticated)
-        //{
-        isLoggedIn = true;
-
-        try
-        {
-            if (_business != null)
-            {
-                var biz = await _business.GetBusiness();
-                if (biz != null)
-                {
-                    business = biz;
-                }
-                else
-                {
-                    biz = await _business.GetBusiness();
-                }
-
-            }   
-        }
-        catch (Exception ex)
-        {
-            ErrorMsg = ex.Message;
-            throw new Exception(ex.Message, ex.InnerException);
-        }          
-        //}
+        
+        
+       
     }
-
-   void CreateBusiness()
-    {
-        try
-        {
-            //var entity = (NewBusiness)newBiz.Instance;
-            //entity.SubmitForm();
-            
-        }
-        catch (Exception ex)
-        {
-            ErrorMsg = ex.Message;  
-        }
-    }    
+    
 }
 

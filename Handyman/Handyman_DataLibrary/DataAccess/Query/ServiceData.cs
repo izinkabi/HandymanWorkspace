@@ -13,7 +13,10 @@ public class ServiceData : IServiceData
         _dataAccess = dataAccess;
     }
 
-    //Get service, by sp query specifications
+    /// <summary>
+    /// Get service, by sp query specifications
+    /// </summary>
+    /// <returns></returns>
     public List<ServiceModel> GetAllServices()
     {
 
@@ -42,5 +45,92 @@ public class ServiceData : IServiceData
 
         return services;
 
+    }
+
+    /// <summary>
+    /// Getting a service by its ID
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    public ServiceModel GetService(int id)
+    {
+        try
+        {
+            ServiceModel service = new ServiceModel();
+            if (id != 0)
+            {
+                Service_CategoryModel serviceCat = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Request.spServiceLookUpBy_Id",
+                     new { serviceId = id }, "Handyman_DB").First();
+                //Populate service
+                service.name = serviceCat.serv_name;
+                service.status = serviceCat.serv_status;
+                service.datecreated = serviceCat.serv_datecreated;
+                service.img = serviceCat.serv_img;
+                service.id = serviceCat.serv_id;
+
+
+                service.category = new ServiceCategoryModel();
+
+                //populate category
+                service.category.name = serviceCat.cat_name;
+                service.category.description = serviceCat.cat_description;
+                service.category.type = serviceCat.cat_type;
+
+                return service;
+
+            }
+
+            return service;
+
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
+
+    /// <summary>
+    /// Looking for a service of the given order
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    public ServiceModel GetServiceByOrder(int id)
+    {
+        try
+        {
+            ServiceModel service = new ServiceModel();
+            if (id != 0)
+            {
+                Service_CategoryModel serviceCat = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Request.spServiceLookUp_ByOrder",
+                     new { orderId = id }, "Handyman_DB").First();
+
+                //Populate service
+                service.name = serviceCat.serv_name;
+                service.status = serviceCat.serv_status;
+                service.datecreated = serviceCat.serv_datecreated;
+                service.img = serviceCat.serv_img;
+                service.id = serviceCat.serv_id;
+
+
+                service.category = new ServiceCategoryModel();
+
+                //populate category
+                service.category.name = serviceCat.cat_name;
+                service.category.description = serviceCat.cat_description;
+                service.category.type = serviceCat.cat_type;
+
+                return service;
+
+            }
+
+            return service;
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception(ex.Message, ex.InnerException);
+        }
     }
 }

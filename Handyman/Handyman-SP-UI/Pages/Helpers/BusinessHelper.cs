@@ -34,7 +34,7 @@ namespace Handyman_SP_UI.Pages.Helpers
                     {
                         GetProvider();
                     }
-                    if (provider.employeeProfile != null)
+                    if (provider != null && provider.employeeProfile != null)
                     {
                         business = await _business.GetLoggedInEmployee(provider.employeeId);
 

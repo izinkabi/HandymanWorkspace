@@ -93,7 +93,7 @@ namespace Handymen_UI_Consumer.Areas.Identity.Pages.Account.Manage
                     StatusMessage = "Unexpected error when trying to set phone number or your Username.";
                     return RedirectToPage();
                 }
-            } 
+            }
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();

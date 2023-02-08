@@ -32,7 +32,7 @@ namespace Handymen_UI_Consumer.Areas.Identity.Pages.Account
 
         [TempData]
         public string ErrorMessage { get; set; }
-        
+
         /// <summary>
         /// This is the input modeol for the log in Page - It is Binded to the UI Login Page
         /// </summary>

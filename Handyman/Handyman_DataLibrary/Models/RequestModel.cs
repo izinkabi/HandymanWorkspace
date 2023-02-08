@@ -3,6 +3,7 @@
 public class RequestModel
 {
     public int req_id { get; set; }
+    public ServiceModel? Service { get; set; }
     public DateTime req_datecreated { get; set; }
     public int req_status { get; set; }
     public int req_progress { get; set; }

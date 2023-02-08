@@ -39,6 +39,7 @@ builder.Services.AddIdentity<Handyman_SP_UIUser, IdentityRole>(options => option
     .AddEntityFrameworkStores<Handyman_SP_UIContext>()
     .AddUserManager<AppUserManager>() // Add ApplicationUserManager
     .AddDefaultTokenProviders()
+    .AddRoles<IdentityRole>()
     .AddDefaultUI();
 
 builder.Services.ConfigureApplicationCookie(options =>
