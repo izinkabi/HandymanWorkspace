@@ -5,15 +5,15 @@
 @inject IRequestHelper _requestHelper
 
 
-<div class="col rounded">
+
     @if (cancelledRequest != null)
     {
-        <div class="bg-opacity-50 card mb-4 rounded-3 shadow-sm border-0">
+        <div class="bg-opacity-50 card rounded-3 shadow-sm border-0 text-center">
         @if (cancelledRequest.Service != null)
         {
 
             <div class="card-header bg-danger bg-opacity-25 py-3">
-                    <h4 class="my-0 fw-normal font-monospace alert-danger">@CancelledRequest.Service.name</h4>
+                    <h4 class="my-0 fw-normal font-monospace alert-danger text-center">@CancelledRequest.Service.name</h4>
                 <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
                     <span class="visually-hidden">New alerts</span>
                 </span>
@@ -55,7 +55,7 @@
             </div>
         </div>
     }
-</div>
+
            
 
 @code {

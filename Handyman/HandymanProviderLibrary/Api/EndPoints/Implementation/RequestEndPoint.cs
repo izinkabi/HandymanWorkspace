@@ -117,7 +117,7 @@ public class RequestEndPoint : IRequestEndPoint
         {
             if (empID != null)
             {
-                IList<RequestModel> thisMonthRequests = await _apiHelper.ApiClient.GetFromJsonAsync<IList<RequestModel>>($"/api/Requests/GetCurrentWeek?empID={empID}");
+                IList<RequestModel> thisMonthRequests = await _apiHelper.ApiClient.GetFromJsonAsync<IList<RequestModel>>($"/api/Requests/GetCurrentMonth?empID={empID}");
 
                 if (thisMonthRequests != null && thisMonthRequests.Count > 0)
                 {

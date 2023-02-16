@@ -233,7 +233,7 @@ public class RequestData : IRequestData
     {
         try
         {
-            IList<RequestModel> thisMonthRequests = _dataAccess.LoadData<RequestModel, dynamic>("Delivery.spRequestLookUp_ByCurrentMonth", new { empployeeId = employeeId }, "Handyman_DB");
+            IList<RequestModel> thisMonthRequests = _dataAccess.LoadData<RequestModel, dynamic>("Delivery.spRequestsLookUp_ByCurrentMonth", new { employeeId = employeeId }, "Handyman_DB");
 
             if (thisMonthRequests != null && thisMonthRequests.Count > 0)
             {
@@ -266,7 +266,7 @@ public class RequestData : IRequestData
     {
         try
         {
-            IList<RequestModel> thisWeekRequests = _dataAccess.LoadData<RequestModel, dynamic>("Delivery.spRequestsLookUp_ByCurrentWeek", new { employeeId = employeeId }, "Handyman_DB");
+            IList<RequestModel>? thisWeekRequests = _dataAccess.LoadData<RequestModel, dynamic>("Delivery.spRequestsLookUp_ByCurrentWeek", new { employeeId = employeeId }, "Handyman_DB");
 
             if (thisWeekRequests != null && thisWeekRequests.Count > 0)
             {

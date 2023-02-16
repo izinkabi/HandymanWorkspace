@@ -28,17 +28,17 @@
                 {
                     @foreach (RequestModel cancelled in requests)
                     {
-                                <Handyman_SP_UI.Pages.Businesses.Requests.CancelledRequestComponent CancelledRequest="@cancelled">
+                        <Handyman_SP_UI.Pages.Businesses.Requests.CancelledRequestComponent CancelledRequest="@cancelled">
 
-                                </Handyman_SP_UI.Pages.Businesses.Requests.CancelledRequestComponent>
+                        </Handyman_SP_UI.Pages.Businesses.Requests.CancelledRequestComponent>
                        @* <div class="col p-0 m-0" @onclick="@(()=>viewCancelledRequests(cancelled.req_id))">
                            
-                    </div>*@
+                        </div>*@
                     }
                 }
                 @if (requests.Count==0)
                 {
-                    <span class=" text-danger">No cancelled jobs...</span>
+                    <span class=" text-danger strik">No cancelled jobs...</span>
                     <div class="d-flex justify-content-center">
                         <div class="spinner-border" role="status">
                         </div>
