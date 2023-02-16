@@ -6,6 +6,17 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Models\ServiceProvider\**" />
+    <Compile Remove="wwwroot\**" />
+    <Content Remove="Models\ServiceProvider\**" />
+    <Content Remove="wwwroot\**" />
+    <EmbeddedResource Remove="Models\ServiceProvider\**" />
+    <EmbeddedResource Remove="wwwroot\**" />
+    <None Remove="Models\ServiceProvider\**" />
+    <None Remove="wwwroot\**" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
@@ -15,12 +26,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
+    <PackageReference Include="MSTest" Version="3.0.2" />
+    <PackageReference Include="NUnit" Version="3.13.3" />
     <PackageReference Include="System.Net.Http.Json" Version="7.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\ServiceProvider\" />
-    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>

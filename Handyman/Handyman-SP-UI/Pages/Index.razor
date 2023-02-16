@@ -3,6 +3,19 @@
 @using Handyman_SP_UI.Pages.Services
 @using Microsoft.AspNetCore.Components.Web
 
-<Handyman_SP_UI.Pages.Businesses.Requests.RequestsComponent>
+<AuthorizeView>
+    <Authorized>
+         <Handyman_SP_UI.Pages.Businesses.Requests.RequestsComponent>
 
-</Handyman_SP_UI.Pages.Businesses.Requests.RequestsComponent>
+        </Handyman_SP_UI.Pages.Businesses.Requests.RequestsComponent>
+    </Authorized>
+    <NotAuthorized>
+         <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold">Welcome to Handymen</h1>
+                <p class="col-md-8 fs-4">All services you think you can provide are listed here choose at least one and become <strong>Handymen</strong>, become the best in what you do and get money out of it</p>
+                <button @href="services-album" class="btn btn-primary btn-lg">Check them out!</button>
+            </div>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>

@@ -9,5 +9,8 @@ namespace HandymanProviderLibrary.Api.EndPoints.Interface
         Task<string> PostRequest(RequestModel request);
         Task UpdateTask(TaskModel taskUpdate);
         Task<TaskModel> GetTask(int id);
+        Task<IList<RequestModel>> GetCurrentMonthRequests(string empID);
+        Task<IList<RequestModel>> GetCurrentWeekRequests(string empID);
+        Task<IList<RequestModel>> GetCancelledRequests(string empID);
     }
 }

@@ -6,6 +6,7 @@
     [bus_datecreated] DATETIME2 NOT NULL, 
 
     [bus_name] VARCHAR(150) NOT NULL, 
+    [bus_description] NVARCHAR(400) NOT NULL, 
     CONSTRAINT [FK_business_registration] FOREIGN KEY ([bus_registrationid]) REFERENCES [Delivery].[registration]([reg_id]), 
     CONSTRAINT [FK_business_address] FOREIGN KEY ([bus_addressid]) REFERENCES [Delivery].[address]([add_id]), 
 )

@@ -35,6 +35,17 @@ public class RequestsController : ControllerBase
         }
     }
 
+    //--------Filtering Methods
+    [HttpGet]
+    [Route("GetCurrentWeek")]
+    public IList<RequestModel> GetCurrentWeekRequests(string empID) => _requestData.GetCurrentWeekRequests(empID);
+    [HttpGet]
+    [Route("GetCurrentMonth")]
+    public IList<RequestModel> GetCurrentMonthRequests(string empID) => _requestData.GetCurrentMonthRequests(empID);
+    [HttpGet]
+    [Route("GetCancelled")]
+    public IList<RequestModel> GetCancelledRequests(string empID) => _requestData.GetCancelledRequests(empID);
+    //----------End Filtering methods
 
     // GET: api/<RequestsController>/5
     [HttpGet]

@@ -58,7 +58,7 @@ public class ServiceProviderEndPoint : EmployeeEndPoint, IServiceProviderEndPoin
     {
         try
         {
-            if (serviceProvider == null)
+            if (userId != null)
             {
                 serviceProvider = await _apiHelper.ApiClient.GetFromJsonAsync<ServiceProviderModel>($"/api/Delivery/Business/GetProvider?employeeId={userId}");
             }

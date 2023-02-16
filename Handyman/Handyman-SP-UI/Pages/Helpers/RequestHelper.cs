@@ -8,9 +8,9 @@ namespace Handyman_SP_UI.Pages.Helpers;
 public class RequestHelper : IDisposable, IRequestHelper
 {
     IRequestEndPoint? _requestEndPoint;
-    IProviderHelper _providerHelper;
+    readonly IProviderHelper _providerHelper;
     IList<OrderModel> orders;
-    IList<RequestModel> _requests;
+    readonly IList<RequestModel> _requests;
     StatusCheckHelper statusCheckHelper;
     RequestModel newRequest;
 
@@ -96,6 +96,18 @@ public class RequestHelper : IDisposable, IRequestHelper
             throw new Exception(ex.Message, ex.InnerException);
         }
     }
+
+    //-----Filter Methods
+    //Current Week requests GET
+    public async Task<IList<RequestModel>> GetCurrentWeekRequests(string empID) => await _requestEndPoint.GetCurrentWeekRequests(empID);
+    //Current Month requests GET
+    public async Task<IList<RequestModel>> GetCurrentMonthRequests(string empID) => await _requestEndPoint.GetCurrentMonthRequests(empID);
+    //Cancelled requests GET
+    public async Task<IList<RequestModel>> GetCancelledRequests(string empID) => await _requestEndPoint.GetCancelledRequests(empID);
+
+
+    //------End Filter Methods
+
 
     //Confirm if the request is accepted
     public async Task<RequestModel> ConfirmAccepted(OrderModel requestChecked)
@@ -243,7 +255,7 @@ public class RequestHelper : IDisposable, IRequestHelper
     /// <exception cref="Exception"></exception>
     public async Task<TaskModel> GetTask(int id)
     {
-        TaskModel taskModel = new()!;
+        TaskModel taskModel;
         try
         {
             taskModel = await _requestEndPoint.GetTask(id);
@@ -278,7 +290,7 @@ public class RequestHelper : IDisposable, IRequestHelper
 
     void IDisposable.Dispose()
     {
-        statusCheckHelper = null;
+
     }
 
 
@@ -292,8 +304,7 @@ public class RequestHelper : IDisposable, IRequestHelper
         List<TaskModel>? startedTasks;
         List<TaskModel>? inprogressTasks;
         List<TaskModel>? finishedTasks;
-
-
+        List<RequestModel>? cancelledRequests;
 
         //Return the request stage
         internal int CheckStatus(RequestModel request)
@@ -305,10 +316,17 @@ public class RequestHelper : IDisposable, IRequestHelper
                 startedTasks = new()!;
                 inprogressTasks = new()!;
                 finishedTasks = new()!;
+                cancelledRequests = new()!;
+                //Cancelled request
+                if (request.req_status == 11)
+                {
+                    cancelledRequests.Add(request);
+                }
 
                 //Check for task status
                 foreach (var t in request.tasks)
                 {
+
                     //STATUS STARTED
                     if (t.tas_status == 1)
                     {
@@ -324,7 +342,7 @@ public class RequestHelper : IDisposable, IRequestHelper
                     {
                         finishedTasks.Add(t);
                     }
-                    //STATUS CANCELLED
+
                 }
 
                 //Request not started
@@ -340,6 +358,8 @@ public class RequestHelper : IDisposable, IRequestHelper
                 {
                     return 2;
                 }
+
+
             }
             return 0;//Error
 

@@ -149,6 +149,7 @@
     [CascadingParameter]
     private Task<AuthenticationState> authenticationStateTask { get; set; }
 
+    [Authorize(Roles ="ServiceProvider")]
     protected override async Task OnInitializedAsync()
     { 
         try

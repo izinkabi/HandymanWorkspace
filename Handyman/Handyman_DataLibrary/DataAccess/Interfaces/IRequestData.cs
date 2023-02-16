@@ -11,6 +11,9 @@ namespace Handyman_DataLibrary.DataAccess.Interfaces
         //void UpdateRequest(RequestModel requestUpdate);
         void UpdateTask(TaskModel taskUpdate);
         RequestModel GetRequest(int id);
+        IList<RequestModel> GetCurrentMonthRequests(string userId);
+        IList<RequestModel> GetCurrentWeekRequests(string empID);
+        IList<RequestModel> GetCancelledRequests(string empID);
     }
 
 }

@@ -55,8 +55,7 @@
         try
         {
             services = await _serviceEP.GetServices();    
-            if(OnAddService.HasDelegate)
-                StateHasChanged();
+            
         }catch(Exception ex)
         {
             ErrorMsg = ex.Message;

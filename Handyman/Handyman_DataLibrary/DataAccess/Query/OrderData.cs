@@ -156,7 +156,7 @@ public class OrderData : IOrderData
         }
     }
 
-    //Update order and its tasks
+    //Update order and request
     public void UpdateOrder(OrderModel order)
     {
         try
@@ -171,7 +171,7 @@ public class OrderData : IOrderData
 
                 },
                 "Handyman_DB");
-            //
+            //Update tasks
             if (order.Tasks.Count() > 0)
             {
                 foreach (var task in order.Tasks)
@@ -181,6 +181,16 @@ public class OrderData : IOrderData
                 }
 
             }
+
+            //Update Request
+            _dataAccess.SaveData("Request.spRequestUpdate",
+                new
+                {
+                    orderId = order.Id,
+                    requestStatus = order.status
+
+                },
+                "Handyman_DB");
 
         }
         catch (Exception ex)

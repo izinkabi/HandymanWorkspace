@@ -9,5 +9,6 @@ namespace Handyman_SP_UI.Pages.Helpers
         Task<bool> IsServiceProvided(ServiceModel service);
         Task<BusinessModel> StampBusinessUserAsync(BusinessModel? newBiz);
         Task<RequestModel> StampNewRequest(RequestModel newRequest);
+
     }
 }

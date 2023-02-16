@@ -92,7 +92,7 @@ public class ProviderHelper : EmployeeHelper, IProviderHelper
                 userId = await GetUserId();
             }
 
-            if (providerModel == null && userId != null)
+            if (userId != null && providerModel == null)
             {
                 providerModel = await _providerEndPoint?.GetProvider(userId);
             }

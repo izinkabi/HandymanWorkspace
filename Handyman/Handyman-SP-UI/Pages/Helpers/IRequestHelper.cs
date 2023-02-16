@@ -6,6 +6,9 @@ namespace Handyman_SP_UI.Pages.Helpers
     {
         Task<IList<OrderModel>> GetNewRequests(int serviceId);
         Task<OrderModel> GetNewRequest(int serviceId, int orderId);
+        Task<IList<RequestModel>> GetCurrentMonthRequests(string empID);
+        Task<IList<RequestModel>> GetCurrentWeekRequests(string empID);
+        Task<IList<RequestModel>> GetCancelledRequests(string empID);
         Task AcceptRequest(OrderModel newRequest);
         Task<IList<RequestModel>> GetOwnRequests();
         Task<RequestModel> GetOwnRequest(int id);

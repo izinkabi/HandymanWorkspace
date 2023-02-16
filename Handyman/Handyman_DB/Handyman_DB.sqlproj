@@ -123,6 +123,10 @@
     <Build Include="Stored Procedures\Request\spRequestDelete.sql" />
     <Build Include="Stored Procedures\Task\spTaskDelete.sql" />
     <Build Include="Stored Procedures\Order\spServiceLookUp_ByOrder.sql" />
+    <Build Include="Stored Procedures\Request\spRequestsLookUp_ByCurrentWeek.sql" />
+    <Build Include="Stored Procedures\Request\spRequestsLookUp_ByCurrentMonth.sql" />
+    <Build Include="Stored Procedures\Request\spCancelledRequestLookUp.sql" />
+    <Build Include="Stored Procedures\Request\spRequestUpdate.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Script\DevNathi_Handyman_DB.publish.publish.xml" />

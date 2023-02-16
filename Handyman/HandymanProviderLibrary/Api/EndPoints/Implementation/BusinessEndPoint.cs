@@ -18,13 +18,20 @@ public class BusinessEndPoint : IBusinessEndPoint
     }
 
     //Get the business's employee(ServiceProvider)
-    public async Task<BusinessModel>? GetLoggedInEmployee(string employeeid)
+    public async Task<BusinessModel>? GetBusiness(int busId)
     {
         try
         {
-            business = new();
-            if (employeeid != null)
-                business = await _apiHelper?.ApiClient?.GetFromJsonAsync<BusinessModel>($"/api/Delivery/Get?employeeid={employeeid}");
+            if (busId > 0)
+            {
+                business = new();
+                if (busId != null)
+                {
+                    business = await _apiHelper?.ApiClient?.GetFromJsonAsync<BusinessModel>($"/api/Delivery/GetBusiness?busId={busId}");
+                }
+
+            }
+
 
         }
         catch (Exception ex)
@@ -35,11 +42,18 @@ public class BusinessEndPoint : IBusinessEndPoint
     }
 
     //Create a new business
-    public async Task CreateNewBusiness(BusinessModel business)
+    public async Task<BusinessModel> CreateNewBusiness(BusinessModel business)
     {
         try
         {
-            await _apiHelper.ApiClient.PostAsJsonAsync("/api/Delivery/Business/Create", business);
+            var response = await _apiHelper.ApiClient.PostAsJsonAsync($"/api/Delivery/Business/Create?", business);
+            BusinessModel newBusiness;
+            if (response.IsSuccessStatusCode)
+            {
+                newBusiness = response.Content.ReadFromJsonAsync<BusinessModel>().Result;
+                return newBusiness;
+            }
+            return null;
         }
         catch (Exception ex)
         {

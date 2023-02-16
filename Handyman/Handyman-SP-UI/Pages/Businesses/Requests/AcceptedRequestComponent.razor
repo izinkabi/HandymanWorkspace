@@ -2,8 +2,7 @@
 @page "/accepted-r"
 @using HandymanProviderLibrary.Models
 @using Microsoft.AspNetCore.Components.Web
-
-
+@inject IJSRuntime JS
 
 
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -21,7 +20,7 @@
 {
 
 
-<section class="container container-fluid">
+<section class="container container-fluid shadow rounded p-0 m-0">
 
  <!--Accepted Order Details-->
 
@@ -36,7 +35,7 @@
 
                 <div class="container mb-3 text-center justify-content-center">
                     <div class="col">
-                        <div class="bg-primary bg-opacity-25 card mb-4 rounded-3 shadow-sm border-0">
+                        <div class="bg-primary bg-opacity-25 card mb-4  border-0">
                             <div class="card-header bg-secondary py-3">
                                 <h4 class="my-0 fw-normal font-monospace">@ownRequest.Service.name</h4>
                                 <span class="position-absolute top-0 start-100 translate-middle p-2 bg-primary border border-light rounded-circle">
@@ -182,7 +181,7 @@
 
                 <div class="container mb-3 text-center justify-content-center">
                     <div class="col">
-                        <div class="bg-primary bg-opacity-25 card mb-4 rounded-3 shadow-sm border-0">
+                        <div class="bg-primary bg-opacity-25 card mb-4 border-0">
                             <div class="card-header bg-secondary py-3">
                                 <h4 class="my-0 fw-normal font-monospace">@ownRequest.Service.name</h4>               
                             </div>
@@ -250,7 +249,7 @@
                                             {
                                                 @foreach (var task in ownRequest.tasks)
                                                 {
-                                                    if (task.tas_status == 0)
+                                                    @if (task.tas_status == 0)
                                                     {
                                                         <tr class="alert-info rounded" @onclick="@(()=>OnViewTask.InvokeAsync(@task.task_id))">
 
@@ -265,7 +264,7 @@
 
                                                         </tr>
                                                     }
-                                                    if (task.tas_status == 1 || task.tas_status == 2)
+                                                    @if (task.tas_status == 1 || task.tas_status == 2)
                                                     {
                                                         <tr class="bg-warning bg-opacity-25 rounder" @onclick="@(()=>OnViewTask.InvokeAsync(@task.task_id))">
 
@@ -279,7 +278,7 @@
                                                             <td>@task.tas_description<svg class="bi" width="24" height="24"><use xlink:href="#check" /></svg></td>
                                                         </tr>
                                                     }
-                                                    if (task.tas_status == 11)
+                                                    @if (task.tas_status == 11)
                                                     {
                                                         <tr class="bg-transparent rounded" @onclick="@(()=>OnViewTask.InvokeAsync(@task.task_id))">
                                                             <td class="btn-outline-danger border-0 bg-white">
@@ -462,11 +461,16 @@
       <!--Cancelled Requests-->
         @if (ownRequest.req_status == 11)
         {
+
             <div class="container row  mb-3 text-center justify-content-center">
-                <div class="col">
-                    <div class="bg-secondary bg-opacity-50 card mb-4 rounded-3 shadow-sm border-0">
+                @if (isOnFrontDisplay || !isOnFrontDisplay)
+                {
+
+
+                    <div class="col">
+                        <div class="bg-opacity-50 card mb-4 rounded-3 shadow-sm border-0">
                         <div class="card-header bg-danger bg-opacity-25 py-3">
-                            <h4 class="my-0 fw-normal font-monospace">@ownRequest.Service.name</h4>
+                                <h4 class="my-0 fw-normal font-monospace alert-danger">@ownRequest.Service.name was cancelled</h4>
                             <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
                                 <span class="visually-hidden">New alerts</span>
                             </span>
@@ -508,6 +512,7 @@
 
 
                 </div>
+                }
 
                 <!-- Tasks -->
                 @if (!isOnFrontDisplay)
@@ -608,4 +613,18 @@
     [Parameter]
     public EventCallback<int> OnViewTask { get; set; }
     
+    //private IJSObjectReference importedDHTML;
+    //protected override async Task OnAfterRenderAsync(bool firstRender)
+    //{
+    //    //if (firstRender)
+    //    //{
+    //    //    // import the script from the file
+    //    //    importedDHTML = await JS.InvokeAsync<IJSObjectReference>(
+    //    //        "import", "/assets/dist/js/site.js");
+
+    //    //    // Initialize 
+    //    //    //await importedDHTML.InvokeAsync<IJSObjectReference>(
+    //    //    //    "InitPieChart");
+    //    //}
+    //}
 }

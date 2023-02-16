@@ -110,6 +110,78 @@ public class RequestEndPoint : IRequestEndPoint
     }
 
 
+    //Get Request current month request
+    public async Task<IList<RequestModel>> GetCurrentMonthRequests(string empID)
+    {
+        try
+        {
+            if (empID != null)
+            {
+                IList<RequestModel> thisMonthRequests = await _apiHelper.ApiClient.GetFromJsonAsync<IList<RequestModel>>($"/api/Requests/GetCurrentWeek?empID={empID}");
+
+                if (thisMonthRequests != null && thisMonthRequests.Count > 0)
+                {
+                    return thisMonthRequests;
+                }
+            }
+            return null;
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
+
+    //Get this month's requests
+    public async Task<IList<RequestModel>> GetCurrentWeekRequests(string empID)
+    {
+        try
+        {
+            if (empID != null)
+            {
+
+
+                IList<RequestModel> thisMonthRequests = await _apiHelper.ApiClient.GetFromJsonAsync<IList<RequestModel>>($"/api/Requests/GetCurrentWeek?empId={empID}");
+
+                if (thisMonthRequests != null && thisMonthRequests.Count > 0)
+                {
+                    return thisMonthRequests;
+                }
+            }
+            return null;
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
+
+    //Get Cancelled requests
+    public async Task<IList<RequestModel>> GetCancelledRequests(string empID)
+    {
+        try
+        {
+            if (empID != null)
+            {
+
+
+                IList<RequestModel> thisMonthRequests = await _apiHelper.ApiClient.GetFromJsonAsync<IList<RequestModel>>($"/api/Requests/GetCancelled?empID={empID}");
+
+                if (thisMonthRequests != null && thisMonthRequests.Count > 0)
+                {
+                    return thisMonthRequests;
+                }
+            }
+            return null;
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
 
 }
 

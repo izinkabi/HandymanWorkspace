@@ -9,31 +9,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
       <!--CSS Links-->
-    <link href="~/assets/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Custom styles for this template -->
-    <link href="~/assets/dist/css/dashboard.css" rel="stylesheet"/>
-    <link href="features.css" rel="stylesheet">
-    <link href="~/assets/dist/css/sidebars.css" rel="stylesheet"/>
-    <link href="~/assets/dist/css/headers.css" rel="stylesheet"/>
-    <link href="~/assets/dist/css/form-validation.css" rel="stylesheet"/>
-    <link href="~/assets/dist/css/pricing.css" rel="stylesheet">
-    <link href="~/assets/dist/css/blog.css" rel="stylesheet" />
+    <link href="./assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/dashboard/">
 
-    @*<link href="~/assets/dist/cheatsheet.css" rel="stylesheet" />*@
+
+    <!-- Custom styles for this template -->
+    <link href="./assets/dist/css/dashboard.css" rel="stylesheet"/>
+    
+    <link href="./assets/dist/css/sidebars.css" rel="stylesheet"/>
+    <link href="./assets/dist/css/headers.css" rel="stylesheet"/>
+    <link href="./assets/dist/css/form-validation.css" rel="stylesheet"/>
+    <link href="./assets/dist/css/pricing.css" rel="stylesheet">
+    <link href="./assets/dist/css/blog.css" rel="stylesheet" />
+   @*<link href="~/assets/dist/cheatsheet.css" rel="stylesheet" />*@
 </head>
 <body>
     @RenderBody()
-
-
+    <script src="_framework/blazor.server.js"></script>
+    
     <!--JS Scripts-->
-    <script src="~/assets/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/assets/dist/js/sidebars.js"></script>
+    <script src="./assets/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/dist/js/sidebars.js"></script>
 
-      <script src="~/assets/dist/js/form-validation.js"></script>
-      <script src="~/assets/dist/js/blog.js/"></script>
-    @*<script src="~/assets/dist/js/feather.js"></script>*@
-    @*<script src="~/assets/dist/js/site.js"></script>*@
-    <script src="/_framework/blazor.server.js"></script>
+      <script src="./assets/dist/js/form-validation.js"></script>
+      <script src="./assets/dist/js/blog.js/"></script>
+      <script src="./assets/dist/js/dashboard.js"></script>
+    
+     
+    <script>
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+
+
+   
+            
+    
+    
+    @*<script src="./assets/dist/js/feather.js"></script>*@
+    <script src="./assets/dist/js/site.js"></script>
+    
 </body>
 </html>

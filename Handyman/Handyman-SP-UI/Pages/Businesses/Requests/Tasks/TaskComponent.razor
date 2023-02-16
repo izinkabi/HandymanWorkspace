@@ -8,6 +8,45 @@
 
 @if (taskModel != null)
 {
+
+    
+        <!--Modal-->
+        <div class="modal fade" id="staticBackdropTaskUpdateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">@taskModel.tas_title Update</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        The task is paused, you can save changes or cancel them
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                    @if (taskModel.tas_status < 3)
+                    {
+                        <button @onclick="Update" type="button" class="btn btn-success" data-bs-dismiss="modal">Save progress</button>
+                       
+
+                    }
+                    @if(taskModel.tas_status == 3)
+                    {
+                            <button @onclick="Update" type="button" class="btn btn-success" data-bs-dismiss="modal">
+                                 Close
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-check" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
+                                    <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
+                                </svg>
+                            </button>
+                    }
+
+                        </div>
+                </div>
+            </div>
+        </div>
+        <!--End Modal-->
+    
+
     <!--Breadcrum-->
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -41,25 +80,50 @@
                     }
                     @if (taskModel.tas_status == 2)
                     {
-                        <button @onclick="FinishTask" class="btn btn-primary btn-lg alert-success" type="button">Finish it</button>
+                        <button @onclick="FinishTask"  class="btn btn-primary btn-lg alert-success" type="button">Finish it</button>
                     }
                 }else
                 {
-                 
-                    <div class="card mb-3" style="max-width: 540px;">
-                        <div class="row g-0">
+
+                    @if (taskModel.tas_status < 3)
+                    {
+
+
+                        <div class="card mb-3" style="max-width: 540px;">
+                            <div class="row g-0">
                             <div class="col-md-4">
                                 <img src="./images/handymangif.gif" class="img-fluid rounded-start" alt="...">
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body">
                                     <p class="card-text text-decoration-underline">Keep on working on it, you are getting closer to finish</p>
-                                    <button @onclick="Update" class="btn btn-outline-secondary btn-md mb-2" type="button">Update</button>  <br />
+                                    <button data-bs-toggle="modal" data-bs-target="#staticBackdropTaskUpdateModal" class="btn btn-outline-secondary btn-md mb-2" type="button">Update</button>  <br />
                                     <small class="text-muted py-2 fst-italic">Last modified: @lastModeified.ToLongTimeString() </small>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    }
+
+                    @if (taskModel.tas_status == 3)
+                    {
+
+
+                        <div class="card mb-3" style="max-width: 540px;">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <img src="./images/handymangif.gif" class="img-fluid rounded-start" alt="...">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <p class="card-text text-decoration-underline">Keep on working on it, you are getting closer to finish</p>
+                                        <button data-bs-toggle="modal" data-bs-target="#staticBackdropTaskUpdateModal" class="btn btn-outline-success btn-md mb-2" type="button">Done!</button>  <br />
+                                        <small class="text-muted py-2 fst-italic">Last modified: @lastModeified.ToLongTimeString() </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 }
 
             </div>
@@ -68,6 +132,9 @@
         <!--Task duration-->
         @if (!isWorkingOnTask)
         {
+
+           
+
         <div class="row align-items-md-stretch justify-content-center">
             <div class="col-md-6 align-content-center">
                 <div class="p-3 text-bg-dark rounded-3">
@@ -137,6 +204,7 @@
     int TaskId;
     TaskModel? taskModel;
     TimeOnly lastModeified;
+    bool isUpdating;
 
     //Timer taskTtimer;
 
@@ -182,6 +250,8 @@
         }
     }
 
+
+
     /// <summary>
     /// Continue working with a started task
     /// </summary>
@@ -204,8 +274,9 @@
         {
             taskModel.tas_status = 3;
             taskModel.tas_date_finished = DateTime.UtcNow;
-            isWorkingOnTask = false;
-            Update();
+            isWorkingOnTask = true;
+            StateHasChanged();
+
         }
 
     }
@@ -220,11 +291,12 @@
         isWorkingOnTask = false;
         try
         {
+
             if (taskModel != null)
                 taskModel.tas_date_finished = DateTime.Now;
             await _requestHelper.UpdateTask(taskModel);
-                lastModeified = TimeOnly.FromDateTime(taskModel.tas_date_finished);
-            StateHasChanged();
+            lastModeified = TimeOnly.FromDateTime(taskModel.tas_date_finished);
+            
         }
         catch (Exception)
         {
