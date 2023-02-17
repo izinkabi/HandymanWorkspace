@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Handymen_UI_Consumer.Pages
 {
-    [Authorize(Roles = "Consumer")]
     public class OrderModel : PageModel
     {
 

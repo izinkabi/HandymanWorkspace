@@ -8,7 +8,6 @@ using System.Data;
 
 namespace Handymen_UI_Consumer.Pages;
 
-[Authorize(Roles = "Consumer")]
 public class IndexPageModel : PageModel
 {
 
