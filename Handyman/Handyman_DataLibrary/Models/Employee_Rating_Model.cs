@@ -5,10 +5,8 @@
         public string? emp_userid { get; set; }
         public int emp_businessid { get; set; }
 
-        public int rate_id { get; set; }
-        public int rate_stars { get; set; }
-        public string? rate_review { get; set; }
-        public string? rate_recommendation { get; set; }
+        public DateTime emp_date_employed { get; set; }
+
 
         public string? Names { get; set; }
         public string? Surname { get; set; }

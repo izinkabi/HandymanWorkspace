@@ -11,7 +11,7 @@
       <Authorized>
 
         
-        @if (@newRequest != null && !isAccepted)
+        @if (newRequest != null && !isAccepted)
         {
             <!--Breadcrum-->
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
@@ -24,7 +24,7 @@
 
            
             <!--New request / Unaccepted request-->
-                    <NewRequestComponent NewRequestModelProperty="newRequest">
+                    <NewRequestComponent NewRequestModelProperty="@newRequest">
 
                     </NewRequestComponent>
                     @if (!isAccepted)
@@ -34,7 +34,7 @@
             <!--End New Request-->
              </section>
         }
-        else if(@ownRequest!=null && @isAccepted)
+        else if(ownRequest!=null && @isAccepted)
         {
    
             <!--Breadcrum-->
@@ -82,7 +82,7 @@
     [Parameter]
     public RequestModel? OwnRequestDisplayProperty { get { return ownRequest; } set { ownRequest = value; } }
 
-     [Parameter]
+    [Parameter]
     public OrderModel? NewRequestDisplayPropertey { get { return newRequest; } set { newRequest = value; } }
 
     //Service ID
@@ -119,7 +119,7 @@
 
         try
         {
-           
+
             if (ownRequest==null && newRequest==null)
             {
                 if (newRequestId != 0 && SId != 0)
@@ -142,7 +142,7 @@
 
             }
 
-           
+
 
 
             if (ownRequestId != 0)
@@ -178,6 +178,7 @@
             ownRequest.req_datecreated = newRequest.datecreated;
             ownRequest.req_orderid = newRequest.Id;
             ownRequest.tasks = newRequest.Tasks.ToList();
+            ownRequest.Service = newRequest.service;
             ownRequest.req_status = 1;
 
             //make sure there is no new request anymore
@@ -210,8 +211,15 @@
         try
         {
             if(ownRequest!=null)
-            ownRequest.req_status = _requestHelper.CheckStatus(ownRequest);
-            ownRequest.req_progress = _requestHelper.GetProgress(ownRequest);
+            {
+                if (ownRequest.req_status != 11)
+                {
+                    ownRequest.req_status = _requestHelper.CheckStatus(ownRequest);
+                    ownRequest.req_progress = _requestHelper.GetProgress(ownRequest);
+                }
+                
+            }
+            
 
             //await _requestHelper.UpdateRequest(requestUpdate);
         }

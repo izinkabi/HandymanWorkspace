@@ -9,5 +9,5 @@ public class EmployeeModel
     public IList<RatingsModel>? ratings { get; set; }
     public int BusinessId { get; set; }
     public DateTime DateEmployed { get; set; }
-    public ProfileModel? employeeProfile { get; set; }
+    public ProfileModel? employeeProfile { get; set; } = new ProfileModel()!;
 }

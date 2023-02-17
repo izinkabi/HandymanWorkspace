@@ -1,12 +1,15 @@
 ﻿using HandymanProviderLibrary.Api.EndPoints.Interface;
 using HandymanProviderLibrary.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Handyman_SP_UI.Pages.Helpers
 {
+    [Authorize(Roles = "ServiceProvider")]
     public class BusinessHelper : IBusinessHelper
     {
         IBusinessEndPoint _business;
         IProviderHelper _providerHelper;
+
         ServiceProviderModel? provider;
         BusinessModel? business;
 
@@ -27,19 +30,21 @@ namespace Handyman_SP_UI.Pages.Helpers
         {
             try
             {
-                if (business == null)
-                {
-                    //provider = null;
-                    if (provider == null)
-                    {
-                        GetProvider();
-                    }
-                    if (provider != null && provider.employeeProfile != null)
-                    {
-                        business = await _business.GetLoggedInEmployee(provider.employeeId);
 
+                if (await GetProvider() != null)
+                {
+                    if (provider.employeeProfile.UserId != null)
+                    {
+                        business = await _business.GetBusiness(provider.BusinessId);
+                        if (business != null)
+                        {
+                            business.Employee = provider;
+                        }
                     }
+
+
                 }
+
                 return business;
             }
             catch (Exception ex)
@@ -57,13 +62,14 @@ namespace Handyman_SP_UI.Pages.Helpers
         /// <returns></returns>
         /// <exception cref="Exception">Null reference</exception>
 
-        async Task IBusinessHelper.CreateBusiness(BusinessModel newBiz)
+        async Task<BusinessModel> IBusinessHelper.CreateBusiness(BusinessModel newBiz)
         {
             if (newBiz != null)
             {
                 try
                 {
-                    await _business.CreateNewBusiness(StampBusinessUserAsync(newBiz).Result);
+                    business = await _business.CreateNewBusiness(StampBusinessUserAsync(newBiz).Result);
+                    return business ?? newBiz;
                 }
                 catch (Exception ex)
                 {
@@ -71,7 +77,7 @@ namespace Handyman_SP_UI.Pages.Helpers
                 }
 
             }
-
+            return null;
         }
 
         /// <summary>
@@ -106,7 +112,7 @@ namespace Handyman_SP_UI.Pages.Helpers
         {
             try
             {
-                if (provider == null)
+                if (provider == null || provider.pro_providerId == null)
                 {
                     provider = await _providerHelper.GetProvider();
                 }

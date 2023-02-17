@@ -8,6 +8,7 @@
         public int bus_addressid { get; set; }
         public DateTime bus_datecreated { get; set; }
         public string? bus_name { get; set; }
+        public string? bus_description { get; set; }
 
         //registration
 

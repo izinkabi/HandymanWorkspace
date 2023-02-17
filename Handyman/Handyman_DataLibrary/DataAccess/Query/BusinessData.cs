@@ -40,6 +40,55 @@ namespace Handyman_DataLibrary.DataAccess.Query
             }
         }
 
+        //Get Business Id
+        public BusinessModel GetBusinessById(int? busId)
+        {
+            try
+            {
+                if (busId != null && busId.Value != 0)
+                {
+
+                    BusinessRegistrationModel businessRegistration = _dataAccess.LoadData<BusinessRegistrationModel, dynamic>("Delivery.spBusiness_Registration_LookUp",
+                    new { businessId = busId }, "Handyman_DB").FirstOrDefault();
+
+                    //Populating business
+                    BusinessModel business = new()!;
+
+                    business.Id = businessRegistration.bus_Id;
+                    business.date = businessRegistration.bus_datecreated;
+                    business.Type = businessRegistration.reg_businesstype;
+                    business.Name = businessRegistration.bus_name;
+                    business.Description = businessRegistration.bus_description;
+
+                    //Reistration
+
+                    business.registration.Id = businessRegistration.reg_Id;
+                    business.registration.name = businessRegistration.reg_name;
+                    business.registration.regNumber = businessRegistration.reg_regnumber;
+                    business.registration.taxNumber = businessRegistration.reg_taxnumber;
+
+                    //Address
+                    business.address.add_state = businessRegistration.add_state;
+                    business.address.add_zip = business.address.add_zip;
+                    business.address.add_Id = businessRegistration.add_Id;
+                    business.address.add_country = businessRegistration.add_country;
+                    business.address.add_suburb = businessRegistration.add_suburb;
+                    business.address.add_street = businessRegistration.add_street;
+
+                    if (business != null) return business;
+
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return null;
+        }
+
         //Add the business-address and return the address *-can move to address data-*
         int RegisterAddress(AddressModel address)
         {
@@ -66,63 +115,11 @@ namespace Handyman_DataLibrary.DataAccess.Query
         }
 
         //Get the business of the loggedIn user
-        public BusinessModel GetBusiness(string userId)
-        {
-            //Break the entities into models: business, employee and address
-            //Build a business model
-            //Return business Model
 
-            //Get the provider as an employee
-            if (employee == null)
-            {
-                employee = _serviceProvider.GetServiceProvider(userId);
-            }
-
-
-            //Get business, registration and address
-            BusinessRegistrationModel businessRegistration = _dataAccess.LoadData<BusinessRegistrationModel, dynamic>("Delivery.spBusiness_Registration_LookUp",
-                new { businessId = employee.BusinessId }, "Handyman_DB").FirstOrDefault();
-
-            //Populating business
-            BusinessModel business = new()!;
-
-            business.Id = employee.BusinessId;
-            business.date = businessRegistration.bus_datecreated;
-            business.Type = businessRegistration.reg_businesstype;
-            business.Name = businessRegistration.bus_name;
-
-            //Employee
-
-            business.Employee = new()!;
-            business.Employee = employee;
-
-
-
-            //Reistration
-            business.registration = new()!;
-            business.registration.Id = businessRegistration.reg_Id;
-            business.registration.name = businessRegistration.reg_name;
-            business.registration.regNumber = businessRegistration.reg_regnumber;
-            business.registration.taxNumber = businessRegistration.reg_taxnumber;
-
-            //Address
-            business.address = new()!;
-            business.address.add_state = businessRegistration.add_state;
-            business.address.add_country = businessRegistration.add_country;
-            business.address.add_Id = businessRegistration.add_Id;
-            business.address.add_zip = businessRegistration.add_zip;
-            business.address.add_city = businessRegistration.add_city;
-            business.address.add_latitude = businessRegistration.add_latitude;
-            business.address.add_longitude = businessRegistration.add_longitude;
-
-
-            return business;
-
-        }
 
         //Posting a business and its address
         //Returns an ID of the newly created business
-        public int CreateBusiness(BusinessModel business)
+        public BusinessModel CreateBusiness(BusinessModel business)
         {
             int businessId = 0;
             try
@@ -145,7 +142,8 @@ namespace Handyman_DataLibrary.DataAccess.Query
                             bus_registrationid = reg_id,
                             bus_addressid = address_id,
                             bus_datecreated = business.date,
-                            bus_name = business.Name
+                            bus_name = business.Name,
+                            bus_description = business.Description
 
                         }).First();
 
@@ -159,7 +157,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
                         EmployServiceProvider(business.Employee);
                     }
 
-                    return businessId;
+                    return business;
                 }
             }
             catch (Exception ex)
@@ -167,7 +165,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
                 _dataAccess.RollBackTransaction();
                 throw new Exception(ex.Message);
             }
-            return businessId;
+            return business;
         }
 
         //Create an employee in a business

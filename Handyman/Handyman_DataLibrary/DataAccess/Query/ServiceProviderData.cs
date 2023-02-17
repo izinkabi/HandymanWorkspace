@@ -7,7 +7,7 @@ namespace Handyman_DataLibrary.DataAccess.Query;
 public class ServiceProviderData : EmployeeData, IServiceProviderData
 {
     ISQLDataAccess? _dataAccess;
-
+    ServiceProviderModel? providerLocalmodel;
     public ServiceProviderData(ISQLDataAccess dataAccess) : base(dataAccess)
     {
         _dataAccess = dataAccess;
@@ -28,46 +28,49 @@ public class ServiceProviderData : EmployeeData, IServiceProviderData
         try
         {
 
-            //Get employee
-            var employee = this.GetEmployeeWithRatings(providerId);
+            if (providerId != null)
+            {    //Get employee
+                var employee = this.GetEmployeeWithRatings(providerId);
 
 
-            //Get the service of the provider
-            List<Service_CategoryModel> service_category = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Delivery.spProvider_Service_LookUp",
-                new { providerId = providerId }, "Handyman_DB");
+                //Get the service of the provider
+                List<Service_CategoryModel> service_category = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Delivery.spProvider_Service_LookUp",
+                    new { providerId = providerId }, "Handyman_DB");
 
 
-            var provider = new ServiceProviderModel()!;
-            provider.BusinessId = employee.BusinessId;
-            provider.employeeId = employee.employeeId;
-            provider.pro_providerId = employee.employeeId;
-            provider.DateEmployed = employee.DateEmployed;
-            provider.employeeProfile = employee.employeeProfile;
+                var provider = new ServiceProviderModel()!;
+                provider.BusinessId = employee.BusinessId;
+                provider.employeeId = employee.employeeId;
+                provider.pro_providerId = employee.employeeId;
+                provider.DateEmployed = employee.DateEmployed;
+                provider.employeeProfile = employee.employeeProfile;
 
 
-            var services = new List<ServiceModel>();
-            foreach (Service_CategoryModel outputItem in service_category)
-            {
-                //populate service
-                var service = new ServiceModel()!;
-                service.datecreated = outputItem.serv_datecreated;
-                service.status = outputItem.serv_status;
-                service.img = outputItem.serv_img;
-                service.id = outputItem.serv_id;
-                service.name = outputItem.serv_name;
-                service.category = new ServiceCategoryModel();
+                var services = new List<ServiceModel>();
+                foreach (Service_CategoryModel outputItem in service_category)
+                {
+                    //populate service
+                    var service = new ServiceModel()!;
+                    service.datecreated = outputItem.serv_datecreated;
+                    service.status = outputItem.serv_status;
+                    service.img = outputItem.serv_img;
+                    service.id = outputItem.serv_id;
+                    service.name = outputItem.serv_name;
+                    service.category = new ServiceCategoryModel();
 
-                //populate category
-                service.category.name = outputItem.cat_name;
-                service.category.description = outputItem.cat_description;
-                service.category.type = outputItem.cat_type;
-                services.Add(service);
+                    //populate category
+                    service.category.name = outputItem.cat_name;
+                    service.category.description = outputItem.cat_description;
+                    service.category.type = outputItem.cat_type;
+                    services.Add(service);
+                }
+
+                provider.Services = services;
+                providerLocalmodel = provider;
+                return provider;
             }
 
-            provider.Services = services;
-            provider.ratings = employee.ratings;
-
-            return provider;
+            return providerLocalmodel;
         }
         catch (Exception ex)
         {

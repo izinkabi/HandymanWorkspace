@@ -19,16 +19,16 @@ public class DeliveryController : ControllerBase
 
     //Get the business under which the employee(userId) which is a provider is registered
     [HttpGet]
-    [Route("Get")]
-    public BusinessModel? Get(string employeeid)
+    [Route("GetBusiness")]
+    public BusinessModel? Get(int? busId)
     {
 
         try
         {
-            if (employeeid != null && business == null)
+            if (busId != null && busId.Value != 0)
             {
                 business = new()!;
-                business = _businessData.GetBusiness(employeeid);
+                business = _businessData.GetBusinessById(busId.Value);
                 return business;
             }
 
@@ -45,16 +45,18 @@ public class DeliveryController : ControllerBase
     //Register A business
     [HttpPost]
     [Route("Business/Create")]
-    public int CreateBusiness(BusinessModel business)
+    public BusinessModel CreateBusiness(BusinessModel business)
     {
         try
         {
-            int businessId = _businessData.CreateBusiness(business);
-            return businessId;
+            BusinessModel businessM = _businessData.CreateBusiness(business);
+            if (businessM != null) return businessM;
+            return null;
+
         }
         catch (Exception ex)
         {
-            return 0;
+
             throw new Exception(ex.Message);
         }
     }
@@ -74,7 +76,7 @@ public class DeliveryController : ControllerBase
     {
         try
         {
-            if (serviceProvider != null)
+            if (serviceProvider != null && providermodel.pro_providerId != null)
                 _businessData.EmployServiceProvider(serviceProvider);
         }
         catch (Exception ex)
@@ -90,7 +92,7 @@ public class DeliveryController : ControllerBase
 
         try
         {
-            if (providermodel == null && employeeId != null)
+            if (employeeId != null)
             {
                 providermodel = _businessData.GetProvider(employeeId);
                 return providermodel;

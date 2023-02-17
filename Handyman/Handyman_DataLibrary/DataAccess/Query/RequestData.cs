@@ -169,27 +169,28 @@ public class RequestData : IRequestData
     /// Update a task for a given request
     /// </summary>
     /// <param name="task"></param>
-    //public void UpdateRequest(RequestModel requestUpdate)
-    //{
-    //    try
-    //    {
-    //        if (requestUpdate != null)
-    //        {
-    //            _dataAccess.StartTransaction("Handyman_DB");
-    //            _dataAccess.SaveDataTransaction("Delivery.spRequestUpdate", requestUpdate);
+    public void UpdateRequest(RequestModel requestUpdate)
+    {
+        try
+        {
+            if (requestUpdate != null)
+            {
+                _dataAccess.StartTransaction("Handyman_DB");
+                _dataAccess.SaveDataTransaction("Delivery.spRequestUpdate", requestUpdate);
 
-    //            foreach (var item in requestUpdate.tasks)
-    //            {
-    //                _dataAccess.SaveDataTransaction("Request.spTaskUpdate", item);
-    //            }
-    //        }
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        throw new Exception(ex.Message, ex.InnerException);
-    //    }
-    //}
+                foreach (var item in requestUpdate.tasks)
+                {
+                    _dataAccess.SaveDataTransaction("Request.spTaskUpdate", item);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
 
+    //Get Request by an ID
     public RequestModel GetRequest(int id)
     {
         try
@@ -219,6 +220,105 @@ public class RequestData : IRequestData
         }
     }
 
+    //Update a task of a request
     public void UpdateTask(TaskModel taskUpdate) => _taskData.UpdateTask(taskUpdate);
+
+    /// <summary>
+    /// Getting Provider's Current month requests
+    /// </summary>
+    /// <param name="employeeId"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    public IList<RequestModel> GetCurrentMonthRequests(string employeeId)
+    {
+        try
+        {
+            IList<RequestModel> thisMonthRequests = _dataAccess.LoadData<RequestModel, dynamic>("Delivery.spRequestsLookUp_ByCurrentMonth", new { employeeId = employeeId }, "Handyman_DB");
+
+            if (thisMonthRequests != null && thisMonthRequests.Count > 0)
+            {
+                foreach (RequestModel request in thisMonthRequests)
+                {
+                    request.tasks = _taskData.GetTasks(request.req_orderid).ToList();
+                    request.Service = _serviceData.GetServiceByOrder(request.req_orderid);
+                }
+
+            }
+
+            return thisMonthRequests;
+
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
+
+
+    /// <summary>
+    /// Similar to the above method only differ in date (week)
+    /// </summary>
+    /// <param name="employeeId"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    public IList<RequestModel> GetCurrentWeekRequests(string employeeId)
+    {
+        try
+        {
+            IList<RequestModel>? thisWeekRequests = _dataAccess.LoadData<RequestModel, dynamic>("Delivery.spRequestsLookUp_ByCurrentWeek", new { employeeId = employeeId }, "Handyman_DB");
+
+            if (thisWeekRequests != null && thisWeekRequests.Count > 0)
+            {
+                foreach (RequestModel request in thisWeekRequests)
+                {
+                    request.tasks = _taskData.GetTasks(request.req_orderid).ToList();
+                    request.Service = _serviceData.GetServiceByOrder(request.req_orderid);
+                }
+
+            }
+
+            return thisWeekRequests;
+
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
+
+
+    /// <summary>
+    /// Requests that are flagged as cancelled
+    /// </summary>
+    /// <param name="employeeId"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    public IList<RequestModel> GetCancelledRequests(string employeeId)
+    {
+        try
+        {
+            IList<RequestModel> cancelledRequests = _dataAccess.LoadData<RequestModel, dynamic>("Delivery.spCancelledRequestLookUp", new { employeeId = employeeId }, "Handyman_DB");
+
+            if (cancelledRequests != null && cancelledRequests.Count > 0)
+            {
+                foreach (RequestModel request in cancelledRequests)
+                {
+                    request.tasks = _taskData.GetTasks(request.req_orderid).ToList();
+                    request.Service = _serviceData.GetServiceByOrder(request.req_orderid);
+                }
+
+            }
+
+            return cancelledRequests;
+
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
 }
 

@@ -16,38 +16,39 @@ public class EmployeeData
     {
         EmployeeModel employee = new();
 
-        RatingsModel rating = new();
+
         try
         {
             //Get the profile of the service-provider
             _dataAccess.StartTransaction("Handyman_DB");
-            employee.employeeProfile = new ProfileModel();
             employee.employeeProfile = _dataAccess.LoadDataTransaction<ProfileModel, dynamic>("dbo.spProfileLookUp", new { profileId = EmployeeId }).FirstOrDefault();
 
             //get the business , employee(with a profile) and the related ratings
-            var ers = _dataAccess.LoadDataTransaction<Employee_Rating_Model, dynamic>("Delivery.spEmployeesLookUp", new { EmployeeId = EmployeeId });
+            var er = _dataAccess.LoadDataTransaction<Employee_Rating_Model, dynamic>("Delivery.spEmployeesLookUp", new { EmployeeId = EmployeeId }).FirstOrDefault();
             _dataAccess.CommitTransation();
+            employee.employeeId = EmployeeId;
+            employee.BusinessId = er.emp_businessid;
+
             //popolate the data in the following sequence
             //Business
             //Employee
             //Rating
-            employee.ratings = new List<RatingsModel>()!;
-            foreach (var er in ers)
-            {
+            //employee.ratings = new List<RatingsModel>()!;
+            //foreach (var er in ers)
+            //{
 
-                rating = new();
-                employee.employeeId = EmployeeId;
-                employee.BusinessId = er.emp_businessid;
-
-                rating.Id = er.rate_id;
-                rating.stars = er.rate_stars;
-                rating.review = er.rate_review;
-                rating.recommendation = er.rate_recommendation;
+            //    rating = new();
 
 
-                employee.ratings.Add(rating);
+            //    rating.Id = er.rate_id;
+            //    rating.stars = er.rate_stars;
+            //    rating.review = er.rate_review;
+            //    rating.recommendation = er.rate_recommendation;
 
-            }
+
+            //    employee.ratings.Add(rating);
+
+            //}
 
         }
         catch (Exception ex)

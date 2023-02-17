@@ -6,140 +6,106 @@
 
 @inject NavigationManager NavManager
 @inject IRequestHelper _requestHelper
-@inject IBusinessHelper _businessHelper
+@inject IProviderHelper _providerHelper
+@inject IJSRuntime JsRuntime
 
 <AuthorizeView Roles="ServiceProvider">
 
 <Authorized>
-        @if (newRequests != null || requests!=null)
-        {
-            <!--New Requests Section-->
-            <section class="container-fluid justify-content-center p-0 m-0 align-content-lg-center bg-primary bg-opacity-75">
+        
+      <!--New Requests Section-->
+      <section class="container-fluid justify-content-center p-0 m-0 align-content-lg-center ">
    
                               <!--Table-->
-                <div class="table-responsive shadow rounded bg-white" style="height:250px;overflow-y:scroll">
+                <div class="table-responsive shadow rounded bg-white" >
                     <div class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom bg-dark">
                         <div class="btn-toolbar mb-2 mb-md-0">
                             <div class="btn-group me-2 ">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+                                <button type="button" @onclick="displayOrdersOnly" class="btn btn-sm btn-outline-secondary">Orders</button>
+                                <button type="button" @onclick="displayRequestsOnly" class="btn btn-sm btn-outline-secondary">Jobs</button>
                             </div>
-                            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                            <!--Dropdown-->
+                            <button type="submit"  class="btn btn-sm btn-outline-secondary dropdown-toggle" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
                                 <span data-feather="calendar" class="align-text-bottom"></span>
-                                This week
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event" viewBox="0 0 16 16">
+                                <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z" />
+                                <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
+                            </svg>
                             </button>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
+                                <li><a class="dropdown-item" @onclick="displayCurrentWeek">Week</a></li>
+                                <li><a class="dropdown-item" @onclick="displayCurrentMonth">Month</a></li>
+                            </ul>
+                            <!--End Dropdown-->
                         </div>
                     </div>
-                       <table class="table table-striped table-sm table-hover table-responsive bg-light">
-                            <!--Table header-->
-                            <thead>
-                                <tr>
-                                    <th scope="col"></th>
+                    <!--Displaying orders only-->
+                    @if (isOrdersDisplayed)
+                    {
+                        <OrdersComponent>
 
-                                    <th scope="col">Date placed</th>
-                                    <th scope="col">Category</th>
-                                    <th scope="col">Request title</th>
-                                </tr>
-                            </thead>
-                        @if (newRequests.Count > 0)
-                        {
-                                    <!--Table body-->
-                                    <tbody>
-                                        <!--Rows-->
-                                @foreach (var nr in @newRequests)
-                                {
-                                    @if (nr.status < 2)
-                                    {
-                                  
-                                        <tr @onclick="@(()=> viewNewRequest(nr.service.id,@nr.Id))">
-                                            <!--Onclick test-->
-                                            <td class="border-0 btn-outline-info">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16">
-                                                    <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" />
-                                                </svg>
-                                            </td>
-
-                                            <td>@nr.datecreated</td>
-                                            <td>@nr.service.category.description</td>
-                                            <td>@nr.service.name</td>
-                                        </tr>
-                                    
-                                    }
-                                }
-
-
-                        <!--End rows-->
-                            </tbody>
-                        }
-                        else
-                        {
-                            <span class="visually-hidden text-danger">Loading New Requests...try again later</span>
-                            <div class="d-flex justify-content-center">
-                                <div class="spinner-border" role="status">
-                        
-                        
-                                </div>
-                            </div>
-                        }
-                  <!--End body-->
-                       </table>
+                        </OrdersComponent>
+                    }
+                    
 
             <!--End table-->
                 </div>
             </section>
 
-
-            <br />
-
+        <br />
+        @if (requests != null)
+        {
             <!--Own requests Album-->
-            <h4 class="bg-white bg-opacity-2 font-monospace shadow text-center text-capitalize blog-header">Jobs</h4>
-           
-            <div class="album py-5 bg-light">
-                <div class="container">
+            <h4 class="bg-light font-monospace text-center rounded-4 shadow ">Jobs</h4>
+            <!--Displaying Requests only-->
+            @if (isRequestsDisplayed)
+            {
+                <div class="album py-5 m-3 shadow rounded bg-light">
+                    <div class="container container-fluid">
 
-                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" style="height:450px;overflow-y:scroll">
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 " style="height:550px;overflow-y:scroll">
 
-                        
-                        @if(requests!=null && requests.Count>0)
-                        {
-                            @foreach (var ownR in requests)
+                            @if (requests != null && requests.Count > 0)
                             {
-                                <div class="col bg-transparent shadow p-0 m-0" @onclick="@(()=>viewOwnRequest(ownR.req_id))">
-                                    
-                                        
-                                    <AcceptedRequestComponent AcceptedRequestProperty="@ownR" IsOnFrontDisplay="true">
+                                @foreach (var ownR in requests)
+                                {
+                                    <div class="col p-0 m-0" @onclick="@(()=>viewOwnRequest(ownR.req_id))">
 
-                                    </AcceptedRequestComponent>
-                                       
-                                    
+
+                                        <AcceptedRequestComponent AcceptedRequestProperty="@ownR" IsOnFrontDisplay="true">
+
+                                        </AcceptedRequestComponent>
+
+
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <span class=" text-danger">Loading your jobs...try again later</span>
+                                <div class="d-flex justify-content-center">
+                                    <div class="spinner-border" role="status">
+                                    </div>
                                 </div>
                             }
-                        }
-                        else
-                        {
-                            <span class=" text-danger">Loading you jobs...try again later</span>
-                            <div class="d-flex justify-content-center">
-                                <div class="spinner-border" role="status">
-                                </div>
-                            </div>
-                        }
 
+                        </div>
                     </div>
                 </div>
-            </div>
-             <!--End Own requests Album-->
+            }
+            <!--End Own requests Album-->
+
+
+            <!--Back to top button-->
+            <button @onclick="@BackToTop" class="float-end border-0 bg-transparent">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-up-circle border-0" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z" />
+                </svg>
+            </button>
+            <!--End Back to top button-->
         }
-        else
-        {
-            <!--Loading-->
-            <span class="text-danger">Loading your requests...</span>
-                <div class="d-flex justify-content-center">
-                    <div class="spinner-border" role="status">
-                        
-                       
-                    </div>
-                </div>
-        }
+
+        
    </Authorized>
     <NotAuthorized>
         <ServicesAlbum>
@@ -150,24 +116,40 @@
 
 @code {
 
-    List<OrderModel>? newRequests;
+    
     IList<RequestModel>? requests;
 
     ServiceProviderModel? provider;
+
+    bool isOrdersDisplayed;
+    bool isRequestsDisplayed;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
             await LoadOwnRequests();
-            await LoadNewRequests();
-
+            
             if(requests!=null && requests.Count>0)
+            {
+                //Display both the new and old requests
+                isOrdersDisplayed = true;
+                isRequestsDisplayed = true;
+
+                //Check own requests status
                 foreach (var r in requests)
                 {
-                    r.req_status = _requestHelper.CheckStatus(r);
-                    r.req_progress = _requestHelper.GetProgress(r);
+                    if (r.req_status != 11)
+                    {
+                        r.req_status = _requestHelper.CheckStatus(r);
+                        r.req_progress = _requestHelper.GetProgress(r);
+                    }
+
                 }
+
+
+            }
+
 
         }
         catch (Exception ex)
@@ -175,18 +157,12 @@
             throw new Exception(ex.Message, ex.InnerException);
         }
     }
-    /// <summary>
-    /// Display / route to a request-Component
-    /// </summary>
-    /// <param name="sid"></param>
-    /// <param name="rid"></param>
-    void viewNewRequest(int sid, int rid)
+   
+
+    //Go to top page
+    private async Task BackToTop()
     {
-        NavManager.NavigateTo(NavManager.GetUriWithQueryParameters("request", new Dictionary<string, object>()
-            {
-                ["SId"] = sid,
-                ["NRId"] = rid
-            }));
+        await JsRuntime.InvokeVoidAsync("OnScrollEvent");
     }
 
     /// <summary>
@@ -202,21 +178,7 @@
             }));
     }
 
-    /// <summary>
-    /// Query requests from DB 
-    /// </summary>
-    /// <returns></returns>
-    async Task LoadNewRequests()
-    {
-        provider = await _businessHelper.GetProvider();
-        newRequests = new()!;
-        if (provider != null)
-
-            foreach (var service in provider.Services)
-            {
-                newRequests.AddRange(await _requestHelper.GetNewRequests(service.id));
-            }
-    }
+    
 
     [Authorize(Roles ="ServiceProvider")]
 
@@ -236,4 +198,65 @@
             throw new Exception(ex.Message, ex.InnerException);
         }
     }
+
+
+    //Display orders only
+    void displayOrdersOnly()
+    {
+        isOrdersDisplayed = true;
+        isRequestsDisplayed = false;
+    }
+
+    //Display requests only
+    void displayRequestsOnly()
+    {
+        isOrdersDisplayed = false;
+        isRequestsDisplayed = true;
+    }
+
+    //Display the current month's requests
+    async Task displayCurrentMonth()
+    {
+        try
+        {
+            requests = await _requestHelper.GetCurrentMonthRequests((await _providerHelper.GetProvider()).employeeProfile?.UserId);
+            if (requests != null && requests.Count > 0)
+            {
+                foreach (var rs in requests)
+                {
+                    rs.req_status = _requestHelper.CheckStatus(rs);
+                }
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    //Displaying current week requests 
+    async Task displayCurrentWeek()
+    {
+        try
+        {
+            requests = await _requestHelper.GetCurrentWeekRequests((await _providerHelper.GetProvider()).employeeProfile?.UserId);
+            if(requests!=null && requests.Count > 0)
+            {
+                foreach (var rs in requests)
+                {
+                    rs.req_status = _requestHelper.CheckStatus(rs);
+                }
+            }
+            
+
+        }
+        catch (Exception ex)
+        {
+            
+            throw new Exception(ex.Message,ex.InnerException);
+        }
+    }
+
+
 }
