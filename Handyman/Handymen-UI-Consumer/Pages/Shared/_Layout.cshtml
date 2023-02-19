@@ -122,11 +122,34 @@
     </header>
     <!--End NavBar-->
       <div class="b-example-divider"></div>
+
+
     <!--right Menu-->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-        <div class="offcanvas-header">
-            <h5 id="offcanvasRightLabel">Orders </h5>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    <div class="offcanvas offcanvas-end rounded" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header shadow bg-black bg-opacity-25 align-content-between border-bottom-3">
+            <div class="container container-fluid">
+               
+                <a type="button" href="/Orders/CancelledOrders" class="btn btn-primary position-relative bg-transparent btn-outline-danger border-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                    </svg>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            @_orderHelper.NumberOfCancelledRequests().Result
+                            ;
+                        }
+
+                        <span class="visually-hidden">unread messages</span>
+                    </span>
+                </a>
+
+                <button type="button" class="btn-close text-reset float-end align-content-end" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                
+                <h5 id="offcanvasRightLabel" class="text-center shadow rounded">Orders </h5>
+            </div>
+            
         </div>
         
         
@@ -227,6 +250,7 @@
                                             </div>
                                                     
                                         }
+                                        
 
 
                                     }

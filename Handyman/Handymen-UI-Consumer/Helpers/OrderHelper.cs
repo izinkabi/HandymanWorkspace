@@ -93,6 +93,10 @@ namespace Handymen_UI_Consumer.Helpers
                     foreach (var item in ordersDisplayList)
                     {
                         item.status = CheckStatus(item);
+                        if (item.status == 11)
+                        {
+                            cancelledOrders.Add(item);
+                        }
                     }
             }
 
@@ -124,8 +128,26 @@ namespace Handymen_UI_Consumer.Helpers
         List<TaskModel>? Accepted;
         List<TaskModel>? inprogressTasks;
         List<TaskModel>? finishedTasks;
-        List<TaskModel>? canceledTasks;
 
+        List<OrderModel>? cancelledOrders;
+
+        public List<OrderModel> CancelledOrdersProperty { get { return cancelledOrders; } }
+
+        public async Task<int> NumberOfCancelledRequests()
+        {
+
+            try
+            {
+                await LoadUserOrders(userId);
+                return cancelledOrders.Count();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
         //Return the request stage
         internal int CheckStatus(OrderModel order)
         {
@@ -136,7 +158,7 @@ namespace Handymen_UI_Consumer.Helpers
                 Accepted = new()!;
                 inprogressTasks = new()!;
                 finishedTasks = new()!;
-                canceledTasks = new()!;
+                cancelledOrders = new()!;
 
                 if (order.status <= 3)
                 {
@@ -158,11 +180,7 @@ namespace Handymen_UI_Consumer.Helpers
                         {
                             finishedTasks.Add(t);
                         }
-                        //STATUS CANCELLED
-                        if (t.tas_status == 11)
-                        {
-                            canceledTasks.Add(t);
-                        }
+
                     }
 
 
@@ -175,16 +193,16 @@ namespace Handymen_UI_Consumer.Helpers
                     {
                         return 3;
                     }
-                    else if (canceledTasks.Count > 0)//Request canceled
-                    {
-                        return 11;
-                    }
                     else //Request inprogress
                     {
                         return 2;
                     }
 
 
+                }
+                else if (order.status == 11)//Request canceled
+                {
+                    return 11;
                 }
             }
             return order.status;//Error

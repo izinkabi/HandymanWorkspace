@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Pages\Orders\CancelledOrders.cshtml" />
     <Content Remove="wwwroot\Images\ac.jpg" />
     <Content Remove="wwwroot\Images\cleaning.jpg" />
     <Content Remove="wwwroot\Images\oven.jpg" />
@@ -27,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Pages\Orders\CancelledOrders.cshtml" />
     <None Include="wwwroot\assets\brand\bootstrap-logo-white.svg" />
     <None Include="wwwroot\assets\brand\bootstrap-logo.svg" />
     <None Include="wwwroot\assets\dist\css\bootstrap.min.css.map" />

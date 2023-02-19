@@ -2,6 +2,7 @@
 @page "/business-details"
 @inject IJSRuntime JS
 @inject IBusinessHelper _busiHelper
+@inject IRequestHelper _requestHelper
 <!--Blog Boostrap Tamplate-->
 <head>  
      </head>
@@ -76,11 +77,11 @@
         {
             if (business==null)
             {
-                
+
                 business = await _busiHelper.GetBusiness(); 
-                
+
             }
-            
+
         }
         catch (Exception ex)
         {  
@@ -88,22 +89,75 @@
         }
     }
 
-    //private IJSObjectReference importedDHTML;
-    //protected override async Task OnAfterRenderAsync(bool firstRender)
-    //{
-    //    //if (firstRender)
-    //    //{
-    //    //    // import the script from the file
-    //    //    //importedDHTML = await JS.InvokeAsync<IJSObjectReference>(
-    //    //    //    "import", "/assets/dist/js/site.js");
+    private IJSObjectReference JSObjectReference { get; set; }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // import the script from the file
+            JSObjectReference = await JS.InvokeAsync<IJSObjectReference>(
+                "import", "/assets/dist/js/PieChart.js");
 
-    //    //    //// Initialize 
-    //    //    //await importedDHTML.InvokeAsync<IJSObjectReference>(
-    //    //    //    "InitPieChart");
-    //    //    //    StateHasChanged();
-    //    //}
-    //}
+            var yValues = await GetRequestsArray();
+            // Initialize 
+            
+            await JSObjectReference.InvokeVoidAsync(
+                "InitPieChart", yValues );
+            StateHasChanged();
+        }
+    }
 
+
+    [JSInvokable]
+    private async Task<int[]> GetRequestsArray()
+    {
+        try
+        {
+            IList<RequestModel>? started = new List<RequestModel>();
+            IList<RequestModel> inprogress = new List<RequestModel>();
+            IList<RequestModel> finished = new List<RequestModel>();
+            IList<RequestModel> untouched = new List<RequestModel>();
+            IList<RequestModel> cancelled = new List<RequestModel>();
+            IList<RequestModel> closed = new List<RequestModel>();
+
+            var ownRequests = await _requestHelper.GetOwnRequests();
+
+            foreach (var request in ownRequests)
+            {
+                if (request.req_status == 0)
+                {
+                    started.Add(request);
+                }
+
+                if (request.req_status == 1)
+                {
+                    inprogress.Add(request);
+                }
+
+                if (request.req_status == 3)
+                {
+                    finished.Add(request);
+                }
+
+                if (request.req_status == 11)
+                {
+                    cancelled.Add(request);
+                }
+
+                if (request.req_status == 4)
+                {
+                    closed.Add(request);
+                }
+            }
+
+            return new int[5]{(started.Count), (inprogress.Count), (finished.Count), (closed.Count),(cancelled.Count)};
+    }catch(Exception ex)
+        {
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+
+
+    }
 
 }
 

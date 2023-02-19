@@ -8,5 +8,6 @@
     [tas_status] INT NULL, 
     [tas_description] VARCHAR(MAX) NULL, 
     [tas_service_id] INT NOT NULL, 
+    [tas_DateModified] DATETIME2 NULL, 
     CONSTRAINT [FK_task_service] FOREIGN KEY ([tas_service_id]) REFERENCES [Service].[service]([serv_id]) 
 )

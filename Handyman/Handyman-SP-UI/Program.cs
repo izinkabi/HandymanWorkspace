@@ -10,7 +10,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+{
+    EnvironmentName = Environments.Production
+});
 var connectionString = builder.Configuration.GetConnectionString("Handyman_SP_UIContextConnection") ?? throw new InvalidOperationException("Connection string 'Handyman_SP_UIContextConnection' not found.");
 
 builder.Services.AddDbContext<Handyman_SP_UIContext>(options =>
