@@ -14,20 +14,58 @@ public class ServicesController : ControllerBase
         _serviceData = serviceData;
     }
 
+    //Get service list
     [HttpGet]
     [Route("GetServices")]
-    //[Authorize]
+
     public List<ServiceModel> Get()
     {
         return _serviceData.GetAllServices();
     }
 
-    //[HttpGet]
-    //public List<ServiceCategoryModel> GetValues()
-    //{
-    //    ServiceData service = new ServiceData();
 
-    //    return service.GetServiceCategories();
-    //}
+    //Post new list of services
+    [HttpPost]
+    [Route("PostServices")]
+    public void Post(List<ServiceModel> newService)
+    {
+        try
+        {
+            _serviceData.InsertServices(newService);
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    //update a service (in a case of new customs)
+    [HttpPut]
+    [Route("UpdateService")]
+    public void Put(ServiceModel newService) => _serviceData.UpdateService(newService);
+
+    [HttpDelete]
+    [Route("DeleteCustom")]
+    public void Delete(ServiceModel customServiceDelete)
+    {
+        try
+        {
+
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    //Get a service by id
+    [HttpGet]
+    [Route("GetService")]
+    public ServiceModel GetService(int id) => _serviceData.GetService(id);
+
+
+
 
 }

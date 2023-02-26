@@ -116,7 +116,7 @@
 
 @code {
 
-    
+
     IList<RequestModel>? requests;
 
     ServiceProviderModel? provider;
@@ -129,7 +129,7 @@
         try
         {
             await LoadOwnRequests();
-            
+
             if(requests!=null && requests.Count>0)
             {
                 //Display both the new and old requests
@@ -141,8 +141,8 @@
                 {
                     if (r.req_status != 11)
                     {
-                        r.req_status = _requestHelper.CheckStatus(r);
-                        r.req_progress = _requestHelper.GetProgress(r);
+                        //r.req_status = _requestHelper.CheckStatus(r);
+                        //r.req_progress = _requestHelper.GetProgress(r);
                     }
 
                 }
@@ -157,7 +157,7 @@
             throw new Exception(ex.Message, ex.InnerException);
         }
     }
-   
+
 
     //Go to top page
     private async Task BackToTop()
@@ -178,7 +178,7 @@
             }));
     }
 
-    
+
 
     [Authorize(Roles ="ServiceProvider")]
 
@@ -192,6 +192,7 @@
         try
         {
             requests = await _requestHelper.GetOwnRequests();
+            
         }
         catch (Exception ex)
         {
@@ -203,14 +204,22 @@
     //Display orders only
     void displayOrdersOnly()
     {
+        if (isRequestsDisplayed)
+        {
+            isRequestsDisplayed = false;
+        }
         isOrdersDisplayed = true;
-        isRequestsDisplayed = false;
+        
     }
 
     //Display requests only
     void displayRequestsOnly()
     {
-        isOrdersDisplayed = false;
+        if (isOrdersDisplayed)
+        {
+            isOrdersDisplayed = false;
+        }
+        
         isRequestsDisplayed = true;
     }
 

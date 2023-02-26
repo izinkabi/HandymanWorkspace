@@ -20,58 +20,14 @@
     <base href="~/" />
     <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
 
-            <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-            <link rel="stylesheet" href="~/Identity/lib/bootstrap/dist/css/bootstrap.css" />
-            <link rel="stylesheet" href="~/Identity/css/site.css" />
-
-    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet"/>
-
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
-
-      .b-example-divider {
-        height: 3rem;
-        background-color: rgba(0, 0, 0, .1);
-        border: solid rgba(0, 0, 0, .15);
-        border-width: 1px 0;
-        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-      }
-
-      .b-example-vr {
-        flex-shrink: 0;
-        width: 1.5rem;
-        height: 100vh;
-      }
-
-      .bi {
-        vertical-align: -.125em;
-        fill: currentColor;
-      }
-
-      .nav-scroller {
-        position: relative;
-        z-index: 2;
-        height: 2.75rem;
-        overflow-y: hidden;
-      }
-
-      .nav-scroller .nav {
-        display: flex;
-        flex-wrap: nowrap;
-        padding-bottom: 1rem;
-        margin-top: -1px;
-        overflow-x: auto;
-        text-align: center;
-        white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
-      }
-    </style>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Identity/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/Identity/css/site.css" />
+   
+    <link rel ="stylesheet" href="./css/features.css"/>
+    <link rel ="stylesheet" href="./css/carousel.css"/>
+    <link rel="stylesheet" href="./assets/dist/css/calenda.css" />
+    
 </head>
 
 
@@ -128,8 +84,8 @@
     <div class="offcanvas offcanvas-end rounded" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header shadow bg-black bg-opacity-25 align-content-between border-bottom-3">
             <div class="container container-fluid">
-               
-                <a type="button" href="/Orders/CancelledOrders" class="btn btn-primary position-relative bg-transparent btn-outline-danger border-0">
+              <!--Cancelled Orders Bin-->
+                <a type="button" href="/cancelledorders" class="btn btn-primary position-relative bg-transparent btn-outline-danger border-0">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
                         <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
@@ -138,13 +94,23 @@
                         @if (SignInManager.IsSignedIn(User))
                         {
                             @_orderHelper.NumberOfCancelledRequests().Result
-                            ;
+                            
                         }
 
                         <span class="visually-hidden">unread messages</span>
                     </span>
                 </a>
-
+                <!--End Bin-->
+               
+                <!--Orders In a Calenda Button-->
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-black bg-opacity-25 " data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event" viewBox="0 0 16 16">
+                <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z" />
+                <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
+                </svg>
+                </button>
+                <!--End Calenda Button-->
                 <button type="button" class="btn-close text-reset float-end align-content-end" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 
                 <h5 id="offcanvasRightLabel" class="text-center shadow rounded">Orders </h5>
@@ -212,7 +178,7 @@
 
                                             <div class="bg-warning bg-opacity-50 rounded-4 align-content-around text-sm-center p-3 m-3 shadow" role="document" id="@order.Id">
                                                 @* <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(order.Id)" aria-label="Close"></button>*@
-                                                    <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@order" >
+                                                <component type="typeof(OrderComponent)" render-mode="ServerPrerendered" param-OrderComponentModel="@order">
                                                     <div class="align-content-center ">
                                                         <a type="button" href="/OrderDetails?id=@(order.Id)" class="btn btn-md btn-info position-relative bg-success">
                                                             View
@@ -273,11 +239,87 @@
     <!--End NavBar-->
 
 
-    <!--Delete order Confirmation Modal-->
-    <!-- Button trigger modal -->
-    
+    <!--******Modals*******-->
+    <!--Calenda Modal-->
+    <!--Calenda Modal-->
 
-    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 font-monospace" id="staticBackdropLabel">Pick a due date</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <!--Carousal-->
+                    @*<div id="carouselExample" class="carousel slide">
+                    <div class="carousel-inner">
+                    @for(int i = 1; i<= (DateTime.DaysInMonth() * 12); i++)
+                    {
+                    <div class="carousel-item active">
+                    <img src="..." class="d-block w-100" alt="...">
+                    </div>
+                    }
+
+
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                    </button>
+                    </div>*@
+                    <!--End Carosal-->
+                    <!--Calenda-->
+
+                    <div class="month">
+                        <ul>
+                            <li class="prev">&#10094;</li>
+                            <li class="next">&#10095;</li>
+                            <li>
+                                @(DateTime.Now.Date)<br>
+                                <span style="font-size:18px">@DateTime.Now.Year</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <ul class="weekdays">
+                        <li>Mo</li>
+                        <li>Tu</li>
+                        <li>We</li>
+                        <li>Th</li>
+                        <li>Fr</li>
+                        <li>Sa</li>
+                        <li>Su</li>
+                    </ul>
+
+                    <ul class="days">
+                        @for (int i = 1; i <= DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month); i++)
+                        {
+                            <li>@i</li>
+                        }
+
+
+                    </ul>
+
+
+                    <!--End Calenda-->
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <!--End Calenda Modal-->
+
+
+
+
+    <!--Delete order Confirmation Modal-->
+ 
   @if (SignInManager.IsSignedIn(User))
   {
     var ods = await _orderHelper.LoadUserOrders(SignInManager.UserManager.GetUserId(User));
@@ -315,7 +357,7 @@
     @{
         @await Component.InvokeAsync("OrderConfirmation")
     }
-    <!--End Delete order Modal-->
+    <!--End Delete Modal-->
 
 
     <div class="container">

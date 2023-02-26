@@ -16,5 +16,7 @@ namespace Handymen_UI_Consumer.Helpers
         Task<int> NumberOfCancelledRequests();
         List<OrderModel> CancelledOrdersProperty { get; }
 
+        Task<List<OrderModel>> GetOrdersOfDate(DateTime date);
+
     }
 }

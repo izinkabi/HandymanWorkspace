@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[Profile]
+﻿CREATE TABLE [dbo].[profile]
 (
     [Names] NVARCHAR(200) NOT NULL, 
     [Surname] NVARCHAR(200) NOT NULL, 
@@ -9,7 +9,7 @@
     [Gender] NVARCHAR(50) NOT NULL, 
     [PhoneNumber] NVARCHAR(100) NOT NULL, 
     CONSTRAINT [PK_Profile_userId] CHECK (1 = 1), 
-   -- CONSTRAINT [FK_Profile_AspNetUsers] FOREIGN KEY ([UserId]) REFERENCES [dbo].[AspNetUsers]([Id])
+    CONSTRAINT [FK_Profile_AspNetUsers] FOREIGN KEY ([UserId]) REFERENCES [dbo].[AspNetUsers]([Id])
 
     
 )

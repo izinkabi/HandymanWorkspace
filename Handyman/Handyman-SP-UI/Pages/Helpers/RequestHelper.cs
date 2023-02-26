@@ -104,9 +104,13 @@ public class RequestHelper : IDisposable, IRequestHelper
         try
         {
             var jobs = await _requestEndPoint.GetCurrentWeekRequests(empID);
-            foreach (var rq in jobs)
+            if (jobs != null && jobs.Count > 0)
             {
-                rq.req_status = CheckStatus(rq);
+                foreach (var rq in jobs)
+                {
+                    rq.req_status = CheckStatus(rq);
+                    rq.req_progress = GetProgress(rq);
+                }
             }
 
             return jobs;
@@ -126,6 +130,7 @@ public class RequestHelper : IDisposable, IRequestHelper
             foreach (var rq in jobs)
             {
                 rq.req_status = CheckStatus(rq);
+                rq.req_status = GetProgress(rq);
             }
 
             return jobs;
@@ -234,10 +239,11 @@ public class RequestHelper : IDisposable, IRequestHelper
             if (provider != null)
             {
                 requests = await _requestEndPoint.GetRequestsByProvider(provider.pro_providerId);
-                //foreach (var request in requests)
-                //{
-                //    request.req_status = statusCheckHelper.CheckStatus(request);
-                //}
+                foreach (var request in requests)
+                {
+                    request.req_status = statusCheckHelper.CheckStatus(request);
+                    request.req_progress = GetProgress(request);
+                }
                 return requests;
             }
             return null;
@@ -390,10 +396,10 @@ public class RequestHelper : IDisposable, IRequestHelper
                 {
                     return 3;
                 }
-                else if (cancelledRequests != null)
-                {
-                    return 11;
-                }
+                //else if (cancelledRequests != null)
+                //{
+                //    return 11;
+                //}
                 else //Request inprogress
                 {
                     return 2;

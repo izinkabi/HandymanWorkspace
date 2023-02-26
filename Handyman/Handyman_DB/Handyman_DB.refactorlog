@@ -252,4 +252,32 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="bus_description" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="f01cbbb7-74cb-4a2f-80db-77011acb933e" ChangeDateTime="02/25/2023 09:06:28">
+    <Property Name="ElementName" Value="[dbo].[customService].[Title]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[customService]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="title" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="497a105b-4e43-4a4b-b339-94f1c3df5efb" ChangeDateTime="02/25/2023 09:06:33">
+    <Property Name="ElementName" Value="[dbo].[customService].[Description]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[customService]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="description" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="2562c6ef-7f65-4587-96c4-5b40f6775ed0" ChangeDateTime="02/25/2023 09:06:40">
+    <Property Name="ElementName" Value="[dbo].[customService].[ImageUrl]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[customService]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="imageUrl" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e0130911-ed2f-4939-bdad-9b1db7a6bb80" ChangeDateTime="02/25/2023 09:06:46">
+    <Property Name="ElementName" Value="[dbo].[customService].[OriginalServiceId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[customService]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="originalServiceId" />
+  </Operation>
 </Operations>

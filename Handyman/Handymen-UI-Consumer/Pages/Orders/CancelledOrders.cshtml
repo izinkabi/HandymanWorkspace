@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "/cancelled-orders"
 @model Handymen_UI_Consumer.Pages.Orders.CancelledOrdersModel
 
 
@@ -9,8 +9,10 @@
 
 @if(Model.OrdersProperty is not null)
 {
-  
+
 <div class="album py-5 bg-light shadow" role="document">
+        <h4 class="font-monospace shadow rounded bg-transparent">Cancelled Orders</h4>
+
     <div class="container">
 
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -38,7 +40,7 @@
                 @foreach (var item in Model.OrdersProperty)
                 {
 
-                   <div class="col">
+                  <!-- <div class="col">
                         <div class="card border-0 shadow text-center ">
                             <img src="~/Images/@item.service.name" class="bd-placeholder-img card-img-top border-0 rounded-4" width="100%" height="225" />
                             @*<title>@item.Name l</title>*@
@@ -60,9 +62,9 @@
                                 <small class="text-muted">@item.duedate</small>
                             </div>
                         </div>
-                    </div>
-                    @*<component type="typeof(CancelledOrderComponent)" render-mode="ServerPrerendered" param-CancelledOrder="@(item)" />
-*@
+                          </div>-->
+                    <component type="typeof(CancelledOrderComponent)" render-mode="ServerPrerendered" param-CancelledOrder="@(item)" />
+
                 }
             }
         </div>

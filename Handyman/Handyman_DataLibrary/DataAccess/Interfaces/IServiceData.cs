@@ -7,5 +7,7 @@ namespace Handyman_DataLibrary.DataAccess.Interfaces
         List<ServiceModel> GetAllServices();
         ServiceModel GetService(int id);
         ServiceModel GetServiceByOrder(int id);
+        void InsertServices(List<ServiceModel> services);
+        void UpdateService(ServiceModel serviceUpdate);
     }
 }

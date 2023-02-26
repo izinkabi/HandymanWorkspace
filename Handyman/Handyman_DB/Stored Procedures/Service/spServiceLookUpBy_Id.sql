@@ -13,6 +13,7 @@ BEGIN
       ,c.[cat_type]
       ,c.[cat_description]
   FROM [Handyman_DB].[Service].[service] s
+
   inner join [Handyman_DB].[Service].[category] c ON s.[serv_categoryid] = c.[cat_id]
    WHERE [serv_id] = @serviceId
   order by c.cat_id, s.serv_status desc

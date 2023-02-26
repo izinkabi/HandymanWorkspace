@@ -100,7 +100,7 @@
 
             var yValues = await GetRequestsArray();
             // Initialize 
-            
+
             await JSObjectReference.InvokeVoidAsync(
                 "InitPieChart", yValues );
             StateHasChanged();
@@ -122,31 +122,34 @@
 
             var ownRequests = await _requestHelper.GetOwnRequests();
 
-            foreach (var request in ownRequests)
+            if (ownRequests != null && ownRequests.Count > 0)
             {
-                if (request.req_status == 0)
+                foreach (var request in ownRequests)
                 {
-                    started.Add(request);
-                }
+                    if (request.req_status == 0)
+                    {
+                        started.Add(request);
+                    }
 
-                if (request.req_status == 1)
-                {
-                    inprogress.Add(request);
-                }
+                    if (request.req_status == 1)
+                    {
+                        inprogress.Add(request);
+                    }
 
-                if (request.req_status == 3)
-                {
-                    finished.Add(request);
-                }
+                    if (request.req_status == 3)
+                    {
+                        finished.Add(request);
+                    }
 
-                if (request.req_status == 11)
-                {
-                    cancelled.Add(request);
-                }
+                    if (request.req_status == 11)
+                    {
+                        cancelled.Add(request);
+                    }
 
-                if (request.req_status == 4)
-                {
-                    closed.Add(request);
+                    if (request.req_status == 4)
+                    {
+                        closed.Add(request);
+                    }
                 }
             }
 

@@ -40,11 +40,45 @@ public class ServiceData : IServiceData
             service.category.name = outputItem.cat_name;
             service.category.description = outputItem.cat_description;
             service.category.type = outputItem.cat_type;
+
+            //Get a list of custom services
+            service.Customs = GetCustomServices(service.id);
+
             services.Add(service);
         }
 
         return services;
 
+
+    }
+
+    //Get a Custom Service
+    private List<CustomServiceModel> GetCustomServices(int oId)
+    {
+        try
+        {
+            List<CustomServiceModel>? customServices = _dataAccess.LoadData<CustomServiceModel, dynamic>(
+                "Service.spCustomServicesLookUp",
+                new { serviceId = oId },
+                "Handyman_DB");
+
+            //Check if the list is no empty
+            if (customServices != null && customServices.Count() > 0)
+            {
+                if (customServices.Any())
+                {
+                    return customServices;
+                }
+
+            }
+
+            return null;
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
     }
 
     /// <summary>
@@ -77,6 +111,8 @@ public class ServiceData : IServiceData
                 service.category.description = serviceCat.cat_description;
                 service.category.type = serviceCat.cat_type;
 
+                //populate customs
+                service.Customs = GetCustomServices(service.id);
                 return service;
 
             }
@@ -104,22 +140,26 @@ public class ServiceData : IServiceData
             if (id != 0)
             {
                 Service_CategoryModel serviceCat = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Request.spServiceLookUp_ByOrder",
-                     new { orderId = id }, "Handyman_DB").First();
+                     new { orderId = id }, "Handyman_DB").FirstOrDefault();
 
-                //Populate service
-                service.name = serviceCat.serv_name;
-                service.status = serviceCat.serv_status;
-                service.datecreated = serviceCat.serv_datecreated;
-                service.img = serviceCat.serv_img;
-                service.id = serviceCat.serv_id;
+                if (serviceCat != null)
+                {
+                    //Populate service
+                    service.name = serviceCat.serv_name;
+                    service.status = serviceCat.serv_status;
+                    service.datecreated = serviceCat.serv_datecreated;
+                    service.img = serviceCat.serv_img;
+                    service.id = serviceCat.serv_id;
 
 
-                service.category = new ServiceCategoryModel();
+                    service.category = new ServiceCategoryModel();
 
-                //populate category
-                service.category.name = serviceCat.cat_name;
-                service.category.description = serviceCat.cat_description;
-                service.category.type = serviceCat.cat_type;
+                    //populate category
+                    service.category.name = serviceCat.cat_name;
+                    service.category.description = serviceCat.cat_description;
+                    service.category.type = serviceCat.cat_type;
+
+                }
 
                 return service;
 
@@ -131,6 +171,60 @@ public class ServiceData : IServiceData
         {
 
             throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
+
+    //Insert services  using a transaction since it might have multiple customs
+    public void InsertServices(List<ServiceModel> services)
+    {
+        try
+        {
+            _dataAccess.StartTransaction("Handyman_DB");
+            foreach (ServiceModel service in services)
+            {
+                _dataAccess.SaveDataTransaction<ServiceModel>("Service.spServiceInput", service);
+                //save a custom of a service
+                if (service.Customs != null && service.Customs.Count > 0)
+                {
+                    foreach (var custom in service.Customs)
+                    {
+                        _dataAccess.SaveDataTransaction("Service.spServiceUpdate", custom);
+                    }
+                }
+            }
+            _dataAccess.CommitTransation();
+        }
+        catch (Exception)
+        {
+            _dataAccess.RollBackTransaction();
+            throw;
+        }
+    }
+
+    //Update the service OR insert customs
+    //Customs only insert if the service exists
+    public void UpdateService(ServiceModel serviceUpdate)
+    {
+        try
+        {
+            if (serviceUpdate == null || serviceUpdate.Customs.Count == 0)
+            {
+                return;
+            }
+
+            foreach (var custom in serviceUpdate.Customs)
+            {
+                if (custom != null)
+                {
+                    _dataAccess.SaveData<CustomServiceModel>("Service.spServiceUpdate", custom, "Handyman_DB");
+                }
+            }
+
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception(ex.Message);
         }
     }
 }

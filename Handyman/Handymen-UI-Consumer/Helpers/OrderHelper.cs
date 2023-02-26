@@ -104,7 +104,28 @@ namespace Handymen_UI_Consumer.Helpers
 
         }
 
+        //Get orders of the date
+        public async Task<List<OrderModel>> GetOrdersOfDate(DateTime date)
+        {
+            List<OrderModel> orders = await LoadUserOrders(userId);
+            List<OrderModel> dateOrders = new();
+            if (orders != null)
+            {
+                foreach (var o in orders)
+                {
+                    if (o.datecreated == date)
+                    {
+                        dateOrders.Add(o);
+                    }
+                }
 
+                if (dateOrders.Count > 0)
+                {
+                    return dateOrders;
+                }
+            }
+            return null;
+        }
         //Create an order
         public async Task CreateOrder(OrderModel newOrder)
         {
@@ -139,7 +160,11 @@ namespace Handymen_UI_Consumer.Helpers
             try
             {
                 await LoadUserOrders(userId);
-                return cancelledOrders.Count();
+                if (cancelledOrders != null && cancelledOrders.Count() != 0)
+                {
+                    return cancelledOrders.Count();
+                }
+                return 0;
             }
             catch (Exception)
             {
