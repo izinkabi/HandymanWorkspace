@@ -8,14 +8,28 @@
 
     <br/>
     <div class="my-3 justify-content-center" id="validation">
-              
-     
+
+
+
+
+
+    <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+    </div>
+    <div class="mb-3">
+        <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+    </div>
+
+
+
         <div class="bd-example-snippet bd-code-snippet">
          <div class="bd-example">
-        <form class="row g-3">
+           
           <div class="col-md-6">
             <label for="validationServer01" class="form-label">Full Name(s)</label>
-                    <input type="text" @bind="@providerModel.employeeProfile.Names" class="form-control is-valid" id="validationServer01" placeholder="Zee" required>
+                <input type="text" @bind-value="@profile.Names" class="form-control is-valid" id="validationServer01" placeholder="Zee" required>
             <div class="valid-feedback">
               Looks good!
             </div>
@@ -24,7 +38,7 @@
           <!--Address-->
             <div class="col-md-6">
                 <label for="validationServer01" class="form-label">Last Name</label>
-                    <input type="text" @bind="@providerModel.employeeProfile.Surname" class="form-control is-valid" id="validationServer01" placeholder="Maiana" required>
+                <input type="text" @bind-value="@profile.Surname" class="form-control is-valid" id="validationServer01" placeholder="Maiana" required>
                 <div class="valid-feedback">
                     Looks good!
                 </div>
@@ -43,7 +57,7 @@
                 </div>
             <div class="col-md-6">
                 <label for="validationServer02" class="form-label">Date Of Birth</label>
-                <input type="date" @bind="@providerModel.employeeProfile.DateOfBirth" class="form-control is-valid" id="validationServer02" placeholder="1990/5/5" required>
+                <input type="date" @bind-value="@profile.DateOfBirth" class="form-control is-valid" id="validationServer02" placeholder="1990/5/5" required>
                 <div class="valid-feedback">
                     Looks good!
                 </div>
@@ -51,30 +65,35 @@
                 
             <div class="col-md-6">
                 <label for="validationServer033" class="form-label">Phone Number</label>
-                <input type="text" @bind="@providerModel.employeeProfile.PhoneNumber" class="form-control is-valid" id="validationServer33" placeholder="0123456789" required>
+                <input type="text" @bind-value="@profile.PhoneNumber" class="form-control is-valid" id="validationServer33" placeholder="0123456789" required>
                 <div class="valid-feedback">
                     start with +27
                 </div>
             </div>
           
-        </form>
+      
         </div>
-        
+            <div class="container container-fluid col">
+                <img src="" alt="Photo" width="100" />
+                <InputFile>
+
+                </InputFile>
+            </div>
 
       </div>
     </div>
 
 
 @code {
-    public ServiceProviderModel? providerModel;
+    private ProfileModel? profile;
 
     protected override async Task OnInitializedAsync()
     {
-        providerModel = new()!;
-        providerModel.Services = new List<ServiceModel>()!;
-        providerModel.employeeProfile = new ProfileModel()!;
-
+        profile = new()!;
     }
+
+    [Parameter]
+    public EventCallback<ProfileModel> OnAddMember { get; set; }
 
     void SelectedGender(ChangeEventArgs e)
     {
@@ -83,14 +102,14 @@
             switch ((string)e.Value)
             {
                 case "1":
-                    providerModel.employeeProfile.Gender = "Male";
+                    profile.Gender = "Male";
 
                     break;
                 case "2":
-                    providerModel.employeeProfile.Gender = "Female";
+                    profile.Gender = "Female";
                     break;
                 case "3":
-                    providerModel.employeeProfile.Gender = "Other";
+                    profile.Gender = "Other";
                     break;
 
             }

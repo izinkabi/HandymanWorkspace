@@ -7,7 +7,7 @@ namespace Handyman_SP_UI.Pages.Helpers;
 /// </summary>
 public class RequestHelper : IDisposable, IRequestHelper
 {
-    IRequestEndPoint? _requestEndPoint;
+    readonly IRequestEndPoint? _requestEndPoint;
     readonly IProviderHelper _providerHelper;
     IList<OrderModel> orders;
     readonly IList<RequestModel> _requests;
@@ -22,7 +22,7 @@ public class RequestHelper : IDisposable, IRequestHelper
         statusCheckHelper = new StatusCheckHelper();
     }
 
-    List<RequestModel> NewRequests = new()!;
+    readonly List<RequestModel> NewRequests = new()!;
     List<RequestModel> StartedRequests = new()!;
     List<RequestModel> AcceptedRequests;
     List<RequestModel> FinishedRequests = new()!;
@@ -239,12 +239,16 @@ public class RequestHelper : IDisposable, IRequestHelper
             if (provider != null)
             {
                 requests = await _requestEndPoint.GetRequestsByProvider(provider.pro_providerId);
-                foreach (var request in requests)
+                if (requests != null)
                 {
-                    request.req_status = statusCheckHelper.CheckStatus(request);
-                    request.req_progress = GetProgress(request);
+                    foreach (var request in requests)
+                    {
+                        request.req_status = statusCheckHelper.CheckStatus(request);
+                        request.req_progress = GetProgress(request);
+                    }
+                    return requests;
                 }
-                return requests;
+
             }
             return null;
         }

@@ -5,9 +5,11 @@
 @using HandymanProviderLibrary.Models;
 @using Handyman_SP_UI.Pages.Helpers;
 @using Microsoft.AspNetCore.Components.Web
-@inject IJSRuntime JsRuntime
 
+@inject IJSRuntime JsRuntime
 @inject IProviderHelper _providerHelper
+@inject IConfiguration _config
+
 <AuthorizeView>
 
 <Authorized>
@@ -23,10 +25,7 @@
                     <p class="mb-1 text-muted">Date of birth:@providerModel.employeeProfile.DateOfBirth.ToShortDateString()</p>
                 </div>
                 <div class="col-auto d-none d-lg-block">
-                    <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
-                        <title>Picture</title><rect width="100%" height="100%" fill="#55595c" />
-                        <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                        </svg>
+                <img src="@(CreateWebPath(providerModel.employeeProfile.ImageUrl))" width="150" height="250" >
 
                 </div>
             </div>
@@ -35,67 +34,80 @@
 
         @if (providerModel.Services.Count > 0)
         {
-        <div class="col-md-6">
-            <div class="position-sticky" style="top: 2rem;">
-                <div class="p-4 mb-3 bg-light rounded">
-                    <h4 class="fst-italic">About</h4>
-                    <h3 class="mb-0">@providerModel.Services.ElementAt(0).category.description and more...</h3>
-                    <div class="mb-1 text-muted">Date Employed:@providerModel.DateEmployed</div>
+            <div class="col-md-6">
+                <div class="position-sticky" style="top: 2rem;">
+                    <div class="p-4 mb-3 bg-light rounded">
+                        <h4 class="fst-italic">About</h4>
+                        <h3 class="mb-0">@providerModel.Services.ElementAt(0).category.description and more...</h3>
+                        <div class="mb-1 text-muted">Date Employed:@providerModel.DateEmployed</div>
+                    </div>
                 </div>
             </div>
-        </div>
         }
-    </div>
+        else
+        {
+            <button class="btn btn-primary">
+                <div class="d-flex align-content-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-door-open-fill" viewBox="0 0 16 16">
+                        <path d="M1.5 15a.5.5 0 0 0 0 1h13a.5.5 0 0 0 0-1H13V2.5A1.5 1.5 0 0 0 11.5 1H11V.5a.5.5 0 0 0-.57-.495l-7 1A.5.5 0 0 0 3 1.5V15H1.5zM11 2h.5a.5.5 0 0 1 .5.5V15h-1V2zm-2.5 8c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z" />
+                    </svg>
+                </div>
+            </button>
+            
+        }
+        </div>
 
-        <div class="row g-5">
-        <div class="col-md-12">
+ <div class="row g-5">
+    <div class="col-md-12">
+            @if (providerModel.Services.Count > 0)
+            {
 
+                 <article class="blog-post">
+            
 
-            <article class="blog-post">
+                    <h3 class="text-center">List of your Services</h3>
+                    <p class="text-center mb-1 text-muted fst-italic">You can add more services to broaden your field</p>
 
-                <h3 class="text-center">List of your Services</h3>
-                        <p class="text-center mb-1 text-muted fst-italic">You can add more services to broaden your field</p>
-
-                @if (providerModel.Services.Count > 0)
-                {
                     <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>Category</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var service in @providerModel.Services)
-                            {
+                            <thead>
                                 <tr>
-                                    <td>@service.name</td>
-                                    <td>@service.category.description</td>
-                                    <td>@service.category.name</td>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Category</th>
                                 </tr>
-                            }
-                        </tbody>
-                <tfoot>
-                    <tr>
-                        <td>Totals</td>
-                            <td>@providerModel.Services.Count</td>
-                    </tr>
-                </tfoot>
-            </table>
-            }
+                            </thead>
+                            <tbody>
+                                @foreach (var service in @providerModel.Services)
+                                {
+                                    <tr>
+                                        <td>@service.name</td>
+                                        <td>@service.category.description</td>
+                                        <td>@service.category.name</td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td>Totals</td>
+                                        <td>@providerModel.Services.Count</td>
+                                </tr>
+                            </tfoot>
+                    </table>
+            
 
-        </article>
+                 </article>
+
+           
                 <div class="accordion accordion-flush" id="accordionExample">
                     <div class="accordion-item panel">
                         <h2 class="accordion-header" id="headingOne">
                             <button class="accordion-button px-6" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    <strong class="text-capitalize text-center fa-italic">ADD SERVICES</strong>
-                                    <hr/>
+                                <strong class="text-capitalize text-center fa-italic">ADD SERVICES</strong>
+                                <hr />
                             </button>
                         </h2>
-                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" >
-                                <div class="accordion-body">
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
+                            <div class="accordion-body">
                                 <Handyman_SP_UI.Pages.Services.ServicesAlbum OnAddService="AddService">
 
                                 </Handyman_SP_UI.Pages.Services.ServicesAlbum>
@@ -103,38 +115,35 @@
                         </div>
                     </div>
                 </div>
-                   
-
+            }
     </div>
- </div>
+</div>
 
-            <!--Back to top button-->
-            <button @onclick="@BackToTop" class="float-end border-0 bg-transparent">
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-up-circle border-0" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z" />
-                </svg>
-            </button>
-            <!--End Back to top button-->
-        }
-        else
-        {
-            <div class="d-flex justify-content-center">
-                <div class="spinner-border" role="status">
-                    <span class="visually-hidden"></span>
-                </div>
-                <span class="visually-visible">Loading...</span>
-            </div>
-        }
+        <!--Back to top button-->
+        <button @onclick="@BackToTop" class="float-end border-0 bg-transparent">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-up-circle border-0" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z" />
+            </svg>
+        </button>
+        <!--End Back to top button-->
+}
+else
+{
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden"></span>
+        </div>
+        <span class="visually-visible">Loading...</span>
+    </div>
+}
     </Authorized>
          <NotAuthorized>
 
-        <div class="p-5 mb-4 bg-light rounded-3">
-            <div class="container-fluid py-5">
-                <h1 class="display-5 fw-bold">Welcome to Handymen</h1>
-                <p class="col-md-8 fs-4">All services you think you can provide are listed here choose at least one and become <strong>Handymen</strong>, become the best in what you do and get money out of it</p>
-                <button href="service-album" class="btn btn-primary btn-lg">Check them out!</button>
-            </div>
-        </div>
+        <a href="Identity/Account/Login" class="nav-link text-dark">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-amd" viewBox="0 0 16 16">
+                <path d="m.334 0 4.358 4.359h7.15v7.15l4.358 4.358V0H.334ZM.2 9.72l4.487-4.488v6.281h6.28L6.48 16H.2V9.72Z" />
+            </svg>
+        </a>
          </NotAuthorized>
 </AuthorizeView>
 
@@ -147,11 +156,22 @@
         {
             // providerModel = new ServiceProviderModel()!;
             providerModel = await _providerHelper.GetProvider();
+            if(providerModel is null)
+            {
+                providerModel = new();
+                providerModel.employeeProfile = await _providerHelper.GetProfile();
+            }
         }catch(Exception ex)
         {
             throw new Exception(ex.Message, ex.InnerException);   
         }
 
+    }
+
+    //Get a full path to route with to the directory of the image
+    string CreateWebPath(string relativePath)
+    {
+        return Path.Combine(_config.GetValue<string>("WebStorageRoot")!,relativePath);
     }
 
     //Go to top page

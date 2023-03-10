@@ -25,30 +25,20 @@ public class EmployeeData
 
             //get the business , employee(with a profile) and the related ratings
             var er = _dataAccess.LoadDataTransaction<Employee_Rating_Model, dynamic>("Delivery.spEmployeesLookUp", new { EmployeeId = EmployeeId }).FirstOrDefault();
-            _dataAccess.CommitTransation();
-            employee.employeeId = EmployeeId;
-            employee.BusinessId = er.emp_businessid;
-
-            //popolate the data in the following sequence
-            //Business
-            //Employee
-            //Rating
-            //employee.ratings = new List<RatingsModel>()!;
-            //foreach (var er in ers)
-            //{
-
-            //    rating = new();
-
-
-            //    rating.Id = er.rate_id;
-            //    rating.stars = er.rate_stars;
-            //    rating.review = er.rate_review;
-            //    rating.recommendation = er.rate_recommendation;
-
-
-            //    employee.ratings.Add(rating);
-
-            //}
+            if (er != null)
+            {
+                _dataAccess.CommitTransation();
+                employee.employeeId = EmployeeId;
+                employee.BusinessId = er.emp_businessid;
+                if (er.emp_role == 0)
+                {
+                    employee.IsOwner = false;
+                }
+                else
+                {
+                    employee.IsOwner = true;
+                }
+            }
 
         }
         catch (Exception ex)
@@ -68,22 +58,6 @@ public class EmployeeData
 
             _dataAccess.StartTransaction("Handyman_DB");
 
-            _dataAccess.SaveDataTransaction("dbo.spProfileInsert", new
-            {
-                //Start with employee as employee' details profile 
-                Names = employee.employeeProfile.Names,
-                Surname = employee.employeeProfile.Surname,
-                DateOfBirth = employee.employeeProfile.DateOfBirth.Date,
-                AddressId = employee.employeeProfile.AddressId,
-                PhoneNumber = employee.employeeProfile.PhoneNumber,
-                EmailAddress = employee.employeeProfile.EmailAddress,
-                profileGender = employee.employeeProfile.Gender,
-                userId = employee.employeeId
-
-
-            });
-
-
             //Insert the employee
             _dataAccess.SaveDataTransaction("Delivery.spEmployeeInsert",
                    new
@@ -91,7 +65,8 @@ public class EmployeeData
                        //Then complete the employee  
                        employeeId = employee.employeeId,
                        BusinessId = employee.BusinessId,
-                       DateEmployed = DateTime.UtcNow
+                       DateEmployed = DateTime.UtcNow,
+                       role = employee.IsOwner
                    });
 
             _dataAccess.CommitTransation();

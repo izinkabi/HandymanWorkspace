@@ -38,7 +38,7 @@ namespace Handyman_SP_UI.Pages.Helpers
                         business = await _business.GetBusiness(provider.BusinessId);
                         if (business != null)
                         {
-                            business.Employee = provider;
+                            business.Employees.Add(provider);
                         }
                     }
 

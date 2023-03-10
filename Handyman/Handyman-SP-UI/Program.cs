@@ -56,6 +56,7 @@ builder.Services.AddResponseCompression(opt =>
 });
 builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();
+builder.Services.AddApplicationInsightsTelemetry();
 
 var app = builder.Build();
 

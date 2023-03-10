@@ -7,6 +7,6 @@
     [req_employeeid] NVARCHAR (450) NOT NULL, 
     [req_orderid] INT NOT NULL, 
     CONSTRAINT [PK_request] PRIMARY KEY ([req_id]), 
-    CONSTRAINT [FK_request_employees] FOREIGN KEY ([req_employeeid]) REFERENCES [Delivery].[employees]([emp_userid]), 
+    CONSTRAINT [FK_request_employees] FOREIGN KEY ([req_employeeid]) REFERENCES [Delivery].[employees]([emp_profile_id]), 
     CONSTRAINT [FK_request_order] FOREIGN KEY (req_orderid) REFERENCES [Request].[order]([ord_id]),
 )

@@ -70,6 +70,7 @@
     <Folder Include="Stored Procedures\Business" />
     <Folder Include="Stored Procedures\Business\Employee" />
     <Folder Include="Stored Procedures\Business\Employee\Provider" />
+    <Folder Include="Stored Procedures\Handymen" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Schemas\Request.sql" />
@@ -112,7 +113,6 @@
     <Build Include="Stored Procedures\Business\Employee\spEmployee_Rating_Insert.sql" />
     <Build Include="Stored Procedures\Business\Employee\spRatingInsert.sql" />
     <Build Include="Tables\profile.sql" />
-    <Build Include="Stored Procedures\Business\Employee\spProfileInsert.sql" />
     <Build Include="Stored Procedures\Request\spRequestInsert.sql" />
     <Build Include="Stored Procedures\Request\spRequestLookUpByProvider.sql" />
     <Build Include="Stored Procedures\Order\spOrderLookUpByService.sql" />
@@ -130,6 +130,8 @@
     <Build Include="Tables\AspNetUsers.sql" />
     <Build Include="Tables\customService.sql" />
     <Build Include="Stored Procedures\Service\spCustomServicesLookUp.sql" />
+    <Build Include="Stored Procedures\Handymen\spProfileInsert.sql" />
+    <Build Include="Stored Procedures\Handymen\spProfileLookUp.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Script\DevNathi_Handyman_DB.publish.publish.xml" />

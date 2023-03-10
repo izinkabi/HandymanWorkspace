@@ -10,5 +10,6 @@ public class EmployeeModel
     public int BusinessId { get; set; }
     public DateTime DateEmployed { get; set; }
     public ProfileModel? employeeProfile { get; set; }
+    public bool IsOwner { get; set; }
 }
 
