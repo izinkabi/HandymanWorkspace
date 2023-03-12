@@ -196,10 +196,10 @@
                             </div>
                             <hr />
                             <!--Provider's added services-->
-                            @if (newBusiness.Employee.Services.Count > 0)
+                            @*@if (newBusiness.Employees.Count > 0)
                             {
 
-                                @foreach (var service in newBusiness.Employee.Services)
+                                @foreach (var service in newBusiness.Employees)
                                 {
 
                                     <ol class="list-group list-group-numbered">
@@ -211,13 +211,13 @@
                                             <span class="badge bg-primary rounded-pill">@service.id</span>
                                         </li>
 
-                                    </ol>
-                                }
+                                }    </ol>
+                                
                             }
                             else
                             {
                                 <p>Loading...</p>
-                            }
+                            }*@
                             <!--End provider's added services-->
                         </div>
                     </div>
@@ -258,8 +258,8 @@
     {
         newBusiness = new()!;
         newBusiness.registration = new()!;
-        newBusiness.Employee = new()!;
-        newBusiness.Employee.Services = new List<ServiceModel>();
+        //newBusiness.Employees = new()!;
+        //newBusiness.Employees.Services = new List<ServiceModel>();
         newBusiness.address = new()!;
 
         try
@@ -323,12 +323,12 @@
 
             var newProfile = (NewProfile) profileComponent?.Instance;//Embeded profileComponent
 
-            newBusiness.Employee.employeeProfile = newProfile?.providerModel?.employeeProfile;
+            //newBusiness.Employees.employeeProfile = newProfile?.profile?.employeeProfile;
 
             //Add the provider role
             var user = (await authenticationStateTask).User;
 
-            newBusiness.Employee.employeeProfile.EmailAddress = UserManager.GetUserName(user);
+           // newBusiness.Employees.employeeProfile.EmailAddress = UserManager.GetUserName(user);
             var localUser = await UserManager.GetUserAsync(user);
             
             //Using roles to create a business
@@ -348,11 +348,11 @@
     //Adding services for a newly registered service-provider under a business
     void AddToNewServices(ServiceModel service)
     {
-        if(!(newBusiness.Employee.Services.Contains(service)) && (service != null))
-        {
-            newBusiness.Employee.Services.Add(service);
-            services.Remove(service);
-        }
+        //if(!(newBusiness.Employees..Contains(service)) && (service != null))
+        //{
+        //    newBusiness.Employees.Services.Add(service);
+        //    services.Remove(service);
+        //}
 
     }
 

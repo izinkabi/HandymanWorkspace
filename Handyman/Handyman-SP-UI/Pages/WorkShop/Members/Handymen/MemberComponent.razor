@@ -1,0 +1,202 @@
+﻿@page "/member"
+
+@using Microsoft.AspNetCore.Components.Web
+
+@inject NavigationManager NavManager
+@inject SignInManager<Handyman_SP_UIUser> signInManager
+@inject UserManager<Handyman_SP_UIUser> UserManager
+@inject IBusinessHelper _business
+@inject AuthenticationStateProvider authenticationStateProvider
+@inject IProviderHelper _providerHelper
+
+<AuthorizeView Roles="Member">
+
+    <Authorized>
+
+        @if (business != null && business.registration != null)
+        {
+            <!--Welcome-->
+            <div class="p-4 p-md-3 mb-2 rounded-4 text-bg-dark" role="document">
+                <div class="col-md-6 px-0">
+                    <h1 class="display-4 fst-italic">Hi   </h1>
+                    <p class="lead my-3">Welcome to Handyman's @business.Name</p>
+                </div>
+            </div>
+            <!--End Welcome-->
+            <!--Business Component-->
+            <div class="row mb-2 box-shadow">
+                <div class="col-md-3 rounded-4 shadow bg-light" role="document">
+                    <div class="row g-0 overflow-hidden mt-2 rounded-4 btn-outline-warning flex-md-row mb-4 shadow-sm h-md-250">
+
+                        <a href="business-dashboard" class="col p-4 d-flex flex-column btn-outline-warning">
+                            <strong class="d-inline-block mb-2">Business details </strong>
+                            <h3 class="mb-0">@business.Name</h3>
+
+                            <p class="card-text mb-auto"><strong>Reg Number: </strong>@business.registration.regNumber</p> <!--Should come from db -->
+
+                        </a>
+                    </div>
+                </div>
+                <!--End Business Component-->
+                <!--Business Component-->
+                @if (member != null)
+                {
+                    <div class="col-md-3 shadow rounded-4 p-2" role="document">
+                        <div class="row g-0 border rounded-4 overflow-hidden flex-md-row mb-4  shadow-sm h-md-250 ">
+                            <div class="col p-2 d-flex  h-md-250 flex-column mt-4 position-static">
+                                <a href="profile" class="">
+                                    <Handyman_SP_UI.Pages.Businesses.Employee.Stuff providerParam="@member">
+
+                                    </Handyman_SP_UI.Pages.Businesses.Employee.Stuff>
+
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <!--End Business Component-->
+                @if (business.address != null)
+                {
+                    <!--Addresses Component-->
+                    <div class="col-md-3 shadow rounded-4 p-2 " role="document">
+                        <div class="row g-0 border rounded-4 overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                            <div class="col p-4 d-flex flex-column position-static">
+                                <strong class="d-inline-block mb-2 text-primary">Address</strong>
+                                <h3 class="mb-0">@business.address.add_suburb</h3>
+                                <h4 class="card-text mb-auto">@business.address.add_state.ToUpper()</h4>
+                                <br />
+                                <p class="card-text mb-auto">@business.address.add_country.ToUpper()</p>
+                                <p class="card-text mb-auto">@business.address.add_zip</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!--End Addresses Component-->
+                }
+
+
+                <!--Services Component-->
+                @if (member!=null)
+                {
+
+                    <div class="col-md-3 shadow rounded-4" role="document">
+                        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                            <div class="col p-4 d-flex flex-column position-static">
+                                <strong class="d-inline-block mb-2 text-primary">Services</strong>
+                                @if (member.Services.Count > 0)
+                                {
+                                    @foreach (var service in member.Services)
+                                    {
+                                        <p class="mb-0">@service.name</p>
+                                        <hr />
+                                    }
+                                    <div class="mb-1 text-muted">@member.Services.Count</div>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        @if (business is null || business.registration is null)
+        {
+            @if(member is not null)
+            {
+                <div class="d-flex justify-content-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-door-open-fill" viewBox="0 0 16 16">
+                        <path d="M1.5 15a.5.5 0 0 0 0 1h13a.5.5 0 0 0 0-1H13V2.5A1.5 1.5 0 0 0 11.5 1H11V.5a.5.5 0 0 0-.57-.495l-7 1A.5.5 0 0 0 3 1.5V15H1.5zM11 2h.5a.5.5 0 0 1 .5.5V15h-1V2zm-2.5 8c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z" />
+                    </svg>
+
+                </div>
+                <button class="btn btn-primary btn-outline-warning border-0" @onclick="OpenNewWorkShop">
+                    Open a Work Shop
+                </button>
+            }
+
+            
+        }
+
+        <!--End Services Component-->
+        <!--Ratings Component-->
+        <!--End Ratings Component-->
+
+    </Authorized>
+    <NotAuthorized>
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold">Welcome to Handymen</h1>
+                <p class="col-md-8 fs-4">All services you think you can provide are listed here choose at least one and become <strong>Handymen</strong>, become the best in what you do and get money out of it</p>
+                <button @onclick="displayServiceAlbum" class="btn btn-primary btn-lg">Check them out!</button>
+            </div>
+        </div>
+    </NotAuthorized>
+
+</AuthorizeView>
+
+
+@code {
+
+    BusinessModel? business = new();
+    ServiceProviderModel? member = new();
+
+    enum Categories
+    {
+        Electronic,
+        Plumbing,
+        construction,
+        logistics
+
+    }
+
+    [Authorize(Roles = "ServiceProvider")]
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+
+            business = await _business.GetBusiness();
+            if(business!=null && business.Employees.Count > 0)
+            {
+
+                foreach(var member in business.Employees)
+                {
+                    if (member != null)
+                    {
+                        var user = (await authenticationStateProvider.GetAuthenticationStateAsync()).User;
+                        var userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+                        if (member.pro_providerId == userId)
+                        {
+                            this.member = member;
+                        }
+                    }
+                }
+            }
+
+            if(business is null)
+            {
+               member = new();
+               member.employeeProfile = await _providerHelper.GetProfile();
+            }
+        }
+        catch (Exception ex)
+        {
+           
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
+
+    /// <summary>
+    /// Display Services
+    /// </summary>
+    void displayServiceAlbum()
+    {
+        NavManager.NavigateTo("servicists");
+    }
+    /// <summary>
+    /// Display New-Business-Component
+    /// </summary>
+    void OpenNewWorkShop()
+    {
+        NavManager.NavigateTo("registers");
+    }
+}

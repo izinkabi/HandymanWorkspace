@@ -88,5 +88,31 @@ namespace HandymanUILibrary.API
 
         }
 
+        //Update service
+        public async Task UpdateService(ServiceModel service)
+        {
+            try
+            {
+                await _aPIHelper.ApiClient.PutAsJsonAsync<ServiceModel>("/api/Services/UpdateService", service);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task RemoveCustom(ServiceModel service)
+        {
+            try
+            {
+                await _aPIHelper.ApiClient.DeleteAsync($"/api/Services/DeleteCustom=service?{service}");
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

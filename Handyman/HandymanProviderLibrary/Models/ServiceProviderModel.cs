@@ -3,7 +3,7 @@
 public class ServiceProviderModel : EmployeeModel
 {
 
-    public IList<ServiceModel>? Services { get; set; }
+    public List<ServiceModel>? Services { get; set; } = new();
     public string? pro_providerId { get; set; }
 
 

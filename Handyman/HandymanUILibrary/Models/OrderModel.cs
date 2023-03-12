@@ -13,7 +13,6 @@ namespace HandymanUILibrary.Models
         public ServiceModel? service { get; set; }
         public IList<TaskModel>? Tasks { get; set; }
         public int Id { get; set; }
-
-
+        public HandymenDetailsModel Provider { get; set; }
     }
 }

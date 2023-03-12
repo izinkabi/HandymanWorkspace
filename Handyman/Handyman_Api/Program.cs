@@ -27,6 +27,7 @@ builder.Services.AddScoped<IServiceProviderData, ServiceProviderData>();
 builder.Services.AddScoped<IBusinessData, BusinessData>();
 builder.Services.AddTransient<IRequestData, RequestData>();
 builder.Services.AddScoped<ITaskData, TaskData>();
+builder.Services.AddScoped<IProfileData, ProfileData>();
 
 
 

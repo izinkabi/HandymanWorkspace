@@ -1,5 +1,6 @@
 ﻿using HandymanProviderLibrary.Models;
 using Microsoft.AspNetCore.Components.Authorization;
+using System.Security.Claims;
 
 namespace Handyman_SP_UI.Pages.Helpers;
 
@@ -8,6 +9,7 @@ public class EmployeeHelper
     private AuthenticationStateProvider? _authenticationStateProvider;
     protected EmployeeModel? employeeModel;
     protected string? userId;
+    private ClaimsPrincipal User;
 
 
     public EmployeeHelper(AuthenticationStateProvider stateProvider)
@@ -28,8 +30,8 @@ public class EmployeeHelper
         {
             if (userId == null)
             {
-                var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
-                userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+                User = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
+                userId = User.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
             }
             return userId;
         }
@@ -38,4 +40,14 @@ public class EmployeeHelper
             throw new Exception(ex.Message);
         }
     }
+
+    protected ClaimsPrincipal GetUser()
+    {
+        if (User != null)
+        {
+            return User;
+        }
+        return null;
+    }
+
 }

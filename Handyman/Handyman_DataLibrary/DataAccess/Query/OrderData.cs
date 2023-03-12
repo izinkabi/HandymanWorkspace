@@ -70,6 +70,12 @@ public class OrderData : IOrderData
                     }
                 }
                 orderSet.Add(order);
+                //Find provider's details
+                foreach (var o in orderSet)
+                {
+                    order.Provider = GetHandymenDetails(o.Id);
+                }
+
 
 
             }
@@ -105,6 +111,31 @@ public class OrderData : IOrderData
 
         return orderSet.ToList();
     }
+
+    //get the provider's details
+    private HandymenDetailsModel GetHandymenDetails(int orderId)
+    {
+        try
+        {
+            if (orderId != 0)
+            {
+                var HDM = _dataAccess.LoadData<HandymenDetailsModel, dynamic>("Request.spGetHandymenDetailsByOrder", new { orderId = orderId }, "Handyman_DB").FirstOrDefault();
+                if (HDM != null)
+                {
+                    return HDM;
+                }
+            }
+
+
+            return null;
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
 
     /// <summary>
     /// Insert an order

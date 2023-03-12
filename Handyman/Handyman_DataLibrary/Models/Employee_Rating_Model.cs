@@ -6,6 +6,7 @@
         public int emp_businessid { get; set; }
 
         public DateTime emp_date_employed { get; set; }
+        public int emp_role { get; set; }
 
 
         public string? Names { get; set; }

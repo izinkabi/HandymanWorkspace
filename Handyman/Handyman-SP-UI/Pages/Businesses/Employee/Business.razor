@@ -1,4 +1,4 @@
-﻿@page "/business"
+﻿@*@page "/business"
 @page "/bus"
 @using Microsoft.AspNetCore.Components.Web
 
@@ -40,13 +40,13 @@
 
                     <!--Business Component-->
 
-                    @if (business.Employee != null)
+                    @if (business.Employees != null)
                     {
                         <div class="col-md-3 shadow rounded-4 p-2" role="document">
                             <div class="row g-0 border rounded-4 overflow-hidden flex-md-row mb-4  shadow-sm h-md-250 ">
                             <div class="col p-2 d-flex  h-md-250 flex-column mt-4 position-static">
                                 <a href="profile" class="">
-                                    <Handyman_SP_UI.Pages.Businesses.Employee.Stuff providerParam="@business.Employee">
+                                    <Handyman_SP_UI.Pages.Businesses.Employee.Stuff providerParam="@business.Employees">
 
                                     </Handyman_SP_UI.Pages.Businesses.Employee.Stuff>
 
@@ -77,21 +77,21 @@
 
 
                     <!--Services Component-->
-                    @if (business.address != null && business.Employee.employeeProfile != null)
+                    @if (business.address != null && business.Employees.employeeProfile != null)
                     {
 
                         <div class="col-md-3 shadow rounded-4" role="document">
                             <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                                 <div class="col p-4 d-flex flex-column position-static">
                                     <strong class="d-inline-block mb-2 text-primary">Services</strong>
-                                    @if (business.Employee.Services.Count > 0)
+                                    @if (business.Employees.Services.Count > 0)
                                     {
-                                        @foreach (var service in business.Employee.Services)
+                                        @foreach (var service in business.Employees.Services)
                                         {
                                             <p class="mb-0">@service.name</p>
                                             <hr/>
                                         }
-                                        <div class="mb-1 text-muted">@business.Employee.Services.Count</div>
+                                        <div class="mb-1 text-muted">@business.Employees.Services.Count</div>
                                     }
 
                                 </div>
@@ -193,3 +193,4 @@
     
 }
 
+*@

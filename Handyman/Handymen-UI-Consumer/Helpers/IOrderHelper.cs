@@ -13,6 +13,10 @@ namespace Handymen_UI_Consumer.Helpers
         Task CreateOrder(OrderModel newOrder);
         Task UpdateOrderStatus(OrderModel order);
         void CancelOrder(OrderModel order);
+        Task<int> NumberOfCancelledRequests();
+        List<OrderModel> CancelledOrdersProperty { get; }
+
+        Task<List<OrderModel>> GetOrdersOfDate(DateTime date);
 
     }
 }

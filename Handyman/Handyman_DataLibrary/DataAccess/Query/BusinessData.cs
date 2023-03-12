@@ -150,11 +150,15 @@ namespace Handyman_DataLibrary.DataAccess.Query
                     _dataAccess.CommitTransation();
 
                     //then save the employee
-                    if (business.Employee != null)
+                    if (business.Employees != null && business.Employees.Count > 0)
                     {
-                        //Insert the employee
-                        business.Employee.BusinessId = businessId;
-                        EmployServiceProvider(business.Employee);
+                        foreach (var employee in business.Employees)
+                        {
+                            //Insert the employee
+                            employee.BusinessId = businessId;
+                            EmployServiceProvider(employee);
+                        }
+
                     }
 
                     return business;

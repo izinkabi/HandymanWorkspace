@@ -19,8 +19,8 @@
 
 
     <div class="row m-3 rounded-4 box-shadow" role="document">
-
-        <dl class="col align-content-center bg-info bg-opacity-10">
+        
+        <dl class="align-content-center bg-info bg-opacity-10">
 
             <div class="card m-3 bg-transparent border-0">
                 <div class="row g-0">
@@ -31,18 +31,75 @@
                         <div class="card-body">
                             <h5 class="card-title" id="orderName">@order.service.name</h5>
                             <p class="card-text" id="orderDescription"> @order.service.category.description</p>
-                            <p class="card-text"><small class="text-muted">@order.datecreated.ToString("MMMM dd, yyyy")</small></p>
+                            
+                         
+                            <p class="card-text"><small class="text-muted">@DateOnly.Parse($"{DateTime.UtcNow.ToShortDateString()}")</small></p>
+                            <hr />
+                           
+                            @if (IsOnDetails)
+                            {
+                                <p class="font-monospace">Due Date</p>
+                                @if (isDateSaved)
+                                {
+                                    <li class="d-inline-block border-1">
+                                        <p class="fst-italic ">@DateOnly.Parse($"{order.duedate.ToShortDateString()}")</p>
+                                        <button class="btn bg-transparent btn-outline-info" @onclick="editDate">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                            </svg>
+                                        </button>
+                                    </li>
 
+                                }
+
+                                <!--Due Date-->
+
+                                @if (!isDateSaved)
+                                {
+                                    <div class="container container-fluid float-lg-start bg-transparent d-inline">
+
+
+
+                                        <li class="d-inline-block">
+                                            <input type="date" @bind="order.duedate" class="rounded" id="birthday" name="birthday">
+                                            <button @onclick="saveDate"  class="btn btn-outline-info border-1 bg-transparent">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save-fill" viewBox="0 0 16 16">
+                                                    <path d="M8.5 1.5A1.5 1.5 0 0 1 10 0h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h6c-.314.418-.5.937-.5 1.5v7.793L4.854 6.646a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l3.5-3.5a.5.5 0 0 0-.708-.708L8.5 9.293V1.5z" />
+                                                </svg>
+                                            </button>
+                                        </li>
+
+
+                                    </div>
+                                }
+
+                            }
+                            <!--End Due Date-->
                         </div>
                     </div>
                 </div>
             </div>
         </dl>
 
+        <!--Provider Details-->
+        <div class="collapse row rounded px-1 m-1 " id="providerDetails">
+            <button class="align-content-lg-center text-center bg-transparent border-0 rounded-4 " data-bs-toggle="collapse" href="#providerDetails" aria-expanded="false" aria-controls="providerDetails" role="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-circle-fill" viewBox="0 0 16 16">
+                    <path d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+                </svg>
+            </button>
+            <hr/>
+           <HandymenDetailsComponent HandymenDetailsProperty="@order.Provider">
+
+           </HandymenDetailsComponent>
+          
+        </div>
+        <!--End Provider Details-->
 
         @if (taskList != null && taskList.Count > 0 && isOnDetails || order.status == 0 && taskList != null)
         {
-            <!--/End Modal-->
+            
             <!--List of task-items in the confirmed order-->
             <div class="list-group list-group-flush align-content-lg-center">
 
@@ -73,9 +130,9 @@
         {
             @if (taskList.Count == 0)
             {
-                          <p class="font-monospace fst-italic">
-                               There are no orders
-                          </p>
+                <p class="font-monospace fst-italic">
+                    There are no orders
+                </p>
 
             }
         }
@@ -100,19 +157,32 @@
      
 
         
-
+    
     </div>
 }
+        
 
 
 @code {
 
     OrderModel order;
     bool isOnDetails;
+    bool isDateSaved;
     List<TaskModel>? taskList = new()!;
 
     [Parameter]
-    public bool IsOnDetails { get {return isOnDetails; } set { isOnDetails = value; } }
+    public bool IsOnDetails 
+    { 
+        get {return isOnDetails; } 
+        set 
+        {
+            isOnDetails = value;
+            if (isOnDetails)
+            {
+                isDateSaved = true;
+            }
+        } 
+    }
 
     [Parameter]
     public OrderModel OrderComponentModel
@@ -125,12 +195,28 @@
         set
         {
             order = value;
+            order.duedate = DateTime.Now;
             taskList = order?.Tasks?.ToList();
         }
     }
 
+    int Day;
+    int Month;
+    int Year;
 
+    void saveDate()
+    {
+        if (isDateSaved)
+        {
+            isDateSaved = false;
+        }
+        isDateSaved = true;
+    }
 
+    void editDate()
+    {
+        isDateSaved = false;
+    }
 
     /// <summary>
     ///  Add the new tasks to the order's task list
@@ -181,7 +267,7 @@
             order.Tasks = taskList;
             order.datecreated = DateTime.UtcNow;
             order.duedate = DateTime.Now;
-            order.status = 1; //Thus confirmed
+            order.status = 0; //Thus confirmed
             await _orderHelper.CreateOrder(order);
         }
         catch (Exception)
@@ -191,6 +277,20 @@
 
     }
 
+    //void NextMonth()
+    //{
+    //    Month++;
+    //}
+
+    void PrevMonth()
+    {
+        
+    }
+
+    void GetDate()
+    {
+        var duedate = DateOnly.Parse($"/{Day}/{Month}/{Year}");
+    }
 
     /// <summary>
     /// This method is under construction

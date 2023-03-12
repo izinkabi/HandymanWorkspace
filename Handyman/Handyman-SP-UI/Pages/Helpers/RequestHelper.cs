@@ -7,7 +7,7 @@ namespace Handyman_SP_UI.Pages.Helpers;
 /// </summary>
 public class RequestHelper : IDisposable, IRequestHelper
 {
-    IRequestEndPoint? _requestEndPoint;
+    readonly IRequestEndPoint? _requestEndPoint;
     readonly IProviderHelper _providerHelper;
     IList<OrderModel> orders;
     readonly IList<RequestModel> _requests;
@@ -22,7 +22,7 @@ public class RequestHelper : IDisposable, IRequestHelper
         statusCheckHelper = new StatusCheckHelper();
     }
 
-    List<RequestModel> NewRequests = new()!;
+    readonly List<RequestModel> NewRequests = new()!;
     List<RequestModel> StartedRequests = new()!;
     List<RequestModel> AcceptedRequests;
     List<RequestModel> FinishedRequests = new()!;
@@ -99,10 +99,47 @@ public class RequestHelper : IDisposable, IRequestHelper
 
     //-----Filter Methods
     //Current Week requests GET
-    public async Task<IList<RequestModel>> GetCurrentWeekRequests(string empID) => await _requestEndPoint.GetCurrentWeekRequests(empID);
-    //Current Month requests GET
-    public async Task<IList<RequestModel>> GetCurrentMonthRequests(string empID) => await _requestEndPoint.GetCurrentMonthRequests(empID);
-    //Cancelled requests GET
+    public async Task<IList<RequestModel>> GetCurrentWeekRequests(string empID)
+    {
+        try
+        {
+            var jobs = await _requestEndPoint.GetCurrentWeekRequests(empID);
+            if (jobs != null && jobs.Count > 0)
+            {
+                foreach (var rq in jobs)
+                {
+                    rq.req_status = CheckStatus(rq);
+                    rq.req_progress = GetProgress(rq);
+                }
+            }
+
+            return jobs;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
+
+    //Check Current Month
+    public async Task<IList<RequestModel>> GetCurrentMonthRequests(string empID)
+    {
+        try
+        {
+            var jobs = await _requestEndPoint.GetCurrentMonthRequests(empID);
+            foreach (var rq in jobs)
+            {
+                rq.req_status = CheckStatus(rq);
+                rq.req_status = GetProgress(rq);
+            }
+
+            return jobs;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
     public async Task<IList<RequestModel>> GetCancelledRequests(string empID) => await _requestEndPoint.GetCancelledRequests(empID);
 
 
@@ -202,7 +239,16 @@ public class RequestHelper : IDisposable, IRequestHelper
             if (provider != null)
             {
                 requests = await _requestEndPoint.GetRequestsByProvider(provider.pro_providerId);
-                return requests;
+                if (requests != null)
+                {
+                    foreach (var request in requests)
+                    {
+                        request.req_status = statusCheckHelper.CheckStatus(request);
+                        request.req_progress = GetProgress(request);
+                    }
+                    return requests;
+                }
+
             }
             return null;
         }
@@ -354,6 +400,10 @@ public class RequestHelper : IDisposable, IRequestHelper
                 {
                     return 3;
                 }
+                //else if (cancelledRequests != null)
+                //{
+                //    return 11;
+                //}
                 else //Request inprogress
                 {
                     return 2;

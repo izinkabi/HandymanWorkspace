@@ -1,5 +1,6 @@
 ﻿using HandymanProviderLibrary.Api.ApiHelper;
 using HandymanProviderLibrary.Models;
+using System.Net.Http.Json;
 
 namespace HandymanProviderLibrary.Api.EndPoints.Implementation;
 
@@ -32,6 +33,28 @@ public class EmployeeEndPoint
     //Leave the business hence stop working
     protected async Task Resign()
     {
+
+    }
+
+    //Get a service provider of the given ID
+    public async Task<ServiceProviderModel> GetProvider(string userId)
+    {
+
+
+        try
+        {
+            if (userId != null)
+            {
+                var serviceProvider = await _apiHelper.ApiClient.GetFromJsonAsync<ServiceProviderModel>($"/api/Delivery/Business/GetProvider?employeeId={userId}");
+                return serviceProvider;
+            }
+
+            return null;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex.InnerException);
+        }
 
     }
 }

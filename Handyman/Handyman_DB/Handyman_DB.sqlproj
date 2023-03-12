@@ -70,6 +70,7 @@
     <Folder Include="Stored Procedures\Business" />
     <Folder Include="Stored Procedures\Business\Employee" />
     <Folder Include="Stored Procedures\Business\Employee\Provider" />
+    <Folder Include="Stored Procedures\Handymen" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Schemas\Request.sql" />
@@ -88,7 +89,7 @@
     <Build Include="Tables\task.sql" />
     <Build Include="Tables\business.sql" />
     <Build Include="Tables\registration.sql" />
-    <Build Include="Stored Procedures\Service\spUpdateService.sql" />
+    <Build Include="Stored Procedures\Service\spServiceUpdate.sql" />
     <Build Include="Stored Procedures\Service\spServiceLookUp_GroupByCategory.sql" />
     <Build Include="Stored Procedures\Order\spOrderInsert.sql" />
     <Build Include="Stored Procedures\Order\spOrderLookUp_ByConsumerId_OrderByDateCreated.sql" />
@@ -111,9 +112,7 @@
     <Build Include="Tables\employee_ratings.sql" />
     <Build Include="Stored Procedures\Business\Employee\spEmployee_Rating_Insert.sql" />
     <Build Include="Stored Procedures\Business\Employee\spRatingInsert.sql" />
-    <Build Include="Tables\Profile.sql" />
-    <Build Include="Stored Procedures\Business\Employee\spProfileInsert.sql" />
-    <Build Include="Tables\dummytable.sql" />
+    <Build Include="Tables\profile.sql" />
     <Build Include="Stored Procedures\Request\spRequestInsert.sql" />
     <Build Include="Stored Procedures\Request\spRequestLookUpByProvider.sql" />
     <Build Include="Stored Procedures\Order\spOrderLookUpByService.sql" />
@@ -127,6 +126,12 @@
     <Build Include="Stored Procedures\Request\spRequestsLookUp_ByCurrentMonth.sql" />
     <Build Include="Stored Procedures\Request\spCancelledRequestLookUp.sql" />
     <Build Include="Stored Procedures\Request\spRequestUpdate.sql" />
+    <Build Include="Stored Procedures\Order\spGetHandymenDetailsByOrder.sql" />
+    <Build Include="Tables\AspNetUsers.sql" />
+    <Build Include="Tables\customService.sql" />
+    <Build Include="Stored Procedures\Service\spCustomServicesLookUp.sql" />
+    <Build Include="Stored Procedures\Handymen\spProfileInsert.sql" />
+    <Build Include="Stored Procedures\Handymen\spProfileLookUp.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Script\DevNathi_Handyman_DB.publish.publish.xml" />

@@ -3,19 +3,23 @@
 @using Handyman_SP_UI.Pages.Services
 @using Microsoft.AspNetCore.Components.Web
 
-<AuthorizeView>
+<AuthorizeView Roles="ServiceProvider">
     <Authorized>
-         <Handyman_SP_UI.Pages.Businesses.Requests.RequestsComponent>
-
-        </Handyman_SP_UI.Pages.Businesses.Requests.RequestsComponent>
+        <div class="p-5 mb-4 bg-light rounded-3">
+        <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">Welcome to Handymen</h1>
+        <p class="col-md-8 fs-4">All services you think you can provide are listed here choose at least one and become <strong>Handymen</strong>, become the best in what you do and get money out of it</p>
+          <a href="servicists" class="btn btn-primary btn-lg">Check them out!</a>
+        </div>
+        </div>
     </Authorized>
     <NotAuthorized>
-         <div class="p-5 mb-4 bg-light rounded-3">
-            <div class="container-fluid py-5">
-                <h1 class="display-5 fw-bold">Welcome to Handymen</h1>
-                <p class="col-md-8 fs-4">All services you think you can provide are listed here choose at least one and become <strong>Handymen</strong>, become the best in what you do and get money out of it</p>
-                <button @href="services-album" class="btn btn-primary btn-lg">Check them out!</button>
-            </div>
-        </div>
+        <!--AmdLogin Button-->
+        <a href="Identity/Account/Login" class="nav-link text-dark">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-amd" viewBox="0 0 16 16">
+                <path d="m.334 0 4.358 4.359h7.15v7.15l4.358 4.358V0H.334ZM.2 9.72l4.487-4.488v6.281h6.28L6.48 16H.2V9.72Z" />
+            </svg>
+        </a>
+
     </NotAuthorized>
 </AuthorizeView>

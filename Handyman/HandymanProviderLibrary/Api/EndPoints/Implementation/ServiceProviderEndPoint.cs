@@ -53,22 +53,42 @@ public class ServiceProviderEndPoint : EmployeeEndPoint, IServiceProviderEndPoin
         }
     }
 
-    //Get a service provider of the given ID
-    public async Task<ServiceProviderModel> GetProvider(string userId)
+    //Create a new profile
+    public async void CreateProfile(ProfileModel newProfile)
     {
         try
         {
-            if (userId != null)
+            if (newProfile is null)
             {
-                serviceProvider = await _apiHelper.ApiClient.GetFromJsonAsync<ServiceProviderModel>($"/api/Delivery/Business/GetProvider?employeeId={userId}");
+                return;
             }
+            await _apiHelper.ApiClient.PostAsJsonAsync("/api/handymen/PostProviderProfile", newProfile);
+        }
+        catch (Exception)
+        {
 
-            return serviceProvider;
+            throw;
+        }
+
+    }
+
+    //Query profile by Id
+    public async Task<ProfileModel> GetProfile(string id)
+    {
+        try
+        {
+            if (!string.IsNullOrEmpty(id))
+            {
+                ProfileModel profile = await _apiHelper.ApiClient.GetFromJsonAsync<ProfileModel>($"/api/Handymen/GetProfile?userId={id}");
+                if (profile != null) return profile;
+
+            }
+            return null;
         }
         catch (Exception ex)
         {
-            throw new Exception(ex.Message, ex.InnerException);
-        }
 
+            throw new Exception(ex.Message);
+        }
     }
 }

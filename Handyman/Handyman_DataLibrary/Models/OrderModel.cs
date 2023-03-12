@@ -12,9 +12,6 @@ namespace Handyman_DataLibrary.Models
         public IList<TaskModel>? Tasks { get; set; }
         public int Id { get; set; }
 
-
-
-
-
+        public HandymenDetailsModel? Provider { get; set; }
     }
 }

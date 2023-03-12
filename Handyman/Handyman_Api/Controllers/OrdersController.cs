@@ -22,7 +22,8 @@ public class OrdersController : ControllerBase
     {
         try
         {
-            orders = _orderData.GetOrders(consumerId);
+            if (consumerId != null)
+                orders = _orderData.GetOrders(consumerId);
             return orders;
         }
         catch (Exception ex)

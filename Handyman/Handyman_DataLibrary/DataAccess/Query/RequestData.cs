@@ -104,16 +104,12 @@ public class RequestData : IRequestData
 
 
             //Get tasks for each order, hence for each request 
-            if (requests.Count > 0)
+            if (requests != null && requests.Count > 0)
             {
                 foreach (RequestModel request in requests)
                 {
                     //Get the service
-                    if (request != null && request.req_orderid != 0)
-                    {
-                        request.Service = _serviceData.GetServiceByOrder(request.req_orderid);
-
-                    }
+                    request.Service = _serviceData.GetServiceByOrder(request.req_orderid);
 
                     //Get tasks
                     request.tasks = _taskData.GetTasks(request.req_orderid).ToList();
@@ -299,7 +295,7 @@ public class RequestData : IRequestData
     {
         try
         {
-            IList<RequestModel> cancelledRequests = _dataAccess.LoadData<RequestModel, dynamic>("Delivery.spCancelledRequestLookUp", new { employeeId = employeeId }, "Handyman_DB");
+            IList<RequestModel> cancelledRequests = _dataAccess.LoadData<RequestModel, dynamic>("Delivery.spCancelledRequestLookUp", new { employeeId = employeeId }, "Handyman_DB").DefaultIfEmpty().ToList();
 
             if (cancelledRequests != null && cancelledRequests.Count > 0)
             {
@@ -318,6 +314,7 @@ public class RequestData : IRequestData
         {
 
             throw new Exception(ex.Message, ex.InnerException);
+            return null;
         }
     }
 }

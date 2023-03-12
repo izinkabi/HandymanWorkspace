@@ -10,7 +10,7 @@ namespace Handyman_Api.Controllers;
 [ApiController]
 public class TasksController : ControllerBase
 {
-    ITaskData? _taskData;
+    readonly ITaskData? _taskData;
 
     public TasksController(ITaskData? taskData)
     {

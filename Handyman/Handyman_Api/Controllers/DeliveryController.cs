@@ -44,7 +44,7 @@ public class DeliveryController : ControllerBase
 
     //Register A business
     [HttpPost]
-    [Route("Business/Create")]
+    [Route("Create")]
     public BusinessModel CreateBusiness(BusinessModel business)
     {
         try
@@ -63,7 +63,7 @@ public class DeliveryController : ControllerBase
 
     //Update the business or its address
     [HttpPut]
-    [Route("Business/Update")]
+    [Route("Update")]
     public void Update()
     {
 
@@ -71,7 +71,7 @@ public class DeliveryController : ControllerBase
 
     //Employ a new member
     [HttpPost]
-    [Route("Business/AddNewMember")]
+    [Route("AddNewMember")]
     public void AddNewMember(ServiceProviderModel serviceProvider)
     {
         try
@@ -86,7 +86,7 @@ public class DeliveryController : ControllerBase
     }
 
     [HttpGet]
-    [Route("Business/GetProvider")]
+    [Route("GetProvider")]
     public ServiceProviderModel GetProvider(string employeeId)
     {
 
@@ -107,7 +107,7 @@ public class DeliveryController : ControllerBase
     }
 
     [HttpPost]
-    [Route("Business/PostProviderService")]
+    [Route("PostProviderService")]
     public void PostProviderService(ServiceProviderModel serviceProvider)
     {
         try
@@ -120,4 +120,6 @@ public class DeliveryController : ControllerBase
             throw new Exception(ex.Message, ex.InnerException);
         }
     }
+
+
 }
