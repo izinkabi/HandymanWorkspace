@@ -352,7 +352,7 @@
             {
                 var result = await UserManager.AddToRoleAsync(user, "Owner");
                 
-                SignInManager.RefreshSignInAsync(user).ConfigureAwait(true);
+               await SignInManager.RefreshSignInAsync(user);
                 NavManager.NavigateTo("owner", true);
                 return;
             }
