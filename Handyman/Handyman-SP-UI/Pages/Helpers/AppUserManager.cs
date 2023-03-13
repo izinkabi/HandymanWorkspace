@@ -101,7 +101,7 @@ namespace Handyman_SP_UI.Pages.Helpers
         //        await _roleManager.CreateAsync(role);
         //    }
 
-        //    // creating Creating Employee role     
+        //    //public void creating Creatingmployee role     
         //    x = await _roleManager.RoleExistsAsync("Employee");
         //    if (!x)
         //    {

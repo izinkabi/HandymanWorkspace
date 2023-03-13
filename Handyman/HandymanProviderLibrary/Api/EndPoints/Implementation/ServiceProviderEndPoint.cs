@@ -20,7 +20,7 @@ public class ServiceProviderEndPoint : EmployeeEndPoint, IServiceProviderEndPoin
     {
         try
         {
-            await _apiHelper.ApiClient.PostAsJsonAsync("/api/Delivery/Business/PostProviderService", provider);
+            await _apiHelper.ApiClient.PostAsJsonAsync("/api/Delivery/PostProviderService", provider);
         }
         catch (Exception ex)
         {
@@ -45,7 +45,7 @@ public class ServiceProviderEndPoint : EmployeeEndPoint, IServiceProviderEndPoin
     {
         try
         {
-            await _apiHelper.ApiClient.PostAsJsonAsync("/api/Delivery/Business/AddMember", provider);
+            await _apiHelper.ApiClient.PostAsJsonAsync("/api/Delivery/AddMember", provider);
         }
         catch (Exception ex)
         {

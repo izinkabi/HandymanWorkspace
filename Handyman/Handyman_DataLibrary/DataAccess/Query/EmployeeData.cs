@@ -21,7 +21,7 @@ public class EmployeeData
         {
             //Get the profile of the service-provider
             _dataAccess.StartTransaction("Handyman_DB");
-            employee.employeeProfile = _dataAccess.LoadDataTransaction<ProfileModel, dynamic>("dbo.spProfileLookUp", new { profileId = EmployeeId }).FirstOrDefault();
+            employee.employeeProfile = _dataAccess.LoadDataTransaction<ProfileModel, dynamic>("dbo.spProfileLookUp", new { userId = EmployeeId }).FirstOrDefault();
 
             //get the business , employee(with a profile) and the related ratings
             var er = _dataAccess.LoadDataTransaction<Employee_Rating_Model, dynamic>("Delivery.spEmployeesLookUp", new { EmployeeId = EmployeeId }).FirstOrDefault();

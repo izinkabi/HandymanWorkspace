@@ -94,8 +94,9 @@ namespace Handyman_SP_UI.Pages.Helpers
 
                     newBiz.registration.name = newBiz.Name;
                 newBiz.address.add_country = "Sout Africa";
+                var result = await _providerHelper.StampBusinessUserAsync(newBiz);
 
-                return await _providerHelper.StampBusinessUserAsync(newBiz);
+                return result;
             }
             catch (Exception ex)
             {

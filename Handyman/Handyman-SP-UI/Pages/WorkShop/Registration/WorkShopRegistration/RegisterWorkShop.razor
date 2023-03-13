@@ -1,243 +1,258 @@
 ﻿@page "/register-work-shop"
 @page "/registers"
 
-@using Microsoft.AspNetCore.Identity
-@using Handyman_SP_UI.Areas.Identity.Data
-
-@using HandymanProviderLibrary.Api.Service
-@using HandymanProviderLibrary.Models
-@using Handyman_SP_UI.Pages.ServiceProviderComponent
-@using Microsoft.AspNetCore.Components.Web
 
 @inject IServiceEndpoint _servicesEP
 @inject IBusinessHelper _businessHLP
 @inject SignInManager<Handyman_SP_UIUser> SignInManager
 @inject UserManager<Handyman_SP_UIUser> UserManager
 @inject NavigationManager NavManager
+@inject IProviderHelper _providerHelper
+@inject AuthenticationStateProvider authProvider
 
-<AuthorizeView Context="Auth" Roles="ServiceProvider">
+<AuthorizeView Context="Auth">
     <Authorized>
-        <!--Register WorkShop Full Screen Modal-->
+       
         <!-- Full screen modal -->
       
         <!--In Between Modals-->
-        <div class="modal" id="regWorkShopModalToggle" aria-hidden="true" aria-labelledby="regWorkShopModalToggleLabel" tabindex="-1">
-            <div class="modal-dialog modal-fullscreen-xxl-down">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h1 class="modal-title fs-5 font-monospace" id="regWorkShopModalToggleLabel">Register A Work-Shop</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                 
-                <div class="container container-fluid">
-
-                   
-                        <div class="form-control" id="buisnessRegistrationForm">
-                                
-                            
-                                <div class="form-control">
-                                    <label for="businessName" class="form-label">Business name</label>
-                                    <input type="text" class="form-control" @bind-value="@newBusiness.Name" id="businessName" placeholder="Work shop name..." required>
-
-                                </div>
-
-                                <div class="form-control">
-                                    <label for="busDescription" class="form-label">Business Description</label>
-                                      <input type="text" class="form-control" @bind-value="@newBusiness.Description" id="busDescription" placeholder="What do you do?" required>
-                                </div>
-                                <br />
-                                <!--Registration-->
-
-                                <div class="form-control">
-                                    <label for="@newBusiness.registration.regNumber" class="form-label">Registration Number</label>
-                                    <p>
-                                        <input type="text" class="form-control" @bind-value="@newBusiness.registration.regNumber" id="v@newBusiness.registration.regNumber" placeholder="#555-2245" required />
-                                    </p>
-                                </div>
-
-                                <div class="form-control">
-                                    <label for="taxNumber" class="form-label">Tax Number</label>
-
-                                    <input type="number" class="form-control" @bind-value="@newBusiness.registration.taxNumber" id="taxNumber" placeholder="#37445784" required>
-
-                                </div>
-
-                                <div class="form-control">
-                                    <label for="workplaceType" class="form-label">Type</label>
-                                        <select type="text" class="form-select" @onchange="SelectedBusinessType" id="workplaceType">
-                                        <option selected>Choose...</option>
-                                        <option value="1">Remote</option>
-                                        <option value="2">In person</option>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        Please select a Business Type.
-                                    </div>
-                                </div>
-                                <!--End Registration-->
-                                <!--End Business-->
-
+        <!--Register WorkShop Full Screen Modal-->
+        @if (newBusiness != null)
+        {
+            <div class="modal" id="regWorkShopModalToggle" aria-hidden="true" aria-labelledby="regWorkShopModalToggleLabel" tabindex="-1">
+                <div class="modal-dialog modal-fullscreen-xxl-down">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5 font-monospace" id="regWorkShopModalToggleLabel">Register A Work-Shop</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <hr />
-                                        <!--Address-->
-                        <div class="mb-3 form-control" id="businessAddressForm">
+                        <div class="modal-body">
+                            @if (IsWorkShopSaved)
+                            {
 
-                                
-                            <div class="form-control">
-                                <label for="streetAddress" class="form-label">Street Address</label>
-                                <input type="text" @bind-value="newBusiness.address.add_street" class="form-control" id="streetAddress" placeholder="4 First Ave" required>
-                                <div class="invalid-feedback">
-                                    Please provide a valid street address.
-                                </div>
-                            </div>
-                            <div class="form-control">
-                                <label for="suburb" class="form-label">Suburb</label>
-                                <input type="text" @bind-value="newBusiness.address.add_suburb" class="form-control" id="suburb" placeholder="Emadadeni" required>
-                                <div class="invalid-feedback">
-                                    Please provide a valid suburb.
-                                </div>
-                            </div>
-                            <div class="form-control">
-                                <label for="city" class="form-label">City</label>
-                                <input type="text" @bind-value="newBusiness.address.add_city" class="form-control" id="city" placeholder="City Zee" required>
-                                <div class="invalid-feedback">
-                                    Please provide a valid city.
-                                </div>
-                            </div>
+                                <!--WorkShop Details-->
+                                <main id="workShopDetailsCollapse">
+                                    <h2>@newBusiness.Employees.FirstOrDefault().employeeProfile.Names + @newBusiness.Employees.FirstOrDefault().employeeProfile.Surname</h2>
+                                    <p class="fst-italic">Manager</p>
+                                    <ul class="icon-list ps-0">
+                                        <li class="d-flex align-items-start mb-1"><a href="profile" rel="noopener" target="_blank">Profile</a></li>
+                                        <li class="text-muted d-flex align-items-start mb-1">Bootstrap Parcel starter (coming soon!)</li>
+                                    </ul>
 
-                            <div class="mb-3 form-control">
-                                <label for="state" class="form-label">State</label>
-                                <select type="text" @onchange="SelectedState" class="form-select" id="state">
-                                    <option selected>Choose...</option>
-                                    <option value="GP">Gauteng Province</option>
-                                    <option value="EC">Eastern Cape</option>
-                                    <option value="MP">Mpumalanga</option>
-                                </select>
-                                <div class="invalid-feedback">
-                                    Please select a valid state.
-                                </div>
-                                    <div class="col">
-                                        <label for="zipCode" class="form-label">Zip Code</label>
-                                        <input type="number" @bind-value="newBusiness.address.add_zip" class="form-control" id="zipCode" placeholder="2000" required>
-                                        <div class="invalid-feedback">
-                                            Please provide a valid zip.
+                                    <div class="row g-5">
+                                        <div class="col-md-6 border-1">
+                                            <hr class="col-3 col-md-2 mb-5">
+                                            <h1>@newBusiness.Name</h1>
+
+                                            <p class="fs-5 col-md-8">@newBusiness.Description</p>
+                                            <p class="fs-italic col-md-8">@newBusiness.date</p>
+                                            <p class="fs-5 col-md-8">@newBusiness.registration.regNumber</p>
+                                            <div class="mb-5">
+                                                <a @onclick="@(()=>IsWorkShopSaved=false)" class="btn btn-primary btn-lg px-4">Edit</a>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 borderd">
+                                            <h2>Work Shop Details</h2>
+                                            <p>Read more detailed instructions and documentation on using or contributing to Bootstrap.</p>
+                                            <ul class="icon-list ps-0">
+                                                @foreach (var service in newBusiness.Employees.FirstOrDefault().Services)
+                                                {
+                                                    <li class="d-flex align-items-start mb-1">@service.name:@service.category.description</li>
+                                                }
+
+                                            </ul>
                                         </div>
                                     </div>
-                            
 
-                            </div>
-                            <!---End address-->
+                                </main>
+                                <!--End WorkShop Details-->
+                            }
+                            else
+                            {
+                                <div class="container container-fluid">
+                                  <div class="form-control" id="buisnessRegistrationForm">
+                                    <EditForm Model="newBusiness" OnValidSubmit="SaveWorkShopDetails">
+                                        
+
+
+                                            <div class="form-control">
+                                                <label for="businessName" class="form-label">Business name</label>
+                                                <InputText class="form-control" @bind-Value="@newBusiness.Name" id="businessName" placeholder="Work shop name..." required />
+
+                                            </div>
+
+                                            <div class="form-control">
+                                                <label for="busDescription" class="form-label">Business Description</label>
+                                                <InputTextArea class="form-control" @bind-Value="@newBusiness.Description" id="busDescription" placeholder="What do you do?" required />
+                                            </div>
+                                            <br />
+                                            <!--Registration-->
+
+                                            <div class="form-control">
+                                                <label for="@newBusiness.registration.regNumber" class="form-label">Registration Number</label>
+
+                                                <InputText class="form-control" @bind-Value="@newBusiness.registration.regNumber" id="v@newBusiness.registration.regNumber" placeholder="#555-2245" required />
+
+                                            </div>
+
+                                            <div class="form-control">
+                                                <label for="taxNumber" class="form-label">Tax Number</label>
+
+                                                <InputText class="form-control" @bind-Value="@newBusiness.registration.taxNumber" id="taxNumber" placeholder="#37445784" required />
+
+                                            </div>
+
+                                            <div class="form-control">
+                                                <label for="workplaceType" class="form-label">Services Type</label>
+                                                <select type="text" class="form-select" @onchange="SelectedBusinessType" id="workplaceType" required>
+                                                    <option selected>Choose...</option>
+                                                    <option value="1">Remote</option>
+                                                    <option value="2">In person</option>
+                                                </select>
+                                                <div class="invalid-feedback">
+                                                    Please select a Business Type.
+                                                </div>
+                                            </div>
+                                            <!--End Registration-->
+                                            <!--End Business-->
+
+                                        
+                                        <hr />
+                                        <!--Address-->
+                                        <div class="mb-3 form-control" id="businessAddressForm">
+
+
+                                            <div class="form-control">
+                                                <label for="streetAddress" class="form-label">Street Address</label>
+                                                <InputText type="text" @bind-Value="newBusiness.address.add_street" class="form-control" id="streetAddress" placeholder="4 First Ave" required />
+                                                <div class="invalid-feedback">
+                                                    Please provide a valid street address.
+                                                </div>
+                                            </div>
+                                            <div class="form-control">
+                                                <label for="suburb" class="form-label">Suburb</label>
+                                                <InputText type="text" @bind-Value="newBusiness.address.add_suburb" class="form-control" id="suburb" placeholder="Emadadeni" required />
+                                                <div class="invalid-feedback">
+                                                    Please provide a valid suburb.
+                                                </div>
+                                            </div>
+                                            <div class="form-control">
+                                                <label for="city" class="form-label">City</label>
+                                                <InputText type="text" @bind-Value="newBusiness.address.add_city" class="form-control" id="city" placeholder="Kuvuki Land" required />
+                                                <div class="invalid-feedback">
+                                                    Please provide a valid city.
+                                                </div>
+                                            </div>
+
+                                            <div class="mb-3 form-control">
+                                                <label for="state" class="form-label">Province/State</label>
+                                                <select type="text" @onchange="SelectedState" class="form-select" id="state">
+                                                    <option selected>Choose...</option>
+                                                    <option value="GP">Gauteng Province</option>
+                                                    <option value="EC">Eastern Cape</option>
+                                                    <option value="MP">Mpumalanga</option>
+                                                </select>
+                                                <div class="invalid-feedback">
+                                                    Please select a valid state.
+                                                </div>
+                                                <div class="col">
+                                                    <label for="zipCode" class="form-label">Zip Code</label>
+                                                    <InputText type="number" @bind-Value="newBusiness.address.add_zip" class="form-control" id="zipCode" placeholder="2000" required />
+                                                    <div class="invalid-feedback">
+                                                        Please provide a valid zip.
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            <!---End address-->
+                                        </div>
+                                        @if (!IsWorkShopSaved)
+                                        {
+                                            <button type="submit" class="btn btn-dark btn-outline-success" data-bs-target="#regWorkShopModalToggle" data-bs-toggle="modal">
+                                                Save
+                                            </button>
+                                        }
+
+                                    </EditForm>
+                                  </div>
+                               </div>
+                            }
+
                         </div>
-                        @if (!IsWorkShopSaved)
+                        @if (IsWorkShopSaved && !IsServiceAdded)
                         {
-                            <button class="btn btn-dark btn-outline-success" @onclick="SaveWorkShopDetails">
-                                Save
-                            </button>
+                            <div class="modal-footer">
+                                <button class="btn btn-primary" data-bs-target="#regServiceToggle" data-bs-toggle="modal">
+                                    Next
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
+                                    </svg>
+                                </button>
+                            </div>
                         }
-               
+
+                        @if (IsWorkShopSaved && IsServiceAdded)
+                        {
+                            <div class="modal-footer">
+                                <button @onclick="SubmitWorkShopReg" class="btn btn-primary" data-bs-dismiss="modal" data-bs-toggle="modal">
+                                    Finish
+                                </button>
+                            </div>
+                        }
+
+                    </div>
                 </div>
-              </div>
-                @if (IsWorkShopSaved)
-                {
-                    <div class="modal-footer">
-                        <button class="btn btn-primary" data-bs-target="#regProviderModalToggle" data-bs-toggle="modal">
-                            Next
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
-                                </svg>
-                        </button>
-                    </div>
-                }
-                    
             </div>
-          </div>
-        </div>
-         <!--End Register WorkShop Full Screen Modal-->
-
-        <!--Profile registration-->
-        <div class="modal" id="regProviderModalToggle" aria-hidden="true" aria-labelledby="regProviderModalToggleLabel2" tabindex="-">
-            <div class="modal-dialog modal-fullscreen-xxl-down">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h1 class="modal-title fs-5" id="regProviderModalToggleLabel2">Add Members</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                   <AddMembers OnSaveMembers="SaveMembers" NewBusiness="newBusiness">
-
-                   </AddMembers>
-              </div>
-                @if(IsMemberAdded)
-                {
-                    <div class="modal-footer">
-                        <button class="btn btn-primary" data-bs-target="#regServiceToggle" data-bs-toggle="modal">
-                            Next
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
-                            </svg>
-                        </button>
-                    </div>
-                }
-                   
-            </div>
-          </div>
-        </div>
 
 
-        <!--Service registration-->
-        <div class="modal" id="regServiceToggle" aria-hidden="true" aria-labelledby="regServiceToggleLabel" tabindex="-">
-            <div class="modal-dialog modal-fullscreen-xxl-down">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="regServiceToggleLabel">Add Members</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        
-                    </div>
-                    @if (IsServiceAdded)
-                    {
-                        <div class="modal-footer">
-                            <button class="btn btn-primary" @onclick="SubmitWorkShopReg" data-bs-target="#regWorkShopModalToggle" data-bs-toggle="modal">
-                                Finish
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-square" viewBox="0 0 16 16">
-                                    <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
-                                    <path d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z" />
-                                </svg>    
-                            </button>
+            <!--End Register WorkShop Full Screen Modal-->
+
+
+
+
+
+            <!--Service Registration-->
+            <div class="modal" id="regServiceToggle" aria-hidden="true" aria-labelledby="regServiceToggleLabel" tabindex="-">
+                <div class="modal-dialog modal-fullscreen-xxl-down">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="regSingMemberToggleLabel">Register Services</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                    }
-                   
-                </div>
-            </div>
-        </div>
-
-        <!--End Service registratiokn-->
-
-
-        <!--Single Member Registration-->
-        <div class="modal" id="regSingMemberToggle" aria-hidden="true" aria-labelledby="regSingMemberToggleLabel" tabindex="-">
-            <div class="modal-dialog modal-fullscreen-xxl-down">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="regSingMemberToggleLabel">Register Profile</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      
+                        <div class="modal-body">
+                            <Handyman_SP_UI.Pages.WorkShop.Registration.MembersRegistration.RegisterServices OnSaveServices="SaveWorkShopServices"/>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!--End Single User Registration-->
-        <button class="btn btn-primary" data-bs-target="#regWorkShopModalToggle" data-bs-toggle="modal">Open a Work Shop</button>
+            <!--End Service Registration-->
+            <button class="btn btn-primary" data-bs-target="#regWorkShopModalToggle" data-bs-toggle="modal">Open a Work Shop</button>
 
-        <button class="btn btn-primary" data-bs-target="#regSingMemberToggle" data-bs-toggle="modal">Join Work-Shop</button>
+            <button class="btn btn-primary" data-bs-target="#regSingMemberToggle" data-bs-toggle="modal">Join Work-Shop</button>
 
-        <!--End Full screen modal -->      
-        <!--End In Between Modal-->
-            </Authorized>
+            <!--End Full screen modal -->      
+            <!--End In Between Modal-->
+        }
+        @if (newBusiness == null || newBusiness.Employees == null)
+        {
+            <div class="d-flex align-items-center">
+                <strong>Loading...</strong>
+                <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+            </div>
+        }
+    </Authorized>
+            <NotAuthorized>
+                <h2>Access Denied,</h2> 
+                <p>please login </p>
+                <button class="float-end" href="Identity/Account/Login">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-amd" viewBox="0 0 16 16">
+                        <path d="m.334 0 4.358 4.359h7.15v7.15l4.358 4.358V0H.334ZM.2 9.72l4.487-4.488v6.281h6.28L6.48 16H.2V9.72Z" />
+                    </svg>
+                </button>
+            </NotAuthorized>
 </AuthorizeView>
 @code {
     private BusinessModel? newBusiness = new();
@@ -252,8 +267,12 @@
     protected override async Task OnInitializedAsync()
     {
 
-        IsWorkShopSaved = false;
+        newBusiness.registration = new();
+        newBusiness.Employees = new();
+        newBusiness.date = DateTime.Now;
     }
+
+
 
     void SelectedBusinessType(ChangeEventArgs e)
     {
@@ -281,53 +300,70 @@
         }
     }
 
-    void SaveMembers(BusinessModel newWorkShopWithMembers)
+
+    //Save the new workshop services
+    private void SaveWorkShopServices(List<ServiceModel> newServices)
     {
-        if (newWorkShopWithMembers!=null && newWorkShopWithMembers.Employees.Count>0)
+        if (newServices != null)
         {
-            newBusiness = newWorkShopWithMembers;
-            IsMemberAdded = true;
-        }
-
-    }
-
-
-    private void SaveWorkShopServices(BusinessModel brandNewWorkShop)
-    {
-        if (brandNewWorkShop != null)
-        {
-            newBusiness = brandNewWorkShop;
+            newBusiness.Employees.FirstOrDefault().Services.AddRange(newServices);
             IsServiceAdded = true;
 
         }
 
     }
 
-    void SaveSingleMember(ServiceProviderModel member)
+    async void SaveWorkShopDetails()
     {
-        newBusiness = new();
-        if (member != null)
+        ServiceProviderModel newMember = new();
+        if(newBusiness!=null)
         {
-            newBusiness.Employees.Add(member);
+            newMember.employeeProfile = await _providerHelper.GetProviderProfile();
+
+            if (newBusiness.Employees.Count == 0)
+            {
+                newBusiness.Employees.Add(newMember);
+                IsWorkShopSaved = true;
+                StateHasChanged();
+            }
         }
+
+
     }
 
-    void SaveWorkShopDetails()
-    {
-
-        IsWorkShopSaved = true;
-    }
-
-    async Task SubmitWorkShopReg()
+    //Submit the info
+    async void SubmitWorkShopReg()
     {
         try
         {
-            _businessHLP.CreateBusiness(newBusiness);
+            newBusiness.Employees.FirstOrDefault().IsOwner = true;
+
+            await _businessHLP.CreateBusiness(newBusiness);
+
+            var User = (await authProvider.GetAuthenticationStateAsync()).User;
+            var user = await UserManager.GetUserAsync(User);
+
+            if(User.IsInRole("Owner"))
+            {
+                NavManager.NavigateTo("owner", true);
+                return;
+            }
+            else
+            {
+                var result = await UserManager.AddToRoleAsync(user, "Owner");
+                
+                SignInManager.RefreshSignInAsync(user).ConfigureAwait(true);
+                NavManager.NavigateTo("owner", true);
+                return;
+            }
+            
+            
+            
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             
-            throw;
+            throw new Exception(ex.Message,ex.InnerException);
         }
     }
 

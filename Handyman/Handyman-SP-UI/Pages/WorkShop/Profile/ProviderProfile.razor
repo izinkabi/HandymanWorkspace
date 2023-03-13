@@ -1,14 +1,10 @@
 ﻿@page "/provider-profile"
 @page "/profile"
 
-
-@using HandymanProviderLibrary.Models;
-@using Handyman_SP_UI.Pages.Helpers;
-@using Microsoft.AspNetCore.Components.Web
-
 @inject IJSRuntime JsRuntime
 @inject IProviderHelper _providerHelper
 @inject IConfiguration _config
+@inject NavigationManager NavManager
 
 <AuthorizeView>
 
@@ -46,13 +42,13 @@
         }
         else
         {
-            <button class="btn btn-primary">
-                <div class="d-flex align-content-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-door-open-fill" viewBox="0 0 16 16">
-                        <path d="M1.5 15a.5.5 0 0 0 0 1h13a.5.5 0 0 0 0-1H13V2.5A1.5 1.5 0 0 0 11.5 1H11V.5a.5.5 0 0 0-.57-.495l-7 1A.5.5 0 0 0 3 1.5V15H1.5zM11 2h.5a.5.5 0 0 1 .5.5V15h-1V2zm-2.5 8c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z" />
-                    </svg>
-                </div>
-            </button>
+            <div class="col-md-6 shadow rounded-2 bg-light">
+                <p>
+                    You can <a href="registers"> click here</a> to create a WorkShop or you <a href="registers">click here</a> to join a WorkShop.
+                </p>
+            </div>
+            
+           
             
         }
         </div>
@@ -108,9 +104,9 @@
                         </h2>
                         <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
                             <div class="accordion-body">
-                                <Handyman_SP_UI.Pages.Services.ServicesAlbum OnAddService="AddService">
+                                <Handyman_SP_UI.Pages.WorkShop.Services.ServicesAlbum OnAddService="AddService">
 
-                                </Handyman_SP_UI.Pages.Services.ServicesAlbum>
+                                </Handyman_SP_UI.Pages.WorkShop.Services.ServicesAlbum>
                             </div>
                         </div>
                     </div>
@@ -118,7 +114,7 @@
             }
     </div>
 </div>
-
+           
         <!--Back to top button-->
         <button @onclick="@BackToTop" class="float-end border-0 bg-transparent">
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-up-circle border-0" viewBox="0 0 16 16">
@@ -159,7 +155,7 @@ else
             if(providerModel is null)
             {
                 providerModel = new();
-                providerModel.employeeProfile = await _providerHelper.GetProfile();
+                providerModel.employeeProfile = await _providerHelper.GetProviderProfile();
             }
         }catch(Exception ex)
         {
@@ -172,6 +168,12 @@ else
     string CreateWebPath(string relativePath)
     {
         return Path.Combine(_config.GetValue<string>("WebStorageRoot")!,relativePath);
+    }
+
+    //Navigate to Create WorkShop
+    void GotoCreateWorkShop()
+    {
+        NavManager.NavigateTo("registers", true);
     }
 
     //Go to top page

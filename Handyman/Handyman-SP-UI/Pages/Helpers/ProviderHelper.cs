@@ -1,70 +1,41 @@
 ﻿using Handyman_SP_UI.Areas.Identity.Data;
 using HandymanProviderLibrary.Api.EndPoints.Interface;
 using HandymanProviderLibrary.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 
 namespace Handyman_SP_UI.Pages.Helpers;
 
-public class ProviderHelper : EmployeeHelper, IProviderHelper
+public class ProviderHelper : ProfileHelper, IProviderHelper
 {
     IServiceProviderEndPoint? _providerEndPoint;
     AuthenticationStateProvider? _authenticationStateProvider;
     ServiceProviderModel? providerModel;
-    RoleManager<IdentityRole> _roleManager;
-    UserManager<Handyman_SP_UIUser> _userManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly UserManager<Handyman_SP_UIUser> _userManager;
+    private readonly AppUserManager _appUserManager;
+
 
 
     public ProviderHelper(IServiceProviderEndPoint providerEndPoint,
         AuthenticationStateProvider authenticationStateProvider,
-        RoleManager<IdentityRole> roleManager, UserManager<Handyman_SP_UIUser> userManager) : base(authenticationStateProvider)
+        RoleManager<IdentityRole> roleManager, AppUserManager appUserManager, UserManager<Handyman_SP_UIUser> userManager)
+        : base(providerEndPoint, authenticationStateProvider, userManager, appUserManager, roleManager)
     {
         _providerEndPoint = providerEndPoint;
         _authenticationStateProvider = authenticationStateProvider;
         _roleManager = roleManager;
         _userManager = userManager;
 
+
     }
 
+    //Create a provider profie
+    public void RegisterProfile(ProfileModel profile) => this.CreateProfile(profile);
 
-    public async Task<ProfileModel> GetProfile()
-    {
-        try
-        {
-            ProfileModel profile = await _providerEndPoint.GetProfile(await GetUserId());
-            return profile;
-        }
-        catch (Exception)
-        {
-
-            throw;
-        }
-    }
-
-    //Register Profile
-    public void RegisterProfile(ProfileModel newProfile)
-    {
-        if (newProfile != null)
-        {
-            try
-            {
-                if (userId == null)
-                {
-                    GetUserId();
-                }
-                newProfile.UserId = userId;
-                ClaimsPrincipal User = GetUser();
-                newProfile.EmailAddress = _userManager.GetUserName(User);
-                _providerEndPoint.CreateProfile(newProfile);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-    }
+    //Get the profile of the Handyman/Provider 
+    public async Task<ProfileModel> GetProviderProfile() => await this.GetProfile();
 
     //Register a Handyman / Service Provider
     public async void RegisterHandyman(ServiceProviderModel newHandyman)
@@ -175,35 +146,33 @@ public class ProviderHelper : EmployeeHelper, IProviderHelper
     /// </summary>
     /// <param name="newBiz"></param>
     /// <returns></returns>
+    [Authorize("ServiceProvider")]
     public async Task<BusinessModel> StampBusinessUserAsync(BusinessModel? newBiz)
     {
         if (newBiz != null)
         {
             foreach (var member in newBiz.Employees)
             {
-                newBiz.date = DateTime.Now;
-                if (member.IsOwner)
+                try
                 {
-                    //Create a new role in AspNetRoles(owner) and add the users
-                    var User = GetUser();
-                    if (!User.IsInRole("Owner"))
+                    if (member.IsOwner)
                     {
-                        await _roleManager.CreateAsync(new IdentityRole("Owner"));
+                        member.employeeId = await GetUserId();
+                        member.pro_providerId = await GetUserId();
+
                     }
                     else
                     {
-                        await _userManager.AddToRoleAsync(await _userManager.GetUserAsync(User), "Owner");
+                        return null;
                     }
-                    member.employeeId = await GetUserId();
-                    member.pro_providerId = await GetUserId();
-                }
-                else
-                {
-                    member.employeeId = await GetUserId();
-                    member.pro_providerId = await GetUserId();
-                }
+                    newBiz.registration.businessType = newBiz.Type;
 
-                newBiz.registration.businessType = newBiz.Type;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message, ex.InnerException);
+                }
+                newBiz.date = DateTime.Now;
                 //UserManager UI to return registered users
             }
 

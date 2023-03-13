@@ -125,6 +125,7 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
                     if (!await _roleManager.RoleExistsAsync("ServiceProvider"))
                     {
                         await _roleManager.CreateAsync(new IdentityRole("ServiceProvider"));
+                        await _userManager.AddToRoleAsync(user, "ServiceProvider");
                     }
                     else
                     {

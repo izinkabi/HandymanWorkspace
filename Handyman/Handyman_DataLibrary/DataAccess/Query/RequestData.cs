@@ -295,12 +295,13 @@ public class RequestData : IRequestData
     {
         try
         {
-            IList<RequestModel> cancelledRequests = _dataAccess.LoadData<RequestModel, dynamic>("Delivery.spCancelledRequestLookUp", new { employeeId = employeeId }, "Handyman_DB").DefaultIfEmpty().ToList();
+            IList<RequestModel> cancelledRequests = _dataAccess.LoadData<RequestModel, dynamic>("Delivery.spCancelledRequestLookUp", new { employeeId = employeeId }, "Handyman_DB");
 
             if (cancelledRequests != null && cancelledRequests.Count > 0)
             {
                 foreach (RequestModel request in cancelledRequests)
                 {
+
                     request.tasks = _taskData.GetTasks(request.req_orderid).ToList();
                     request.Service = _serviceData.GetServiceByOrder(request.req_orderid);
                 }

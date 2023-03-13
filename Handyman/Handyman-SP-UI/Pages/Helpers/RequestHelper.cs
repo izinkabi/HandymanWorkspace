@@ -236,7 +236,7 @@ public class RequestHelper : IDisposable, IRequestHelper
         try
         {
             ServiceProviderModel provider = await _providerHelper.GetProvider();//not sure if this guy will budge!
-            if (provider != null)
+            if (provider != null && provider.pro_providerId != null)
             {
                 requests = await _requestEndPoint.GetRequestsByProvider(provider.pro_providerId);
                 if (requests != null)
@@ -250,7 +250,7 @@ public class RequestHelper : IDisposable, IRequestHelper
                 }
 
             }
-            return null;
+            return new List<RequestModel>();
         }
         catch (Exception ex)
         {

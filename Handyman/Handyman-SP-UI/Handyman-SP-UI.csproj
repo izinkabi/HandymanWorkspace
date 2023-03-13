@@ -16,10 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="Pages\Businesses\BizCreate.razor" />
-    <Content Remove="Pages\Businesses\NewBusiness.razor" />
-    <Content Remove="Pages\Businesses\Requests\Tasks\CancelledRequestsComponent.razor" />
-    <Content Remove="Pages\ServiceProviderComponent\ProviderProfile.razor" />
+    <Content Remove="Pages\WorkShop\Requests\Tasks\CancelledRequestsComponent.razor" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,9 +37,8 @@
 
 
   <ItemGroup>
-    <None Include="Pages\Businesses\Requests\CancelledRequestsComponent.razor" />
-    <None Include="Pages\ServiceProviderComponent\Profile\ProviderProfile.razor" />
-    <None Include="Pages\Shared\NewBusiness.razor" />
+    <None Include="Pages\WorkShop\Requests\CancelledRequestsComponent.razor" />
+    <None Include="Pages\WorkShop\Profile\ProviderProfile.razor" />
   </ItemGroup>
 
 
@@ -54,9 +50,6 @@
 
 
   <ItemGroup>
-    <Content Update="Pages\EmployeeComponent\Employees.razor">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    </Content>
     <Content Update="wwwroot\assets\dist\css\blog.css">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -70,27 +63,13 @@
 
 
   <ItemGroup>
-    <UpToDateCheckInput Remove="Pages\Businesses\BizCreate.razor" />
+    <_ContentIncludedByDefault Remove="Pages\WorkShop\Requests\Tasks\CancelledRequestsComponent.razor" />
   </ItemGroup>
 
 
 
   <ItemGroup>
-    <_ContentIncludedByDefault Remove="Pages\Businesses\BizCreate.razor" />
-    <_ContentIncludedByDefault Remove="Pages\Businesses\Requests\Tasks\CancelledRequestsComponent.razor" />
-    <_ContentIncludedByDefault Remove="Pages\ServiceProviderComponent\ProviderProfile.razor" />
-  </ItemGroup>
-
-
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Pages\ServiceProviderComponent\ProviderProfile.razor" />
-  </ItemGroup>
-
-
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Pages\Businesses\Requests\Tasks\CancelledRequestsComponent.razor" />
+    <UpToDateCheckInput Remove="Pages\WorkShop\Requests\Tasks\CancelledRequestsComponent.razor" />
   </ItemGroup>
 
 

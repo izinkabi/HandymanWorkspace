@@ -1,6 +1,7 @@
 ﻿@page "/owner"
+@page "/manager"
 
-<AuthorizeView Roles="ServiceProvider">
+<AuthorizeView Roles="Owner">
 
     <Authorized>
 
@@ -113,13 +114,14 @@
     </Authorized>
     <NotAuthorized>
 
-        <div class="p-5 mb-4 bg-light rounded-3">
-            <div class="container-fluid py-5">
-                <h1 class="display-5 fw-bold">Welcome to Handymen</h1>
-                <p class="col-md-8 fs-4">All services you think you can provide are listed here choose at least one and become <strong>Handymen</strong>, become the best in what you do and get money out of it</p>
-                <button @onclick="displayServiceAlbum" class="btn btn-primary btn-lg">Check them out!</button>
-            </div>
-        </div>
+        <h2>Access Denied,</h2>
+        <p>please login </p>
+        <button class="float-end" href="Identity/Account/Login">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-amd" viewBox="0 0 16 16">
+                <path d="m.334 0 4.358 4.359h7.15v7.15l4.358 4.358V0H.334ZM.2 9.72l4.487-4.488v6.281h6.28L6.48 16H.2V9.72Z" />
+            </svg>
+        </button>
+
     </NotAuthorized>
 
 </AuthorizeView>

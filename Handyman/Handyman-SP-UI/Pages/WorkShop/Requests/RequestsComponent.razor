@@ -1,7 +1,6 @@
 ﻿@page "/requests"
 @page "/requests-all"
 
-@using Handyman_SP_UI.Pages.Services
 @using Microsoft.AspNetCore.Components.Web
 
 @inject NavigationManager NavManager
@@ -9,7 +8,7 @@
 @inject IProviderHelper _providerHelper
 @inject IJSRuntime JsRuntime
 
-<AuthorizeView Roles="ServiceProvider">
+<AuthorizeView Context="Auth" Roles="Owner">
 
 <Authorized>
         
@@ -53,7 +52,7 @@
             </section>
 
         <br />
-        @if (requests != null)
+        @if (requests != null && requests.Count>0)
         {
             <!--Own requests Album-->
             <h4 class="bg-light font-monospace text-center rounded-4 shadow ">Jobs</h4>
@@ -105,29 +104,34 @@
             <!--End Back to top button-->
         }
 
-        
-   </Authorized>
+        @if (errors != null)
+        {
+            <p>errors</p>
+        }
+    </Authorized>
     <NotAuthorized>
-        <ServicesAlbum>
-
-        </ServicesAlbum>
+        <h2 class="text-warning">No Work Shop Found</h2>
+        <p>
+            Looks like are not authorized for this,but you can <a href="registers"> click here</a> to create a WorkShop or you <a href="registers">click here</a> to join a WorkShop.
+        </p>
     </NotAuthorized>
     </AuthorizeView>
 
 @code {
 
 
-    IList<RequestModel>? requests;
+    List<RequestModel>? requests = new List<RequestModel>();
 
 
     bool isOrdersDisplayed;
     bool isRequestsDisplayed;
+    string errors;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            await LoadOwnRequests();
+            LoadOwnRequests();
 
             if(requests!=null && requests.Count>0)
             {
@@ -186,16 +190,22 @@
     /// </summary>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    async Task LoadOwnRequests()
+    async void LoadOwnRequests()
     {
         try
         {
-            requests = await _requestHelper.GetOwnRequests();
-            
+            requests = (await _requestHelper.GetOwnRequests()).ToList();
+            if (requests == null)
+            {
+                requests = new();
+                return;
+            }
         }
         catch (Exception ex)
         {
+            errors = ex.Message;
             throw new Exception(ex.Message, ex.InnerException);
+           
         }
     }
 
@@ -208,7 +218,7 @@
             isRequestsDisplayed = false;
         }
         isOrdersDisplayed = true;
-        
+
     }
 
     //Display requests only
@@ -218,16 +228,20 @@
         {
             isOrdersDisplayed = false;
         }
-        
+
         isRequestsDisplayed = true;
     }
 
     //Display the current month's requests
-    async Task displayCurrentMonth()
+    async void displayCurrentMonth()
     {
         try
         {
-            requests = await _requestHelper.GetCurrentMonthRequests((await _providerHelper.GetProvider()).employeeProfile?.UserId);
+            requests = _requestHelper.GetCurrentMonthRequests((await _providerHelper.GetProvider()).employeeProfile?.UserId).Result.ToList();
+            if(requests is null)
+            {
+                return;
+            }
             if (requests != null && requests.Count > 0)
             {
                 foreach (var rs in requests)
@@ -248,7 +262,7 @@
     {
         try
         {
-            requests = await _requestHelper.GetCurrentWeekRequests((await _providerHelper.GetProvider()).employeeProfile?.UserId);
+            requests = _requestHelper.GetCurrentWeekRequests((await _providerHelper.GetProvider()).employeeProfile?.UserId).Result.ToList();
             if(requests!=null && requests.Count > 0)
             {
                 foreach (var rs in requests)
