@@ -28,9 +28,9 @@
                 {
                     @foreach (RequestModel cancelled in requests)
                     {
-                        <Handyman_SP_UI.Pages.Businesses.Requests.CancelledRequestComponent CancelledRequest="@cancelled">
+                        <Handyman_SP_UI.Pages.WorkShop.Requests.CancelledRequestComponent CancelledRequest="@cancelled" />
 
-                        </Handyman_SP_UI.Pages.Businesses.Requests.CancelledRequestComponent>
+                        
                        @* <div class="col p-0 m-0" @onclick="@(()=>viewCancelledRequests(cancelled.req_id))">
                            
                         </div>*@

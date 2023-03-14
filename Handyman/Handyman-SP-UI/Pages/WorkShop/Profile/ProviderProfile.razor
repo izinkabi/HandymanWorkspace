@@ -6,7 +6,7 @@
 @inject IConfiguration _config
 @inject NavigationManager NavManager
 
-<AuthorizeView>
+<AuthorizeView Context="Auth" Roles="ServiceProvider">
 
 <Authorized>
 @if (providerModel != null && providerModel.employeeProfile!=null)
@@ -28,8 +28,10 @@
         </div>
         <!--End Employee profile-->
 
+        
         @if (providerModel.Services.Count > 0)
         {
+           <AuthorizeView Roles="Owner">
             <div class="col-md-6">
                 <div class="position-sticky" style="top: 2rem;">
                     <div class="p-4 mb-3 bg-light rounded">
@@ -39,81 +41,73 @@
                     </div>
                 </div>
             </div>
+           </AuthorizeView>
         }
-        else
-        {
-            <div class="col-md-6 shadow rounded-2 bg-light">
-                <p>
-                    You can <a href="registers"> click here</a> to create a WorkShop or you <a href="registers">click here</a> to join a WorkShop.
-                </p>
-            </div>
-            
-           
-            
-        }
+        
+       
         </div>
+        
+         <div class="row g-5">
+            <div class="col-md-12">
+                    @if (providerModel.Services.Count > 0)
+                    {
 
- <div class="row g-5">
-    <div class="col-md-12">
-            @if (providerModel.Services.Count > 0)
-            {
-
-                 <article class="blog-post">
+                         <article class="blog-post">
             
 
-                    <h3 class="text-center">List of your Services</h3>
-                    <p class="text-center mb-1 text-muted fst-italic">You can add more services to broaden your field</p>
+                            <h3 class="text-center">List of your Services</h3>
+                            <p class="text-center mb-1 text-muted fst-italic">You can add more services to broaden your field</p>
 
-                    <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                    <th>Category</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var service in @providerModel.Services)
-                                {
-                                    <tr>
-                                        <td>@service.name</td>
-                                        <td>@service.category.description</td>
-                                        <td>@service.category.name</td>
-                                    </tr>
-                                }
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td>Totals</td>
-                                        <td>@providerModel.Services.Count</td>
-                                </tr>
-                            </tfoot>
-                    </table>
+                            <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Description</th>
+                                            <th>Category</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var service in @providerModel.Services)
+                                        {
+                                            <tr>
+                                                <td>@service.name</td>
+                                                <td>@service.category.description</td>
+                                                <td>@service.category.name</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td>Totals</td>
+                                                <td>@providerModel.Services.Count</td>
+                                        </tr>
+                                    </tfoot>
+                            </table>
             
 
-                 </article>
+                         </article>
 
            
-                <div class="accordion accordion-flush" id="accordionExample">
-                    <div class="accordion-item panel">
-                        <h2 class="accordion-header" id="headingOne">
-                            <button class="accordion-button px-6" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                <strong class="text-capitalize text-center fa-italic">ADD SERVICES</strong>
-                                <hr />
-                            </button>
-                        </h2>
-                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
-                            <div class="accordion-body">
-                                <Handyman_SP_UI.Pages.WorkShop.Services.ServicesAlbum OnAddService="AddService">
+                        <div class="accordion accordion-flush" id="accordionExample">
+                            <div class="accordion-item panel">
+                                <h2 class="accordion-header" id="headingOne">
+                                    <button class="accordion-button px-6" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        <strong class="text-capitalize text-center fa-italic">ADD SERVICES</strong>
+                                        <hr />
+                                    </button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
+                                    <div class="accordion-body">
+                                        <Handyman_SP_UI.Pages.WorkShop.Services.ServicesAlbum OnAddService="AddService">
 
-                                </Handyman_SP_UI.Pages.WorkShop.Services.ServicesAlbum>
+                                        </Handyman_SP_UI.Pages.WorkShop.Services.ServicesAlbum>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            }
-    </div>
-</div>
+                    }
+            </div>
+        </div>
            
         <!--Back to top button-->
         <button @onclick="@BackToTop" class="float-end border-0 bg-transparent">
@@ -129,7 +123,7 @@ else
         <div class="spinner-border" role="status">
             <span class="visually-hidden"></span>
         </div>
-        <span class="visually-visible">Loading...</span>
+        <span class="visually-visible">Loading...No WorkShop was found, please try again</span>
     </div>
 }
     </Authorized>
@@ -144,19 +138,18 @@ else
 </AuthorizeView>
 
 @code {
-    ServiceProviderModel? providerModel;
+    ServiceProviderModel providerModel = new ServiceProviderModel()!;
 
     protected override async Task OnInitializedAsync()
     {
         try
-        {
-            // providerModel = new ServiceProviderModel()!;
+        {    
             providerModel = await _providerHelper.GetProvider();
-            if(providerModel is null)
+            if(providerModel!=null && providerModel.employeeProfile is null)
             {
-                providerModel = new();
                 providerModel.employeeProfile = await _providerHelper.GetProviderProfile();
             }
+
         }catch(Exception ex)
         {
             throw new Exception(ex.Message, ex.InnerException);   
@@ -167,7 +160,11 @@ else
     //Get a full path to route with to the directory of the image
     string CreateWebPath(string relativePath)
     {
-        return Path.Combine(_config.GetValue<string>("WebStorageRoot")!,relativePath);
+        if(relativePath!=null)
+        {
+            return Path.Combine(_config.GetValue<string>("WebStorageRoot")!,relativePath);
+        }
+        return "";
     }
 
     //Navigate to Create WorkShop
@@ -198,10 +195,7 @@ else
                 providerModel.Services.Add(serviceModel);
                 await _providerHelper.AddService(providerModel);
                 StateHasChanged();
-
             }
-            
-
         }
         catch(Exception ex)
         {

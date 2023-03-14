@@ -2,24 +2,19 @@
 @page "/request-c"
 @page "/request/"
 
+
 @using Microsoft.AspNetCore.Components.Web
 @inject NavigationManager NavManager;
 @inject IRequestHelper _requestHelper
 
 
-<AuthorizeView Roles="ServiceProvider">
+<AuthorizeView Roles="Owner">
       <Authorized>
 
         
         @if (newRequest != null && !isAccepted)
         {
-            <!--Breadcrum-->
-            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="##" onclick="history.go(-1); return false;">Home</a></li>
-                    <li class="breadcrumb-item active fa-italic" aria-current="page">Request</li>
-                </ol>
-            </nav>
+           
             <section class="container container-fluid row p-0 m-0 justify-content-center">
 
            
@@ -37,17 +32,10 @@
         else if(ownRequest!=null && isAccepted)
         {
    
-            <!--Breadcrum-->
-                    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="##" onclick="history.go(-1); return false;">Home</a></li>
-                            <li class="breadcrumb-item active fa-italic" aria-current="page">Job</li>
-                        </ol>
-                    </nav>
-            <!--Own / Accepted request-->
-            <AcceptedRequestComponent AcceptedRequestProperty="ownRequest" OnViewTask="ViewTask">
+           
+            <AcceptedRequestComponent AcceptedRequestProperty="ownRequest" OnViewTask="ViewTask"/>
 
-            </AcceptedRequestComponent>
+           
            <!--End Accepted-->
   
         }

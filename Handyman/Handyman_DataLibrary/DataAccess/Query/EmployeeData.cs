@@ -19,15 +19,12 @@ public class EmployeeData
 
         try
         {
-            //Get the profile of the service-provider
-            _dataAccess.StartTransaction("Handyman_DB");
-            employee.employeeProfile = _dataAccess.LoadDataTransaction<ProfileModel, dynamic>("dbo.spProfileLookUp", new { userId = EmployeeId }).FirstOrDefault();
 
             //get the business , employee(with a profile) and the related ratings
-            var er = _dataAccess.LoadDataTransaction<Employee_Rating_Model, dynamic>("Delivery.spEmployeesLookUp", new { EmployeeId = EmployeeId }).FirstOrDefault();
+            var er = _dataAccess.LoadData<Employee_Rating_Model, dynamic>("Delivery.spEmployeesLookUp", new { EmployeeId = EmployeeId }, "Handyman_DB").FirstOrDefault();
             if (er != null)
             {
-                _dataAccess.CommitTransation();
+
                 employee.employeeId = EmployeeId;
                 employee.BusinessId = er.emp_businessid;
                 if (er.emp_role == 0)
@@ -43,7 +40,6 @@ public class EmployeeData
         }
         catch (Exception ex)
         {
-            _dataAccess.RollBackTransaction();
             employee = null;
             throw new Exception(ex.Message, ex.InnerException);
         }

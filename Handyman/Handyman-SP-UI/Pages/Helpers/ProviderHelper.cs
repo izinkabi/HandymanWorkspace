@@ -12,9 +12,9 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
     IServiceProviderEndPoint? _providerEndPoint;
     AuthenticationStateProvider? _authenticationStateProvider;
     ServiceProviderModel? providerModel;
-    private readonly RoleManager<IdentityRole> _roleManager;
-    private readonly UserManager<Handyman_SP_UIUser> _userManager;
-    private readonly AppUserManager _appUserManager;
+    private RoleManager<IdentityRole> _roleManager;
+    private UserManager<Handyman_SP_UIUser> _userManager;
+    private AppUserManager _appUserManager;
 
 
 
@@ -120,7 +120,6 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
     /// <exception cref="Exception"></exception>
     public async Task<ServiceProviderModel> GetProvider()
     {
-
         try
         {
             if (userId == null)
@@ -128,11 +127,22 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
                 userId = await GetUserId();
             }
 
-            if (userId != null && providerModel == null)
+            if (userId != null)
             {
                 providerModel = await _providerEndPoint?.GetProvider(userId);
+                if (providerModel != null)
+                {
+                    if (providerModel.employeeProfile.UserId == null)
+                    {
+                        providerModel.employeeProfile = await GetProfile();
+                    }
+                }
+                return providerModel;
             }
-            return providerModel;
+
+
+            return null;
+
         }
         catch (Exception ex)
         {

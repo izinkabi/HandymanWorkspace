@@ -351,9 +351,11 @@
             else
             {
                 var result = await UserManager.AddToRoleAsync(user, "Owner");
-                
-               await SignInManager.RefreshSignInAsync(user);
-                NavManager.NavigateTo("owner", true);
+
+                //await SignInManager.RefreshSignInAsync(user); issue when uncommented yet is the most user friendly option / 
+                // can use logout to refresh the user role
+                SignInManager.SignOutAsync().ConfigureAwait(true);
+                NavManager.NavigateTo("owner");
                 return;
             }
             

@@ -1,6 +1,7 @@
 ﻿@page "/requests"
 @page "/requests-all"
 
+@using Handyman_SP_UI.Pages.WorkShop.Requests
 @using Microsoft.AspNetCore.Components.Web
 
 @inject NavigationManager NavManager
@@ -8,14 +9,18 @@
 @inject IProviderHelper _providerHelper
 @inject IJSRuntime JsRuntime
 
-<AuthorizeView Context="Auth" Roles="Owner">
+<AuthorizeView Roles="Owner">
 
 <Authorized>
-        
+
+        @if (errors != null)
+        {
+            <p>errors</p>
+        }
       <!--New Requests Section-->
       <section class="container-fluid justify-content-center p-0 m-0 align-content-lg-center ">
    
-                              <!--Table-->
+          <!--Table-->
                 <div class="table-responsive shadow rounded bg-white" >
                     <div class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom bg-dark">
                         <div class="btn-toolbar mb-2 mb-md-0">
@@ -41,73 +46,68 @@
                     <!--Displaying orders only-->
                     @if (isOrdersDisplayed)
                     {
-                        <OrdersComponent >
-
-                        </OrdersComponent>
+                        
+                       <OrdersComponent />
+                       
                     }
                     
 
             <!--End table-->
                 </div>
-            </section>
+           
+      </section>
 
         <br />
-        @if (requests != null && requests.Count>0)
+        @if (isRequestsDisplayed)
         {
-            <!--Own requests Album-->
-            <h4 class="bg-light font-monospace text-center rounded-4 shadow ">Jobs</h4>
-            <!--Displaying Requests only-->
-            @if (isRequestsDisplayed)
+            @if (requests != null && requests.Count > 0)
             {
+                <!--Own requests Album-->
+                <h4 class="bg-light font-monospace text-center rounded-4 shadow ">Jobs</h4>
+                <!--Displaying Requests only-->
+
                 <div class="album py-5 m-3 shadow rounded bg-light">
                     <div class="container container-fluid">
 
                         <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 " style="height:550px;overflow-y:scroll">
-
-                            @if (requests != null && requests.Count > 0)
+                            @foreach (var ownR in requests)
                             {
-                                @foreach (var ownR in requests)
-                                {
-                                    <div class="col p-0 m-0" @onclick="@(()=>viewOwnRequest(ownR.req_id))">
-
-
-                                        <AcceptedRequestComponent AcceptedRequestProperty="@ownR" IsOnFrontDisplay="true">
-
-                                        </AcceptedRequestComponent>
-
-
-                                    </div>
-                                }
-                            }
-                            else
-                            {
-                                <span class=" text-danger">Loading your jobs...try again later</span>
-                                <div class="d-flex justify-content-center">
-                                    <div class="spinner-border" role="status">
-                                    </div>
+                                <div class="col p-0 m-0" @onclick="@(()=>viewOwnRequest(ownR.req_id))">
+                                    <Handyman_SP_UI.Pages.WorkShop.Requests.AcceptedRequestComponent AcceptedRequestProperty="@ownR" IsOnFrontDisplay="true" OnViewTask="OnViewTask"/>                                          
                                 </div>
-                            }
-
+                            }                           
                         </div>
                     </div>
                 </div>
+
+                <!--End Own requests Album-->
+
+
+                <!--Back to top button-->
+                <button @onclick="@BackToTop" class="float-end border-0 bg-transparent">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-up-circle border-0" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z" />
+                    </svg>
+                </button>
+                <!--End Back to top button-->
             }
-            <!--End Own requests Album-->
-
-
-            <!--Back to top button-->
-            <button @onclick="@BackToTop" class="float-end border-0 bg-transparent">
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-up-circle border-0" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z" />
-                </svg>
-            </button>
-            <!--End Back to top button-->
+            else if (requests!=null && requests.Count == 0)
+            {
+                <span class=" text-danger">0 requests</span>
+            }
+            
+            @if (requests == null)
+            {
+                <span class=" text-danger">Loading your jobs...try again</span>
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border" role="status">
+                    </div>
+                </div>
+            }
         }
+        
 
-        @if (errors != null)
-        {
-            <p>errors</p>
-        }
+       
     </Authorized>
     <NotAuthorized>
         <h2 class="text-warning">No Work Shop Found</h2>
@@ -120,9 +120,7 @@
 @code {
 
 
-    List<RequestModel>? requests = new List<RequestModel>();
-
-
+    List<RequestModel> requests = new()!;
     bool isOrdersDisplayed;
     bool isRequestsDisplayed;
     string errors;
@@ -131,38 +129,40 @@
     {
         try
         {
-            LoadOwnRequests();
+            try
+            {
+                requests = await _requestHelper.GetOwnRequests();
+                StateHasChanged();
+            }
+            catch (Exception ex)
+            {
+                errors = ex.Message;
+                throw new Exception(ex.Message, ex.InnerException);
 
-            if(requests!=null && requests.Count>0)
+            }
+
+            //Check own requests status
+            if (requests != null && requests.Count > 0)
             {
                 //Display both the new and old requests
                 isOrdersDisplayed = true;
                 isRequestsDisplayed = true;
-
-                //Check own requests status
-                foreach (var r in requests)
-                {
-                    if (r.req_status != 11)
-                    {
-                        //r.req_status = _requestHelper.CheckStatus(r);
-                        //r.req_progress = _requestHelper.GetProgress(r);
-                    }
-
-                }
-
-
+                StateHasChanged();
             }
-
-
         }
         catch (Exception ex)
         {
+            errors = ex.Message;
             throw new Exception(ex.Message, ex.InnerException);
+
         }
     }
 
+ 
+
 
     //Go to top page
+    [JSInvokable]
     private async Task BackToTop()
     {
         await JsRuntime.InvokeVoidAsync("OnScrollEvent");
@@ -175,69 +175,38 @@
     void viewOwnRequest(int ownRId)
     {
         NavManager.NavigateTo(NavManager.GetUriWithQueryParameters("request", new Dictionary<string, object>()
-            {
-                ["ORId"] = ownRId,
+        {
+            ["ORId"] = ownRId,
 
-            }));
+        }));
     }
 
-
-
-    [Authorize(Roles ="ServiceProvider")]
-
-    /// <summary>
-    /// Get All the accepted requests
-    /// </summary>
-    /// <returns></returns>
-    /// <exception cref="Exception"></exception>
-    async void LoadOwnRequests()
+    void OnViewTask(int o)
     {
-        try
-        {
-            requests = (await _requestHelper.GetOwnRequests()).ToList();
-            if (requests == null)
-            {
-                requests = new();
-                return;
-            }
-        }
-        catch (Exception ex)
-        {
-            errors = ex.Message;
-            throw new Exception(ex.Message, ex.InnerException);
-           
-        }
+
     }
 
 
     //Display orders only
     void displayOrdersOnly()
     {
-        if (isRequestsDisplayed)
-        {
-            isRequestsDisplayed = false;
-        }
         isOrdersDisplayed = true;
-
+        isRequestsDisplayed = false;
     }
 
     //Display requests only
     void displayRequestsOnly()
     {
-        if (isOrdersDisplayed)
-        {
-            isOrdersDisplayed = false;
-        }
-
         isRequestsDisplayed = true;
+        isOrdersDisplayed = false;
     }
 
     //Display the current month's requests
-    async void displayCurrentMonth()
+    async Task displayCurrentMonth()
     {
         try
         {
-            requests = _requestHelper.GetCurrentMonthRequests((await _providerHelper.GetProvider()).employeeProfile?.UserId).Result.ToList();
+            requests = await _requestHelper.GetCurrentMonthRequests();
             if(requests is null)
             {
                 return;
@@ -262,7 +231,7 @@
     {
         try
         {
-            requests = _requestHelper.GetCurrentWeekRequests((await _providerHelper.GetProvider()).employeeProfile?.UserId).Result.ToList();
+            requests = await _requestHelper.GetCurrentWeekRequests();
             if(requests!=null && requests.Count > 0)
             {
                 foreach (var rs in requests)

@@ -5,7 +5,7 @@
 @inject IRequestHelper _requestHelper
 @inject NavigationManager NavManager
 
-<AuthorizeView Roles="ServiceProvider">
+<AuthorizeView Roles="Owner">
 
 <Authorized>
         @if (newRequests != null)
@@ -75,9 +75,9 @@
         }
  </Authorized>
     <NotAuthorized>
-        <Handyman_SP_UI.Pages.Services.ServicesAlbum>
+        <Handyman_SP_UI.Pages.WorkShop.Services.ServicesAlbum />
 
-        </Handyman_SP_UI.Pages.Services.ServicesAlbum>
+        
 </NotAuthorized>
 </AuthorizeView>
 
@@ -85,7 +85,7 @@
 @code {
 
 
-    private List<OrderModel>? newRequests;
+    private List<OrderModel>? newRequests = new List<OrderModel>();
     private ServiceProviderModel? provider;
 
     protected  override async Task OnInitializedAsync()
@@ -124,13 +124,15 @@
     async Task LoadNewRequests()
     {
         provider = await _providerHelper.GetProvider();
-        newRequests = new()!;
-        if (provider != null)
-
+        
+        if (provider != null && provider.Services.Count>0)
+        {
+            
             foreach (var service in provider.Services)
             {
                 newRequests.AddRange(await _requestHelper.GetNewRequests(service.id));
             }
+        }
     }
 
 }

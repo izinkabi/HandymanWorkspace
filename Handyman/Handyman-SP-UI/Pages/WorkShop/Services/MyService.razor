@@ -76,7 +76,7 @@
                 <p class="card-text">@svc.category.description</p>
                 <div class="d-flex justify-content-between align-items-center">                
                     <small class="text-muted">Available from:@svc.datecreated</small>
-                    <AuthorizeView Roles="Member">
+                    <AuthorizeView Roles="Owner">
                         <Authorized>
                             @if (!isAdded)
                             {

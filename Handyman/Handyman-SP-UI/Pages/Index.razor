@@ -1,10 +1,20 @@
 ﻿@page "/"
+@using Handyman_SP_UI.Pages.WorkShop.Owners
+@using Handyman_SP_UI.Pages.WorkShop.Registration.MembersRegistration
+@inject SignInManager<Handyman_SP_UIUser> _signInManager
+@inject AuthenticationStateProvider authProvider
+@inject UserManager<Handyman_SP_UIUser> UserMan
 
-<AuthorizeView Roles="ServiceProvider,Owner">
+<AuthorizeView Roles="ServiceProvider">
     <Authorized>
-        <Handyman_SP_UI.Pages.WorkShop.Requests.RequestsComponent/>
+        <OwnerComponent/>
     </Authorized>
     <NotAuthorized>
-        <Handyman_SP_UI.Pages.WorkShop.Registration.MembersRegistration.MemberRegistration/>
+        <MemberRegistration/>
      </NotAuthorized>
 </AuthorizeView>
+
+
+@code{
+    
+}

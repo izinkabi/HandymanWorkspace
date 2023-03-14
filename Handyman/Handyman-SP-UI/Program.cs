@@ -27,13 +27,13 @@ builder.Services.AddDbContext<Handyman_SP_UIContext>(options =>
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<IAPIHelper, APIHelper>();
-builder.Services.AddScoped<IBusinessEndPoint, BusinessEndPoint>();
-builder.Services.AddScoped<EmployeeEndPoint>();
-builder.Services.AddScoped<IServiceProviderEndPoint, ServiceProviderEndPoint>();
+builder.Services.AddTransient<IBusinessEndPoint, BusinessEndPoint>();
+builder.Services.AddTransient<EmployeeEndPoint>();
+builder.Services.AddTransient<IServiceProviderEndPoint, ServiceProviderEndPoint>();
 builder.Services.AddScoped<IBusinessHelper, BusinessHelper>();
 
 builder.Services.AddScoped<IServiceEndpoint, ServiceEndpoint>();
-builder.Services.AddTransient<IRequestHelper, RequestHelper>();
+builder.Services.AddScoped<IRequestHelper, RequestHelper>();
 builder.Services.AddTransient<IRequestEndPoint, RequestEndPoint>();
 builder.Services.AddScoped<IProviderHelper, ProviderHelper>();
 builder.Services.AddAntiforgery();
