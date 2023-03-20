@@ -75,6 +75,8 @@
 
 
   <ItemGroup>
+    <Folder Include="Areas\Identity\Pages\Account\Registration\MembersRegistration\" />
+    <Folder Include="Areas\Identity\Pages\Account\Registration\WorkShopRegistration\" />
     <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="wwwroot\images\profile\" />
   </ItemGroup>

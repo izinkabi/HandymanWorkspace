@@ -13,18 +13,20 @@ public class ProfileHelper : PageModel
     private readonly IServiceProviderEndPoint _providerEndPoint;
     private readonly AuthenticationStateProvider? _authenticationStateProvider;
     private readonly UserManager<Handyman_SP_UIUser> _userManager;
+    private readonly SignInManager<Handyman_SP_UIUser> signInManager;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly AppUserManager _appUserManager;
 
     public ProfileHelper(IServiceProviderEndPoint providerEndPoint, AuthenticationStateProvider? authenticationStateProvider,
         UserManager<Handyman_SP_UIUser> userManager,
-        AppUserManager appUserManager, RoleManager<IdentityRole> roleManager)
+        AppUserManager appUserManager, RoleManager<IdentityRole> roleManager, SignInManager<Handyman_SP_UIUser> signInManager)
     {
         _providerEndPoint = providerEndPoint;
         _authenticationStateProvider = authenticationStateProvider;
         _userManager = userManager;
         _roleManager = roleManager;
         _appUserManager = appUserManager;
+        this.signInManager = signInManager;
     }
 
     protected string? userId;
@@ -93,19 +95,12 @@ public class ProfileHelper : PageModel
     }
 
     //Register Profile
-    protected internal void CreateProfile(ProfileModel newProfile)
+    protected internal async void CreateProfile(ProfileModel newProfile)
     {
         if (newProfile != null)
         {
             try
             {
-                if (userId == null)
-                {
-                    GetUserId();
-                }
-                newProfile.UserId = userId;
-                ClaimsPrincipal User = GetUser();
-                newProfile.EmailAddress = _userManager.GetUserName(User);
                 _providerEndPoint.CreateProfile(newProfile);
             }
             catch (Exception)
@@ -129,7 +124,7 @@ public class ProfileHelper : PageModel
         {
             if (userId == null)
             {
-                User = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
+                User = signInManager.Context.User;
                 userId = User.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
             }
             return userId;

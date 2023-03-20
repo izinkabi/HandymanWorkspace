@@ -1,8 +1,8 @@
 using HandymanUILibrary.API;
 using HandymanUILibrary.API.Consumer.Order.Implementation;
 using HandymanUILibrary.API.Consumer.Order.Interface;
+using HandymanUILibrary.API.User;
 using Handymen_UI_Consumer.Areas.Identity.Data;
-using Handymen_UI_Consumer.Data;
 using Handymen_UI_Consumer.Helpers;
 using Handymen_UI_Consumer.Helpers.Tasks;
 using Microsoft.AspNetCore.Identity;

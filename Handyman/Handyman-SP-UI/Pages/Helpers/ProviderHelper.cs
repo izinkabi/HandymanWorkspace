@@ -15,13 +15,15 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
     private RoleManager<IdentityRole> _roleManager;
     private UserManager<Handyman_SP_UIUser> _userManager;
     private AppUserManager _appUserManager;
+    private SignInManager<Handyman_SP_UIUser> signInManager;
 
 
 
     public ProviderHelper(IServiceProviderEndPoint providerEndPoint,
         AuthenticationStateProvider authenticationStateProvider,
-        RoleManager<IdentityRole> roleManager, AppUserManager appUserManager, UserManager<Handyman_SP_UIUser> userManager)
-        : base(providerEndPoint, authenticationStateProvider, userManager, appUserManager, roleManager)
+        RoleManager<IdentityRole> roleManager, AppUserManager appUserManager, UserManager<Handyman_SP_UIUser> userManager, SignInManager<Handyman_SP_UIUser> signInManager)
+        : base(providerEndPoint, authenticationStateProvider, userManager, appUserManager,
+            roleManager, signInManager)
     {
         _providerEndPoint = providerEndPoint;
         _authenticationStateProvider = authenticationStateProvider;
@@ -159,7 +161,7 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
     [Authorize("ServiceProvider")]
     public async Task<BusinessModel> StampBusinessUserAsync(BusinessModel? newBiz)
     {
-        if (newBiz != null)
+        if (newBiz != null && newBiz.Employees.Count > 0)
         {
             foreach (var member in newBiz.Employees)
             {
@@ -190,7 +192,7 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
             return newBiz;
         }
 
-        return null;
+        return newBiz;
 
     }
 

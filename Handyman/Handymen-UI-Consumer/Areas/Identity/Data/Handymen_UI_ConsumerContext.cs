@@ -1,9 +1,8 @@
-﻿using Handymen_UI_Consumer.Areas.Identity.Data;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace Handymen_UI_Consumer.Data;
+namespace Handymen_UI_Consumer.Areas.Identity.Data;
 
 public class Handymen_UI_ConsumerContext : IdentityDbContext<Handymen_UI_ConsumerUser>
 {

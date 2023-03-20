@@ -1,4 +1,4 @@
-﻿namespace HandymanUILibrary.API
+﻿namespace HandymanUILibrary.API.User
 {
     public class ProfileEndPoint/*: IProfileEndPoint*/
     {

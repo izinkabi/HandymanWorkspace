@@ -1,19 +1,12 @@
-﻿@page "/register-services"
-
+﻿
 @inject IBusinessEndPoint _businessHLP
 @inject IServiceEndpoint _servicesEP
 @inject NavigationManager NavManager
 @inject AuthenticationStateProvider AuthStateProvider
 
-
-<AuthorizeView Roles="ServiceProvider">
-    <Authorized>
         <div class="row">
             <!--Member's services-->
             <div class="col">
-
-
-
                 <div>
                     <button id="newSevicesToggleButton" class="btn btn-lg btn-outline-dark" @onclick="@(()=>IsOnSelectService=true)" data-bs-toggle="collapse" data-bs-target="#servicesInfoCollapse" aria-expanded="false" aria-controls="servicesInfoCollapse">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-check" viewBox="0 0 16 16">
@@ -140,17 +133,6 @@
             }
 
         </div>
-    </Authorized>
-    <NotAuthorized>
-        <div class="p-5 mb-4 bg-light rounded-3">
-            <div class="container-fluid py-5">
-                <h1 class="display-5 fw-bold">Welcome to Handymen</h1>
-                <p class="col-md-8 fs-4">All services you think you can provide are listed here choose at least one and become <strong>Handymen</strong>, become the best in what you do and get money out of it</p>
-                <a href="Identity/Account/Login" class="btn btn-primary btn-lg">Check them out!</a>
-            </div>
-        </div>
-    </NotAuthorized>
-</AuthorizeView>
 
 
 

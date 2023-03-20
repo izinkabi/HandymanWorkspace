@@ -1,5 +1,4 @@
-﻿using Handyman_DataLibrary;
-using Handyman_DataLibrary.DataAccess.Query;
+﻿using Handyman_DataLibrary.DataAccess.Interfaces;
 using Handyman_DataLibrary.Models;
 using Microsoft.AspNetCore.Mvc;
 

@@ -35,7 +35,7 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
         {
             if (userId == null || code == null)
             {
-                return RedirectToPage("/Index");
+                return RedirectToPage("./Index");
             }
 
             var user = await _userManager.FindByIdAsync(userId);
@@ -49,7 +49,7 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
             StatusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
             //_NavManager.NavigateTo();
             await _signInManager.RefreshSignInAsync(user);
-            return LocalRedirect(Url.Content("~/members"));
+            return LocalRedirect("/Identity/Account/ProfileRegister");
         }
     }
 }

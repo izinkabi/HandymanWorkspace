@@ -1,6 +1,6 @@
 ﻿using System.Net.Http;
 
-namespace HandymanUILibrary.API
+namespace HandymanUILibrary.API.User
 {
     /// <summary>
     ///Interface for API helper 

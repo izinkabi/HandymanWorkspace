@@ -165,7 +165,7 @@
 
 @code {
 
-    OrderModel order;
+    HandymanUILibrary.Models.OrderModel order;
     bool isOnDetails;
     bool isDateSaved;
     List<TaskModel>? taskList = new()!;
@@ -185,7 +185,7 @@
     }
 
     [Parameter]
-    public OrderModel OrderComponentModel
+    public HandymanUILibrary.Models.OrderModel OrderComponentModel
     {
         get
         {
@@ -300,7 +300,7 @@
     /// <param name="order"></param>
     /// <returns>Complete task / Handled Exception</returns>
     [Authorize]
-    public async Task CancelOrder(OrderModel order)
+    public async Task CancelOrder(HandymanUILibrary.Models.OrderModel order)
     {
         try
         {

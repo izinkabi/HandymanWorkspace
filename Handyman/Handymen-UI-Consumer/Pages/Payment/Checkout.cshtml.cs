@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Handymen_UI_Consumer.Pages;
+namespace Handymen_UI_Consumer.Pages.Payment;
 
 [Authorize(Roles = "Consumer")]
 public class CheckoutModel : PageModel

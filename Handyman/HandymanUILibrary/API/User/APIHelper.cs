@@ -3,7 +3,7 @@ using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
-namespace HandymanUILibrary.API
+namespace HandymanUILibrary.API.User
 {
     public class APIHelper : IAPIHelper
     {

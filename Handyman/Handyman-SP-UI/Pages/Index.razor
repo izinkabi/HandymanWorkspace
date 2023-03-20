@@ -1,6 +1,5 @@
 ﻿@page "/"
 @using Handyman_SP_UI.Pages.WorkShop.Owners
-@using Handyman_SP_UI.Pages.WorkShop.Registration.MembersRegistration
 @inject SignInManager<Handyman_SP_UIUser> _signInManager
 @inject AuthenticationStateProvider authProvider
 @inject UserManager<Handyman_SP_UIUser> UserMan
@@ -9,9 +8,7 @@
     <Authorized>
         <OwnerComponent/>
     </Authorized>
-    <NotAuthorized>
-        <MemberRegistration/>
-     </NotAuthorized>
+    
 </AuthorizeView>
 
 

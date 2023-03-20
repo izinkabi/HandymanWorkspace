@@ -1,5 +1,4 @@
 ﻿using Handyman_SP_UI.Areas.Identity.Data;
-using Handyman_SP_UI.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
