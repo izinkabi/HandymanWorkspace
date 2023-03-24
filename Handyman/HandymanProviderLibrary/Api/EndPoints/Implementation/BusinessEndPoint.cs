@@ -46,13 +46,17 @@ public class BusinessEndPoint : IBusinessEndPoint
     {
         try
         {
-            var response = await _apiHelper.ApiClient.PostAsJsonAsync($"/api/Delivery/Business/Create?", business);
-            BusinessModel newBusiness;
-            if (response.IsSuccessStatusCode)
+            if (business != null)
             {
-                newBusiness = response.Content.ReadFromJsonAsync<BusinessModel>().Result;
-                return newBusiness;
+                var response = await _apiHelper.ApiClient.PostAsJsonAsync<BusinessModel>($"/api/Delivery/Create", business);
+                BusinessModel newBusiness;
+                if (response.IsSuccessStatusCode)
+                {
+                    newBusiness = response.Content.ReadFromJsonAsync<BusinessModel>().Result;
+                    return newBusiness;
+                }
             }
+
             return null;
         }
         catch (Exception ex)

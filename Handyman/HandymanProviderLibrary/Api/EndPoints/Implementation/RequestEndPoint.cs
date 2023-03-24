@@ -111,13 +111,13 @@ public class RequestEndPoint : IRequestEndPoint
 
 
     //Get Request current month request
-    public async Task<IList<RequestModel>> GetCurrentMonthRequests(string empID)
+    public async Task<List<RequestModel>> GetCurrentMonthRequests(string empID)
     {
         try
         {
             if (empID != null)
             {
-                IList<RequestModel> thisMonthRequests = await _apiHelper.ApiClient.GetFromJsonAsync<IList<RequestModel>>($"/api/Requests/GetCurrentMonth?empID={empID}");
+                List<RequestModel> thisMonthRequests = await _apiHelper.ApiClient.GetFromJsonAsync<List<RequestModel>>($"/api/Requests/GetCurrentMonth?empID={empID}");
 
                 if (thisMonthRequests != null && thisMonthRequests.Count > 0)
                 {
@@ -134,7 +134,7 @@ public class RequestEndPoint : IRequestEndPoint
     }
 
     //Get this month's requests
-    public async Task<IList<RequestModel>> GetCurrentWeekRequests(string empID)
+    public async Task<List<RequestModel>> GetCurrentWeekRequests(string empID)
     {
         try
         {
@@ -142,7 +142,7 @@ public class RequestEndPoint : IRequestEndPoint
             {
 
 
-                IList<RequestModel> thisMonthRequests = await _apiHelper.ApiClient.GetFromJsonAsync<IList<RequestModel>>($"/api/Requests/GetCurrentWeek?empId={empID}");
+                List<RequestModel> thisMonthRequests = await _apiHelper.ApiClient.GetFromJsonAsync<List<RequestModel>>($"/api/Requests/GetCurrentWeek?empId={empID}");
 
                 if (thisMonthRequests != null && thisMonthRequests.Count > 0)
                 {

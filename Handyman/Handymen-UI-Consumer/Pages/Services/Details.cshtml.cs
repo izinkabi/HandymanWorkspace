@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Handymen_UI_Consumer.Pages
+namespace Handymen_UI_Consumer.Pages.Services
 {
     public class DetailsModel : PageModel
     {

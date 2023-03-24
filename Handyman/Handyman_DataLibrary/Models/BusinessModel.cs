@@ -1,6 +1,4 @@
-﻿using Handyman_DataLibrary.Models;
-
-namespace Handyman_DataLibrary;
+﻿namespace Handyman_DataLibrary.Models;
 
 public class BusinessModel
 {

@@ -45,8 +45,12 @@ public class EmployeeEndPoint
         {
             if (userId != null)
             {
-                var serviceProvider = await _apiHelper.ApiClient.GetFromJsonAsync<ServiceProviderModel>($"/api/Delivery/Business/GetProvider?employeeId={userId}");
-                return serviceProvider;
+                var serviceProvider = await _apiHelper.ApiClient.GetFromJsonAsync<ServiceProviderModel>($"/api/Delivery/GetProvider?employeeId={userId}");
+                if (serviceProvider != null)
+                {
+                    return serviceProvider;
+                }
+
             }
 
             return null;

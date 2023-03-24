@@ -7,12 +7,14 @@ namespace Handyman_SP_UI.Pages.Helpers;
 /// </summary>
 public class RequestHelper : IDisposable, IRequestHelper
 {
-    readonly IRequestEndPoint? _requestEndPoint;
-    readonly IProviderHelper _providerHelper;
+    IRequestEndPoint? _requestEndPoint;
+    IProviderHelper _providerHelper;
+
     IList<OrderModel> orders;
     readonly IList<RequestModel> _requests;
     StatusCheckHelper statusCheckHelper;
     RequestModel newRequest;
+
 
     public RequestHelper(IRequestEndPoint requestEndPoint, IProviderHelper providerHelper)
     {
@@ -26,7 +28,8 @@ public class RequestHelper : IDisposable, IRequestHelper
     List<RequestModel> StartedRequests = new()!;
     List<RequestModel> AcceptedRequests;
     List<RequestModel> FinishedRequests = new()!;
-
+    List<RequestModel> OwnRequests;
+    ServiceProviderModel provider;
     enum RequestStage
     {
         None = 0,
@@ -99,21 +102,32 @@ public class RequestHelper : IDisposable, IRequestHelper
 
     //-----Filter Methods
     //Current Week requests GET
-    public async Task<IList<RequestModel>> GetCurrentWeekRequests(string empID)
+    public async Task<List<RequestModel>> GetCurrentWeekRequests()
     {
         try
         {
-            var jobs = await _requestEndPoint.GetCurrentWeekRequests(empID);
-            if (jobs != null && jobs.Count > 0)
+            if (provider is null)
             {
-                foreach (var rq in jobs)
-                {
-                    rq.req_status = CheckStatus(rq);
-                    rq.req_progress = GetProgress(rq);
-                }
+                provider = await _providerHelper.GetProvider();
             }
 
-            return jobs;
+            if (provider != null && provider.pro_providerId != null)
+            {
+
+
+                var jobs = await _requestEndPoint.GetCurrentWeekRequests(provider.pro_providerId);
+                if (jobs != null && jobs.Count > 0)
+                {
+                    foreach (var rq in jobs)
+                    {
+                        rq.req_status = CheckStatus(rq);
+                        rq.req_progress = GetProgress(rq);
+                    }
+                }
+
+                return jobs;
+            }
+            return null;
         }
         catch (Exception ex)
         {
@@ -122,18 +136,26 @@ public class RequestHelper : IDisposable, IRequestHelper
     }
 
     //Check Current Month
-    public async Task<IList<RequestModel>> GetCurrentMonthRequests(string empID)
+    public async Task<List<RequestModel>> GetCurrentMonthRequests()
     {
         try
         {
-            var jobs = await _requestEndPoint.GetCurrentMonthRequests(empID);
-            foreach (var rq in jobs)
+            if (provider is null)
             {
-                rq.req_status = CheckStatus(rq);
-                rq.req_status = GetProgress(rq);
+                provider = await _providerHelper.GetProvider();
             }
+            if (provider != null && provider.pro_providerId != null)
+            {
+                var jobs = await _requestEndPoint.GetCurrentMonthRequests(provider.pro_providerId);
+                foreach (var rq in jobs)
+                {
+                    rq.req_status = CheckStatus(rq);
+                    rq.req_status = GetProgress(rq);
+                }
 
-            return jobs;
+                return jobs;
+            }
+            return null;
         }
         catch (Exception ex)
         {
@@ -229,24 +251,31 @@ public class RequestHelper : IDisposable, IRequestHelper
     /// </summary>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public async Task<IList<RequestModel>> GetOwnRequests()
+    public async Task<List<RequestModel>> GetOwnRequests()
     {
-        IList<RequestModel> requests;
-
         try
         {
-            ServiceProviderModel provider = await _providerHelper.GetProvider();//not sure if this guy will budge!
-            if (provider != null)
+            if (provider is null)
             {
-                requests = await _requestEndPoint.GetRequestsByProvider(provider.pro_providerId);
-                if (requests != null)
+                provider = await _providerHelper.GetProvider();//not sure if this guy will budge!
+            }
+
+            if (provider != null && provider.pro_providerId != null)
+            {
+
+                if (OwnRequests is null)
                 {
-                    foreach (var request in requests)
+                    OwnRequests = await _requestEndPoint.GetRequestsByProvider(provider.pro_providerId);
+                }
+
+                if (OwnRequests != null && OwnRequests.Count > 0)
+                {
+                    foreach (var request in OwnRequests)
                     {
                         request.req_status = statusCheckHelper.CheckStatus(request);
                         request.req_progress = GetProgress(request);
                     }
-                    return requests;
+                    return OwnRequests;
                 }
 
             }
@@ -279,14 +308,22 @@ public class RequestHelper : IDisposable, IRequestHelper
         RequestModel request = new()!;
         try
         {
-            foreach (var r in await GetOwnRequests())
+            if (OwnRequests is null)
             {
-                if (r.req_id == id)
-                {
-                    request = r;
-                }
+                await GetOwnRequests();
             }
-            return request;
+            if (OwnRequests is not null && OwnRequests.Count > 0)
+            {
+                foreach (var r in OwnRequests)
+                {
+                    if (r.req_id == id)
+                    {
+                        request = r;
+                    }
+                }
+                return request;
+            }
+            return null;
         }
         catch (Exception ex)
         {

@@ -1,5 +1,4 @@
 ﻿using Handyman_SP_UI.Areas.Identity.Data;
-using Handyman_SP_UI.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -101,7 +100,7 @@ namespace Handyman_SP_UI.Pages.Helpers
         //        await _roleManager.CreateAsync(role);
         //    }
 
-        //    // creating Creating Employee role     
+        //    //public void creating Creatingmployee role     
         //    x = await _roleManager.RoleExistsAsync("Employee");
         //    if (!x)
         //    {

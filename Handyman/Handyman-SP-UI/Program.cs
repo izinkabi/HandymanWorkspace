@@ -1,11 +1,11 @@
 using Handyman_SP_UI.Areas.Identity;
 using Handyman_SP_UI.Areas.Identity.Data;
-using Handyman_SP_UI.Data;
 using Handyman_SP_UI.Pages.Helpers;
 using HandymanProviderLibrary.Api.ApiHelper;
 using HandymanProviderLibrary.Api.EndPoints.Implementation;
 using HandymanProviderLibrary.Api.EndPoints.Interface;
 using HandymanProviderLibrary.Api.Service;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -26,13 +26,13 @@ builder.Services.AddDbContext<Handyman_SP_UIContext>(options =>
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<IAPIHelper, APIHelper>();
-builder.Services.AddScoped<IBusinessEndPoint, BusinessEndPoint>();
-builder.Services.AddScoped<EmployeeEndPoint>();
-builder.Services.AddScoped<IServiceProviderEndPoint, ServiceProviderEndPoint>();
+builder.Services.AddTransient<IBusinessEndPoint, BusinessEndPoint>();
+builder.Services.AddTransient<EmployeeEndPoint>();
+builder.Services.AddTransient<IServiceProviderEndPoint, ServiceProviderEndPoint>();
 builder.Services.AddScoped<IBusinessHelper, BusinessHelper>();
-builder.Services.AddTransient<EmployeeHelper>();
+
 builder.Services.AddScoped<IServiceEndpoint, ServiceEndpoint>();
-builder.Services.AddTransient<IRequestHelper, RequestHelper>();
+builder.Services.AddScoped<IRequestHelper, RequestHelper>();
 builder.Services.AddTransient<IRequestEndPoint, RequestEndPoint>();
 builder.Services.AddScoped<IProviderHelper, ProviderHelper>();
 builder.Services.AddAntiforgery();
@@ -57,6 +57,14 @@ builder.Services.AddResponseCompression(opt =>
 builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddApplicationInsightsTelemetry();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+        options.SlidingExpiration = true;
+        options.AccessDeniedPath = "/Forbidden/";
+        options.LoginPath = "Identity/Account/Login";
+    });
 
 var app = builder.Build();
 
@@ -80,6 +88,5 @@ app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 app.UseAuthentication();
 app.UseAuthorization();
-
-
+app.MapDefaultControllerRoute();
 app.Run();

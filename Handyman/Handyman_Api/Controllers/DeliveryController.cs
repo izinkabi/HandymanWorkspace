@@ -1,5 +1,4 @@
-﻿using Handyman_DataLibrary;
-using Handyman_DataLibrary.DataAccess.Query;
+﻿using Handyman_DataLibrary.DataAccess.Interfaces;
 using Handyman_DataLibrary.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,7 +34,6 @@ public class DeliveryController : ControllerBase
             return business;
         }
         catch (Exception ex)
-
         {
             return null;
             throw new Exception(ex.Message, ex.InnerException);
@@ -49,8 +47,13 @@ public class DeliveryController : ControllerBase
     {
         try
         {
-            BusinessModel businessM = _businessData.CreateBusiness(business);
-            if (businessM != null) return businessM;
+            if (business != null)
+            {
+                BusinessModel businessM = _businessData.CreateBusiness(business);
+                if (businessM != null) return businessM;
+
+            }
+
             return null;
 
         }

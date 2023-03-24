@@ -39,21 +39,7 @@
                 </div>
                 <!--End Business Component-->
                 <!--Business Component-->
-                @if (member != null)
-                {
-                    <div class="col-md-3 shadow rounded-4 p-2" role="document">
-                        <div class="row g-0 border rounded-4 overflow-hidden flex-md-row mb-4  shadow-sm h-md-250 ">
-                            <div class="col p-2 d-flex  h-md-250 flex-column mt-4 position-static">
-                                <a href="profile" class="">
-                                    <Handyman_SP_UI.Pages.Businesses.Employee.Stuff providerParam="@member">
-
-                                    </Handyman_SP_UI.Pages.Businesses.Employee.Stuff>
-
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                }
+                
                 <!--End Business Component-->
                 @if (business.address != null)
                 {
@@ -175,7 +161,7 @@
             if(business is null)
             {
                member = new();
-               member.employeeProfile = await _providerHelper.GetProfile();
+               member.employeeProfile = await _providerHelper.GetProviderProfile();
             }
         }
         catch (Exception ex)

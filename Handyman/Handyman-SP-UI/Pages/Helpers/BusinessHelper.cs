@@ -90,12 +90,15 @@ namespace Handyman_SP_UI.Pages.Helpers
         {
             try
             {
-                if (newBiz != null)
-
-                    newBiz.registration.name = newBiz.Name;
+                if (newBiz == null)
+                {
+                    return newBiz;
+                }
+                newBiz.registration.name = newBiz.Name;
                 newBiz.address.add_country = "Sout Africa";
+                var result = await _providerHelper.StampBusinessUserAsync(newBiz);
 
-                return await _providerHelper.StampBusinessUserAsync(newBiz);
+                return result;
             }
             catch (Exception ex)
             {

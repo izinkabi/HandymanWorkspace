@@ -1,70 +1,43 @@
 ﻿using Handyman_SP_UI.Areas.Identity.Data;
 using HandymanProviderLibrary.Api.EndPoints.Interface;
 using HandymanProviderLibrary.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 
 namespace Handyman_SP_UI.Pages.Helpers;
 
-public class ProviderHelper : EmployeeHelper, IProviderHelper
+public class ProviderHelper : ProfileHelper, IProviderHelper
 {
     IServiceProviderEndPoint? _providerEndPoint;
     AuthenticationStateProvider? _authenticationStateProvider;
     ServiceProviderModel? providerModel;
-    RoleManager<IdentityRole> _roleManager;
-    UserManager<Handyman_SP_UIUser> _userManager;
+    private RoleManager<IdentityRole> _roleManager;
+    private UserManager<Handyman_SP_UIUser> _userManager;
+    private AppUserManager _appUserManager;
+    private SignInManager<Handyman_SP_UIUser> signInManager;
+
 
 
     public ProviderHelper(IServiceProviderEndPoint providerEndPoint,
         AuthenticationStateProvider authenticationStateProvider,
-        RoleManager<IdentityRole> roleManager, UserManager<Handyman_SP_UIUser> userManager) : base(authenticationStateProvider)
+        RoleManager<IdentityRole> roleManager, AppUserManager appUserManager, UserManager<Handyman_SP_UIUser> userManager, SignInManager<Handyman_SP_UIUser> signInManager)
+        : base(providerEndPoint, authenticationStateProvider, userManager, appUserManager,
+            roleManager, signInManager)
     {
         _providerEndPoint = providerEndPoint;
         _authenticationStateProvider = authenticationStateProvider;
         _roleManager = roleManager;
         _userManager = userManager;
 
+
     }
 
+    //Create a provider profie
+    public void RegisterProfile(ProfileModel profile) => this.CreateProfile(profile);
 
-    public async Task<ProfileModel> GetProfile()
-    {
-        try
-        {
-            ProfileModel profile = await _providerEndPoint.GetProfile(await GetUserId());
-            return profile;
-        }
-        catch (Exception)
-        {
-
-            throw;
-        }
-    }
-
-    //Register Profile
-    public void RegisterProfile(ProfileModel newProfile)
-    {
-        if (newProfile != null)
-        {
-            try
-            {
-                if (userId == null)
-                {
-                    GetUserId();
-                }
-                newProfile.UserId = userId;
-                ClaimsPrincipal User = GetUser();
-                newProfile.EmailAddress = _userManager.GetUserName(User);
-                _providerEndPoint.CreateProfile(newProfile);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-    }
+    //Get the profile of the Handyman/Provider 
+    public async Task<ProfileModel> GetProviderProfile() => await this.GetProfile();
 
     //Register a Handyman / Service Provider
     public async void RegisterHandyman(ServiceProviderModel newHandyman)
@@ -149,7 +122,6 @@ public class ProviderHelper : EmployeeHelper, IProviderHelper
     /// <exception cref="Exception"></exception>
     public async Task<ServiceProviderModel> GetProvider()
     {
-
         try
         {
             if (userId == null)
@@ -157,11 +129,22 @@ public class ProviderHelper : EmployeeHelper, IProviderHelper
                 userId = await GetUserId();
             }
 
-            if (userId != null && providerModel == null)
+            if (userId != null)
             {
                 providerModel = await _providerEndPoint?.GetProvider(userId);
+                if (providerModel != null)
+                {
+                    if (providerModel.employeeProfile.UserId == null)
+                    {
+                        providerModel.employeeProfile = await GetProfile();
+                    }
+                }
+                return providerModel;
             }
-            return providerModel;
+
+
+            return null;
+
         }
         catch (Exception ex)
         {
@@ -175,35 +158,33 @@ public class ProviderHelper : EmployeeHelper, IProviderHelper
     /// </summary>
     /// <param name="newBiz"></param>
     /// <returns></returns>
+    [Authorize("ServiceProvider")]
     public async Task<BusinessModel> StampBusinessUserAsync(BusinessModel? newBiz)
     {
-        if (newBiz != null)
+        if (newBiz != null && newBiz.Employees.Count > 0)
         {
             foreach (var member in newBiz.Employees)
             {
-                newBiz.date = DateTime.Now;
-                if (member.IsOwner)
+                try
                 {
-                    //Create a new role in AspNetRoles(owner) and add the users
-                    var User = GetUser();
-                    if (!User.IsInRole("Owner"))
+                    if (member.IsOwner)
                     {
-                        await _roleManager.CreateAsync(new IdentityRole("Owner"));
+                        member.employeeId = await GetUserId();
+                        member.pro_providerId = await GetUserId();
+
                     }
                     else
                     {
-                        await _userManager.AddToRoleAsync(await _userManager.GetUserAsync(User), "Owner");
+                        return null;
                     }
-                    member.employeeId = await GetUserId();
-                    member.pro_providerId = await GetUserId();
-                }
-                else
-                {
-                    member.employeeId = await GetUserId();
-                    member.pro_providerId = await GetUserId();
-                }
+                    newBiz.registration.businessType = newBiz.Type;
 
-                newBiz.registration.businessType = newBiz.Type;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message, ex.InnerException);
+                }
+                newBiz.date = DateTime.Now;
                 //UserManager UI to return registered users
             }
 
@@ -211,7 +192,7 @@ public class ProviderHelper : EmployeeHelper, IProviderHelper
             return newBiz;
         }
 
-        return null;
+        return newBiz;
 
     }
 

@@ -1,0 +1,138 @@
+﻿@page "/orders-component"
+@page "/orders"
+
+@inject IProviderHelper _providerHelper
+@inject IRequestHelper _requestHelper
+@inject NavigationManager NavManager
+
+<AuthorizeView Roles="Owner">
+
+<Authorized>
+        @if (newRequests != null)
+        {
+            <!--New Requests Section-->
+               <!--Table-->
+                <div class="table-responsive shadow rounded bg-white" style="height:250px;overflow-y:scroll">
+                   
+                    <!--Displaying orders only-->
+                    
+
+
+                        <table class="table table-striped table-sm table-hover table-responsive bg-light">
+                            <!--Table header-->
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Date placed</th>
+                                    <th scope="col">Category</th>
+                                    <th scope="col">Request title</th>
+                                </tr>
+                            </thead>
+                            @if (newRequests.Count > 0)
+                            {
+                                <!--Table body-->
+                                <tbody>
+                                    <!--Rows-->
+                                    @foreach (var nr in newRequests)
+                                    {
+                                        @if (nr.status < 2)
+                                        {
+
+                                          <tr onclick="@(()=> viewOrder(nr.service.id,nr.Id))">
+                                        
+                                                <!--Onclick test-->
+                                                <td class="border-0 btn-outline-info">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16">
+                                                        <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" />
+                                                    </svg>
+                                                </td>
+
+                                                <td>@nr.datecreated</td>
+                                                <td>@nr.service.category.description</td>
+                                                <td>@nr.service.name</td>
+                                          </tr>
+
+                                        }
+                                    }
+
+
+                                    <!--End rows-->
+                                </tbody>
+                            }
+                            else if(newRequests==null||newRequests.Count==0)
+                            {
+                               <p class="fst-italic"> You have 0 requests</p>
+                            }
+                            <!--End body-->
+                        </table>
+                    
+                    
+
+            <!--End table-->
+                </div>
+           
+
+        }
+ </Authorized>
+    <NotAuthorized>
+        <Handyman_SP_UI.Pages.WorkShop.Services.ServicesAlbum />
+
+        
+</NotAuthorized>
+</AuthorizeView>
+
+
+@code {
+
+
+    private List<OrderModel>? newRequests = new List<OrderModel>();
+    private ServiceProviderModel? provider;
+
+    protected  override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await LoadNewRequests();
+        }
+        catch (Exception)
+        {
+            
+            throw;
+        }
+        
+    }
+
+    /// <summary>
+    /// Display / route to a request-Component
+    /// </summary>
+    /// <param name="sid"></param>
+    /// <param name="rid"></param>
+    void viewOrder(int sid, int rid)
+    {
+        NavManager.NavigateTo(NavManager.GetUriWithQueryParameters("request", new Dictionary<string, object>()
+            {
+                ["SId"] = sid,
+                ["NRId"] = rid
+            }));
+    }
+
+    /// <summary>
+    /// Query requests from DB
+    /// </summary>
+    /// <returns></returns>
+
+    async Task LoadNewRequests()
+    {
+        provider = await _providerHelper.GetProvider();
+        
+        if (provider != null && provider.Services.Count>0)
+        {
+            
+            foreach (var service in provider.Services)
+            {
+                newRequests.AddRange(await _requestHelper.GetNewRequests(service.id));
+            }
+        }
+    }
+
+}
