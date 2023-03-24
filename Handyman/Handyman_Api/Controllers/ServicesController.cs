@@ -45,20 +45,7 @@ public class ServicesController : ControllerBase
     [Route("UpdateService")]
     public void Put(ServiceModel newService) => _serviceData.UpdateService(newService);
 
-    [HttpDelete]
-    [Route("DeleteCustom")]
-    public void Delete(ServiceModel customServiceDelete)
-    {
-        try
-        {
 
-        }
-        catch (Exception)
-        {
-
-            throw;
-        }
-    }
 
     //Get a service by id
     [HttpGet]

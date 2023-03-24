@@ -6,9 +6,10 @@
 
         <!-- Full screen modal -->
         <!--In Between Modals-->
-        <!--Register WorkShop Full Screen Modal-->
+        
         @if (Model.NewBusiness != null)
         {
+            <!--Register WorkShop Full Screen Modal-->
             <div class="modal" id="regWorkShopModalToggle" aria-hidden="true" aria-labelledby="regWorkShopModalToggleLabel" tabindex="-1">
                 <div class="modal-dialog modal-fullscreen-xxl-down">
                     <div class="modal-content">
@@ -47,9 +48,9 @@
                                             <label for="taxNumber" class="form-label">Tax Number</label>
                                             <input type="text" asp-for="@Model.NewBusiness.registration.taxNumber"  class="form-control" id="taxNumber" placeholder="#37445784" required />
                                         </div>
-
+                                        <!--Service Delivery Type-->
                                         <div class="form-control">
-                                        <label for="WorkShopType" class="form-label">Services Type</label>
+                                        <label for="WorkShopType" class="form-label">Service Delivery Type</label>
                                             <select class="form-select" id="workplaceTypeSelect" asp-for="WorkShopType" data-val="true" data-val-required="Choose a Work shop type">
                                                 <option selected>Choose...</option>
                                                 <option value="1">Remote</option>
@@ -59,13 +60,13 @@
                                                 Please select a Business Type.
                                             </div>
                                         </div>
-                                        <!--End Registration-->
-                                        <!--End Workshop-->
+                                        <!--End Service Delivery Type-->
 
 
                                         <hr />
                                         <!--Address-->
                                             
+                                            <!--Street Name-->
                                             <div class="form-control">
                                                 <label for="streetAddress" class="form-label">Street Address</label>
                                                 <input type="text" class="form-control" asp-for="@Model.NewBusiness.address.add_street" id="streetAddress" placeholder="4 First Ave" required />
@@ -73,6 +74,9 @@
                                                     Please provide a valid street address.
                                                 </div>
                                             </div>
+                                            <!--End Street Name-->
+
+                                            <!--Suburb-->
                                             <div class="form-control">
                                                 <label for="suburb" class="form-label">Suburb</label>
                                                 <input type="text" asp-for="@Model.NewBusiness.address.add_suburb" class="form-control" id="suburb" placeholder="Emadadeni" required />
@@ -80,6 +84,7 @@
                                                     Please provide a valid suburb.
                                                 </div>
                                             </div>
+                                            <!--Surburb-->
                                             <div class="form-control">
                                                 <label for="city" class="form-label">City</label>
                                                 <input type="text" asp-for="@Model.NewBusiness.address.add_city" class="form-control" id="city" placeholder="Kuvuki Land" required />
@@ -87,7 +92,8 @@
                                                     Please provide a valid city.
                                                 </div>
                                             </div>
-
+                                            <!--End Suburb -->
+                                            <!--Province-->
                                             <div class="mb-3 form-control">
                                             <label for="state" class="form-label">Province/State</label>
                                                 <select asp-for="NewBusiness.address.add_state" class="form-select" id="state">
@@ -109,6 +115,7 @@
 
 
                                             </div>
+                                             <!--End Province-->
                                             <!---End address-->
                                            
                                             <button class="btn btn-light btn-outline-success float-end">
@@ -123,9 +130,8 @@
                     </div>
                 </div>
             </div>
-
-
             <!--End Register WorkShop Full Screen Modal-->
+            
             <!--Service Registration-->
             <div class="modal" id="regServiceToggle" aria-hidden="true" aria-labelledby="regServiceToggleLabel" tabindex="-">
                 <div class="modal-dialog modal-fullscreen-xxl-down">
@@ -192,7 +198,6 @@
                     </div>
                 </div>
             </div>
-
             <!--End Service Registration-->
 
             <!--WorkShop Details-->
@@ -222,7 +227,15 @@
 
                             <div class="col-md-6 borderd">
                                 <h2>Work Shop Details</h2>
-                                <p>Read more detailed instructions and documentation on using or contributing to Bootstrap.</p>
+                                <p>@Model.NewBusiness.Description</p>
+                                <hr/>
+                                <p> @Model.NewBusiness.address.add_street</p>
+                                <p> @Model.NewBusiness.address.add_suburb</p>
+                                <p> @Model.NewBusiness.address.add_city</p>
+                                <p> @Model.NewBusiness.address.add_state</p><br/>
+                                <p> @Model.NewBusiness.address.add_country</p>
+                                
+                                
                                 <ul class="icon-list ps-0">
                                     @foreach (var service in Model.NewBusiness.Employees.FirstOrDefault().Services)
                                     {
@@ -239,16 +252,29 @@
             </div>
             <!--End WorkShop Details-->
 
+            <!--Modals toggle Buttons-->
             @if (Model.IsWorkShopSaved)
             {
                  <button class="btn btn-primary" data-bs-target="#regServiceToggle" data-bs-toggle="modal">Add Services</button>
             }
             if (!Model.IsWorkShopSaved)
             {
-                <button class="btn btn-primary" data-bs-target="#regWorkShopModalToggle" data-bs-toggle="modal">Open a Work Shop</button>
+                <button class="btn btn-dark btn-outline-light shadow " data-bs-target="#regWorkShopModalToggle" data-bs-toggle="modal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-building-fill-add" viewBox="0 0 16 16">
+                    <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Z" />
+                    <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7.256A4.493 4.493 0 0 0 12.5 8a4.493 4.493 0 0 0-3.59 1.787A.498.498 0 0 0 9 9.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .39-.187A4.476 4.476 0 0 0 8.027 12H6.5a.5.5 0 0 0-.5.5V16H3a1 1 0 0 1-1-1V1Zm2 1.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5Zm3 0v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5Zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1ZM4 5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5ZM7.5 5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1Zm2.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5ZM4.5 8a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1Z" />
+                </svg>
+                   Create
+                </button>
 
-                <button class="btn btn-primary" data-bs-target="#regServiceToggle" data-bs-toggle="modal">Join Work-Shop</button>
+                <a class="btn btn-warning btn-outline-light shadow" asp-page="WorkShopEmployer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-briefcase" viewBox="0 0 16 16">
+                        <path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z" />
+                    </svg>
+                    Occupy Work Space
+                </a>
             }
+            <!--End Modal taggle Buttons-->
             
             <!--End Full screen modal -->
             <!--End In Between Modal-->

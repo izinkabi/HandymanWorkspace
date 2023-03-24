@@ -8,7 +8,7 @@
 @inject IRequestHelper _requestHelper
 
 
-<AuthorizeView Roles="Owner">
+<AuthorizeView Roles="Owner,Member">
       <Authorized>
 
         
@@ -31,11 +31,8 @@
         }
         else if(ownRequest!=null && isAccepted)
         {
-   
-           
             <AcceptedRequestComponent AcceptedRequestProperty="ownRequest" OnViewTask="ViewTask"/>
 
-           
            <!--End Accepted-->
   
         }

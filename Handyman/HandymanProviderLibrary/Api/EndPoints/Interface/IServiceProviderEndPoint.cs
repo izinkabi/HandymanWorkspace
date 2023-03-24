@@ -6,7 +6,7 @@ namespace HandymanProviderLibrary.Api.EndPoints.Interface
     {
         Task AddService(ServiceProviderModel provider);
         Task RemoveService(ServiceModel service, string providerId);
-        Task CreateServiceProvider(ServiceProviderModel provider);
+        Task<bool> CreateServiceProvider(ServiceProviderModel provider);
         Task<ServiceProviderModel> GetProvider(string userId);
         Task<ProfileModel> GetProfile(string id);
         void CreateProfile(ProfileModel newProfile);

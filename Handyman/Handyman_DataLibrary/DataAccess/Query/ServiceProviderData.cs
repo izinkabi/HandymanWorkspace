@@ -21,6 +21,69 @@ public class ServiceProviderData : EmployeeData, IServiceProviderData
 
     }
 
+    public List<ServiceProviderModel> GetMemberShips(int businessId)
+    {
+        try
+        {
+            List<ServiceProviderModel> members = new List<ServiceProviderModel>();
+            if (businessId != 0)
+            {
+
+                //Get employee
+                List<EmployeeModel> employees = this.GetMemberships(businessId);
+
+
+                //Get the service of the provider (Provider's Service)
+                foreach (var employee in employees)
+                {
+                    List<Service_CategoryModel> service_category = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Delivery.spProvider_Service_LookUp",
+                    new { providerId = employee.employeeId }, "Handyman_DB");
+
+
+                    var provider = new ServiceProviderModel()!;
+                    //Membership
+                    provider.IsOwner = employee.IsOwner;
+                    provider.DateEmployed = employee.DateEmployed;
+                    provider.BusinessId = employee.BusinessId;
+
+                    //Services
+                    var services = new List<ServiceModel>();
+                    foreach (Service_CategoryModel outputItem in service_category)
+                    {
+                        //populate service
+                        var service = new ServiceModel()!;
+                        service.datecreated = outputItem.serv_datecreated;
+                        service.status = outputItem.serv_status;
+                        service.img = outputItem.serv_img;
+                        service.id = outputItem.serv_id;
+                        service.name = outputItem.serv_name;
+
+                        service.category = new ServiceCategoryModel();
+                        //populate category
+                        service.category.name = outputItem.cat_name;
+                        service.category.description = outputItem.cat_description;
+                        service.category.type = outputItem.cat_type;
+                        services.Add(service);
+                    }
+
+                    provider.Services = services;
+                    members.Add(provider);
+                }
+
+
+            }
+            else
+            {
+                return null;
+            }
+            return members;
+
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
     //Since the service provider is an employee, get the employee then
     //Get the service provider and the services
     public ServiceProviderModel GetServiceProvider(string providerId)
@@ -89,18 +152,21 @@ public class ServiceProviderData : EmployeeData, IServiceProviderData
                 this.InsertEmployee(serviceProvider);
             }
 
-
-            foreach (var service in serviceProvider.Services)
+            if (serviceProvider.Services != null && serviceProvider.Services.Count() > 0)
             {
-                //Insert the provider 
-                _dataAccess.SaveData("Delivery.spProviderInsert",
-                    new
-                    {
-                        pro_providerId = serviceProvider.pro_providerId,
-                        ServiceId = service.id
-                    },
-                    "Handyman_DB");
+                foreach (var service in serviceProvider.Services)
+                {
+                    //Insert the provider 
+                    _dataAccess.SaveData("Delivery.spProviderInsert",
+                        new
+                        {
+                            pro_providerId = serviceProvider.pro_providerId,
+                            ServiceId = service.id
+                        },
+                        "Handyman_DB");
+                }
             }
+
         }
         catch (Exception ex)
         {

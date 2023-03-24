@@ -67,16 +67,42 @@ public class BusinessEndPoint : IBusinessEndPoint
     }
 
     //Add new services under the business's provider
-    public async Task EmployMember(ServiceProviderModel serviceProvider)
+    public async Task<bool> EmployMember(ServiceProviderModel serviceProvider)
     {
         try
         {
-            await _serviceProvider.CreateServiceProvider(serviceProvider);
+            if (serviceProvider != null)
+            {
+                var result = await _serviceProvider.CreateServiceProvider(serviceProvider);
+                return result;
+            }
+            else
+            {
+                return false;
+            }
+
         }
         catch (Exception ex)
         {
             serviceProvider = null;
+            return false;
             throw new Exception(ex.Message);
+        }
+    }
+
+
+
+    public async Task<BusinessModel> GetWorkShop(string regNumber)
+    {
+        try
+        {
+            var WorkShop = await _apiHelper.ApiClient.GetFromJsonAsync<BusinessModel>($"/api/Delivery/GetWorkShop?regNumber={regNumber}");
+            return WorkShop;
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception(ex.Message, ex.InnerException);
         }
     }
 

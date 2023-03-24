@@ -5,7 +5,6 @@ using HandymanProviderLibrary.Api.ApiHelper;
 using HandymanProviderLibrary.Api.EndPoints.Implementation;
 using HandymanProviderLibrary.Api.EndPoints.Interface;
 using HandymanProviderLibrary.Api.Service;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -19,8 +18,6 @@ var connectionString = builder.Configuration.GetConnectionString("Handyman_SP_UI
 builder.Services.AddDbContext<Handyman_SP_UIContext>(options =>
     options.UseSqlServer(connectionString));
 
-//builder.Services.AddDefaultIdentity<Handyman_SP_UIUser>(options => options.SignIn.RequireConfirmedAccount = true)
-//    .AddEntityFrameworkStores<Handyman_SP_UIContext>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -56,15 +53,7 @@ builder.Services.AddResponseCompression(opt =>
 });
 builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();
-builder.Services.AddApplicationInsightsTelemetry();
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
-    {
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
-        options.SlidingExpiration = true;
-        options.AccessDeniedPath = "/Forbidden/";
-        options.LoginPath = "Identity/Account/Login";
-    });
+
 
 var app = builder.Build();
 

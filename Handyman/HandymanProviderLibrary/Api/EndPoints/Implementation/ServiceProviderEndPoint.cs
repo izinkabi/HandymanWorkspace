@@ -41,15 +41,36 @@ public class ServiceProviderEndPoint : EmployeeEndPoint, IServiceProviderEndPoin
 
     }
     //Adding a new service provider
-    async Task IServiceProviderEndPoint.CreateServiceProvider(ServiceProviderModel provider)
+    async Task<bool> IServiceProviderEndPoint.CreateServiceProvider(ServiceProviderModel provider)
     {
         try
         {
-            await _apiHelper.ApiClient.PostAsJsonAsync("/api/Delivery/AddMember", provider);
+
+            if (provider != null)
+            {
+
+                if (provider.pro_providerId is not null)
+                {
+                    HttpResponseMessage responseMessage = new HttpResponseMessage();
+                    responseMessage = await _apiHelper.ApiClient.PostAsJsonAsync("/api/Delivery/AddNewMember", provider);
+                    return responseMessage.IsSuccessStatusCode;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
         }
         catch (Exception ex)
         {
+
+            return false;
             throw new Exception(ex.Message);
+
         }
     }
 

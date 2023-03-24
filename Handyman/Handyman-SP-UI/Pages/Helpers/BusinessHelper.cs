@@ -54,6 +54,40 @@ namespace Handyman_SP_UI.Pages.Helpers
                 throw new Exception(ex.Message, ex.InnerException);
             }
         }
+        /// <summary>
+        /// Get WorkShops 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<BusinessModel> GetWorkShop(string regNumber) => await _business.GetWorkShop(regNumber);
+        /// <summary>
+        /// Add a new member to the WorkShop
+        /// </summary>
+        /// <param name="member"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task<bool> AddMemberToWorkShop(ServiceProviderModel member)
+        {
+            if (member == null)
+            {
+                return false;
+            }
+
+            if (member.BusinessId == 0)
+            {
+                return false;
+            }
+
+            try
+            {
+                return await _business.EmployMember(member);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+                return false;
+            }
+        }
 
         /// <summary>
         /// Create a new business

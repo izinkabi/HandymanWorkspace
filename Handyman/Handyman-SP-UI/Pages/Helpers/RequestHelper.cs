@@ -275,9 +275,9 @@ public class RequestHelper : IDisposable, IRequestHelper
                         request.req_status = statusCheckHelper.CheckStatus(request);
                         request.req_progress = GetProgress(request);
                     }
-                    return OwnRequests;
-                }
 
+                }
+                return OwnRequests;
             }
             return null;
         }

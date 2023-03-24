@@ -132,7 +132,8 @@
     <Build Include="Stored Procedures\Service\spCustomServicesLookUp.sql" />
     <Build Include="Stored Procedures\Handymen\spProfileInsert.sql" />
     <Build Include="Stored Procedures\Handymen\spProfileLookUp.sql" />
-    <Build Include="Tables\WorkShopMembership.sql" />
+    <Build Include="Stored Procedures\Business\spWorkShopsLookUp.sql" />
+    <Build Include="Stored Procedures\Business\Employee\spEmployeesLookUpByWorkShop.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Script\DevNathi_Handyman_DB.publish.publish.xml" />

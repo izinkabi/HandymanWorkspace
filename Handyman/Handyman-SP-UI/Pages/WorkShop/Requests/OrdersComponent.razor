@@ -5,7 +5,7 @@
 @inject IRequestHelper _requestHelper
 @inject NavigationManager NavManager
 
-<AuthorizeView Roles="Owner">
+<AuthorizeView Roles="Owner,Member">
 
 <Authorized>
         @if (newRequests != null)

@@ -16,7 +16,12 @@ public class DeliveryController : ControllerBase
     ServiceProviderModel? providermodel;
     BusinessModel? business;
 
-    //Get the business under which the employee(userId) which is a provider is registered
+    /// <summary>
+    /// Get the business under which the employee(userId) which is a provider is registered
+    /// </summary>
+    /// <param name="busId"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
     [HttpGet]
     [Route("GetBusiness")]
     public BusinessModel? Get(int? busId)
@@ -40,7 +45,12 @@ public class DeliveryController : ControllerBase
         }
     }
 
-    //Register A business
+    /// <summary>
+    /// Register A business
+    /// </summary>
+    /// <param name="business"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
     [HttpPost]
     [Route("Create")]
     public BusinessModel CreateBusiness(BusinessModel business)
@@ -64,23 +74,36 @@ public class DeliveryController : ControllerBase
         }
     }
 
-    //Update the business or its address
-    [HttpPut]
-    [Route("Update")]
-    public void Update()
-    {
 
-    }
 
-    //Employ a new member
+    /// <summary>
+    /// Employ a new member
+    /// </summary>
+    /// <param name="serviceProvider"></param>
+    /// <exception cref="Exception"></exception>
     [HttpPost]
     [Route("AddNewMember")]
     public void AddNewMember(ServiceProviderModel serviceProvider)
     {
         try
         {
-            if (serviceProvider != null && providermodel.pro_providerId != null)
-                _businessData.EmployServiceProvider(serviceProvider);
+            if (serviceProvider != null && serviceProvider.pro_providerId != null)
+            {
+                if (string.IsNullOrEmpty(serviceProvider.employeeId))
+                {
+                    serviceProvider.employeeId = serviceProvider.pro_providerId;
+                }
+
+                if (!string.IsNullOrEmpty(serviceProvider.employeeId))
+                {
+                    _businessData.EmployServiceProvider(serviceProvider);
+                }
+                else
+                {
+                    return;
+                }
+            }
+
         }
         catch (Exception ex)
         {
@@ -109,6 +132,11 @@ public class DeliveryController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Post a Member/Service Provider
+    /// </summary>
+    /// <param name="serviceProvider"></param>
+    /// <exception cref="Exception"></exception>
     [HttpPost]
     [Route("PostProviderService")]
     public void PostProviderService(ServiceProviderModel serviceProvider)
@@ -125,4 +153,24 @@ public class DeliveryController : ControllerBase
     }
 
 
+    /// <summary>
+    /// Get a workshop by Registration ID
+    /// </summary>
+    /// <param name="regNumber">registration ID</param>
+    /// <returns>WorkShopMpdel</returns>
+    /// <exception cref="Exception"></exception>
+    [HttpGet]
+    [Route("GetWorkShop")]
+    public BusinessModel Get(string regNumber)
+    {
+        try
+        {
+            var workshop = _businessData.GetWorkShop(regNumber);
+            return workshop;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
 }
