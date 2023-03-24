@@ -5,8 +5,8 @@ namespace HandymanProviderLibrary.Api.EndPoints.Interface
     public interface IBusinessEndPoint
     {
         Task<BusinessModel> CreateNewBusiness(BusinessModel business);
-        Task EmployMember(ServiceProviderModel serviceProvider);
+        Task<bool> EmployMember(ServiceProviderModel serviceProvider);
         Task<BusinessModel> GetBusiness(int busId);
-
+        Task<BusinessModel> GetWorkShop(string regNumber);
     }
 }

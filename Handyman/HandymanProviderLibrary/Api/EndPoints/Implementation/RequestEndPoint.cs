@@ -47,8 +47,9 @@ public class RequestEndPoint : IRequestEndPoint
         }
         catch (Exception ex)
         {
-            return null;
+
             throw new Exception(ex.Message, ex.InnerException);
+            return null;
         }
 
     }

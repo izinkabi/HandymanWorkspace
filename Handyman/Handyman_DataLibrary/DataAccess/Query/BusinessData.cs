@@ -114,9 +114,6 @@ namespace Handyman_DataLibrary.DataAccess.Query
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
 
-        //Get the business of the loggedIn user
-
-
         //Posting a business and its address
         //Returns an ID of the newly created business
         public BusinessModel CreateBusiness(BusinessModel business)
@@ -173,7 +170,6 @@ namespace Handyman_DataLibrary.DataAccess.Query
         }
 
         //Create an employee in a business
-
         public void EmployServiceProvider(ServiceProviderModel serviceProvider)
         {
             try
@@ -191,6 +187,64 @@ namespace Handyman_DataLibrary.DataAccess.Query
 
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
+
+        }
+
+        //Get the workshop by registration number
+        public BusinessModel GetWorkShop(string regNumber)
+        {
+            try
+            {
+
+                BusinessRegistrationModel workshop = _dataAccess.LoadData<BusinessRegistrationModel, dynamic>(
+                    "Delivery.spWorkShopsLookUp",
+                new { regNumber = regNumber }, "Handyman_DB").First();
+
+                if (workshop != null)
+                {
+                    //Populating business
+                    BusinessModel business = new()!;
+
+                    business.Id = workshop.bus_Id;
+                    business.date = workshop.bus_datecreated;
+                    business.Type = workshop.reg_businesstype;
+                    business.Name = workshop.bus_name;
+                    business.Description = workshop.bus_description;
+
+                    //Reistration
+
+                    business.registration.Id = workshop.reg_Id;
+                    business.registration.name = workshop.reg_name;
+                    business.registration.regNumber = workshop.reg_regnumber;
+                    business.registration.taxNumber = workshop.reg_taxnumber;
+
+                    //Address
+                    business.address.add_state = workshop.add_state;
+                    business.address.add_zip = business.address.add_zip;
+                    business.address.add_Id = workshop.add_Id;
+                    business.address.add_country = workshop.add_country;
+                    business.address.add_suburb = workshop.add_suburb;
+                    business.address.add_street = workshop.add_street;
+
+
+                    //Get employees for each workshop
+                    business.Employees = _serviceProvider.GetMemberShips(business.Id);
+
+                    return business;
+
+                }
+                else
+                {
+                    return null;
+                }
+
+
+            }
+            catch (Exception)
+            {
+                throw;
+                return null;
+            }
 
         }
 
@@ -218,7 +272,19 @@ namespace Handyman_DataLibrary.DataAccess.Query
         {
             try
             {
-                _serviceProvider.InsertProvider(provider);
+                if (provider != null && provider.pro_providerId != null)
+                {
+                    if (provider.BusinessId == 0)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        _serviceProvider.InsertProvider(provider);
+                    }
+
+                }
+
             }
             catch (Exception ex)
             {

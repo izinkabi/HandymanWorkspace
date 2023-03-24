@@ -106,6 +106,7 @@ public class RequestsController : ControllerBase
 
     // POST api/<RequestsController>
     [HttpPost]
+    [Route("Post")]
     public void Post(RequestModel requestModel)
     {
         try

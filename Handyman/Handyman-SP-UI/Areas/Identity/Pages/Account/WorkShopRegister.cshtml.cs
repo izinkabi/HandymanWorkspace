@@ -14,6 +14,7 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
     {
 
         private IServiceEndpoint _servicesEP;
+        private readonly RoleManager<IdentityRole> roleManager;
         private IBusinessHelper _businessHLP;
         private SignInManager<Handyman_SP_UIUser> SignInManager;
         private UserManager<Handyman_SP_UIUser> UserManager;
@@ -30,13 +31,14 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
         [BindProperty]
         public bool IsOnSelectService { get; set; }
 
-        public WorkShopRegisterModel(IServiceEndpoint servicesEP,
+        public WorkShopRegisterModel(IServiceEndpoint servicesEP, RoleManager<IdentityRole> RoleManager,
             IBusinessHelper businessHLP,
             SignInManager<Handyman_SP_UIUser> signInManager,
             UserManager<Handyman_SP_UIUser> userManager,
             IProviderHelper providerHelper)
         {
             _servicesEP = servicesEP;
+            roleManager = RoleManager;
             _businessHLP = businessHLP;
             SignInManager = signInManager;
             UserManager = userManager;
@@ -48,6 +50,8 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
         public BusinessModel NewBusiness { get { return newBusiness; } set { newBusiness = value; } }
         [BindProperty]
         public List<int> Selecteds { get; set; } = new List<int>();
+        [BindProperty]
+        public List<string> Errors { get; set; }
         public async void OnGet()
         {
             newBusiness.date = DateTime.Now;
@@ -95,19 +99,13 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
                         newBusiness.registration.businessType = WorkShopType;
                         await _businessHLP.CreateBusiness(newBusiness);
 
-                        var User = SignInManager.Context.User;
-                        var user = await UserManager.GetUserAsync(User);
-
-                        if (User.IsInRole("Owner"))
+                        if (await AssignOwnerToRole())
                         {
-                            return RedirectToPage("./Index", "Home");
+                            return RedirectToPage("/Index", "Home");
                         }
                         else
                         {
-                            var result = await UserManager.AddToRoleAsync(user, "Owner");
-
-                            await SignInManager.RefreshSignInAsync(user);//Refresh the user to update the role
-
+                            return Page();
                         }
 
                     }
@@ -124,6 +122,119 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
             return Page();
         }
 
+        private async Task<bool> AssignOwnerToRole()
+        {
+            try
+            {
+                //Shall be simplified
+                var User = SignInManager.Context.User;
+                var user = await UserManager.GetUserAsync(User);
+                if (User.IsInRole("Owner"))
+                {
+                    return true;
+                }
+                if (!User.IsInRole("Owner"))
+                {
+                    if (!(await roleManager.RoleExistsAsync("Owner")))
+                    {
+                        IdentityResult identityResult = await roleManager.CreateAsync(new IdentityRole("Owner"));
+                    }
+
+                    if (await roleManager.RoleExistsAsync("Owner"))
+                    {
+                        var result = await UserManager.AddToRoleAsync(user, "Owner");
+                        if (result.Succeeded)
+                        {
+                            await SignInManager.RefreshSignInAsync(user);
+
+                            await AssignMemberToRole();
+                            await SignInManager.RefreshSignInAsync(user);
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+
+                }
+                else
+                {
+                    return false;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                ErrorMsg = ex.Message;
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Create the Owner as a member(a handymany)
+        /// </summary>
+        /// <returns>bool</returns>
+        private async Task<bool> AssignMemberToRole()
+        {
+            if (Errors != null && Errors.Count > 0)
+            {
+                Errors.Clear();
+            }
+
+            //Shall be simplified
+            var User = SignInManager.Context.User;
+            var user = await UserManager.GetUserAsync(User);
+
+            try
+            {
+                //If the user is assigned to role its's cool
+                if (User.IsInRole("Member"))
+                {
+                    return true;
+                }
+                //Assign a new member to the role
+                if (!User.IsInRole("Member"))
+                {
+                    //Create a non-existing role (should be in the AppManager)
+                    //*****************@******************
+                    if (!(await roleManager.RoleExistsAsync("Member")))
+                    {
+                        IdentityResult identityResult
+                             = await roleManager.CreateAsync(new IdentityRole("Member"));
+                    }
+
+                    if (await roleManager.RoleExistsAsync("Member"))
+                    {
+                        var result = UserManager.AddToRoleAsync(user, "Member");
+
+                        if (result.IsCompletedSuccessfully)
+                        {
+                            await SignInManager.RefreshSignInAsync(user);//Refresh the user to update the role
+                            return true;
+                        }
+
+                    }
+                    //******************@******************
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Errors.Add($"Error : {ex.Message}");
+                return false;
+
+            }
+            return false;
+
+        }
         //Add the WorkShop Services
         public async Task<ActionResult> OnPostSaveServices()
         {

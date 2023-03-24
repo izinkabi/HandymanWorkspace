@@ -10,5 +10,6 @@ namespace Handyman_DataLibrary.DataAccess.Interfaces
         void AddProviderServices(ServiceProviderModel provider);
         void ReleaseEmployee();
         ServiceProviderModel GetProvider(string employeeId);
+        BusinessModel GetWorkShop(string regNumber);
     }
 }

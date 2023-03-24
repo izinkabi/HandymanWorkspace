@@ -8,5 +8,6 @@ namespace Handyman_DataLibrary.DataAccess.Interfaces
         void RemoveService(int serviceId, string providerId);
         void InsertProvider(ServiceProviderModel provider);
         ServiceProviderModel GetServiceProvider(string providerId);
+        List<ServiceProviderModel> GetMemberShips(int businessId);
     }
 }

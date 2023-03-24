@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using SendGrid.Helpers.Mail;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -25,6 +26,7 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly IRoleStore<IdentityRole> _roleStore;
+        private readonly IConfiguration _config;
 
         public RegisterModel(
             UserManager<Handyman_SP_UIUser> userManager,
@@ -32,7 +34,7 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
             SignInManager<Handyman_SP_UIUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            RoleManager<IdentityRole> roleManager, IRoleStore<IdentityRole> roleStore)
+            RoleManager<IdentityRole> roleManager, IRoleStore<IdentityRole> roleStore, IConfiguration configuration)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -42,6 +44,7 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
             _emailSender = emailSender;
             _roleManager = roleManager;
             _roleStore = roleStore;
+            _config = configuration;
         }
 
         /// <summary>
@@ -191,18 +194,58 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
             return (IUserEmailStore<Handyman_SP_UIUser>)_userStore;
         }
 
-        private Task<IdentityRole> GetRoleStore()
-        {
-            try
-            {
-                return _roleStore.FindByNameAsync("ServiceProvider", CancellationToken.None);
+        //private async Task<bool> SendEmailAsync(string email, string subjectString, string confirmLink)
+        //{
+        //    try
+        //    {
+        //        MailMessage message = new MailMessage();
+        //        SmtpClient smtpClient = new SmtpClient();
+        //        message.From = new MailAddress("nonereply@sdi.com"); //service delivery interface
+        //        message.To.Add(email);
+        //        message.Subject = subjectString;
+        //        message.IsBodyHtml = true;
+        //        message.Body = confirmLink;
+        //        smtpClient.Port = 587;
+        //        smtpClient.Host = "smtp.simply.com";
+        //        smtpClient.EnableSsl = true;
+        //        smtpClient.UseDefaultCredentials = false;
+        //        smtpClient.Credentials = new NetworkCredential("", "");
+        //        smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+        //        smtpClient.Send(message);
 
-            }
-            catch (Exception)
-            {
+        //        return true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception(ex.Message, ex.InnerException);
+        //        return false;
 
-                throw;
-            }
-        }
+        //    }
+
+        //}
+        //private async Task<bool> SendEmailAsync(string email, string subjectString, string confirmLink)
+        //{
+        //    try
+        //    {
+        //        var apiKey = _config.GetValue<string>("EmailApiKey");
+        //        var client = new SendGridClient(apiKey);
+        //        var from = new EmailAddress(_config.GetValue<string>("SiteEmail"), "Handyman");
+        //        var subject = subjectString;
+        //        var to = new EmailAddress(email, "ServiceProvider");
+        //        var plainTextContent = "Confirm your email to continue login";
+        //        var htmlContent = confirmLink;
+        //        var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+        //        var response = await client.SendEmailAsync(msg);
+        //        return response.IsSuccessStatusCode;
+
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        return false;
+        //    }
+
+
+        //}
     }
 }

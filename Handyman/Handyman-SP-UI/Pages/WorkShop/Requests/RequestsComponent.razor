@@ -9,7 +9,7 @@
 @inject IProviderHelper _providerHelper
 @inject IJSRuntime JsRuntime
 
-<AuthorizeView Roles="Owner">
+<AuthorizeView Roles="Owner,Member">
 
 <Authorized>
 
@@ -25,8 +25,17 @@
                     <div class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom bg-dark">
                         <div class="btn-toolbar mb-2 mb-md-0">
                             <div class="btn-group me-2 ">
-                                <button type="button" @onclick="displayOrdersOnly" class="btn btn-sm btn-outline-secondary">Orders</button>
-                                <button type="button" @onclick="displayRequestsOnly" class="btn btn-sm btn-outline-secondary">Jobs</button>
+                                <button type="button" @onclick="displayOrdersOnly" class="btn btn-sm btn-outline-secondary">
+                                    Orders
+                            </button>
+                                <button type="button" @onclick="displayRequestsOnly" class="btn btn-sm btn-outline-secondary">
+                                Jobs 
+                                @if (requests != null)
+                                {
+                                    <span class="badge text-bg-info">@requests.Count</span>
+                                }
+                                
+                            </button>
                             </div>
                             <!--Dropdown-->
                             <button type="submit"  class="btn btn-sm btn-outline-secondary dropdown-toggle" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">

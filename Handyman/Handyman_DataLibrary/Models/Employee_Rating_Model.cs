@@ -8,6 +8,8 @@
         public DateTime emp_date_employed { get; set; }
         public int emp_role { get; set; }
 
+        public string? emp_profile_id { get; set; }
+
 
         public string? Names { get; set; }
         public string? Surname { get; set; }
