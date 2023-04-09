@@ -41,7 +41,6 @@ public class RequestData : IRequestData
                 order.duedate = ordertask.ord_duedate;
                 order.status = ordertask.ord_status;
 
-
                 //populate service of each order
                 order.service = _serviceData.GetService(serviceId);
 

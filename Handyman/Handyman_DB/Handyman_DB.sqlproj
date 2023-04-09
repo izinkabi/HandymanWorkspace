@@ -71,6 +71,7 @@
     <Folder Include="Stored Procedures\Business\Employee" />
     <Folder Include="Stored Procedures\Business\Employee\Provider" />
     <Folder Include="Stored Procedures\Handymen" />
+    <Folder Include="Stored Procedures\Service\Customs" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Schemas\Request.sql" />
@@ -89,7 +90,6 @@
     <Build Include="Tables\task.sql" />
     <Build Include="Tables\business.sql" />
     <Build Include="Tables\registration.sql" />
-    <Build Include="Stored Procedures\Service\spServiceUpdate.sql" />
     <Build Include="Stored Procedures\Service\spServiceLookUp_GroupByCategory.sql" />
     <Build Include="Stored Procedures\Order\spOrderInsert.sql" />
     <Build Include="Stored Procedures\Order\spOrderLookUp_ByConsumerId_OrderByDateCreated.sql" />
@@ -129,11 +129,23 @@
     <Build Include="Stored Procedures\Order\spGetHandymenDetailsByOrder.sql" />
     <Build Include="Tables\AspNetUsers.sql" />
     <Build Include="Tables\customService.sql" />
-    <Build Include="Stored Procedures\Service\spCustomServicesLookUp.sql" />
     <Build Include="Stored Procedures\Handymen\spProfileInsert.sql" />
     <Build Include="Stored Procedures\Handymen\spProfileLookUp.sql" />
     <Build Include="Stored Procedures\Business\spWorkShopsLookUp.sql" />
     <Build Include="Stored Procedures\Business\Employee\spEmployeesLookUpByWorkShop.sql" />
+    <Build Include="Tables\price.sql" />
+    <Build Include="Stored Procedures\Service\spPriceInsert.sql" />
+    <Build Include="Stored Procedures\Order\spServicePriceNegotiationInsert.sql" />
+    <Build Include="Stored Procedures\Service\spPriceUpdate.sql" />
+    <Build Include="Stored Procedures\Service\spService_Insert.sql" />
+    <Build Include="Stored Procedures\Service\spServiceUpdate.sql" />
+    <Build Include="Stored Procedures\Service\spPriceLookUp.sql" />
+    <Build Include="Tables\WorkShopServices.sql" />
+    <Build Include="Stored Procedures\Service\Customs\spCustomService_Insert.sql" />
+    <Build Include="Stored Procedures\Service\Customs\spCustomServicesLookUp.sql" />
+    <Build Include="Stored Procedures\Service\spWorkShopService_Insert.sql" />
+    <Build Include="Stored Procedures\Service\spWorShopServices_LookUp.sql" />
+    <Build Include="Stored Procedures\Service\spWorkShopService_Update.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Script\DevNathi_Handyman_DB.publish.publish.xml" />
@@ -147,6 +159,7 @@
     <None Include="Post Deployment Scripts\PopulateOrder.PostDeployment.sql" />
     <None Include="Post Deployment Scripts\PopulateOrderTask.PostDeployment.sql" />
     <None Include="Post Deployment Scripts\PopulateTask.PostDeployment.sql" />
+    <None Include="Post Deployment Scripts\PopulateBasePrices.PostDeployment.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Handyman_DB.refactorlog" />

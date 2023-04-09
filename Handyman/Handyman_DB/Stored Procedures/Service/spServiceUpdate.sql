@@ -1,17 +1,15 @@
 ﻿CREATE PROCEDURE [Service].[spServiceUpdate]
-
-    @Id int,
-    @title NVARCHAR(50) , 
-    @description NVARCHAR(100) , 
-    @imageUrl NVARCHAR(2000) , 
-    @originalServiceId INT 
+--Update the service
+  @id int = 0,
+  @name nvarchar(50),
+  @img nvarchar(50),
+  @datecreated datetime,
+  @priceId int,
+  @categoryId int
 AS
-  IF EXISTS(SELECT * FROM [Service].service WHERE serv_id = @originalServiceId)
-
+IF EXISTS (SELECT * FROM [Service].[service] WHERE [serv_id]=@id)
 BEGIN
-  
-   
-	INSERT  INTO [Service].[customService] (title,[description],imageUrl,originalServiceId)
-    VALUES (@title,@description,@imageUrl,@originalServiceId)
-    
+	UPDATE [Service].[service]
+    SET [serv_name] = @name, [serv_img]=@img, [serv_categoryid] = @categoryId , [price_id] = @priceId
+    WHERE [serv_id] = @id
 END

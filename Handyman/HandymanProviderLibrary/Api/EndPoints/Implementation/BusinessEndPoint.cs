@@ -48,7 +48,7 @@ public class BusinessEndPoint : IBusinessEndPoint
         {
             if (business != null)
             {
-                var response = await _apiHelper.ApiClient.PostAsJsonAsync<BusinessModel>($"/api/Delivery/Create", business);
+                var response = await _apiHelper.ApiClient.PostAsJsonAsync<BusinessModel>("/api/Delivery/Create", business);
                 BusinessModel newBusiness;
                 if (response.IsSuccessStatusCode)
                 {
@@ -106,5 +106,29 @@ public class BusinessEndPoint : IBusinessEndPoint
         }
     }
 
+    public async Task<bool> InsertWorkShopService(int workShopRegId, int customServiceId)
+    {
+        if (workShopRegId == 0 || customServiceId == 0)
+        {
+            return false;
+        }
 
+        try
+        {
+            var result = await _apiHelper.ApiClient.PostAsJsonAsync($"/api/delivery/InsertWorkShopService?workshopRegId={workShopRegId}&&customServiceId={customServiceId}", new { });
+            if (result.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            return false;
+            throw new Exception(ex.Message);
+        }
+    }
 }

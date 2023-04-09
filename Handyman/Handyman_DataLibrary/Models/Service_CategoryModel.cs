@@ -13,5 +13,6 @@ namespace Handyman_DataLibrary.Models
         public string cat_name { get; set; }
         public string cat_type { get; set; }
         public string cat_description { get; set; }
+        public int price_id { get; set; }
     }
 }

@@ -102,7 +102,7 @@ namespace Handyman_SP_UI.Pages.Helpers
             {
                 try
                 {
-                    business = await _business.CreateNewBusiness(StampBusinessUserAsync(newBiz).Result);
+                    business = await _business.CreateNewBusiness(await StampBusinessUserAsync(newBiz));
                     return business ?? newBiz;
                 }
                 catch (Exception ex)
@@ -128,6 +128,7 @@ namespace Handyman_SP_UI.Pages.Helpers
                 {
                     return newBiz;
                 }
+
                 newBiz.registration.name = newBiz.Name;
                 newBiz.address.add_country = "Sout Africa";
                 var result = await _providerHelper.StampBusinessUserAsync(newBiz);

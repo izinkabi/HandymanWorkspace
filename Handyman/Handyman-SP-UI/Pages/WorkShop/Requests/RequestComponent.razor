@@ -116,7 +116,7 @@
 
                         ownRequest = await _requestHelper.ConfirmAccepted(req);
                         isAccepted = true;
-                        UpdateRequests();
+                        await UpdateRequests();
                         newRequest = null;
                     }
                     else

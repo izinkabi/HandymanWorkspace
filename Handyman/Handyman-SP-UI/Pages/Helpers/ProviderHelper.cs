@@ -14,6 +14,8 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
     ServiceProviderModel? providerModel;
     private RoleManager<IdentityRole> _roleManager;
     private UserManager<Handyman_SP_UIUser> _userManager;
+    private readonly IServiceEndpoint _serviceEndpoint;
+    private readonly IBusinessEndPoint _workShopEndPoint;
     private AppUserManager _appUserManager;
     private SignInManager<Handyman_SP_UIUser> signInManager;
 
@@ -21,7 +23,8 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
 
     public ProviderHelper(IServiceProviderEndPoint providerEndPoint,
         AuthenticationStateProvider authenticationStateProvider,
-        RoleManager<IdentityRole> roleManager, AppUserManager appUserManager, UserManager<Handyman_SP_UIUser> userManager, SignInManager<Handyman_SP_UIUser> signInManager)
+        RoleManager<IdentityRole> roleManager, AppUserManager appUserManager, UserManager<Handyman_SP_UIUser> userManager,
+        SignInManager<Handyman_SP_UIUser> signInManager, IServiceEndpoint serviceEndpoint, IBusinessEndPoint workShopEndPoint)
         : base(providerEndPoint, authenticationStateProvider, userManager, appUserManager,
             roleManager, signInManager)
     {
@@ -29,8 +32,8 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
         _authenticationStateProvider = authenticationStateProvider;
         _roleManager = roleManager;
         _userManager = userManager;
-
-
+        _serviceEndpoint = serviceEndpoint;
+        _workShopEndPoint = workShopEndPoint;
     }
 
     //Create a provider profie
@@ -44,15 +47,13 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
     {
         if (newHandyman != null && newHandyman.employeeProfile != null)
         {
-            GetUserId();
-            if (userId != null)
+            userId = await GetUserId() ?? string.Empty;
+            if (!string.IsNullOrEmpty(userId))
             {
                 newHandyman.pro_providerId = userId;
                 newHandyman.employeeProfile.UserId = userId;
                 await _providerEndPoint.CreateServiceProvider(newHandyman);
             }
-
-
         }
     }
 
@@ -61,17 +62,51 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
     /// </summary>
     /// <param name="provider"></param>
     /// <returns></returns>
-    public async Task AddService(ServiceProviderModel provider)
+    public async Task AddService(ServiceModel service)
     {
         try
         {
+            ServiceProviderModel provider = new();
             if (provider.pro_providerId == null)
             {
                 await GetUserId();
-                provider.pro_providerId = userId;
+                provider = await GetProvider();
+                provider.Services.Add(service);
+            }
+            List<int> newServicesIDs = new List<int>();
+            //insert new services and 
+
+            CustomServiceModel workshopService = new CustomServiceModel();
+            workshopService.basePrice = 100;
+            workshopService.originalServiceId = service.id;
+            workshopService.description = service.category.description;
+            workshopService.imageUrl = service.img;
+            workshopService.title = service.name;
+            service.Customs = new();
+
+            if (service.Customs != null)
+            {
+                service.Customs.Add(workshopService);
+
+                if (provider.BusinessId > 0)
+                {
+                    int customID = await _serviceEndpoint.CreateCustomService(service);
+                    int regNumber = (await _workShopEndPoint.GetBusiness(provider.BusinessId)).registration.Id;
+                    var result = await _workShopEndPoint.InsertWorkShopService(regNumber, customID);
+                    if (result)
+                    {
+                        await _providerEndPoint.AddService(provider);
+                    }
+                }
+                else
+                {
+                    return;
+                }
+
+
             }
 
-            await _providerEndPoint.AddService(provider);
+
         }
         catch (Exception ex)
         {
@@ -171,7 +206,7 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
                     {
                         member.employeeId = await GetUserId();
                         member.pro_providerId = await GetUserId();
-
+                        member.IsOwner = true;
                     }
                     else
                     {
@@ -213,5 +248,94 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
         }
         return newRequest;
 
+    }
+
+    //Get the prices of the service
+    public async Task<PriceModel> GetServicePrice(int priceId)
+    {
+        if (priceId == 0)
+        {
+            return null;
+        }
+        try
+        {
+            var price = await _serviceEndpoint.GetPrice(priceId);
+            return price;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+            return null;
+        }
+    }
+
+    //Insert a custom-Service of the workshop
+    public async Task<bool> InsertCustomService(ServiceModel service)
+    {
+        if (service is null)
+        { return false; }
+        try
+        {
+            //Insert the custom service
+            int newCustomServiceId = await _serviceEndpoint.CreateCustomService(service);
+            if (newCustomServiceId != 0)
+            {
+                var owner = await GetProvider();
+                int bi = (await _workShopEndPoint.GetBusiness(owner.BusinessId)).Id;
+                return await _workShopEndPoint.InsertWorkShopService(bi, newCustomServiceId);
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+        catch (Exception ex)
+        {
+            return false;
+            throw new Exception(ex.Message);
+        }
+
+
+    }
+
+    //Get workshop services of the given workshop-registration id
+    public async Task<List<CustomServiceModel>> GetWorkShopServices()
+    {
+        try
+        {
+            //Await the ower and worshop 
+            var owner = await GetProvider();
+            int wsregid = (await _workShopEndPoint.GetBusiness(owner.BusinessId)).registration.Id;
+            if (wsregid == 0)
+            {
+                return null;
+            }
+            //get workshop services (custom services)
+            List<CustomServiceModel> workshopservices = await _serviceEndpoint.GetWorkShopServices(wsregid);
+            return workshopservices;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+
+    }
+    //Update workshop service
+    public async Task<bool> UpdateWorkShopService(CustomServiceModel wsServices)
+    {
+        if (wsServices is null)
+        {
+            return false;
+        }
+        try
+        {
+            return await _serviceEndpoint.UpdateWorkShopService(wsServices);
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception(ex.Message);
+        }
     }
 }

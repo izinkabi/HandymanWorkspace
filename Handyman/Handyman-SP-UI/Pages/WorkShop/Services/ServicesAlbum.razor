@@ -3,25 +3,25 @@
 
 @using Microsoft.AspNetCore.Components.Web
 @inject IServiceEndpoint _serviceEP
+@inject IProviderHelper _proHelper
 @inject NavigationManager NavManager 
   
-    <section class="py-3 text-center container">
-        <div class="p-2 mb-2 bg-light rounded-3">
-            <div class="container-fluid py-3">
+    <section class="py-1 text-center container">
+        <div class="p-2 bg-light rounded-3">
+            <div class="container-fluid py-1">
                 <h1 class="fw-light">Offered Services</h1>
                 <p class="lead text-muted">These are all service you need to add your business and start up on tha money making </p>
             </div>
         </div>
     </section>
-    <div class="b-example-divider"></div>
-    <div class="album py-2 bg-light">
+    <div class="album py-1 bg-light">
         <div class="container">
         @if (services != null)
         {
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 m-auto">
                 @foreach(var service in @services)
                 {                   
-                    <MyService serviceModel="@service"  OnAddService="OnAddService">
+                    <MyService serviceModel="@service"  OnAddService="AddService">
 
                     </MyService>
                 }                
@@ -35,8 +35,7 @@
     IList<ServiceModel>? services;
     string? ErrorMsg;
 
-    [Parameter]
-    public EventCallback<ServiceModel> OnAddService { get; set; }
+
 
     enum ServiceTypes{
         Indoor,
@@ -55,14 +54,35 @@
         try
         {
             services = await _serviceEP.GetServices();    
-            
+
         }catch(Exception ex)
         {
             ErrorMsg = ex.Message;
         }
     }
 
-  
+    /// <summary>
+    /// Add this service to the provider's services
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    async Task AddService(ServiceModel serviceModel)
+    {
+
+        try
+        {
+            ServiceProviderModel providerModel = new ServiceProviderModel();
+            providerModel.Services.Add(serviceModel);
+
+            await _proHelper.AddService(serviceModel);
+            StateHasChanged();
+            
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
 
     void ViewServiceDetails(ServiceModel s)
     {

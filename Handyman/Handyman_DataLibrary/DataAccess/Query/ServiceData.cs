@@ -20,7 +20,10 @@ public class ServiceData : IServiceData
     public List<ServiceModel> GetAllServices()
     {
 
-        IList<Service_CategoryModel> output = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Service.spServiceLookUp_GroupByCategory", new { }, "Handyman_DB");
+        IList<Service_CategoryModel> output = _dataAccess.LoadData<Service_CategoryModel, dynamic>(
+            "Service.spServiceLookUp_GroupByCategory",
+            new { },
+            "Handyman_DB");
 
         //populate the service and its category
         var services = new List<ServiceModel>();
@@ -102,6 +105,7 @@ public class ServiceData : IServiceData
                 service.datecreated = serviceCat.serv_datecreated;
                 service.img = serviceCat.serv_img;
                 service.id = serviceCat.serv_id;
+                service.PriceId = serviceCat.price_id;
 
 
                 service.category = new ServiceCategoryModel();
@@ -182,13 +186,14 @@ public class ServiceData : IServiceData
             _dataAccess.StartTransaction("Handyman_DB");
             foreach (ServiceModel service in services)
             {
-                _dataAccess.SaveDataTransaction<ServiceModel>("Service.spServiceInput", service);
+                //Save the new service
+                _dataAccess.SaveDataTransaction<ServiceModel>("Service.spServiceInsert", service);
                 //save a custom of a service
                 if (service.Customs != null && service.Customs.Count > 0)
                 {
                     foreach (var custom in service.Customs)
                     {
-                        _dataAccess.SaveDataTransaction("Service.spServiceUpdate", custom);
+                        _dataAccess.SaveDataTransaction("Service.spCustomService_Insert", custom);
                     }
                 }
             }
@@ -203,23 +208,122 @@ public class ServiceData : IServiceData
 
     //Update the service OR insert customs
     //Customs only insert if the service exists
-    public void UpdateService(ServiceModel serviceUpdate)
+    public int InsertCustomService(ServiceModel serviceUpdate)
     {
         try
         {
             if (serviceUpdate == null || serviceUpdate.Customs.Count == 0)
             {
-                return;
+                return 0;
             }
-
+            int customServiceId = 0;
+            //Insert custom services of updated service
             foreach (var custom in serviceUpdate.Customs)
             {
                 if (custom != null)
                 {
-                    _dataAccess.SaveData<CustomServiceModel>("Service.spServiceUpdate", custom, "Handyman_DB");
+                    customServiceId = _dataAccess.LoadData<int, dynamic>("Service.spCustomService_Insert", custom, "Handyman_DB").First();
                 }
+
             }
 
+            return customServiceId;
+
+        }
+        catch (Exception ex)
+        {
+            return 0;
+            throw new Exception(ex.Message);
+        }
+    }
+
+    //Insert the negotiated price of the service
+    //as it might be handy in getting a general price for each service
+    public bool InsertNegotiatedPrice(int priceId, float nPrice)
+    {
+        try
+        {
+            var result = _dataAccess.SaveData("Service.spPriceUpdate", new { priceId = priceId, negotiationPrice = nPrice }, "Handyman_DB");
+            return true;
+        }
+        catch (Exception ex)
+        {
+            return false;
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+
+    }
+
+    //Update the service
+    public void UpdateService(ServiceModel serviceUpdate)
+    {
+        try
+        {
+            var result = _dataAccess.SaveData<ServiceModel>("Service.spServiceUpdate", serviceUpdate, "Handyman_DB");
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception(ex.Message);
+        }
+    }
+
+    //Insert a new base-price and get its id
+    public int InsertBasePrice(float price)
+    {
+        try
+        {
+            int priceId = _dataAccess.SaveData("Service.spPriceInsert", new { basePrice = price }, "Handyman_DB");
+            return priceId;
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception(ex.Message);
+        }
+
+    }
+
+    //Get the price of the given id
+    public PriceModel GetPrice(int priceId)
+    {
+        try
+        {
+            var price = _dataAccess.LoadData<PriceModel, dynamic>("Service.spPriceLookUp", new { priceId = priceId }, "Handyman_DB").FirstOrDefault();
+            return price;
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception(ex.Message);
+        }
+    }
+    //Get workshop services
+    public List<CustomServiceModel> GetWorkShopServices(int workShopRegId)
+    {
+        try
+        {
+            List<CustomServiceModel> workShopServices = _dataAccess.LoadData<CustomServiceModel, dynamic>("Delivery.spWorShopServices_LookUp", new { workShopRegId = workShopRegId }, "Handyman_DB");
+            return workShopServices;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+            return null;
+        }
+    }
+
+    //Update workshop service
+    public void UpdateWorkshopService(CustomServiceModel wsService)
+    {
+        try
+        {
+            if (wsService is null || wsService is not CustomServiceModel)
+            {
+                return;
+            }
+
+            _dataAccess.SaveData<CustomServiceModel>("Delivery.spWorkShopService_Update", wsService, "Handyman_DB");
         }
         catch (Exception ex)
         {

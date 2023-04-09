@@ -115,7 +115,6 @@ public class DeliveryController : ControllerBase
     [Route("GetProvider")]
     public ServiceProviderModel GetProvider(string employeeId)
     {
-
         try
         {
             if (employeeId != null)
@@ -171,6 +170,27 @@ public class DeliveryController : ControllerBase
         catch (Exception ex)
         {
             throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
+
+    //Insert new workshop service
+    [HttpPost]
+    [Route("InsertWorkShopService")]
+    public void Post(int workshopRegId, int customServiceId)
+    {
+        if (workshopRegId == 0 || workshopRegId == 0)
+        {
+            return;
+        }
+
+        try
+        {
+            _businessData.InsertWorkShopService(workshopRegId, customServiceId);
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception(ex.Message);
         }
     }
 }

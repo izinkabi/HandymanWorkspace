@@ -7,5 +7,6 @@
         public string? description { get; set; }
         public int originalServiceId { get; set; }
         public string? imageUrl { get; set; }
+        public float basePrice { get; set; }
     }
 }
