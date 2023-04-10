@@ -15,5 +15,7 @@ namespace Handyman_DataLibrary.DataAccess.Interfaces
         PriceModel GetPrice(int priceId);
         List<CustomServiceModel> GetWorkShopServices(int workShopRegId);
         void UpdateWorkshopService(CustomServiceModel wsService);
+        void DeleteService(int wsServiceId, int wsRegId);
+        void DeleteProviderService(int wsServiceId, string providerId);
     }
 }

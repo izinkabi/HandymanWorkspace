@@ -149,5 +149,44 @@ public class ServicesController : ControllerBase
             throw new Exception(ex.Message, ex.InnerException);
         }
     }
+
+    //Remove a workshop-service from a workshop
+    [HttpDelete]
+    [Route("DeleteWorkShopService")]
+    public void DeleteWorkShopService(int wsServiceId, int wsRegId)
+    {
+        if (wsServiceId == 0 || wsRegId == 0)
+        {
+            return;
+        }
+        try
+        {
+            _serviceData.DeleteService(wsServiceId, wsRegId);
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception(ex.Message);
+        }
+    }
+
+    // DELETE provider service
+    [HttpDelete]
+    [Route("DeleteProviderService")]
+    public void DeleteProviderService(int wsServiceId, string providerId)
+    {
+        if (wsServiceId == 0 || providerId == null)
+        {
+            return;
+        }
+        try
+        {
+            _serviceData.DeleteProviderService(wsServiceId, providerId);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
 }
 

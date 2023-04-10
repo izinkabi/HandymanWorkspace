@@ -136,9 +136,7 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
                     {
                         return true;
                     }
-
                 }
-
             }
 
             return false;
@@ -337,5 +335,43 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
 
             throw new Exception(ex.Message);
         }
+    }
+
+    //Remove a workshop service
+    public async Task<bool> DeleteWorkShopService(int wsServiceId, int ogServiceId)
+    {
+
+        if (wsServiceId == 0 && ogServiceId == 0)
+        {
+            return false;
+        }
+        try
+        {
+            //Await the ower and worshop 
+            var owner = await GetProvider();
+            int wsregid = (await _workShopEndPoint.GetBusiness(owner.BusinessId)).registration.Id;
+            if (wsregid == 0)
+            {
+                return false;
+            }
+            //remove service by query
+            bool IsWSServiceDeleted = await _serviceEndpoint.DeleteWorkShopService(wsServiceId, wsregid);
+            if (IsWSServiceDeleted)
+            {
+                return await _serviceEndpoint.DeleteProviderService(ogServiceId, owner.pro_providerId);
+            }
+            else
+            {
+                return false;
+            }
+
+
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception(ex.Message);
+        }
+
     }
 }

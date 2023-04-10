@@ -331,4 +331,43 @@ public class ServiceData : IServiceData
             throw new Exception(ex.Message);
         }
     }
+
+    //Delete a service of a workshop 
+    public void DeleteService(int wsServiceId, int wsRegId)
+    {
+        if (wsServiceId == 0 || wsRegId == 0)
+        {
+            return;
+        }
+        try
+        {
+            _dataAccess.SaveData("Delivery.spWorkShopService_Delete", new
+            {
+                workShopServiceId = wsServiceId,
+                workShopRegId = wsRegId
+            }, "Handyman_DB");
+
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception(ex.Message);
+        }
+    }
+    public void DeleteProviderService(int wsServiceId, string providerId)
+    {
+        try
+        {
+            _dataAccess.SaveData("Delivery.spProviderService_Delete", new
+            {
+                ServiceId = wsServiceId,
+                pro_providerId = providerId
+            }, "Handyman_DB");
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception(ex.Message);
+        }
+    }
 }

@@ -15,5 +15,7 @@ namespace HandymanProviderLibrary.Api.EndPoints.Interface
         Task<int> CreateCustomService(ServiceModel service);
         Task<List<CustomServiceModel>> GetWorkShopServices(int wsregId);
         Task<bool> UpdateWorkShopService(CustomServiceModel workshopService);
+        Task<bool> DeleteWorkShopService(int wsServiceId, int wsRegId);
+        Task<bool> DeleteProviderService(int wsServiceId, string providerId);
     }
 }

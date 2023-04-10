@@ -304,4 +304,56 @@ public class ServiceEndpoint : IServiceEndpoint
         }
 
     }
+
+    //Delete workshopservice
+    public async Task<bool> DeleteWorkShopService(int wsServiceId, int wsRegId)
+    {
+        if (wsServiceId == 0 || wsRegId == 0)
+        {
+            return false;
+        }
+
+        try
+        {
+            var httpResponse = await _aPIHelper.ApiClient.DeleteAsync($"/api/services/DeleteWorkShopService?wsServiceId={wsServiceId}&wsRegId={wsRegId}");
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            return false;
+            throw new Exception(ex.Message);
+        }
+    }
+
+    //Delete the original service from provider
+    public async Task<bool> DeleteProviderService(int wsServiceId, string providerId)
+    {
+        if (wsServiceId == 0 || providerId is null)
+        {
+            return false;
+        }
+        try
+        {
+            var httpResponse = await _aPIHelper.ApiClient.DeleteAsync($"/api/services/DeleteProviderService?wsServiceId={wsServiceId}&providerId={providerId}");
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
 }

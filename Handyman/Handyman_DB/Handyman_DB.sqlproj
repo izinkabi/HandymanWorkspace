@@ -146,6 +146,8 @@
     <Build Include="Stored Procedures\Service\spWorkShopService_Insert.sql" />
     <Build Include="Stored Procedures\Service\spWorShopServices_LookUp.sql" />
     <Build Include="Stored Procedures\Service\spWorkShopService_Update.sql" />
+    <Build Include="Stored Procedures\Service\spWorkShopService_Delete.sql" />
+    <Build Include="Stored Procedures\Business\Employee\Provider\spProviderService_Delete.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Script\DevNathi_Handyman_DB.publish.publish.xml" />

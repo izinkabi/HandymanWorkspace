@@ -36,7 +36,6 @@ namespace Handyman_Api.Controllers
                 {
                     var profile = _profileData.GetProfile(userId);
                     if (profile != null) return profile;
-
                 }
 
                 return null;
@@ -62,12 +61,6 @@ namespace Handyman_Api.Controllers
         // PUT api/<HandymenController>/5
         [HttpPut]
         public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<HandymenController>/5
-        [HttpDelete]
-        public void Delete(int id)
         {
         }
     }

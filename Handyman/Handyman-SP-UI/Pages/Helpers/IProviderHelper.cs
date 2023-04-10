@@ -16,5 +16,6 @@ namespace Handyman_SP_UI.Pages.Helpers
         Task<bool> InsertCustomService(ServiceModel service);
         Task<List<CustomServiceModel>> GetWorkShopServices();
         Task<bool> UpdateWorkShopService(CustomServiceModel wsServices);
+        Task<bool> DeleteWorkShopService(int wsServiceId, int ogServiceId);
     }
 }

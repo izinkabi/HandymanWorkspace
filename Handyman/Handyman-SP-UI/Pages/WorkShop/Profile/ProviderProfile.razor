@@ -5,8 +5,7 @@
 @inject IProviderHelper _providerHelper
 @inject IConfiguration _config
 @inject NavigationManager NavManager
-
-
+@inject IServiceProviderEndPoint _providerEndPoint
 
 
 @if (Errors.Count > 0)
@@ -53,9 +52,6 @@
                 </div>
                </AuthorizeView>
                <hr />
-
-
-
                     <div class="accordion accordion-flush rounded shadow" id="accordionExample">
                         <div class="accordion-item panel">
                             <h2 class="accordion-header" id="headingOne">
@@ -211,21 +207,7 @@
                             </div>
                         </div>
                     </div>
-
-
-
-
-
-
-
-
-
-
-
-               
-
             }
-
                 <div class="col m-auto text-center rounded-3">
                     <div class="accordion accordion-flush rounded shadow" id="accordionExample">
                         <div class="accordion-item panel">
@@ -288,7 +270,7 @@ else
     private CustomServiceModel customServiceModel = new CustomServiceModel();
     private ServiceModel EditedService = new ServiceModel();
     bool IsOnEditProfile;
-    private List<CustomServiceModel> WorkshopServices;
+    private List<CustomServiceModel> WorkshopServices = new List<CustomServiceModel>();
     private CustomServiceModel DeletedService = new CustomServiceModel();
 
     protected override async Task OnInitializedAsync()
@@ -331,6 +313,7 @@ else
         NavManager.NavigateTo("registers", true);
     }
 
+    //Delete a service
     void DeleteService(CustomServiceModel workShopService)
     {
         if (workShopService != null)
@@ -340,24 +323,38 @@ else
     }
 
     //Confirm after delete
-    void ConfirmDeleteService()
+    async void ConfirmDeleteService()
     {
         if (DeletedService != null)
         {
             WorkshopServices.Remove(DeletedService);
-            Reload();
             //Delete for DB
+            var IsDeleted = await _providerHelper.DeleteWorkShopService(DeletedService.Id,DeletedService.originalServiceId);
+            if (IsDeleted)
+            {
+                Reload();
+            }
+
+           
+            //ServiceProviderModel provider = await _providerHelper.GetProvider();
+            //ServiceModel service = new ServiceModel();
+            //service.datecreated = DateTime.Now;
+            //service.id = DeletedService.originalServiceId;
+            //provider.Services.Add(service);
+           
         }
 
     }
 
-    async void CustomizeService(CustomServiceModel service)
+    //Customize a workshop service
+    void CustomizeService(CustomServiceModel service)
     {
         IsOnEditProfile = true;
         if (service is null)
         {
             return;
         }
+        //Capture service
         if(customServiceModel is null || customServiceModel.basePrice == 0)
         {
             customServiceModel = service;
@@ -370,7 +367,7 @@ else
         {
             return;
         }
-
+        //Query for update
         var result = await _providerHelper.UpdateWorkShopService(customServiceModel);
         Reload();
     }
@@ -386,6 +383,7 @@ else
     {
         try
         {
+            //await for service-price
             PriceModel price = await _providerHelper.GetServicePrice(priceId);
             return price;
         }
@@ -401,7 +399,9 @@ else
     [JSInvokable]
     async void Reload()
     {
+        //import module
         JSreloadReference = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "/assets/dist/js/reload.js");
+        //call page reload
         await JSreloadReference.InvokeVoidAsync("ReloadPage");
     }
 
