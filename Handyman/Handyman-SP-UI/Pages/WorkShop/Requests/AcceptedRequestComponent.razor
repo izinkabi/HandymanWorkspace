@@ -510,17 +510,17 @@
     [Parameter]
     public EventCallback<int> OnViewTask { get; set; }
     
-    private IJSObjectReference importedDHTML;
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            // import the script from the file
-            importedDHTML = await JS.InvokeAsync<IJSObjectReference>(
-                "import", "/assets/dist/js/reload.js");
+    //private IJSObjectReference importedDHTML;
+    //protected override async Task OnAfterRenderAsync(bool firstRender)
+    //{
+    //    if (firstRender)
+    //    {
+    //        // import the script from the file
+    //        importedDHTML = await JS.InvokeAsync<IJSObjectReference>(
+    //            "import", "/assets/dist/js/reload.js");
 
-            //Initialize 
-            await importedDHTML.InvokeVoidAsync("ReloadPageThreeSecDelay");
-        }
-    }
+    //        //Initialize 
+    //        await importedDHTML.InvokeVoidAsync("ReloadPageThreeSecDelay");
+    //    }
+    //}
 }
