@@ -6,6 +6,7 @@
 @using Microsoft.AspNetCore.Components.Web
 @inject NavigationManager NavManager;
 @inject IRequestHelper _requestHelper
+@inject IJSRuntime JSRuntime
 
 
 <AuthorizeView Roles="Owner,Member">
@@ -135,6 +136,7 @@
                     ownRequest = await _requestHelper.GetOwnRequest(ownRequestId);
                 isAccepted = true;
                 UpdateRequests();
+
             }
 
 
@@ -169,7 +171,7 @@
             newRequest = null;
             isAccepted = true;
             NRId = 0;
-            StateHasChanged();
+            Reload();
         }catch(Exception ex)
         {
             throw new Exception(ex.Message, ex.InnerException);
@@ -212,6 +214,15 @@
                 
             throw;
         }
+    }
+
+    //reload the html page using js
+    IJSObjectReference? JSreloadReference;
+    [JSInvokable]
+    async void Reload()
+    {
+        JSreloadReference = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "/assets/dist/js/reload.js");
+        await JSreloadReference.InvokeVoidAsync("ReloadPage");
     }
 
 }

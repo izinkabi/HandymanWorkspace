@@ -21,7 +21,7 @@
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 m-auto">
                 @foreach(var service in @services)
                 {                   
-                    <MyService serviceModel="@service"  OnAddService="AddService">
+                    <MyService serviceModel="@service">
 
                     </MyService>
                 }                
@@ -61,29 +61,7 @@
         }
     }
 
-    /// <summary>
-    /// Add this service to the provider's services
-    /// </summary>
-    /// <returns></returns>
-    /// <exception cref="Exception"></exception>
-    async Task AddService(ServiceModel serviceModel)
-    {
-
-        try
-        {
-            ServiceProviderModel providerModel = new ServiceProviderModel();
-            providerModel.Services.Add(serviceModel);
-
-            await _proHelper.AddService(serviceModel);
-            StateHasChanged();
-            
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message, ex.InnerException);
-        }
-    }
-
+    
     void ViewServiceDetails(ServiceModel s)
     {
         NavManager.NavigateTo(NavManager.GetUriWithQueryParameters("servicist",new Dictionary<string, object>()

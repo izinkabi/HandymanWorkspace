@@ -1,7 +1,7 @@
 ﻿@page "/provider-profile"
 @page "/profile"
 
-@inject IJSRuntime JsRuntime
+@inject IJSRuntime JSRuntime
 @inject IProviderHelper _providerHelper
 @inject IConfiguration _config
 @inject NavigationManager NavManager
@@ -345,6 +345,7 @@ else
         if (DeletedService != null)
         {
             WorkshopServices.Remove(DeletedService);
+            Reload();
             //Delete for DB
         }
 
@@ -371,13 +372,13 @@ else
         }
 
         var result = await _providerHelper.UpdateWorkShopService(customServiceModel);
-
+        Reload();
     }
 
     //Go to top page
     private async Task BackToTop()
     {
-        await JsRuntime.InvokeVoidAsync("OnScrollEvent");
+        await JSRuntime.InvokeVoidAsync("OnScrollEvent");
     }
 
     //Get prices of the services
@@ -393,6 +394,15 @@ else
             Errors.Add(ex.Message);
             return null;
         }
+    }
+
+    //reload the html page using js
+    IJSObjectReference? JSreloadReference;
+    [JSInvokable]
+    async void Reload()
+    {
+        JSreloadReference = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "/assets/dist/js/reload.js");
+        await JSreloadReference.InvokeVoidAsync("ReloadPage");
     }
 
     

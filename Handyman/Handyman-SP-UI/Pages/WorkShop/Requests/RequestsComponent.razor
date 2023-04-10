@@ -7,7 +7,7 @@
 @inject NavigationManager NavManager
 @inject IRequestHelper _requestHelper
 @inject IProviderHelper _providerHelper
-@inject IJSRuntime JsRuntime
+@inject IJSRuntime JSRuntime
 
 
 @if (Errors!=null)
@@ -190,7 +190,7 @@
     [JSInvokable]
     private async Task BackToTop()
     {
-        await JsRuntime.InvokeVoidAsync("OnScrollEvent");
+        await JSRuntime.InvokeVoidAsync("OnScrollEvent");
     }
 
     /// <summary>
@@ -274,5 +274,17 @@
         }
     }
 
+    private IJSObjectReference importedDHTML;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // import the script from the file
+            importedDHTML = await JSRuntime.InvokeAsync<IJSObjectReference>(
+                "import", "/assets/dist/js/reload.js");
 
+            //Initialize
+            await importedDHTML.InvokeVoidAsync("ReloadPageThreeSecDelay");
+        }
+    }
 }

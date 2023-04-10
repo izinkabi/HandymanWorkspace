@@ -3,7 +3,8 @@
 
 @using Microsoft.AspNetCore.Components.Web
 @implements IDisposable
-@inject IRequestHelper _requestHelper              
+@inject IRequestHelper _requestHelper 
+@inject IJSRuntime JSRuntime
 
 
 @if (taskModel != null)
@@ -219,6 +220,7 @@
         {
             taskModel = await _requestHelper.GetTask(TaskId);
             DeliverTask();
+            
         }catch(Exception ex)
         {
             throw new Exception(ex.Message, ex.InnerException);
@@ -231,6 +233,7 @@
         {
             //the task is not yet complete       
             taskModel.tas_duration = (taskModel.tas_date_finished - taskModel.tas_date_started).Days;
+            taskModel.tas_date_finished = DateTime.Now;
         }
     }
 
@@ -246,6 +249,7 @@
             taskModel.tas_status = 1;
             isWorkingOnTask = true;
         }
+       
     }
 
 
@@ -261,6 +265,7 @@
             taskModel.tas_status = 2;
             isWorkingOnTask = true;
         }
+       
     } 
 
     /// <summary>
@@ -273,7 +278,7 @@
             taskModel.tas_status = 3;
             taskModel.tas_date_finished = DateTime.UtcNow;
             isWorkingOnTask = true;
-            StateHasChanged();
+           
 
         }
 
@@ -301,6 +306,15 @@
             
             throw;
         }
+    }
+
+    //reload the html page using js
+    IJSObjectReference? JSreloadReference;
+    [JSInvokable]
+    async void Reload()
+    {
+        JSreloadReference = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "/assets/dist/js/reload.js");
+        await JSreloadReference.InvokeVoidAsync("ReloadPage");
     }
 
     public void Dispose()

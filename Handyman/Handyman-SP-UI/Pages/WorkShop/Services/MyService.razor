@@ -4,7 +4,7 @@
 @using Microsoft.AspNetCore.Components.Web
 @inject NavigationManager NavManager
 @inject IProviderHelper _providerHelper
-
+@inject IJSRuntime JSRuntime
 @if (@svc != null)
 {
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -80,7 +80,7 @@
                         <Authorized>
                             @if (!isAdded)
                             {
-                                <button id="@svc.id" class="btn btn-primary justify-content-start justify-content-sm-center" type="reset" @onclick="@(() => OnAddService.InvokeAsync(svc))">Add</button>
+                                <button id="@svc.id" class="btn btn-primary justify-content-start justify-content-sm-center" type="reset" @onclick="@(() => AddService(svc))">Add</button>
 
                             } else if (isAdded)
                             {
@@ -98,12 +98,11 @@
     </div>
 }
 @code{
-    
+
     [Parameter]
     public ServiceModel? serviceModel { get { return svc; } set { svc = value; } }
 
-    [Parameter]
-    public EventCallback<ServiceModel> OnAddService { get; set;  }
+
 
     bool isAdded; 
     ServiceModel? svc;
@@ -119,7 +118,7 @@
                 {
                     isAdded = true;
                     StateHasChanged();
-                    
+
                 }
             }
 
@@ -127,11 +126,39 @@
         {
             throw new Exception(ex.Message, ex.InnerException);
         }
-        
+
 
     }
 
-    
- 
+    /// <summary>
+    /// Add this service to the provider's services
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    async Task AddService(ServiceModel serviceModel)
+    {
+
+        try
+        {
+            ServiceProviderModel providerModel = new ServiceProviderModel();
+            providerModel.Services.Add(serviceModel);
+            await _providerHelper.AddService(serviceModel);
+            Reload();
+            StateHasChanged();
+
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+    }
+    //reload the html page using js
+    IJSObjectReference? JSreloadReference;
+    [JSInvokable]
+    async void Reload()
+    {
+        JSreloadReference = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "/assets/dist/js/reload.js");
+        await JSreloadReference.InvokeVoidAsync("ReloadPage");
+    }
 
 }
