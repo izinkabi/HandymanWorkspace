@@ -75,20 +75,26 @@ public class ServiceProviderEndPoint : EmployeeEndPoint, IServiceProviderEndPoin
     }
 
     //Create a new profile
-    public async void CreateProfile(ProfileModel newProfile)
+    public async Task<bool> CreateProfile(ProfileModel newProfile)
     {
         try
         {
             if (newProfile is null)
             {
-                return;
+                return false;
             }
-            await _apiHelper.ApiClient.PostAsJsonAsync("/api/handymen/PostProviderProfile", newProfile);
+            HttpResponseMessage responseMessage = new HttpResponseMessage();
+            responseMessage =  await _apiHelper.ApiClient.PostAsJsonAsync<ProfileModel>("/api/handymen/PostProviderProfile",newProfile);
+
+            return responseMessage.IsSuccessStatusCode;
+
+
         }
-        catch (Exception)
+        catch (Exception ex)
         {
 
-            throw;
+            throw new Exception(ex.Message);
+            return false;
         }
 
     }

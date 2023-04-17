@@ -152,6 +152,10 @@ else
             {
                 providerModel.employeeProfile = await _providerHelper.GetProviderProfile();
             }
+            else if (providerModel.employeeProfile is null)
+            {
+                NavManager.NavigateTo("./Identity/Account/ProfileRegister");
+            }
 
         }catch(Exception ex)
         {

@@ -1,9 +1,16 @@
 ﻿@page
 @model Handyman_SP_UI.Areas.Identity.Pages.Account.Registration.MembersRegistration.ProfileRegisterModel
 @inject SignInManager<Handyman_SP_UIUser> signInManager
-@if(signInManager.IsSignedIn(User))
+@if (signInManager.IsSignedIn(User))
 {
-        @if (Model.ProviderProperty != null)
+    @if (Model.errors != null && Model.errors.Count > 0)
+    {
+        @foreach(var error in Model.errors)
+        {
+            <p>@error</p><br/>
+        }
+    }
+    @if (Model.ProviderProperty != null)
         {
             <!--In Between Modals-->
             <div class="modal fade" id="regProfileModalToggle" aria-hidden="true" aria-labelledby="regProfileModalToggleLabel" tabindex="-1">

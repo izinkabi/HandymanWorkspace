@@ -24,7 +24,7 @@
                                 <div class="container container-fluid">
 
                                     <form asp-page-handler="saveworkshopdetails" method="post">
-                                        @Html.AntiForgeryToken()
+                                       
                                         <div class="form-control">
                                             <label for="businessName" class="form-label">Work shop name</label>
                                             <input type="text" autocomplete="on" class="form-control" asp-for="@Model.NewBusiness.Name" id="businessName" placeholder="Work shop name..." required />

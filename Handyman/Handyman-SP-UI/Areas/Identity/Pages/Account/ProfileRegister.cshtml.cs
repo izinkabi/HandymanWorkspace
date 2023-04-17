@@ -75,7 +75,7 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account.Registration.MembersRegist
         private int MaxAllowFiles = 1;
         public List<string> errors = new();
         [BindProperty]
-        public IFormFile Upload { get; set; }
+        public IFormFile? Upload { get; set; }
 
 
 
@@ -165,10 +165,14 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account.Registration.MembersRegist
                     provider.employeeProfile.UserId = userManager.GetUserId(user);
 
 
-                    _providerHelper.RegisterProfile(provider.employeeProfile);
-                    IsProfileSaved = true;
+                   
+                    IsProfileSaved = await _providerHelper.RegisterProfile(provider.employeeProfile); ;
 
-                    return Redirect(Url.Page("/Account/WorkShopRegister"));
+                    if (IsProfileSaved)
+                        return Redirect(Url.Page("/Account/WorkShopRegister"));
+                    else
+                        errors.Add("No profile Added , somthin weirdd happened!");
+                        return Page();
 
                 }
             }
