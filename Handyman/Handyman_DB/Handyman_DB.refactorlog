@@ -280,4 +280,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="originalServiceId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="86b83894-0315-47f2-92c4-8e7092a3eca2" ChangeDateTime="04/07/2023 20:57:10">
+    <Property Name="ElementName" Value="[Service].[customService].[priceId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Service].[customService]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="price" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="764664d3-6c95-4c0d-b43d-771376d448fc" ChangeDateTime="04/07/2023 21:00:53">
+    <Property Name="ElementName" Value="[Service].[customService].[price]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Service].[customService]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="basePrice" />
+  </Operation>
 </Operations>

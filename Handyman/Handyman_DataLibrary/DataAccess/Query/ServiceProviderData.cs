@@ -120,6 +120,7 @@ public class ServiceProviderData : EmployeeData, IServiceProviderData
                     service.id = outputItem.serv_id;
                     service.name = outputItem.serv_name;
                     service.category = new ServiceCategoryModel();
+                    service.PriceId = outputItem.price_id;
 
                     //populate category
                     service.category.name = outputItem.cat_name;

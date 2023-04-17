@@ -11,6 +11,7 @@ namespace Handyman_DataLibrary.Models
         public ServiceCategoryModel? category { get; set; }
         public DateTime datecreated { get; set; }
         public string? status { get; set; }
+        public int PriceId { get; set; }
 
 
     }

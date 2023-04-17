@@ -9,6 +9,7 @@ BEGIN
       ,s.[serv_categoryid]
       ,s.[serv_datecreated]
       ,s.[serv_status]
+      ,s.[price_id]
       ,c.[cat_id]
       ,c.[cat_name]
       ,c.[cat_type]

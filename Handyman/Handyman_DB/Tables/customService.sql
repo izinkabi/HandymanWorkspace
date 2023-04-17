@@ -5,6 +5,8 @@
     [description] NVARCHAR(100) NOT NULL, 
     [imageUrl] NVARCHAR(2000) NOT NULL, 
     [originalServiceId] INT NOT NULL, 
+    [basePrice] FLOAT NOT NULL, 
     CONSTRAINT [FK_customService_Service] FOREIGN KEY ([originalServiceId]) REFERENCES [Service].[service]([serv_id])
+    
 
 )

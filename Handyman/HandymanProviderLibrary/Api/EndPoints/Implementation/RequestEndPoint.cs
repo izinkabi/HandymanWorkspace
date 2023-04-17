@@ -47,9 +47,9 @@ public class RequestEndPoint : IRequestEndPoint
         }
         catch (Exception ex)
         {
-
-            throw new Exception(ex.Message, ex.InnerException);
             return null;
+            throw new Exception(ex.Message, ex.InnerException);
+
         }
 
     }
@@ -57,40 +57,40 @@ public class RequestEndPoint : IRequestEndPoint
     //Post a request
     //This method is invoked when the provider accepts
     //an order that was place by a consumer
-    public async Task<string> PostRequest(RequestModel request)
+    public async Task<bool> PostRequest(RequestModel request)
     {
         string? result = string.Empty;
 
         try
         {
-            var httpResponseMessage = await _apiHelper.ApiClient.PostAsJsonAsync("/api/Requests", request);
-            if (httpResponseMessage.IsSuccessStatusCode)
-            {
-                result = httpResponseMessage.ReasonPhrase;
-                return result;
-            }
+            var httpResponseMessage = await _apiHelper.ApiClient.PostAsJsonAsync("/api/Requests/post", request);
+            return httpResponseMessage.IsSuccessStatusCode;
+
 
         }
         catch (Exception ex)
         {
             throw new Exception(ex.Message);
-            return ex.Message;
+            return false;
         }
-        return null;
+
     }
 
     //Update a request
     //This method is called when there is a change in the request by the provider
     //Change of state/stage, cancellation of completion by the service provider
-    public async Task UpdateTask(TaskModel taskUpdate)
+    public async Task<bool> UpdateTask(TaskModel taskUpdate)
     {
         try
         {
-            await _apiHelper.ApiClient.PutAsJsonAsync<TaskModel>("/api/Requests/Update", taskUpdate);
+            var result = await _apiHelper.ApiClient.PutAsJsonAsync<TaskModel>("/api/Requests/Update", taskUpdate);
+            return result.IsSuccessStatusCode;
         }
         catch (Exception ex)
         {
+            return false;
             throw new Exception(ex.Message);
+
         }
 
     }

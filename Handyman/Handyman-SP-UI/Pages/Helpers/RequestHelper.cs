@@ -147,11 +147,15 @@ public class RequestHelper : IDisposable, IRequestHelper
             if (provider != null && provider.pro_providerId != null)
             {
                 var jobs = await _requestEndPoint.GetCurrentMonthRequests(provider.pro_providerId);
-                foreach (var rq in jobs)
+                if (jobs != null && jobs.Count > 0)
                 {
-                    rq.req_status = CheckStatus(rq);
-                    rq.req_status = GetProgress(rq);
+                    foreach (var rq in jobs)
+                    {
+                        rq.req_status = CheckStatus(rq);
+                        rq.req_status = GetProgress(rq);
+                    }
                 }
+
 
                 return jobs;
             }
@@ -222,7 +226,7 @@ public class RequestHelper : IDisposable, IRequestHelper
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
 
-    public async Task AcceptRequest(OrderModel newRequest)
+    public async Task<bool> AcceptRequest(OrderModel newRequest)
     {
         RequestModel nr = new()!;
         //populate a request without a provider ID
@@ -236,15 +240,17 @@ public class RequestHelper : IDisposable, IRequestHelper
             if (!await IsAccepted(newRequest))
             {
                 //save the accepted request
-                await _requestEndPoint.PostRequest(await _providerHelper.StampNewRequest(nr));
+                return await _requestEndPoint.PostRequest(await _providerHelper.StampNewRequest(nr));
 
             }
 
         }
         catch (Exception ex)
         {
+            return false;
             throw new Exception(ex.Message, ex.InnerException);
         }
+        return false;
     }
     /// <summary>
     /// Get the provider's requests

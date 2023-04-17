@@ -1,6 +1,6 @@
 using Handyman_SP_UI.Areas.Identity.Data;
 using Handyman_SP_UI.Pages.Helpers;
-using HandymanProviderLibrary.Api.Service;
+using HandymanProviderLibrary.Api.EndPoints.Interface;
 using HandymanProviderLibrary.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -264,7 +264,11 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
                 if (provider.Services.Count > 0)
                 {
                     newBusiness.Employees.Add(provider);
-                    await _providerHelper.AddService(provider);//Add the services to workshop by owner
+                    foreach (var service in provider.Services)
+                    {
+                        await _providerHelper.AddService(service);//Add the services to workshop by owner
+                    }
+
                 }
                 IsOnSelectService = false;
                 IsServiceAdded = true;

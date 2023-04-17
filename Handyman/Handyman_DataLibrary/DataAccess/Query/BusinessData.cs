@@ -291,5 +291,26 @@ namespace Handyman_DataLibrary.DataAccess.Query
                 throw new Exception(ex.Message, ex.InnerException);
             }
         }
+
+        //Insert a new service for the workshop
+        public void InsertWorkShopService(int workShopRegId, int customServiceId)
+        {
+            if (workShopRegId == 0 || customServiceId == 0)
+            {
+                return;
+            }
+            try
+            {
+                _dataAccess.SaveData("Delivery.spWorkShopService_Insert", new { workShopRegId, customServiceId }, "Handyman_DB");
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+
+        }
+
+
     }
 }

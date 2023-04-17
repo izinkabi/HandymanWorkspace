@@ -1,11 +1,21 @@
 ﻿@page "/provider-profile"
 @page "/profile"
 
-@inject IJSRuntime JsRuntime
+@inject IJSRuntime JSRuntime
 @inject IProviderHelper _providerHelper
 @inject IConfiguration _config
 @inject NavigationManager NavManager
+@inject IServiceProviderEndPoint _providerEndPoint
 
+
+@if (Errors.Count > 0)
+{
+    @foreach (var error in Errors)
+    {
+        <h4 class="text-danger">@error</h4>
+    }
+
+}
 <AuthorizeView Context="Auth" Roles="ServiceProvider">
 
 <Authorized>
@@ -27,90 +37,202 @@
             </div>
         </div>
         <!--End Employee profile-->
-
-        
-        @if (providerModel.Services.Count > 0)
-        {
-           <AuthorizeView Roles="Owner,Member">
-            <div class="col-md-6 m-auto">
-                <div class="position-sticky" style="top: 2rem;">
-                    <div class="p-4 mb-3 bg-light rounded">
-                        <h4 class="fst-italic">About</h4>
-                        <h3 class="mb-0">@providerModel.Services.ElementAt(0).category.name field and more...</h3>
-                        <div class="mb-1 text-muted">Date Employed:@providerModel.DateEmployed</div>
+                <!--Services-->
+            @if (providerModel.Services.Count > 0)
+            {
+               <AuthorizeView Roles="Owner,Member">
+                   <div class="col-md-6 m-auto position-sticky">
+                    <div class="" style="top: 2rem;">
+                        <div class="p-4 mb-3 bg-light rounded">
+                            <h4 class="fst-italic">About</h4>
+                            <h3 class="mb-0">@providerModel.Services.ElementAt(0).category.name field and more...</h3>
+                            <div class="mb-1 text-muted">Date Employed:@providerModel.DateEmployed</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-           </AuthorizeView>
-                    <article class="blog-post rounded-2" role="document">
+               </AuthorizeView>
+               <hr />
+                    <div class="accordion accordion-flush rounded shadow" id="accordionExample">
+                        <div class="accordion-item panel">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button px-6" data-bs-toggle="collapse" data-bs-target="#servicesListCollapse" aria-expanded="true" aria-controls="servicesListCollapse">
+                                    <strong class="text-capitalize text-center fa-italic">View Sevices</strong>
+                                    <hr />
+                                </button>
+                            </h2>
+                            <div id="servicesListCollapse" class="accordion-collapse collapse show" aria-labelledby="headingOne">
+                                <div class="accordion-body" style="height:484px;overflow-y:scroll">
+                                    <article class="blog-post rounded-2 shadow m-auto" role="document">
 
 
-                        <h3 class="text-center shadow">List of your Services</h3>
-                        <p class="text-center mb-1 text-muted fst-italic">You can add more services to broaden your field</p>
+                                        <h3 class="text-center shadow">List of your Services</h3>
+                                        <p class="text-center mb-1 text-muted fst-italic">You can add more services to broaden your field</p>
+                                        @if (WorkshopServices != null && WorkshopServices.Count > 0)
+                                        {
+                                            <table class="table table-hover  bg-light" style="height:400px;overflow-y:scroll">
+                                                <thead class="bg-dark text-white">
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Description</th>
 
-                        <table class="table table-hover shadow-bg  bg-light" style="height:200px;overflow-y:scroll">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                    <th>Category</th>
-                                </tr>
-                            </thead>
-                            <tbody class="table">
-                                @foreach (var service in @providerModel.Services)
-                                {
-                                    <tr>
-                                        <td>@service.name</td>
-                                        <td>@service.category.description</td>
-                                        <td>@service.category.name</td>
-                                    </tr>
-                                }
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td>Totals</td>
-                                    <td>@providerModel.Services.Count</td>
-                                </tr>
-                            </tfoot>
+                                                        <th>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cash-coin" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0z" />
+                                                                <path d="M9.438 11.944c.047.596.518 1.06 1.363 1.116v.44h.375v-.443c.875-.061 1.386-.529 1.386-1.207 0-.618-.39-.936-1.09-1.1l-.296-.07v-1.2c.376.043.614.248.671.532h.658c-.047-.575-.54-1.024-1.329-1.073V8.5h-.375v.45c-.747.073-1.255.522-1.255 1.158 0 .562.378.92 1.007 1.066l.248.061v1.272c-.384-.058-.639-.27-.696-.563h-.668zm1.36-1.354c-.369-.085-.569-.26-.569-.522 0-.294.216-.514.572-.578v1.1h-.003zm.432.746c.449.104.655.272.655.569 0 .339-.257.571-.709.614v-1.195l.054.012z" />
+                                                                <path d="M1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.083c.058-.344.145-.678.258-1H3a2 2 0 0 0-2-2V3a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2v3.528c.38.34.717.728 1 1.154V1a1 1 0 0 0-1-1H1z" />
+                                                                <path d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 5.982 5.982 0 0 1 3.13-1.567z" />
+                                                            </svg>
+                                                        </th>
 
-                        </table>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody class="table">
 
 
-                    </article>
+                                                    @foreach (var service in WorkshopServices)
+                                                    {
+                                                        <tr>
+                                                            <td>@service.title</td>
+                                                            <td>@service.description</td>
 
-           
-       }
-        
-       
-        </div>
+                                                            <td>
 
-           
-            <div class="col-md-12 text-center">
-                    @if (providerModel.Services.Count > 0)
-                    {
+                                                                <strong> R </strong> @service.basePrice
 
-                    
+                                                            </td>
+                                                            <AuthorizeView Roles="Owner">
+                                                                <td>
+                                                                    <button class="btn btn-secondary btn-outline-danger border-0" @onclick="@(()=>CustomizeService(service))" data-bs-toggle="modal" data-bs-target="#priceEditModal">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                                                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                                                                        </svg>
+                                                                    </button>
 
-                    <div class="accordion accordion-flush rounded shadow" id="accordionExample" >
-                            <div class="accordion-item panel">
-                                <h2 class="accordion-header" id="headingOne">
-                                    <button class="accordion-button px-6" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        <strong class="text-capitalize text-center fa-italic">ADD SERVICES</strong>
-                                        <hr />
-                                    </button>
-                                </h2>
-                                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
-                                <div class="accordion-body" style="height:550px;overflow-y:scroll">
-                                        <Handyman_SP_UI.Pages.WorkShop.Services.ServicesAlbum OnAddService="AddService">
+                                                                </td>
+                                                                <td>
+                                                                    <button class="border-0" @onclick="@(()=>DeleteService(service))" data-bs-toggle="modal" data-bs-target="#serviceDeleteModal">
 
-                                        </Handyman_SP_UI.Pages.WorkShop.Services.ServicesAlbum>
-                                    </div>
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                                                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z" />
+                                                                        </svg>
+                                                                    </button>
+                                                                </td>
+                                                            </AuthorizeView>
+
+                                                        </tr>
+                                                    }
+
+
+                                                </tbody>
+                                                <tfoot class="bg-secondary">
+                                                    <tr>
+                                                        <td>Totals</td>
+                                                        <td>@WorkshopServices.Count</td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                </tfoot>
+
+                                            </table>
+                                        }
+                                        else
+                                        {
+                                            <p class="fst-italic">No Services</p>
+                                        }
+
+
+                                        <!--****Edit Service Price Modal -->
+                                        <div class="modal fade" id="priceEditModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="priceEditModalLabel" aria-hidden="true" role="document">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="priceEditModalLabel">Service Edit</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    @if (IsOnEditProfile)
+                                                    {
+
+                                                        <EditForm Model="customServiceModel" OnValidSubmit="SubmitServiceEdit">
+                                                            <div class="modal-body">
+
+                                                                <div class="form-control">
+                                                                    <label for="title">Title</label>
+                                                                    <input type="text" class="form-control" @bind-value="customServiceModel.title" id="title">
+                                                                    <label for="description">Description</label>
+                                                                    <input type="text" class="form-control input-group-lg" @bind-value="customServiceModel.description" id="description">
+                                                                    <label for="basePrice">
+                                                                        <strong>R</strong>
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cash" viewBox="0 0 16 16">
+                                                                            <path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
+                                                                            <path d="M0 4a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V4zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V6a2 2 0 0 1-2-2H3z" />
+                                                                        </svg>
+                                                                    </label>
+                                                                    <input type="number" @bind-value="customServiceModel.basePrice" id="basePrice" class="form-control" placeholder="R">
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+                                                            </div>
+                                                        </EditForm>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--****End Edit Price Modal****-->
+                                        <!--****Service Delete Modal -->
+                                        <div class="modal fade" id="serviceDeleteModal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="serviceDeleteModalLabel" aria-hidden="true" role="document">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="serviceDeleteModalLabel">Delete Service</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Are you sure the WorkShop no longer provides <strong class="text-danger">@DeletedService.title</strong>?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button @onclick="ConfirmDeleteService" class="btn btn-primary" data-bs-dismiss="modal">Yes</button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--****End Service Delete Modal****-->
+
+                                    </article>
                                 </div>
                             </div>
                         </div>
-                    }
-            </div>
+                    </div>
+            }
+                <div class="col m-auto text-center rounded-3">
+                    <div class="accordion accordion-flush rounded shadow" id="accordionExample">
+                        <div class="accordion-item panel">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button px-6" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <strong class="text-capitalize text-center fa-italic">ADD SERVICES</strong>
+                                    <hr />
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
+                                <div class="accordion-body" style="height:484px;overflow-y:scroll" >
+                                    <Handyman_SP_UI.Pages.WorkShop.Services.ServicesAlbum>
 
+                                    </Handyman_SP_UI.Pages.WorkShop.Services.ServicesAlbum>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+        </div>
+
+           
+       
             <!--Back to top button-->
             <button @onclick="@BackToTop" class="float-end border-0 bg-transparent shadow-lg btn-outline-warning">
                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-up-circle border-0" viewBox="0 0 16 16">
@@ -141,7 +263,15 @@ else
 </AuthorizeView>
 
 @code {
+    List<string> Errors = new List<string>();
     ServiceProviderModel providerModel = new ServiceProviderModel()!;
+    List<PriceModel> Prices = new List<PriceModel>();
+    private float editPrice;
+    private CustomServiceModel customServiceModel = new CustomServiceModel();
+    private ServiceModel EditedService = new ServiceModel();
+    bool IsOnEditProfile;
+    private List<CustomServiceModel> WorkshopServices = new List<CustomServiceModel>();
+    private CustomServiceModel DeletedService = new CustomServiceModel();
 
     protected override async Task OnInitializedAsync()
     {
@@ -151,11 +281,14 @@ else
             if(providerModel!=null && providerModel.employeeProfile is null)
             {
                 providerModel.employeeProfile = await _providerHelper.GetProviderProfile();
+
             }
-            else if (providerModel.employeeProfile is null)
+            if (providerModel.Services.Count > 0)
             {
-                NavManager.NavigateTo("./Identity/Account/ProfileRegister");
+                WorkshopServices = await _providerHelper.GetWorkShopServices();
+                return;
             }
+
 
         }catch(Exception ex)
         {
@@ -180,33 +313,97 @@ else
         NavManager.NavigateTo("registers", true);
     }
 
+    //Delete a service
+    void DeleteService(CustomServiceModel workShopService)
+    {
+        if (workShopService != null)
+        {
+            DeletedService = workShopService;
+        }
+    }
+
+    //Confirm after delete
+    async void ConfirmDeleteService()
+    {
+        if (DeletedService != null)
+        {
+            WorkshopServices.Remove(DeletedService);
+            //Delete for DB
+            var IsDeleted = await _providerHelper.DeleteWorkShopService(DeletedService.Id,DeletedService.originalServiceId);
+            if (IsDeleted)
+            {
+                Reload();
+            }
+
+           
+            //ServiceProviderModel provider = await _providerHelper.GetProvider();
+            //ServiceModel service = new ServiceModel();
+            //service.datecreated = DateTime.Now;
+            //service.id = DeletedService.originalServiceId;
+            //provider.Services.Add(service);
+           
+        }
+
+    }
+
+    //Customize a workshop service
+    void CustomizeService(CustomServiceModel service)
+    {
+        IsOnEditProfile = true;
+        if (service is null)
+        {
+            return;
+        }
+        //Capture service
+        if(customServiceModel is null || customServiceModel.basePrice == 0)
+        {
+            customServiceModel = service;
+        }
+    }
+    //Submit the insert query
+    async Task SubmitServiceEdit()
+    {
+        if(customServiceModel is null || EditedService is null)
+        {
+            return;
+        }
+        //Query for update
+        var result = await _providerHelper.UpdateWorkShopService(customServiceModel);
+        Reload();
+    }
+
     //Go to top page
     private async Task BackToTop()
     {
-        await JsRuntime.InvokeVoidAsync("OnScrollEvent");
+        await JSRuntime.InvokeVoidAsync("OnScrollEvent");
     }
 
-    /// <summary>
-    /// Add this service to the provider's services
-    /// </summary>
-    /// <returns></returns>
-    /// <exception cref="Exception"></exception>
-    async Task AddService(ServiceModel serviceModel)
+    //Get prices of the services
+    async Task<PriceModel> GetPrice(int priceId)
     {
-        //sp.Services = new List<ServiceModel>();
-
         try
         {
-            if(providerModel!=null && providerModel.Services.Count > 0)
-            {
-                providerModel.Services.Add(serviceModel);
-                await _providerHelper.AddService(providerModel);
-                StateHasChanged();
-            }
+            //await for service-price
+            PriceModel price = await _providerHelper.GetServicePrice(priceId);
+            return price;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            throw new Exception(ex.Message, ex.InnerException);
+            Errors.Add(ex.Message);
+            return null;
         }
     }
+
+    //reload the html page using js
+    IJSObjectReference? JSreloadReference;
+    [JSInvokable]
+    async void Reload()
+    {
+        //import module
+        JSreloadReference = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "/assets/dist/js/reload.js");
+        //call page reload
+        await JSreloadReference.InvokeVoidAsync("ReloadPage");
+    }
+
+    
 }

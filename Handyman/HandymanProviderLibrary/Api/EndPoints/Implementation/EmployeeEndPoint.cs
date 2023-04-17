@@ -39,8 +39,6 @@ public class EmployeeEndPoint
     //Get a service provider of the given ID
     public async Task<ServiceProviderModel> GetProvider(string userId)
     {
-
-
         try
         {
             if (userId != null)

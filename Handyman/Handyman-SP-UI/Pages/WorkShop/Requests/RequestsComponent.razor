@@ -7,18 +7,20 @@
 @inject NavigationManager NavManager
 @inject IRequestHelper _requestHelper
 @inject IProviderHelper _providerHelper
-@inject IJSRuntime JsRuntime
+@inject IJSRuntime JSRuntime
 
+
+@if (Errors!=null)
+{
+   
+   <h4 class="text-danger">@Errors</h4>
+   
+}
 <AuthorizeView Roles="Owner,Member">
 
 <Authorized>
-
-        @if (errors != null)
-        {
-            <p>errors</p>
-        }
       <!--New Requests Section-->
-      <section class="container-fluid justify-content-center p-0 m-0 align-content-lg-center ">
+      <section class="container-fluid justify-content-center  m-auto align-content-lg-center ">
    
           <!--Table-->
                 <div class="table-responsive shadow rounded bg-white" >
@@ -27,7 +29,9 @@
                             <div class="btn-group me-2 ">
                                 <button type="button" @onclick="displayOrdersOnly" class="btn btn-sm btn-outline-secondary">
                                     Orders
-                            </button>
+                                <span class="badge text-bg-success">@NumberOfOrders</span>
+                                
+                                </button>
                                 <button type="button" @onclick="displayRequestsOnly" class="btn btn-sm btn-outline-secondary">
                                 Jobs 
                                 @if (requests != null)
@@ -75,10 +79,10 @@
                 <h4 class="bg-light font-monospace text-center rounded-4 shadow ">Jobs</h4>
                 <!--Displaying Requests only-->
 
-                <div class="album py-5 m-3 shadow rounded bg-light">
+                <div class="album py-2 m-auto shadow rounded bg-light">
                     <div class="container container-fluid">
 
-                        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 " style="height:550px;overflow-y:scroll">
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 " style="height:480px;overflow-y:scroll">
                             @foreach (var ownR in requests)
                             {
                                 <div class="col p-0 m-0" @onclick="@(()=>viewOwnRequest(ownR.req_id))">
@@ -130,9 +134,10 @@
 
 
     List<RequestModel> requests = new()!;
+    int NumberOfOrders;
     bool isOrdersDisplayed;
     bool isRequestsDisplayed;
-    string errors;
+    string Errors;
 
     protected override async Task OnInitializedAsync()
     {
@@ -141,11 +146,22 @@
             try
             {
                 requests = await _requestHelper.GetOwnRequests();
+                foreach(var service in  await _providerHelper.GetWorkShopServices())
+                {
+                    var listoforders = await _requestHelper.GetNewRequests(service.originalServiceId);
+                    foreach (var o in listoforders)
+                    {
+                        if (o.status == 0)
+                        {
+                            NumberOfOrders++;
+                        }
+                    }
+                }
                 StateHasChanged();
             }
             catch (Exception ex)
             {
-                errors = ex.Message;
+                Errors = ex.Message;
                 throw new Exception(ex.Message, ex.InnerException);
 
             }
@@ -161,7 +177,7 @@
         }
         catch (Exception ex)
         {
-            errors = ex.Message;
+            Errors = ex.Message;
             throw new Exception(ex.Message, ex.InnerException);
 
         }
@@ -174,7 +190,7 @@
     [JSInvokable]
     private async Task BackToTop()
     {
-        await JsRuntime.InvokeVoidAsync("OnScrollEvent");
+        await JSRuntime.InvokeVoidAsync("OnScrollEvent");
     }
 
     /// <summary>
@@ -258,5 +274,17 @@
         }
     }
 
+    private IJSObjectReference importedDHTML;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // import the script from the file
+            importedDHTML = await JSRuntime.InvokeAsync<IJSObjectReference>(
+                "import", "/assets/dist/js/reload.js");
 
+            //Initialize
+            await importedDHTML.InvokeVoidAsync("ReloadPageThreeSecDelay");
+        }
+    }
 }

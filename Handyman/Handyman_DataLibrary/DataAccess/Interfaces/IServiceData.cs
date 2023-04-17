@@ -8,6 +8,14 @@ namespace Handyman_DataLibrary.DataAccess.Interfaces
         ServiceModel GetService(int id);
         ServiceModel GetServiceByOrder(int id);
         void InsertServices(List<ServiceModel> services);
-        void UpdateService(ServiceModel serviceUpdate);
+        int InsertCustomService(ServiceModel serviceUpdate);
+        bool InsertNegotiatedPrice(int serviceId, float nPrice);
+        void UpdateService(ServiceModel serviceUdpate);
+        int InsertBasePrice(float price);
+        PriceModel GetPrice(int priceId);
+        List<CustomServiceModel> GetWorkShopServices(int workShopRegId);
+        void UpdateWorkshopService(CustomServiceModel wsService);
+        void DeleteService(int wsServiceId, int wsRegId);
+        void DeleteProviderService(int wsServiceId, string providerId);
     }
 }

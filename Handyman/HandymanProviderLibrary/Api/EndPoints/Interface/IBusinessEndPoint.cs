@@ -8,5 +8,6 @@ namespace HandymanProviderLibrary.Api.EndPoints.Interface
         Task<bool> EmployMember(ServiceProviderModel serviceProvider);
         Task<BusinessModel> GetBusiness(int busId);
         Task<BusinessModel> GetWorkShop(string regNumber);
+        Task<bool> InsertWorkShopService(int workShopRegId, int customServiceId);
     }
 }
