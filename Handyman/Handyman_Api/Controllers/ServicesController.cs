@@ -1,11 +1,13 @@
 ﻿using Handyman_DataLibrary.DataAccess.Interfaces;
 using Handyman_DataLibrary.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Handyman_Api.Controllers;
 
 [ApiController]
 [Route("api/services")]
+[Authorize]
 public class ServicesController : ControllerBase
 {
     IServiceData _serviceData;

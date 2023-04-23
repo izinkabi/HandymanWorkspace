@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<parameters>
-  <parameter name="IIS Web Application Name" description="" value="HandymanApi" tags="IisApp">
-    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\Nkosinathi\\source\\repos\\HandymanWorkspace\\Handyman\\Handyman_Api\\obj\\Release\\net7\.0\\PubTmp\\Out\\$" />
-  </parameter>
-  <parameter name="Handyman_Api.Areas.Identity.Data.IdentityDataContext" description="" value="Server=(localdb)\mssqllocaldb;Database=Handyman_DB;Trusted_Connection=True;MultipleActiveResultSets=true" tags="dbfullsql">
-    <parameterEntry kind="ProviderPath" scope="dbfullsql" match="^C:\\Users\\Nkosinathi\\source\\repos\\HandymanWorkspace\\Handyman\\Handyman_Api\\obj\\Release\\net7\.0\\PubTmp\\EFSQLScripts\\Handyman_Api\.Areas\.Identity\.Data\.IdentityDataContext\.sql$" />
-  </parameter>
-</parameters>

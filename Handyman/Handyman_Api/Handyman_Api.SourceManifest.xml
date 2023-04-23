@@ -1,5 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<sitemanifest>
-  <IisApp path="C:\Users\Nkosinathi\source\repos\HandymanWorkspace\Handyman\Handyman_Api\obj\Release\net7.0\PubTmp\Out\" />
-  <dbfullsql path="C:\Users\Nkosinathi\source\repos\HandymanWorkspace\Handyman\Handyman_Api\obj\Release\net7.0\PubTmp\EFSQLScripts\Handyman_Api.Areas.Identity.Data.IdentityDataContext.sql" />
-</sitemanifest>

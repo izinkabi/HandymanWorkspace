@@ -1,5 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<parameters>
-  <setParameter name="IIS Web Application Name" value="HandymanApi" />
-  <setParameter name="Handyman_Api.Areas.Identity.Data.IdentityDataContext" value="Server=(localdb)\mssqllocaldb;Database=Handyman_DB;Trusted_Connection=True;MultipleActiveResultSets=true" />
-</parameters>
