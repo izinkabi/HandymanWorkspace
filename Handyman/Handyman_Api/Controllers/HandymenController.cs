@@ -1,5 +1,6 @@
 ﻿using Handyman_DataLibrary.DataAccess.Interfaces;
 using Handyman_DataLibrary.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -8,6 +9,7 @@ namespace Handyman_Api.Controllers
 {
     [Route("api/Handymen")]
     [ApiController]
+    [Authorize]
     public class HandymenController : ControllerBase
     {
 
