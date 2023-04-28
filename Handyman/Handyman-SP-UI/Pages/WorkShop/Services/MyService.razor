@@ -143,8 +143,8 @@
             ServiceProviderModel providerModel = new ServiceProviderModel();
             providerModel.Services.Add(serviceModel);
             await _providerHelper.AddService(serviceModel);
-            Reload();
-            StateHasChanged();
+          
+           await InvokeAsync(StateHasChanged);
 
         }
         catch (Exception ex)
@@ -152,13 +152,6 @@
             throw new Exception(ex.Message, ex.InnerException);
         }
     }
-    //reload the html page using js
-    IJSObjectReference? JSreloadReference;
-    [JSInvokable]
-    async void Reload()
-    {
-        JSreloadReference = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "/assets/dist/js/reload.js");
-        await JSreloadReference.InvokeVoidAsync("ReloadPage");
-    }
+
 
 }

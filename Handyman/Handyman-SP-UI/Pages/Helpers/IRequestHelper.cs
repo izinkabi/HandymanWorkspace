@@ -18,5 +18,6 @@ namespace Handyman_SP_UI.Pages.Helpers
         int CheckStatus(RequestModel request);
         Task<RequestModel> ConfirmAccepted(OrderModel request);
         Task<bool> IsAccepted(OrderModel order);
+        Task<PriceModel> GetTaskPrice(int TaskId);
     }
 }

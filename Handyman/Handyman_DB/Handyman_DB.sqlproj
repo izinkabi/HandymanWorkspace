@@ -67,11 +67,14 @@
     <Folder Include="Stored Procedures\Task" />
     <Folder Include="Stored Procedures\Order_Task" />
     <Folder Include="Stored Procedures\Stuff" />
-    <Folder Include="Stored Procedures\Business" />
-    <Folder Include="Stored Procedures\Business\Employee" />
-    <Folder Include="Stored Procedures\Business\Employee\Provider" />
+    <Folder Include="Stored Procedures\WorkShop" />
+    <Folder Include="Stored Procedures\WorkShop\Members" />
+    <Folder Include="Stored Procedures\WorkShop\Members\Provider" />
     <Folder Include="Stored Procedures\Handymen" />
     <Folder Include="Stored Procedures\Service\Customs" />
+    <Folder Include="Stored Procedures\WorkShop\Registration" />
+    <Folder Include="Stored Procedures\Order\Negotiations" />
+    <Folder Include="Stored Procedures\Prices" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Schemas\Request.sql" />
@@ -101,17 +104,14 @@
     <Build Include="Stored Procedures\Order_Task\spDeleteOrderTask.sql" />
     <Build Include="Stored Procedures\Service\spServiceLookUpBy_Id.sql" />
     <Build Include="Schemas\dbo.sql" />
-    <Build Include="Stored Procedures\Business\Employee\spEmployeesLookUp.sql" />
-    <Build Include="Stored Procedures\Business\Employee\spBusiness_Registration_LookUp.sql" />
-    <Build Include="Stored Procedures\Business\Employee\Provider\spProvider_Service_LookUp.sql" />
-    <Build Include="Stored Procedures\Business\spBusinessInsert.sql" />
-    <Build Include="Stored Procedures\Business\spRegistrationInsert.sql" />
-    <Build Include="Stored Procedures\Business\Employee\spEmployeeInsert.sql" />
-    <Build Include="Stored Procedures\Business\spAddressInsert.sql" />
-    <Build Include="Stored Procedures\Business\Employee\Provider\spProviderInsert.sql" />
+    <Build Include="Stored Procedures\WorkShop\Members\spEmployeesLookUp.sql" />
+    <Build Include="Stored Procedures\WorkShop\Members\spBusiness_Registration_LookUp.sql" />
+    <Build Include="Stored Procedures\WorkShop\Members\Provider\spProvider_Service_LookUp.sql" />
+    <Build Include="Stored Procedures\WorkShop\Members\spEmployeeInsert.sql" />
+    <Build Include="Stored Procedures\WorkShop\Members\Provider\spProviderInsert.sql" />
     <Build Include="Tables\employee_ratings.sql" />
-    <Build Include="Stored Procedures\Business\Employee\spEmployee_Rating_Insert.sql" />
-    <Build Include="Stored Procedures\Business\Employee\spRatingInsert.sql" />
+    <Build Include="Stored Procedures\WorkShop\Members\spEmployee_Rating_Insert.sql" />
+    <Build Include="Stored Procedures\WorkShop\Members\spRatingInsert.sql" />
     <Build Include="Tables\profile.sql" />
     <Build Include="Stored Procedures\Request\spRequestInsert.sql" />
     <Build Include="Stored Procedures\Request\spRequestLookUpByProvider.sql" />
@@ -131,15 +131,12 @@
     <Build Include="Tables\customService.sql" />
     <Build Include="Stored Procedures\Handymen\spProfileInsert.sql" />
     <Build Include="Stored Procedures\Handymen\spProfileLookUp.sql" />
-    <Build Include="Stored Procedures\Business\spWorkShopsLookUp.sql" />
-    <Build Include="Stored Procedures\Business\Employee\spEmployeesLookUpByWorkShop.sql" />
+    <Build Include="Stored Procedures\WorkShop\spWorkShopsLookUp.sql" />
+    <Build Include="Stored Procedures\WorkShop\Members\spEmployeesLookUpByWorkShop.sql" />
     <Build Include="Tables\price.sql" />
-    <Build Include="Stored Procedures\Service\spPriceInsert.sql" />
     <Build Include="Stored Procedures\Order\spServicePriceNegotiationInsert.sql" />
-    <Build Include="Stored Procedures\Service\spPriceUpdate.sql" />
     <Build Include="Stored Procedures\Service\spService_Insert.sql" />
     <Build Include="Stored Procedures\Service\spServiceUpdate.sql" />
-    <Build Include="Stored Procedures\Service\spPriceLookUp.sql" />
     <Build Include="Tables\WorkShopServices.sql" />
     <Build Include="Stored Procedures\Service\Customs\spCustomService_Insert.sql" />
     <Build Include="Stored Procedures\Service\Customs\spCustomServicesLookUp.sql" />
@@ -147,7 +144,20 @@
     <Build Include="Stored Procedures\Service\spWorShopServices_LookUp.sql" />
     <Build Include="Stored Procedures\Service\spWorkShopService_Update.sql" />
     <Build Include="Stored Procedures\Service\spWorkShopService_Delete.sql" />
-    <Build Include="Stored Procedures\Business\Employee\Provider\spProviderService_Delete.sql" />
+    <Build Include="Stored Procedures\WorkShop\Members\Provider\spProviderService_Delete.sql" />
+    <Build Include="Tables\negotiation.sql" />
+    <Build Include="Stored Procedures\WorkShop\Registration\spAddressInsert.sql" />
+    <Build Include="Stored Procedures\WorkShop\Registration\spBusinessInsert.sql" />
+    <Build Include="Stored Procedures\WorkShop\Registration\spRegistrationInsert.sql" />
+    <Build Include="Stored Procedures\Order\Negotiations\spNegoInsert.sql" />
+    <Build Include="Stored Procedures\Order\Negotiations\spNegoUpdate.sql" />
+    <Build Include="Tables\TaskPrice.sql" />
+    <Build Include="Stored Procedures\Task\spTaskPriceInsert.sql" />
+    <Build Include="Stored Procedures\Order\Negotiations\spNegoLookUp.sql" />
+    <Build Include="Stored Procedures\Task\spTaskPriceLookUp.sql" />
+    <Build Include="Stored Procedures\Prices\spPriceInsert.sql" />
+    <Build Include="Stored Procedures\Prices\spPriceLookUp.sql" />
+    <Build Include="Stored Procedures\Prices\spPriceUpdate.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Script\DevNathi_Handyman_DB.publish.publish.xml" />

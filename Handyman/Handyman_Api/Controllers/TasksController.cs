@@ -77,4 +77,34 @@ public class TasksController : ControllerBase
             throw;
         }
     }
+    // Get api/<TasksController>/5
+    [HttpGet]
+    [Route("GetTaskPrice")]
+    public PriceModel GetTaskPrice(int taskId)
+    {
+        try
+        {
+            PriceModel price = _taskData.GetTaskPrice(taskId);
+            return price ?? new PriceModel();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+    [HttpPut]
+    [Route("PostTaskPrice")]
+    public void PostTaskPrice(int taskId, int priceId)
+    {
+        try
+        {
+            _taskData.InsertTaskPrice(taskId, priceId);
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception(ex.Message);
+        }
+    }
 }
+

@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="Pages\WorkShop\Requests\InProgressRequests.razor" />
+    <Content Remove="Pages\WorkShop\Requests\InProgressRequestsComponent.razor" />
     <Content Remove="Pages\WorkShop\Requests\Tasks\CancelledRequestsComponent.razor" />
   </ItemGroup>
 
@@ -29,6 +29,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.3">
       <PrivateAssets>all</PrivateAssets>
@@ -45,7 +46,7 @@
   <ItemGroup>
     <None Include="Pages\WorkShop\Requests\CancelledRequestsComponent.razor" />
     <None Include="Pages\WorkShop\Profile\ProviderProfile.razor" />
-    <None Include="Pages\WorkShop\Requests\InProgressRequests.razor" />
+    <None Include="Pages\WorkShop\InProgressRequestsComponent.razor" />
   </ItemGroup>
 
 
@@ -70,7 +71,7 @@
 
 
   <ItemGroup>
-    <_ContentIncludedByDefault Remove="Pages\WorkShop\Requests\InProgressRequests.razor" />
+    <_ContentIncludedByDefault Remove="Pages\WorkShop\Requests\InProgressRequestsComponent.razor" />
     <_ContentIncludedByDefault Remove="Pages\WorkShop\Requests\Tasks\CancelledRequestsComponent.razor" />
   </ItemGroup>
 
@@ -92,7 +93,7 @@
 
 
   <ItemGroup>
-    <UpToDateCheckInput Remove="Pages\WorkShop\Requests\InProgressRequests.razor" />
+    <UpToDateCheckInput Remove="Pages\WorkShop\Requests\InProgressRequestsComponent.razor" />
   </ItemGroup>
 
 </Project>

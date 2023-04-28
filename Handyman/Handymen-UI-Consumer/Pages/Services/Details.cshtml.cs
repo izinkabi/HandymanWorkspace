@@ -1,4 +1,4 @@
-﻿using HandymanUILibrary.API;
+﻿using HandymanUILibrary.API.Services;
 using HandymanUILibrary.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,15 +11,19 @@ namespace Handymen_UI_Consumer.Pages.Services
     {
 
         private IServiceEndPoint _serviceEndPoint;
-        public DetailsModel(IServiceEndPoint serviceEndPoint)
+        private readonly ILogger<DetailsModel> logger;
+
+        public DetailsModel(IServiceEndPoint serviceEndPoint, ILogger<DetailsModel> logger)
         {
             _serviceEndPoint = serviceEndPoint;
+            this.logger = logger;
         }
 
         public ServiceModel? Service { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            logger.LogInformation("Details displayed");
             if (id == null || _serviceEndPoint == null)
             {
                 return NotFound();
@@ -36,6 +40,7 @@ namespace Handymen_UI_Consumer.Pages.Services
                 {
                     Service = new();
                     Service = service;
+                    logger.LogInformation("Details displayed");
                     return Page();
                 }
 

@@ -20,13 +20,13 @@
 
            
             <!--New request / Unaccepted request-->
-                    <NewRequestComponent NewRequestModelProperty="@newRequest">
+                <NewRequestComponent NewRequestModelProperty="@newRequest">
 
-                    </NewRequestComponent>
-                    @if (!isAccepted)
-                    {
-                        <button type="submit" @onclick="AcceptRequest" class="btn btn-lg btn-outline-primary">Accept</button>
-                    }
+                </NewRequestComponent>
+                @if (!isAccepted)
+                {
+                    <button type="submit" @onclick="AcceptRequest" class="btn btn-lg btn-outline-primary">Accept</button>
+                }
             <!--End New Request-->
              </section>
         }
@@ -171,7 +171,7 @@
             newRequest = null;
             isAccepted = true;
             NRId = 0;
-            Reload();
+            
         }catch(Exception ex)
         {
             throw new Exception(ex.Message, ex.InnerException);
@@ -216,13 +216,6 @@
         }
     }
 
-    //reload the html page using js
-    IJSObjectReference? JSreloadReference;
-    [JSInvokable]
-    async void Reload()
-    {
-        JSreloadReference = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "/assets/dist/js/reload.js");
-        await JSreloadReference.InvokeVoidAsync("ReloadPage");
-    }
+ 
 
 }

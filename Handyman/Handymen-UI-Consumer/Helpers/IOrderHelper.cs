@@ -17,6 +17,6 @@ namespace Handymen_UI_Consumer.Helpers
         List<OrderModel> CancelledOrdersProperty { get; }
 
         Task<List<OrderModel>> GetOrdersOfDate(DateTime date);
-
+        Task<PriceModel> GetOrderPrice(int priceId);
     }
 }

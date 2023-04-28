@@ -294,4 +294,25 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="basePrice" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="7773d573-6388-4896-9911-66b877d797ee" ChangeDateTime="04/25/2023 05:50:54">
+    <Property Name="ElementName" Value="[dbo].[negotiation].[nego_price]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[negotiation]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="NegoPrice" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e8df5281-be6a-4723-acf4-2311b56c2118" ChangeDateTime="04/25/2023 05:58:54">
+    <Property Name="ElementName" Value="[dbo].[negotiation].[NegoPrice]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[negotiation]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="NegoPriceId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="d745af9b-088d-4fa4-adbf-36215bf18ec6" ChangeDateTime="04/25/2023 09:07:10">
+    <Property Name="ElementName" Value="[Request].[negotiation].[NegoPriceId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Request].[negotiation]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PriceId" />
+  </Operation>
 </Operations>

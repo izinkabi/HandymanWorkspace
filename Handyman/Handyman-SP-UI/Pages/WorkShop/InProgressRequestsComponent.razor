@@ -3,6 +3,7 @@
 @using HandymanProviderLibrary.Models;
 @using Handyman_SP_UI.Pages.Helpers;
 @using Handyman_SP_UI.Pages.WorkShop.Requests
+@using Microsoft.AspNetCore.Components.Web
 
 @inject NavigationManager NavManager
 @inject IRequestHelper _requestHelper
@@ -28,7 +29,7 @@
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 " style="height:480px;overflow-y:scroll">
                     @foreach (var ownR in requests)
                     {
-                        <div class="col p-0 m-0" @onclick="@(()=>viewOwnRequest(ownR.req_id))">
+                        <div class="col m-auto" @onclick="@(()=>viewOwnRequest(ownR.req_id))">
                             <AcceptedRequestComponent AcceptedRequestProperty="@ownR" IsOnFrontDisplay="true" OnViewTask="OnViewTask"/>                                          
                         </div>
                     }                           
@@ -52,7 +53,7 @@ else
         try
         {
             requests = await _requestHelper.GetOwnRequests();
-            StateHasChanged();
+            
         }
         catch (Exception ex)
         {
@@ -81,9 +82,9 @@ else
     {
 
         NavManager.NavigateTo(NavManager.GetUriWithQueryParameters("task", new Dictionary<string, object>()
-            {
-                ["id"] = taskId
-            }));
+        {
+            ["id"] = taskId
+        }));
 
     }
 

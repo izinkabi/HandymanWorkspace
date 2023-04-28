@@ -12,5 +12,7 @@ namespace HandymanProviderLibrary.Api.EndPoints.Interface
         Task<List<RequestModel>> GetCurrentMonthRequests(string empID);
         Task<List<RequestModel>> GetCurrentWeekRequests(string empID);
         Task<IList<RequestModel>> GetCancelledRequests(string empID);
+        Task<PriceModel> GetTaskPrice(int TaskId);
+        Task<bool> PostTaskPrice(int taskId, int priceId);
     }
 }

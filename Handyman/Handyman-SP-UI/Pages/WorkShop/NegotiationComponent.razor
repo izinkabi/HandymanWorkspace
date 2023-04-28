@@ -1,0 +1,148 @@
+﻿@page "/nego"
+@using Microsoft.AspNetCore.SignalR.Client
+@inject NavigationManager NavManager
+@inject IRequestHelper _requestHelper
+@implements IAsyncDisposable
+
+
+<div class="container overflow-hidden text-center">
+
+    <div class="row gx-5">
+        <div class="col shadow">
+            <div class="p-3">
+                @foreach (TaskModel task in orderTasks)
+                {
+                    @if(task is not null)
+                    {
+                        <div class="card border-success">
+                            <div class="card-header">
+                                <h4>@task.tas_title</h4>
+                            </div>
+
+                            <div class="card-body">
+                                <p>@task.tas_description</p>
+                                <hr />
+                                <label>
+                                    Offer(ZAR): <input type="number" @bind-value="TaskPrices[task.task_id].negotiated_price" class="form-control" placeholder="R" />
+                                </label>
+                            </div>
+                            <div class="card-footer text-body-secondary">
+                                <button class="btn btn-light btn-outline-info btn-sm" @onclick="Send" disabled="@(IsConnected == false)">Go Nego</button>
+                            </div>
+                        </div>
+                    }
+                   
+                }               
+            </div>
+        </div>
+        <div class="col">
+            <div class="p-3">
+                <div class="card m-auto" style="width: 18rem;height:250px;overflow-y:scroll">
+                    <div class="card-header text-center">
+                        Nego Messages
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        @foreach (string offer in negoMessages)
+                        {
+                            <li class="list-group-item">@offer <p class="fst-italic float-end">@(TimeOnly.FromDateTime(DateTime.Now))</p></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container overflow-hidden text-center">
+    <div class="row gx-5">
+        <div class="col">
+            <div class="p-3">
+                <input type="datetime" @bind-value="@orderDueDate" />
+            </div>
+        </div>
+        <div class="col">
+            @if (IsNegoComplete)
+            {
+                <div class="p-3">
+                   <p class="text-bg-success">Accepted</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+
+    private HubConnection? hubConnection;
+    private string? userInput;
+    private List<string> negoMessages = new();
+    private float priceOffer;
+    private DateTime orderDueDate;
+    bool IsNegoComplete;
+    private List<TaskModel>? orderTasks = new List<TaskModel>();
+
+    Dictionary<int, PriceModel>? TaskPrices = new Dictionary<int, PriceModel>();
+
+    [Parameter]
+    public List<TaskModel>? OrderTasks
+    {
+        get { return orderTasks; } set { orderTasks = value; }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (orderTasks.Count > 0)
+        {
+            foreach(TaskModel task in orderTasks)
+            {
+                TaskPrices.Add(task.task_id, new PriceModel());//Cheating
+            }
+        }
+
+        hubConnection = new HubConnectionBuilder()
+        .WithUrl(NavManager.ToAbsoluteUri("/negoHub"))
+        .WithAutomaticReconnect()
+        .Build();
+
+        //Client Side
+        //Reciever of the message 
+        hubConnection.On<string, float>(("ReceiveOffer"), (user, offer) =>
+        {
+            var formattedMessage = $"{user}:{offer}";
+            negoMessages.Add(formattedMessage);
+            InvokeAsync(StateHasChanged);
+        });
+
+        try
+        {
+            await hubConnection.StartAsync();
+        }
+        catch (Exception ex)
+        {
+            
+            throw;
+        }
+        
+    }
+
+    //Send Message to Hub
+    private async Task Send()
+    {
+        if (hubConnection != null)
+        {
+            await hubConnection.SendAsync("SendOffer","Blazor Client",priceOffer);
+           await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
+
+    public async ValueTask DisposeAsync()
+    {
+        if (hubConnection != null)
+        {
+            await hubConnection.DisposeAsync();
+        }
+    }
+}

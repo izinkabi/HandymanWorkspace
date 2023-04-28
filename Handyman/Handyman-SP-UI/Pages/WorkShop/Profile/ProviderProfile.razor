@@ -37,19 +37,38 @@
             </div>
         </div>
         <!--End Employee profile-->
-                <!--Services-->
-            @if (providerModel.Services.Count > 0)
+
+                <!--Member's Services-->
+            @if (providerModel.Services is not null && providerModel.Services.Count > 0)
             {
-               <AuthorizeView Roles="Owner,Member">
+               <AuthorizeView Roles="Member">
+                 <main>
                    <div class="col-md-6 m-auto position-sticky">
-                    <div class="" style="top: 2rem;">
-                        <div class="p-4 mb-3 bg-light rounded">
-                            <h4 class="fst-italic">About</h4>
-                            <h3 class="mb-0">@providerModel.Services.ElementAt(0).category.name field and more...</h3>
-                            <div class="mb-1 text-muted">Date Employed:@providerModel.DateEmployed</div>
+                        <div class="" style="top: 2rem;">
+                            <div class="p-4 mb-3 bg-light rounded">
+                                <h4 class="fst-italic">My Services</h4>
+                                <hr/>
+                                @if(!providerModel.IsOwner)
+                                {
+                                    @foreach (var myservice in providerModel.Services)
+                                    {
+                                        <div class="row text-center rounded list-group-item shadow">
+                                            <p class="mb-1 ">@myservice.name</p>
+                                            <button class="border-0" data-bs-toggle="modal" data-bs-target="#serviceDeleteModal">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                                    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    }
+                                }
+                                
+                                    
+                            </div>
                         </div>
-                    </div>
-                </div>
+
+                   </div>
+                 </main>
                </AuthorizeView>
                <hr />
                     <div class="accordion accordion-flush rounded shadow" id="accordionExample">
@@ -60,12 +79,13 @@
                                     <hr />
                                 </button>
                             </h2>
+                            <!--Workshop Services-->
                             <div id="servicesListCollapse" class="accordion-collapse collapse show" aria-labelledby="headingOne">
                                 <div class="accordion-body" style="height:484px;overflow-y:scroll">
                                     <article class="blog-post rounded-2 shadow m-auto" role="document">
 
 
-                                        <h3 class="text-center shadow">List of your Services</h3>
+                                        <h3 class="text-center shadow">Workshop Services</h3>
                                         <p class="text-center mb-1 text-muted fst-italic">You can add more services to broaden your field</p>
                                         @if (WorkshopServices != null && WorkshopServices.Count > 0)
                                         {
@@ -89,7 +109,7 @@
 
                                                 <tbody class="table">
 
-
+                                                    <!--Workshop services-->
                                                     @foreach (var service in WorkshopServices)
                                                     {
                                                         <tr>
@@ -113,7 +133,6 @@
                                                                 </td>
                                                                 <td>
                                                                     <button class="border-0" @onclick="@(()=>DeleteService(service))" data-bs-toggle="modal" data-bs-target="#serviceDeleteModal">
-
                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
                                                                             <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z" />
                                                                         </svg>
@@ -123,8 +142,7 @@
 
                                                         </tr>
                                                     }
-
-
+                                                    <!--End Workshop services-->
                                                 </tbody>
                                                 <tfoot class="bg-secondary">
                                                     <tr>
@@ -205,9 +223,11 @@
                                     </article>
                                 </div>
                             </div>
+                            <!--End Workshop Services-->
                         </div>
                     </div>
             }
+            <!--Adding Workshop Services-->
                 <div class="col m-auto text-center rounded-3">
                     <div class="accordion accordion-flush rounded shadow" id="accordionExample">
                         <div class="accordion-item panel">
@@ -228,6 +248,7 @@
                     </div>
 
                 </div>
+                <!--End Adding Workshop Services-->
 
         </div>
 
@@ -263,6 +284,7 @@ else
 </AuthorizeView>
 
 @code {
+
     List<string> Errors = new List<string>();
     ServiceProviderModel providerModel = new ServiceProviderModel()!;
     List<PriceModel> Prices = new List<PriceModel>();
@@ -283,11 +305,15 @@ else
                 providerModel.employeeProfile = await _providerHelper.GetProviderProfile();
 
             }
-            if (providerModel.Services.Count > 0)
+            if (providerModel != null)
             {
-                WorkshopServices = await _providerHelper.GetWorkShopServices();
-                return;
+                if (providerModel.Services!= null && providerModel.Services.Count > 0)
+                {
+                    WorkshopServices = await _providerHelper.GetWorkShopServices();
+                    return;
+                }
             }
+
 
 
         }catch(Exception ex)
@@ -330,18 +356,15 @@ else
             WorkshopServices.Remove(DeletedService);
             //Delete for DB
             var IsDeleted = await _providerHelper.DeleteWorkShopService(DeletedService.Id,DeletedService.originalServiceId);
-            if (IsDeleted)
-            {
-                Reload();
-            }
+            await InvokeAsync(StateHasChanged);
 
-           
+
             //ServiceProviderModel provider = await _providerHelper.GetProvider();
             //ServiceModel service = new ServiceModel();
             //service.datecreated = DateTime.Now;
             //service.id = DeletedService.originalServiceId;
             //provider.Services.Add(service);
-           
+
         }
 
     }
@@ -369,7 +392,7 @@ else
         }
         //Query for update
         var result = await _providerHelper.UpdateWorkShopService(customServiceModel);
-        Reload();
+        await InvokeAsync(StateHasChanged);
     }
 
     //Go to top page
@@ -394,16 +417,7 @@ else
         }
     }
 
-    //reload the html page using js
-    IJSObjectReference? JSreloadReference;
-    [JSInvokable]
-    async void Reload()
-    {
-        //import module
-        JSreloadReference = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "/assets/dist/js/reload.js");
-        //call page reload
-        await JSreloadReference.InvokeVoidAsync("ReloadPage");
-    }
+   
 
     
 }

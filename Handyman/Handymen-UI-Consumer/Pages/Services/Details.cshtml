@@ -1,5 +1,5 @@
 ﻿@page 
-@model             DetailsModel
+@model DetailsModel
 @inject SignInManager<Handymen_UI_ConsumerUser> SignInManager
 @inject UserManager<Handymen_UI_ConsumerUser> UserManager
 
@@ -8,7 +8,7 @@
     ViewData["Title"] = "Details";
 }
     <!-- Custom styles for this template -->
-<link href="features.css" rel="stylesheet">
+
 
 <div class="justify-content-sm-center px-4 py-2" id="custom-cards">
    @*<!--Breadcrumbs-->
@@ -118,11 +118,11 @@
 <!--End List of Customs-->
 
 <!--Customizing Service-->
-<div class="modal fade" id="customService" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="customService" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="customService" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                <h1 class="modal-title fs-5" id="customServiceLabel">Custom</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

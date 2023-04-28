@@ -5,7 +5,6 @@ using Handyman_DataLibrary.Internal.DataAccess;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Microsoft.EntityFrameworkCore;
-using static Handyman_DataLibrary.DataAccess.Query.OrderData;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +27,7 @@ builder.Services.AddScoped<IBusinessData, BusinessData>();
 builder.Services.AddTransient<IRequestData, RequestData>();
 builder.Services.AddScoped<ITaskData, TaskData>();
 builder.Services.AddScoped<IProfileData, ProfileData>();
+builder.Services.AddTransient<INegotiationData, NegotiationData>();
 
 
 

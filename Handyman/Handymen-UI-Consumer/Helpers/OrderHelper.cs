@@ -1,4 +1,5 @@
 ﻿using HandymanUILibrary.API.Consumer.Order.Interface;
+using HandymanUILibrary.API.Services;
 using HandymanUILibrary.Models;
 using Handymen_UI_Consumer.Areas.Identity.Data;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -12,18 +13,24 @@ namespace Handymen_UI_Consumer.Helpers
     {
         SignInManager<Handymen_UI_ConsumerUser> signInManager;
         IOrderEndPoint? _orderEndpoint;
+        IServiceEndPoint _serviceEndPoint;
         OrderModel? order;
         List<OrderModel>? ordersDisplayList;
         AuthenticationStateProvider _authenticationStateProvider;
 
         string? ErrorMsg;
         string? userId;
+
+
         public OrderHelper(IOrderEndPoint orderEndPoint,
-            SignInManager<Handymen_UI_ConsumerUser> signInMan, AuthenticationStateProvider authenticationStateProvider)
+            SignInManager<Handymen_UI_ConsumerUser> signInMan,
+            AuthenticationStateProvider authenticationStateProvider,
+            IServiceEndPoint serviceEndPoint)
         {
             _orderEndpoint = orderEndPoint;
             signInManager = signInMan;
             _authenticationStateProvider = authenticationStateProvider;
+            _serviceEndPoint = serviceEndPoint;
         }
 
 
@@ -271,6 +278,27 @@ namespace Handymen_UI_Consumer.Helpers
                 UpdateOrderStatus(order);
             }
         }
+
+        //Get the price of the ordered service 
+        public async Task<PriceModel> GetOrderPrice(int priceId)
+        {
+            if (priceId == 0)
+            {
+                return null;
+            }
+            try
+            {
+
+                PriceModel price = await _serviceEndPoint.GetPrice(priceId);
+                return price;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
 
     }
 }

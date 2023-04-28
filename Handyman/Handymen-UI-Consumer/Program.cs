@@ -1,6 +1,6 @@
-using HandymanUILibrary.API;
 using HandymanUILibrary.API.Consumer.Order.Implementation;
 using HandymanUILibrary.API.Consumer.Order.Interface;
+using HandymanUILibrary.API.Services;
 using HandymanUILibrary.API.User;
 using Handymen_UI_Consumer.Areas.Identity.Data;
 using Handymen_UI_Consumer.Helpers;
@@ -29,11 +29,11 @@ builder.Services.AddTransient<ITasksHelper, TasksHelper>();
 
 
 //External Login
-builder.Services.AddAuthentication().AddGoogle(googleOptions =>
-{
-    googleOptions.ClientId = "1073851415525-6b5javce4n7umbggs3pie8ubfid3mbb0.apps.googleusercontent.com";
-    googleOptions.ClientSecret = "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";
-});
+//builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+//{
+//    googleOptions.ClientId = "1073851415525-6b5javce4n7umbggs3pie8ubfid3mbb0.apps.googleusercontent.com";
+//    googleOptions.ClientSecret = "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";
+//});
 //Configure Identity to customize settings
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -71,6 +71,11 @@ builder.Services.AddResponseCompression(opt =>
 {
     opt.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
       new[] { "application/octet-stream" });
+});
+
+builder.Services.AddSignalR(e =>
+{
+    e.MaximumReceiveMessageSize = 102400000;
 });
 
 // Add services to the container.

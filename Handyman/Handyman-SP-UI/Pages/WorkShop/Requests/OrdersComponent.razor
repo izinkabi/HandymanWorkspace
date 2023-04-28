@@ -1,13 +1,57 @@
 ﻿@page "/orders-component"
 @page "/orders"
+@using Microsoft.AspNetCore.SignalR.Client;
 
 @inject IProviderHelper _providerHelper
 @inject IRequestHelper _requestHelper
 @inject NavigationManager NavManager
 
+
+
 <AuthorizeView Roles="Owner,Member">
 
 <Authorized>
+        @if (Errors.Count > 0)
+        {
+            @foreach(string error in Errors)
+            {
+                <p>@error</p>
+            }
+        }
+
+        @if (IsConnected)
+        {
+            <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                </svg>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                You are online
+               
+            </div>
+
+            <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-square-fill" viewBox="0 0 16 16">
+                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.93 4.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
+                </svg>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                @if (notificationOrders.Count > 0)
+                {
+                    <p>You have @notificationOrders.Count new order(s) </p>
+                }
+
+            </div>
+        }
+        else
+        {
+            
+                @foreach (string msg in connectionMessages)
+                {
+                    <p>@msg</p>
+                }
+            
+        }
+
         @if (newRequests != null)
         {
             <!--New Requests Section-->
@@ -72,6 +116,9 @@
                                                         }
                                                     }
                                                 </td>
+                                            <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                                                <span class="visually-hidden">New alerts</span>
+                                            </span>
                                           </tr>
 
                                         }
@@ -114,11 +161,16 @@
     private List<OrderModel>? newRequests = new List<OrderModel>();
     private ServiceProviderModel? provider;
     private List<PriceModel> Prices = new List<PriceModel>();
+    List<string> connectionMessages = new List<string>();
+    List<OrderModel> notificationOrders = new List<OrderModel>();
 
+
+    private HubConnection? hubConnection;
     protected override async Task OnInitializedAsync()
     {
         try
         {
+            
             await LoadNewRequests();
             if (newRequests.Count > 0)
             {
@@ -128,15 +180,31 @@
                     Prices.Add(price);
                 }
             }
-            
+            hubConnection = new HubConnectionBuilder()
+               .WithUrl(NavManager.ToAbsoluteUri("/reqHub"))
+               .WithAutomaticReconnect()
+               .Build();
+
+            //Client Side
+            //Reciever of the message
+            hubConnection.On<OrderModel>(("ReceiveOrder"), (order) =>
+            {
+                notificationOrders.Clear();
+                notificationOrders.Add(order);
+                InvokeAsync(StateHasChanged);
+            });
+
+            await hubConnection.StartAsync();
         }
         catch (Exception ex)
         {
-
-            throw new Exception(ex.Message);
+            connectionMessages.Add(ex.Message);
         }
 
     }
+
+    //Is Connected
+    public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
 
     /// <summary>
     /// Display / route to a request-Component
@@ -145,6 +213,14 @@
     /// <param name="rid"></param>
     void viewOrder(int sid, int rid)
     {
+        //foreach(OrderModel order in notificationOrders)
+        //{
+        //    if(order.Id == rid)
+        //    {
+        //        notificationOrders.Remove(order);
+        //    }
+        //}
+
         NavManager.NavigateTo(NavManager.GetUriWithQueryParameters("request", new Dictionary<string, object>()
             {
                 ["SId"] = sid,
@@ -168,6 +244,11 @@
             {
                 newRequests.AddRange(await _requestHelper.GetNewRequests(service.id));
             }
+
+            //if (notificationOrders.Count == 0)
+            //{
+            //    notificationOrders = newRequests;
+            //}
         }
     }
 

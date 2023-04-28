@@ -1,5 +1,6 @@
 using Handyman_SP_UI.Areas.Identity;
 using Handyman_SP_UI.Areas.Identity.Data;
+using Handyman_SP_UI.Hubs;
 using Handyman_SP_UI.Pages.Helpers;
 using HandymanProviderLibrary.Api.ApiHelper;
 using HandymanProviderLibrary.Api.EndPoints.Implementation;
@@ -73,6 +74,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.MapBlazorHub();
+app.MapHub<NegotiationHub>("/negoHub");
+app.MapHub<RequestHub>("/reqHub");
 app.MapFallbackToPage("/_Host");
 app.UseAuthentication();
 app.UseAuthorization();

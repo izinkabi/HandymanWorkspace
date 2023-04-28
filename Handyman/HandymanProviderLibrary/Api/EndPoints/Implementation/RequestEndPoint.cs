@@ -110,7 +110,37 @@ public class RequestEndPoint : IRequestEndPoint
         }
     }
 
+    //Get the price of the given task id
+    public async Task<PriceModel> GetTaskPrice(int TaskId)
+    {
+        if (TaskId == 0) return null;
+        try
+        {
+            PriceModel price = await _apiHelper.ApiClient.GetFromJsonAsync<PriceModel>($"/api/tasks/gettaskprice?taskId={TaskId}");
+            return price;
+        }
+        catch (Exception ex)
+        {
 
+            throw new Exception(ex.Message);
+        }
+    }
+
+    //Insert a new Task price
+    public async Task<bool> PostTaskPrice(int taskId, int priceId)
+    {
+        if (taskId == 0 || priceId == 0) return false;
+        try
+        {
+            var result = await _apiHelper.ApiClient.PostAsJsonAsync($"/api/tasks/posttaskprice?taskId={taskId}&priceId={priceId}", new { });
+            return result.IsSuccessStatusCode;
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception(ex.Message);
+        }
+    }
     //Get Request current month request
     public async Task<List<RequestModel>> GetCurrentMonthRequests(string empID)
     {

@@ -7,6 +7,7 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.SignalR.Client;
 
 @inject NavigationManager NavManager
 @inject ILogger<OrderComponent> Logger
@@ -73,14 +74,36 @@
 
                                     </div>
                                 }
-
+                                <!--Nego Button trigger modal -->
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#negoModal">
+                                    Go Nego
+                                </button>
+                                <!-- Modal -->
+                                <div class="modal fade" id="negoModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="negoModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-fullscreen-xxl-down">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="negoModalLabel">Nego</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <NegotiationComponent OrderProperty="order" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             }
                             <!--End Due Date-->
+                            
                         </div>
+
                     </div>
                 </div>
             </div>
         </dl>
+    
+
+       
 
         <!--Provider Details-->
         <div class="collapse row rounded px-1 m-1 " id="providerDetails">
@@ -154,14 +177,14 @@
     If the order is not confirmed by the consumer (and ofcourse by default cannot be accepted by a service provider) --display confirm button
     *@
 
-     
-
+        <!-- Modal -->
+       
         
     
     </div>
+    
 }
         
-
 
 @code {
 
@@ -203,6 +226,106 @@
     int Day;
     int Month;
     int Year;
+    private HubConnection? hubConnection;
+    private List<string> connectionMessages = new List<string>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            InitializeHubConnection();
+           await OpenConnection();
+        }
+        catch (Exception ex)
+        {
+            
+            throw new Exception(ex.Message);
+        }
+    }
+
+    private void InitializeHubConnection()
+    {
+        hubConnection = new HubConnectionBuilder()
+          .WithUrl("https://localhost:7042/reqHub")
+          .WithAutomaticReconnect()
+          .Build();
+
+        //Trying to connect
+        hubConnection.Reconnecting += (sender) =>
+        {
+            var newOfferMessage = "Attempting to reconnect";
+            connectionMessages.Add(newOfferMessage);
+            InvokeAsync(StateHasChanged);
+            return Task.CompletedTask;
+        };
+
+        //Try to reconnect
+        hubConnection.Reconnected += (sender) =>
+        {
+            var newOfferMessage = "Reconnected to the server";
+            connectionMessages.Clear();
+            connectionMessages.Add(newOfferMessage);
+            InvokeAsync(StateHasChanged);
+            return Task.CompletedTask;
+        };
+
+
+
+        //Closing the connection
+        hubConnection.Closed += (sender) =>
+        {
+            var newOfferMessage = "Connection Closed";
+            connectionMessages.Add(newOfferMessage);
+            InvokeAsync(StateHasChanged);
+            return Task.CompletedTask;
+        };
+
+
+    }
+    //Is Connected
+    public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
+
+    //Open Connection
+    public async Task OpenConnection()
+    {
+        if (hubConnection is null)
+        {
+            InitializeHubConnection();
+        }
+
+        try
+        {
+            await hubConnection.StartAsync();
+            connectionMessages.Add("Connection Started");
+
+        }
+        catch (Exception ex)
+        {
+            connectionMessages.Add(ex.Message);
+        }
+        //Initialise the offer to be negotiated
+        //negoMessageInput = order.service.price;
+    }
+
+    //Negotiate offer
+    public async Task Send()
+    {
+        try
+        {
+            if (IsConnected)
+            {
+
+                await hubConnection.InvokeAsync("PlaceOrder",
+                               order);
+            }
+
+        }
+        catch (Exception ex)
+        {
+            connectionMessages.Add(ex.Message);
+        }
+    }
 
     void saveDate()
     {
@@ -269,6 +392,7 @@
             order.duedate = DateTime.Now;
             order.status = 0; //Thus confirmed
             await _orderHelper.CreateOrder(order);
+            await Send();
         }
         catch (Exception)
         {

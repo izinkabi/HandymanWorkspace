@@ -37,6 +37,7 @@ public class ServiceData : IServiceData
             service.img = outputItem.serv_img;
             service.id = outputItem.serv_id;
             service.name = outputItem.serv_name;
+            service.PriceId = outputItem.price_id;
             service.category = new ServiceCategoryModel();
 
             //populate category

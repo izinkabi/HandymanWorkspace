@@ -2,20 +2,23 @@
 @page  "/new-r"
 @using HandymanProviderLibrary.Models
 @using Microsoft.AspNetCore.Components.Web
+@inject NavigationManager NavManager
 
 
 <div class="container container-fluid">
-
+    <!--Go to negotiation Button-->
+   
 
 <!--New Order Details-->
 <div class="container container-fluid text-center justify-content-center">
     <div class="col">
         <div class="card mb-4 rounded-3 shadow-sm border-0 ">
-            <div class="card-header shadow">
-                <h4 class="my-0 fw-normal font-monospace">@newRequest.service.name</h4>
-            </div>
             @if (newRequest.service != null && newRequest.service.category != null)
             {
+                <div class="card-header shadow">
+                    <h4 class="my-0 fw-normal font-monospace">@newRequest.service.name</h4>
+                </div>
+            
                 <div class="card-body bg-success bg-opacity-25">
                     <h1 class="card-title pricing-card-title"></h1>
                     <ul class="list-unstyled mt-3 mb-4">
@@ -25,6 +28,32 @@
                     </ul>
                     
                 </div>
+               
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#negoModal">
+                        Go Nego
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="negoModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-fullscreen-xxl-down">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                   <NegotiationComponent OrderTasks="newRequest.Tasks.ToList()"/>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Understood</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
             }
         </div>
     </div>
@@ -77,7 +106,13 @@
 </div>
 @code {
     OrderModel newRequest;
-  
+
     [Parameter]
     public OrderModel NewRequestModelProperty { get { return newRequest; } set{newRequest=value;} }
+
+    //Navigate to negotiation
+    private void GoNego()
+    {
+        NavManager.NavigateTo("nego",true);
+    } 
 }

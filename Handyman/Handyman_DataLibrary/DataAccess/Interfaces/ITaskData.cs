@@ -9,5 +9,7 @@ namespace Handyman_DataLibrary.DataAccess.Interfaces
         int InsertTask(TaskModel task);
         void UpdateTask(TaskModel taskUpdate);
         void DeleteTask(int id);
+        PriceModel GetTaskPrice(int TaskId);
+        void InsertTaskPrice(int taskId, int priceId);
     }
 }

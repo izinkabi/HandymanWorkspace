@@ -100,6 +100,8 @@ public class RequestHelper : IDisposable, IRequestHelper
         }
     }
 
+    //Get Task Price
+    public async Task<PriceModel> GetTaskPrice(int TaskId) => await _requestEndPoint.GetTaskPrice(TaskId);
     //-----Filter Methods
     //Current Week requests GET
     public async Task<List<RequestModel>> GetCurrentWeekRequests()

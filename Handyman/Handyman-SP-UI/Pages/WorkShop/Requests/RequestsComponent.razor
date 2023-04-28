@@ -1,8 +1,11 @@
 ﻿@page "/requests"
 @page "/requests-all"
 
+@using HandymanProviderLibrary.Models;
+@using Handyman_SP_UI.Pages.Helpers;
 @using Handyman_SP_UI.Pages.WorkShop.Requests
 @using Microsoft.AspNetCore.Components.Web
+@using Microsoft.JSInterop;
 
 @inject NavigationManager NavManager
 @inject IRequestHelper _requestHelper
@@ -10,65 +13,65 @@
 @inject IJSRuntime JSRuntime
 
 
-@if (Errors!=null)
+@if (Errors != null)
 {
-   
-   <h4 class="text-danger">@Errors</h4>
-   
+
+    <h4 class="text-danger">@Errors</h4>
+
 }
 <AuthorizeView Roles="Owner,Member">
 
-<Authorized>
-      <!--New Requests Section-->
-      <section class="container-fluid justify-content-center  m-auto align-content-lg-center ">
-   
-          <!--Table-->
-                <div class="table-responsive shadow rounded bg-white" >
-                    <div class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom bg-dark">
-                        <div class="btn-toolbar mb-2 mb-md-0">
-                            <div class="btn-group me-2 ">
-                                <button type="button" @onclick="displayOrdersOnly" class="btn btn-sm btn-outline-secondary">
-                                    Orders
+    <Authorized>
+        <!--New Requests Section-->
+        <section class="container-fluid justify-content-center  m-auto align-content-lg-center ">
+
+            <!--Table-->
+            <div class="table-responsive shadow rounded bg-white">
+                <div class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom bg-dark">
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <div class="btn-group me-2 ">
+                            <button type="button" @onclick="displayOrdersOnly" class="btn btn-sm btn-outline-secondary">
+                                Orders
                                 <span class="badge text-bg-success">@NumberOfOrders</span>
-                                
-                                </button>
-                                <button type="button" @onclick="displayRequestsOnly" class="btn btn-sm btn-outline-secondary">
-                                Jobs 
+
+                            </button>
+                            <button type="button" @onclick="displayRequestsOnly" class="btn btn-sm btn-outline-secondary">
+                                Jobs
                                 @if (requests != null)
                                 {
                                     <span class="badge text-bg-info">@requests.Count</span>
                                 }
-                                
+
                             </button>
-                            </div>
-                            <!--Dropdown-->
-                            <button type="submit"  class="btn btn-sm btn-outline-secondary dropdown-toggle" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-                                <span data-feather="calendar" class="align-text-bottom"></span>
+                        </div>
+                        <!--Dropdown-->
+                        <button type="submit" class="btn btn-sm btn-outline-secondary dropdown-toggle" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span data-feather="calendar" class="align-text-bottom"></span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event" viewBox="0 0 16 16">
                                 <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z" />
                                 <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
                             </svg>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
-                                <li><a class="dropdown-item" @onclick="displayCurrentWeek">Week</a></li>
-                                <li><a class="dropdown-item" @onclick="displayCurrentMonth">Month</a></li>
-                            </ul>
-                            <!--End Dropdown-->
-                        </div>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
+                            <li><a class="dropdown-item" @onclick="displayCurrentWeek">Week</a></li>
+                            <li><a class="dropdown-item" @onclick="displayCurrentMonth">Month</a></li>
+                        </ul>
+                        <!--End Dropdown-->
                     </div>
-                    <!--Displaying orders only-->
-                    @if (isOrdersDisplayed)
-                    {
-                        
-                       <OrdersComponent />
-                       
-                    }
-                    
-
-            <!--End table-->
                 </div>
-           
-      </section>
+                <!--Displaying orders only-->
+                @if (isOrdersDisplayed)
+                {
+
+                    <OrdersComponent />
+
+                }
+
+
+                <!--End table-->
+            </div>
+
+        </section>
 
         <br />
         @if (isRequestsDisplayed)
@@ -86,16 +89,14 @@
                             @foreach (var ownR in requests)
                             {
                                 <div class="col p-0 m-0" @onclick="@(()=>viewOwnRequest(ownR.req_id))">
-                                    <AcceptedRequestComponent AcceptedRequestProperty="@ownR" IsOnFrontDisplay="true" OnViewTask="OnViewTask"/>                                          
+                                    <AcceptedRequestComponent AcceptedRequestProperty="@ownR" IsOnFrontDisplay="true" OnViewTask="OnViewTask" />
                                 </div>
-                            }                           
+                            }
                         </div>
                     </div>
                 </div>
 
                 <!--End Own requests Album-->
-
-
                 <!--Back to top button-->
                 <button @onclick="@BackToTop" class="float-end border-0 bg-transparent">
                     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-up-circle border-0" viewBox="0 0 16 16">
@@ -104,11 +105,11 @@
                 </button>
                 <!--End Back to top button-->
             }
-            else if (requests!=null && requests.Count == 0)
+            else if (requests != null && requests.Count == 0)
             {
                 <span class=" text-danger">0 requests</span>
             }
-            
+
             @if (requests == null)
             {
                 <span class=" text-danger">Loading your jobs...try again</span>
@@ -118,9 +119,9 @@
                 </div>
             }
         }
-        
 
-       
+
+
     </Authorized>
     <NotAuthorized>
         <h2 class="text-warning">No Work Shop Found</h2>
@@ -128,7 +129,7 @@
             Looks like are not authorized for this,but you can <a href="/Identity/Account/WorkShopRegister"> click here</a> to create a WorkShop or you <a href="/Identity/Account/WorkShopRegister">click here</a> to join a WorkShop.
         </p>
     </NotAuthorized>
-    </AuthorizeView>
+</AuthorizeView>
 
 @code {
 
@@ -146,7 +147,7 @@
             try
             {
                 requests = await _requestHelper.GetOwnRequests();
-                foreach(var service in  await _providerHelper.GetWorkShopServices())
+                foreach (var service in await _providerHelper.GetWorkShopServices())
                 {
                     var listoforders = await _requestHelper.GetNewRequests(service.originalServiceId);
                     foreach (var o in listoforders)
@@ -197,10 +198,10 @@
     void viewOwnRequest(int ownRId)
     {
         NavManager.NavigateTo(NavManager.GetUriWithQueryParameters("request", new Dictionary<string, object>()
-        {
-            ["ORId"] = ownRId,
+            {
+                ["ORId"] = ownRId,
 
-        }));
+            }));
     }
 
     void OnViewTask(int o)
@@ -229,7 +230,7 @@
         try
         {
             requests = await _requestHelper.GetCurrentMonthRequests();
-            if(requests is null)
+            if (requests is null)
             {
                 return;
             }
@@ -248,40 +249,28 @@
         }
     }
 
-    //Displaying current week requests 
+    //Displaying current week requests
     async Task displayCurrentWeek()
     {
         try
         {
             requests = await _requestHelper.GetCurrentWeekRequests();
-            if(requests!=null && requests.Count > 0)
+            if (requests != null && requests.Count > 0)
             {
                 foreach (var rs in requests)
                 {
                     rs.req_status = _requestHelper.CheckStatus(rs);
                 }
             }
-            
+
 
         }
         catch (Exception ex)
         {
-            
-            throw new Exception(ex.Message,ex.InnerException);
+
+            throw new Exception(ex.Message, ex.InnerException);
         }
     }
 
-    private IJSObjectReference importedDHTML;
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            // import the script from the file
-            importedDHTML = await JSRuntime.InvokeAsync<IJSObjectReference>(
-                "import", "/assets/dist/js/reload.js");
-
-            //Initialize
-            await importedDHTML.InvokeVoidAsync("ReloadPageThreeSecDelay");
-        }
-    }
+ 
 }
