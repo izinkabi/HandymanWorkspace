@@ -134,7 +134,7 @@ namespace Handymen_UI_Consumer.Helpers
             return null;
         }
         //Create an order
-        public async Task CreateOrder(OrderModel newOrder)
+        public async Task<int> CreateOrder(OrderModel newOrder)
         {
             try
             {
@@ -143,7 +143,8 @@ namespace Handymen_UI_Consumer.Helpers
                     await GetUserId();
                 }
                 newOrder.ConsumerID = userId;
-                await _orderEndpoint?.PostOrder(newOrder);
+                int orderId = await _orderEndpoint?.PostOrder(newOrder);
+                return orderId;
             }
             catch (Exception ex)
             {

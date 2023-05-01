@@ -6,7 +6,9 @@ namespace HandymanUILibrary.Models
 {
     public class TaskModel
     {
+
         public int Id { get; set; }
+        public int task_id { get; set; }
         public DateTime tas_date_started { get; set; }
         public DateTime tas_date_finished { get; set; }
         public int tas_duration { get; set; }

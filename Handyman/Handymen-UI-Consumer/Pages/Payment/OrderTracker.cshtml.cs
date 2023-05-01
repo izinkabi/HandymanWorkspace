@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Handymen_UI_Consumer.Pages.Orders
+namespace Handymen_UI_Consumer.Pages.Payment
 {
     public class OrderTrackerModel : PageModel
     {

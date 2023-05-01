@@ -5,6 +5,7 @@ namespace HandymanProviderLibrary.Models;
 public class TaskModel
 {
     //--naming violation rules
+    public int Id { get; set; }
     public int task_id { get; set; }
     public DateTime tas_date_started { get; set; }
     public DateTime tas_date_finished { get; set; }

@@ -97,6 +97,7 @@ public class OrderData : IOrderData
                     task.task_id = ordertask.task_id;
                     task.tas_duration = ordertask.tas_duration;
                     task.tas_status = ordertask.tas_status;
+                    task.task_id = ordertask.task_id;
                     if (order.Id == ordertask.ord_id)
                     {
                         order.Tasks.Add(task);
@@ -142,7 +143,7 @@ public class OrderData : IOrderData
     /// Insert an order
     /// </summary>
     /// <param name="order"></param>
-    public void InsertOrder(OrderModel order)
+    public int InsertOrder(OrderModel order)
     {
         try
         {
@@ -180,6 +181,7 @@ public class OrderData : IOrderData
 
 
             _dataAccess.CommitTransation();
+            return orderId;
         }
         catch
         {

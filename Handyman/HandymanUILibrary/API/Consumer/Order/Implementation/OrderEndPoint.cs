@@ -29,22 +29,27 @@ public class OrderEndPoint : IOrderEndPoint
     /// <param name="order"></param>
     /// <returns>OrderModel</returns>
     /// <exception cref="Exception">Empty Model Exception</exception>
-    public async Task PostOrder(OrderModel order)
+    public async Task<int> PostOrder(OrderModel order)
     {
         try
         {
-            var httpResponseMessage = await _apiHelper.ApiClient.PostAsJsonAsync<OrderModel>("/api/orders/Post", /*new
-        {
-            order.ConsumerID,
-            order.service,
-            order.datecreated,
-            order.duedate,
-            Tasks = order.Tasks,
-            Id = order.Id,
-            status = order.status
-
-        }*/ order);
-
+            var httpResponseMessage = await _apiHelper.ApiClient.PostAsJsonAsync<OrderModel>("/api/orders/Post", order);
+            if (httpResponseMessage.IsSuccessStatusCode)
+            {
+                int orderId = await httpResponseMessage.Content.ReadFromJsonAsync<int>();
+                if (orderId > 0)
+                {
+                    return orderId;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            else
+            {
+                return 0;
+            }
         }
         catch (Exception ex)
         {

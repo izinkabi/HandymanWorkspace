@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Content Remove="Pages\Orders\CancelledOrders.cshtml" />
+    <Content Remove="wwwroot\assets\dist\js\negotiationModule.js" />
     <Content Remove="wwwroot\Images\ac.jpg" />
     <Content Remove="wwwroot\Images\cleaning.jpg" />
     <Content Remove="wwwroot\Images\oven.jpg" />
@@ -35,6 +36,7 @@
     <None Include="wwwroot\assets\dist\css\bootstrap.rtl.min.css.map" />
     <None Include="wwwroot\assets\dist\js\bootstrap.bundle.min.js" />
     <None Include="wwwroot\assets\dist\js\bootstrap.bundle.min.js.map" />
+    <None Include="wwwroot\assets\dist\js\negotiationModule.js" />
     <None Include="wwwroot\Images\ac.jpg" />
     <None Include="wwwroot\Images\cleaning.jpg" />
     <None Include="wwwroot\Images\hand.jpg" />

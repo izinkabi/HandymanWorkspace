@@ -39,7 +39,7 @@
         <!--End Employee profile-->
 
                 <!--Member's Services-->
-            @if (providerModel.Services is not null && providerModel.Services.Count > 0)
+           @* @if (providerModel.Services is not null && providerModel.Services.Count > 0)
             {
                <AuthorizeView Roles="Member">
                  <main>
@@ -226,7 +226,7 @@
                             <!--End Workshop Services-->
                         </div>
                     </div>
-            }
+            }*@
             <!--Adding Workshop Services-->
                 <div class="col m-auto text-center rounded-3">
                     <div class="accordion accordion-flush rounded shadow" id="accordionExample">

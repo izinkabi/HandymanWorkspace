@@ -36,15 +36,15 @@ public class OrdersController : ControllerBase
     // POST api/<OrdersController>
     [HttpPost]
     [Route("Post")]
-    public void Post(OrderModel order)
+    public int Post(OrderModel order)
     {
         try
         {
             if (order == null)
             {
-                return;
+                return 0;
             }
-            _orderData.InsertOrder(order);
+            return _orderData.InsertOrder(order);
         }
         catch (Exception ex)
         {

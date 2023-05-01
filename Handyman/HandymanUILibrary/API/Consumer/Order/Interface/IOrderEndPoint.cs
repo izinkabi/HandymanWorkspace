@@ -8,7 +8,7 @@ namespace HandymanUILibrary.API.Consumer.Order.Interface
     {
         Task DeleteOrder(OrderModel order);
         Task<IList<OrderModel>> GetOrders(string customerId);
-        Task PostOrder(OrderModel order);
+        Task<int> PostOrder(OrderModel order);
         Task UpdateOrder(OrderModel orderUpdate);
     }
 }

@@ -9,5 +9,6 @@ namespace Handyman_SP_UI.Hubs
         {
             return Clients.All.SendAsync("ReceiveOrder", order);
         }
+
     }
 }

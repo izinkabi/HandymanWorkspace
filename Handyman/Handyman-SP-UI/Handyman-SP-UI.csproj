@@ -18,6 +18,7 @@
   <ItemGroup>
     <Content Remove="Pages\WorkShop\Requests\InProgressRequestsComponent.razor" />
     <Content Remove="Pages\WorkShop\Requests\Tasks\CancelledRequestsComponent.razor" />
+    <Content Remove="wwwroot\assets\dist\js\negotiationModule.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -47,6 +48,7 @@
     <None Include="Pages\WorkShop\Requests\CancelledRequestsComponent.razor" />
     <None Include="Pages\WorkShop\Profile\ProviderProfile.razor" />
     <None Include="Pages\WorkShop\InProgressRequestsComponent.razor" />
+    <None Include="wwwroot\assets\dist\js\negotiationModule.js" />
   </ItemGroup>
 
 
@@ -73,6 +75,7 @@
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Pages\WorkShop\Requests\InProgressRequestsComponent.razor" />
     <_ContentIncludedByDefault Remove="Pages\WorkShop\Requests\Tasks\CancelledRequestsComponent.razor" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\dist\js\negotiationModule.js" />
   </ItemGroup>
 
 

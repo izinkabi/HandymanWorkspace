@@ -29,18 +29,16 @@
                 You are online
                
             </div>
-
-            <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-square-fill" viewBox="0 0 16 16">
-                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.93 4.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
-                </svg>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                @if (notificationOrders.Count > 0)
-                {
-                    <p>You have @notificationOrders.Count new order(s) </p>
-                }
-
-            </div>
+            @if (notificationOrders.Count > 0)
+            {
+                <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-square-fill" viewBox="0 0 16 16">
+                        <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.93 4.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
+                    </svg>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <p>You have @notificationOrders.Count new order(s) </p>
+                </div>
+            }
         }
         else
         {
@@ -80,10 +78,48 @@
                                     </th>
                                 </tr>
                             </thead>
-                            @if (newRequests.Count > 0)
+                            @if (newRequests.Count > 0 || notificationOrders.Count > 0)
                             {
                                 <!--Table body-->
                                 <tbody>
+                            @foreach (var o in notificationOrders)
+                            {
+                                @if (o.status == 0)
+                                {
+
+                                    <tr class="bg-success" onclick="@(()=> viewOrder(o.service.id,o.Id))">
+
+                                        <!--Onclick test-->
+                                        <td class="border-0 btn-outline-info">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16">
+                                                <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" />
+                                            </svg>
+                                        </td>
+
+                                        <td>@o.datecreated</td>
+                                        <td>@o.service.category.description</td>
+                                        <td>@o.service.name</td>
+                                        <td>
+                                            @if (Prices.Count > 0)
+                                            {
+                                                @foreach (var price in Prices)
+                                                {
+                                                    @if (price.Id == o.service.PriceId)
+                                                    {
+                                                        <strong>R </strong>
+                                                        @price.base_Price
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        </td>
+                                        <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                                            <span class="visually-hidden">New alerts</span>
+                                        </span>
+                                    </tr>
+
+                                }
+                            }
                                     <!--Rows-->
                                     @foreach (var nr in newRequests)
                                     {
@@ -123,7 +159,7 @@
 
                                         }
                                     }
-
+                                    
 
                                     <!--End rows-->
                                 </tbody>
@@ -170,16 +206,19 @@
     {
         try
         {
-            
+
             await LoadNewRequests();
             if (newRequests.Count > 0)
             {
                 foreach (var order in newRequests)
                 {
                     var price = await _providerHelper.GetServicePrice(order.service.PriceId);
-                    Prices.Add(price);
+                    if(price!=null)
+                        Prices.Add(price);
                 }
             }
+
+            //Initialize the hubConnection
             hubConnection = new HubConnectionBuilder()
                .WithUrl(NavManager.ToAbsoluteUri("/reqHub"))
                .WithAutomaticReconnect()
@@ -213,18 +252,11 @@
     /// <param name="rid"></param>
     void viewOrder(int sid, int rid)
     {
-        //foreach(OrderModel order in notificationOrders)
-        //{
-        //    if(order.Id == rid)
-        //    {
-        //        notificationOrders.Remove(order);
-        //    }
-        //}
 
         NavManager.NavigateTo(NavManager.GetUriWithQueryParameters("request", new Dictionary<string, object>()
             {
-                ["SId"] = sid,
-                ["NRId"] = rid
+                ["SId"] = sid, //service id
+                ["NRId"] = rid //new requests id
             }));
     }
 
@@ -258,7 +290,10 @@
         try
         {
             var price = await _providerHelper.GetServicePrice(priceId);
-            return price;
+            if (price != null)
+                return price;
+            else
+                return new PriceModel();
         }
         catch (Exception ex)
         {

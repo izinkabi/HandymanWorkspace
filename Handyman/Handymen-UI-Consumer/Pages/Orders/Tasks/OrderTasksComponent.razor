@@ -3,6 +3,8 @@
 @using HandymanUILibrary.Models
 @using Handymen_UI_Consumer.Helpers
 @using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Forms
+
 
 <div class="row d-inline-flex m-3 bg-transparent" >
 
@@ -36,20 +38,20 @@
 
                                 <div class="">
                                     <div class="card border-0">
-                                        
+                                        <EditForm Model="newTask" OnValidSubmit="@(()=>OnAddToTasks.InvokeAsync(newTask))">
                                         <div class="card-body">
                                                 <div class="m-1">
-                                                    <input @bind="@newTask.tas_title" type="text" class="form-control form-control" id="exampleFormControlInput1"
+                                                    <input @bind="@newTask.tas_title" required="enter title" type="text" class="form-control form-control" id="exampleFormControlInput1"
                                                         placeholder="taskItem Title...">
                                                 </div>
                                                 <div class="m-1">
-                                                    <textarea @bind="@newTask.tas_description" class="form-control" id="exampleFormControlTextarea1" rows="3"  placeholder="Description..."></textarea>
+                                                    <textarea @bind="@newTask.tas_description" required="enter description" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Description..."></textarea>
                                                 </div>
                                         </div>
                                         <div>                                   
-                                            <button type="submit" @onclick="@(()=>OnAddToTasks.InvokeAsync(newTask))" class="btn btn-primary m-3">Add</button>
+                                            <button type="submit" class="btn btn-primary m-3">Add</button>
                                         </div>
-
+                                        </EditForm>
                                     </div>
 
                                 </div>

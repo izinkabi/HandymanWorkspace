@@ -124,7 +124,7 @@
                                                     }
                                                     if (task.tas_status == 1 || task.tas_status == 2)
                                                     {
-                                                        <tr class="bg-warning bg-opacity-25 shadow" @onclick="@(()=>OnViewTask.InvokeAsync(@task.task_id))">
+                                                        <tr class="bg-warning bg-opacity-25 shadow" @onclick="@(()=>OnViewTask.InvokeAsync(task.task_id))">
 
                                                             <td class="bg-transparent border-0">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hammer" viewBox="0 0 16 16">
