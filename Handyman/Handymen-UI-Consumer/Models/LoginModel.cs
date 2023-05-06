@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Handyman_DataLibrary.Models;
+namespace Handymen_UI_Consumer.Models;
 public class LoginModel
 {
     [Required]

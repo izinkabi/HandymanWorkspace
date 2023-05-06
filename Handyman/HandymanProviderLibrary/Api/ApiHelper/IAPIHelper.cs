@@ -6,7 +6,7 @@ namespace HandymanProviderLibrary.Api.ApiHelper
     {
         HttpClient ApiClient { get; }
 
-        Task<AuthenticatedUserModel> AuthenticateUser(string username, string password);
+        Task<string> AuthenticateUser(string username, string password);
         Task<IloggedInUserModel> GetLoggedInUserInfor(string Token);
         void LogOutuser();
     }

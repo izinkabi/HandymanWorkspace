@@ -9,7 +9,7 @@ namespace Handyman_Api.Controllers
 {
     [Route("api/Handymen")]
     [ApiController]
-    [Authorize]
+ 
     public class HandymenController : ControllerBase
     {
 
@@ -21,7 +21,8 @@ namespace Handyman_Api.Controllers
         }
 
         // GET: api/<HandymenController>
-        [HttpGet]
+        [HttpGet(Name = "Test")]
+        [Authorize]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };

@@ -3,6 +3,7 @@
 #nullable disable
 
 using Handyman_SP_UI.Areas.Identity.Data;
+using HandymanProviderLibrary.Api.EndPoints.Interface;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,11 +16,15 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<Handyman_SP_UIUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly IAuthEndpoint _auth;
+        private readonly CustomeAuthStateProvider _stateprovider;
 
-        public LoginModel(SignInManager<Handyman_SP_UIUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<Handyman_SP_UIUser> signInManager, ILogger<LoginModel> logger,IAuthEndpoint auth, CustomeAuthStateProvider stateProvider)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _auth = auth;
+            _stateprovider= stateProvider;
         }
 
         /// <summary>
@@ -78,22 +83,7 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
             public bool RememberMe { get; set; }
         }
 
-        public async Task OnGetAsync(string returnUrl = null)
-        {
-            if (!string.IsNullOrEmpty(ErrorMessage))
-            {
-                ModelState.AddModelError(string.Empty, ErrorMessage);
-            }
 
-            returnUrl ??= Url.Content("~/");
-
-            // Clear the existing external cookie to ensure a clean login process
-            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
-            ReturnUrl = returnUrl;
-        }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
@@ -105,21 +95,25 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
+
+                var result = await _auth.LoginUser(Input.Email, Input.Password);
+                ///var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                if (result != null)
                 {
+                     var tokenState = await _stateprovider.GetAuthenticationStateAsync();
                     _logger.LogInformation("User logged in.");
+                    Console.WriteLine(tokenState.ToString());
                     return LocalRedirect(returnUrl);
                 }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
-                }
+                //if (result.RequiresTwoFactor)
+                //{
+                //    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                //}
+                //if (result.IsLockedOut)
+                //{
+                //    _logger.LogWarning("User account locked out.");
+                //    return RedirectToPage("./Lockout");
+                //}
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");

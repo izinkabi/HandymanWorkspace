@@ -23,6 +23,8 @@ public class TokenProvider : ITokenProvider
         var claims = new[]
         {
             new Claim(ClaimTypes.Email, email),
+            new Claim(ClaimTypes.Name, email)
+
         };
 
         var token = new JwtSecurityToken(

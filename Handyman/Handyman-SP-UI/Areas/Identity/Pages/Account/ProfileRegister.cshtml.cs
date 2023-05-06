@@ -43,8 +43,10 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account.Registration.MembersRegist
         public ServiceProviderModel ProviderProperty { get { return provider; } set { provider = value; } }
         public void OnGet()
         {
-            provider.employeeProfile = new();
-            provider.employeeProfile.DateOfBirth = DateTime.Now;
+            provider.employeeProfile = new()
+            {
+                DateOfBirth = DateTime.Now
+            };
             IsProfileSaved = false;
         }
 

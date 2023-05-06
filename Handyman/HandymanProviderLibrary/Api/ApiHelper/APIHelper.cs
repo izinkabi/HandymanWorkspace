@@ -1,4 +1,5 @@
 ﻿using HandymanProviderLibrary.Models;
+using HandymanProviderLibrary.Models.AuthModels;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -39,29 +40,28 @@ public class APIHelper : IAPIHelper
         _apiClient = new HttpClient();
         _apiClient.BaseAddress = new Uri(_Configuration["Api"]);
         _apiClient.DefaultRequestHeaders.Accept.Clear();
-        _apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("applications/json"));
+        _apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/*+json"));
     }
     /// <summary>
     ///authenticate the user by passing a username and password to the token endpoint and return a authenticate user with a token
     /// </summary>
     /// <returns>logged in user model</returns>
-    public async Task<AuthenticatedUserModel> AuthenticateUser(string username, string password)
+    public async Task<string> AuthenticateUser(string username, string password)
     {
 
-        var data = new FormUrlEncodedContent(new[]
+        LoginModel? data = new LoginModel
         {
-            new KeyValuePair<string, string>("grant_type", "password"),
-            new KeyValuePair<string, string>("username", username),
-            new KeyValuePair<string, string>("password", password),
+           Email= username,
+           Password= password
 
-        });
+        };
 
-        using (HttpResponseMessage httpResponse = await _apiClient.PostAsync("/token", data))
+        using (HttpResponseMessage httpResponse = await _apiClient.PostAsJsonAsync<LoginModel>("Auth/login", data))
         {
             if (httpResponse.IsSuccessStatusCode)
             {
-                var result = await httpResponse.Content.ReadFromJsonAsync<AuthenticatedUserModel>();
-                return result;
+                var token = await httpResponse.Content.ReadAsStringAsync();
+                return token;
             }
             else
             {
@@ -77,22 +77,22 @@ public class APIHelper : IAPIHelper
         _apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("applications/json"));
         _apiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {Token}");
 
-        using (HttpResponseMessage httpResponseMessage = await _apiClient.GetAsync("/api/Users"))
+        using (HttpResponseMessage httpResponseMessage = await _apiClient.GetAsync("Auth/userprofile"))
         {
             if (httpResponseMessage.IsSuccessStatusCode)
             {
 
                 var result = await httpResponseMessage.Content.ReadFromJsonAsync<loggedInUserModel>();
-                _loggedInUserModel.Token = result.Token;
-                _loggedInUserModel.Id = result.Id;
-                _loggedInUserModel.Username = result.Username;
-                _loggedInUserModel.Email = result.Email;
-                _loggedInUserModel.CreateDate = result.CreateDate;
-                _loggedInUserModel.FirstName = result.FirstName;
-                _loggedInUserModel.LastName = result.LastName;
-                //acquiring roles from a model(not recommended, but HEy it wOrKs!)
-                _loggedInUserModel.UserRole = result.UserRole;
-                return _loggedInUserModel;
+                //_loggedInUserModel.Token = Token;
+                //_loggedInUserModel.Id = result.Id;
+                //_loggedInUserModel.Username = result.Username;
+                //_loggedInUserModel.Email = result.Email;
+                //_loggedInUserModel.CreateDate = result.CreateDate;
+                //_loggedInUserModel.FirstName = result.FirstName;
+                //_loggedInUserModel.LastName = result.LastName;
+                ////acquiring roles from a model(not recommended, but HEy it wOrKs!)
+                //_loggedInUserModel.UserRole = result.UserRole;
+                return result;
             }
             else
             {

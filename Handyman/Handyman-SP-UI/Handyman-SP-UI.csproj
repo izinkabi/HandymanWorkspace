@@ -9,9 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Identity\Pages\Account\Registration\**" />
     <Compile Remove="Models\ServiceProvider\**" />
+    <Content Remove="Areas\Identity\Pages\Account\Registration\**" />
     <Content Remove="Models\ServiceProvider\**" />
+    <EmbeddedResource Remove="Areas\Identity\Pages\Account\Registration\**" />
     <EmbeddedResource Remove="Models\ServiceProvider\**" />
+    <None Remove="Areas\Identity\Pages\Account\Registration\**" />
     <None Remove="Models\ServiceProvider\**" />
   </ItemGroup>
 
@@ -80,8 +84,6 @@
 
 
   <ItemGroup>
-    <Folder Include="Areas\Identity\Pages\Account\Registration\MembersRegistration\" />
-    <Folder Include="Areas\Identity\Pages\Account\Registration\WorkShopRegistration\" />
     <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="wwwroot\images\profile\" />
   </ItemGroup>
