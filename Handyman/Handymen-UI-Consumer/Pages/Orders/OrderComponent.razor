@@ -35,7 +35,7 @@
             <div class="card m-3 bg-transparent border-0">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <img src="/Images/@(order.service.img)" class="img-fluid rounded-start" alt="...">
+                        <img src="/Images/service-images/@(order.service.img)" class="img-fluid rounded-start" alt="...">
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
@@ -416,7 +416,7 @@
         {
             if (order != null)
             {
-                _orderHelper.CancelOrder(order);
+                //_orderHelper.CancelOrder(order);
                 NavManager.ToAbsoluteUri("/index");
                 await InvokeAsync(StateHasChanged);
             }

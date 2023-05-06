@@ -95,19 +95,24 @@ public class ProfileHelper : PageModel
     }
 
     //Register Profile
-    protected internal async void CreateProfile(ProfileModel newProfile)
+    protected internal async Task<bool> CreateProfile(ProfileModel newProfile)
     {
         if (newProfile != null)
         {
             try
             {
-                _providerEndPoint.CreateProfile(newProfile);
+                return await _providerEndPoint.CreateProfile(newProfile);
             }
             catch (Exception)
             {
 
                 throw;
+                return false;
             }
+        }
+        else
+        {
+            return false;
         }
     }
 

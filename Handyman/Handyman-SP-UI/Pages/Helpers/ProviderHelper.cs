@@ -37,7 +37,7 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
     }
 
     //Create a provider profie
-    public void RegisterProfile(ProfileModel profile) => this.CreateProfile(profile);
+    public Task<bool> RegisterProfile(ProfileModel profile) => this.CreateProfile(profile);
 
     //Get the profile of the Handyman/Provider 
     public async Task<ProfileModel> GetProviderProfile() => await this.GetProfile();

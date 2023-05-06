@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Handymen_UI_Consumer.Pages.Services
 {
-    [Authorize]
     public class DetailsModel : PageModel
     {
 

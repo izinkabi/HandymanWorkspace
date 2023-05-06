@@ -5,6 +5,32 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "vscode-edge-devtools.debug",
+            "request": "attach",
+            "name": "Attach to Microsoft Edge and open the Edge DevTools",
+            "url": "http://localhost:5500",
+            "webRoot": "${~/source/repos/HandymanWorkspace/Handyman/Handymen-UI-Consumer}"
+        },
+        {
+            "type": "vscode-edge-devtools.debug",
+            "request": "launch",
+            "name": "Launch Microsoft Edge and open the Edge DevTools",
+            "url": "http://localhost:5500",
+            "webRoot": "${~/source/repos/HandymanWorkspace/Handyman/Handymen-UI-Consumer}"
+        },
+        {
+            "name": ".NET Core Launch (console)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${~/source/repos/HandymanWorkspace/Handyman/Handymen-UI-Consumer}/bin/Debug/net7.0/Handymen-UI-Consumer.dll",
+            "args": [],
+            "cwd": "${~/source/repos/HandymanWorkspace/Handyman/Handymen-UI-Consumer}",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+        
+        {
             "name": ".NET Core Attach",
             "type": "coreclr",
             "request": "attach"
@@ -13,7 +39,7 @@
             "type": "msedge",
             "request": "launch",
             "name": "Launch Edge against localhost",
-            "url": "http://localhost:8080",
+            "url": "http://localhost:5500",
             "webRoot": "${~/source/repos/HandymanWorkspace/Handyman/Handymen-UI-Consumer}"
         }
     ]

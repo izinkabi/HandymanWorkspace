@@ -8,140 +8,19 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Handymen_UI_Consumer.Migrations
+namespace HandymenUIConsumer.Migrations
 {
     [DbContext(typeof(Handymen_UI_ConsumerContext))]
-    partial class Handymen_UI_ConsumerContextModelSnapshot : ModelSnapshot
+    partial class HandymenUIConsumerContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.8")
+                .HasAnnotation("ProductVersion", "7.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("HandymanUILibrary.Models.OrderModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("ConsumerID")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("datecreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("duedate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("serviceid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("status")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("serviceid");
-
-                    b.ToTable("Order");
-                });
-
-            modelBuilder.Entity("HandymanUILibrary.Models.ServiceCategoryModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("type")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ServiceCategoryModel");
-                });
-
-            modelBuilder.Entity("HandymanUILibrary.Models.ServiceModel", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
-
-                    b.Property<int?>("categoryId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("datecreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("img")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("status")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("categoryId");
-
-                    b.ToTable("Service");
-                });
-
-            modelBuilder.Entity("HandymanUILibrary.Models.TaskModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int?>("OrderModelId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("dateFinished")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("dateStarted")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("duration")
-                        .HasColumnType("int");
-
-                    b.Property<int>("serviceId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("status")
-                        .HasColumnType("int");
-
-                    b.Property<string>("title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderModelId");
-
-                    b.ToTable("TaskModel");
-                });
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("Handymen_UI_Consumer.Areas.Identity.Data.Handymen_UI_ConsumerUser", b =>
                 {
@@ -241,7 +120,7 @@ namespace Handymen_UI_Consumer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -266,7 +145,7 @@ namespace Handymen_UI_Consumer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -288,12 +167,10 @@ namespace Handymen_UI_Consumer.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -330,12 +207,10 @@ namespace Handymen_UI_Consumer.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -343,31 +218,6 @@ namespace Handymen_UI_Consumer.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("HandymanUILibrary.Models.OrderModel", b =>
-                {
-                    b.HasOne("HandymanUILibrary.Models.ServiceModel", "service")
-                        .WithMany()
-                        .HasForeignKey("serviceid");
-
-                    b.Navigation("service");
-                });
-
-            modelBuilder.Entity("HandymanUILibrary.Models.ServiceModel", b =>
-                {
-                    b.HasOne("HandymanUILibrary.Models.ServiceCategoryModel", "category")
-                        .WithMany()
-                        .HasForeignKey("categoryId");
-
-                    b.Navigation("category");
-                });
-
-            modelBuilder.Entity("HandymanUILibrary.Models.TaskModel", b =>
-                {
-                    b.HasOne("HandymanUILibrary.Models.OrderModel", null)
-                        .WithMany("Tasks")
-                        .HasForeignKey("OrderModelId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

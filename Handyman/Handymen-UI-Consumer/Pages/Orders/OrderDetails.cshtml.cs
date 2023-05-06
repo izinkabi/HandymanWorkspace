@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Handymen_UI_Consumer.Pages.Orders;
 
-[Authorize(Roles = "Consumer")]
 public class OrderDetailsModel : PageModel
 {
     SignInManager<Handymen_UI_ConsumerUser> _signInManager;

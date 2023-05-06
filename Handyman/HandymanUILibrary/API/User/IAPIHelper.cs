@@ -1,17 +1,13 @@
 ﻿using System.Net.Http;
+using System.Threading.Tasks;
+using HandymanUILibrary.Models;
 
-namespace HandymanUILibrary.API.User
+namespace HandymanUILibrary.API.User;
+public interface IAPIHelper
 {
-    /// <summary>
-    ///Interface for API helper 
-    /// </summary>
-    public interface IAPIHelper
-    {
-        HttpClient ApiClient { get; }
-        //Task<AuthenticatedUserModel> AuthenticateUser(string username, string password);
-        //Task<IloggedInUserModel> GetLoggedInUserInfor(string token);
+    HttpClient ApiClient { get; }
 
-        void LogOutuser();
-
-    }
+    Task<string> AuthenticateUser(string email, string password);
+    Task<IloggedInUserModel> GetLoggedInUserInfor(string Token);
+    void LogOutuser();
 }

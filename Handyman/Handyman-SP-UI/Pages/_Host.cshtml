@@ -4,10 +4,10 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = "_Layout";
-    var tokens = new TokenProvider
-    {
-        XsrfToken = Xsrf.GetAndStoreTokens(HttpContext).RequestToken
-    };
+    //var tokens = new TokenProvider
+    //{
+    //    XsrfToken = Xsrf.GetAndStoreTokens(HttpContext).RequestToken --param-InitialState="tokens"
+    //};
 }
 
-<component type="typeof(App)" param-InitialState="tokens" render-mode="ServerPrerendered" />
+<component type="typeof(App)"  render-mode="ServerPrerendered" />

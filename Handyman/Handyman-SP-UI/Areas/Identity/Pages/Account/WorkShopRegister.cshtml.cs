@@ -114,11 +114,11 @@ namespace Handyman_SP_UI.Areas.Identity.Pages.Account
                         ErrorMsg = "Error:" + ex.Message;
                     }
 
-
+                    IsWorkShopSaved = true;
+                    OpenService();
                 }
             }
-            IsWorkShopSaved = true;
-            OpenService();
+           
             return Page();
         }
 
