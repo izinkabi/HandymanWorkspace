@@ -76,7 +76,7 @@
                 <p class="card-text text-wrap">@svc.name</p>
                 <div class="d-flex justify-content-center align-items-center flex-lg-wrap">                
                     <small class="text-muted">Available from:@svc.datecreated</small>
-                    <AuthorizeView Roles="Owner">
+                    <AuthorizeView>
                         <Authorized>
                             @if (!isAdded)
                             {
@@ -87,9 +87,7 @@
                                 <p class="text-center mb-1 text-muted fst-italic">Added</p>
                             }
                         </Authorized>
-                        <NotAuthorized>
-                            <hr/>
-                        </NotAuthorized>
+                       
                     </AuthorizeView>
                 </div>
 

@@ -16,7 +16,7 @@
     }
 
 }
-<AuthorizeView Context="Auth" Roles="ServiceProvider">
+<AuthorizeView Context="Auth">
 
 <Authorized>
 @if (providerModel != null && providerModel.employeeProfile!=null)
@@ -239,9 +239,9 @@
                             </h2>
                             <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
                                 <div class="accordion-body" style="height:484px;overflow-y:scroll" >
-                                    <Handyman_SP_UI.Pages.WorkShop.Services.ServicesAlbum>
+                                    <ServicesAlbum>
 
-                                    </Handyman_SP_UI.Pages.WorkShop.Services.ServicesAlbum>
+                                    </ServicesAlbum>
                                 </div>
                             </div>
                         </div>
@@ -273,14 +273,7 @@ else
     </div>
 }
     </Authorized>
-         <NotAuthorized>
-
-        <a href="Identity/Account/Login" class="nav-link text-dark">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-amd" viewBox="0 0 16 16">
-                <path d="m.334 0 4.358 4.359h7.15v7.15l4.358 4.358V0H.334ZM.2 9.72l4.487-4.488v6.281h6.28L6.48 16H.2V9.72Z" />
-            </svg>
-        </a>
-         </NotAuthorized>
+        
 </AuthorizeView>
 
 @code {

@@ -1,10 +1,9 @@
 ﻿using HandymanProviderLibrary.Api.EndPoints.Interface;
 using HandymanProviderLibrary.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Handyman_SP_UI.Pages.Helpers
 {
-    [Authorize(Roles = "ServiceProvider")]
+
     public class BusinessHelper : IBusinessHelper
     {
         IBusinessEndPoint _business;

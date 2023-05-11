@@ -2,6 +2,7 @@ using HandymanUILibrary.API.Consumer.Order.Implementation;
 using HandymanUILibrary.API.Consumer.Order.Interface;
 using HandymanUILibrary.API.Services;
 using HandymanUILibrary.API.User;
+using HandymanUILibrary.Models;
 using Handymen_UI_Consumer.Areas.Identity.Data;
 using Handymen_UI_Consumer.Helpers;
 using Handymen_UI_Consumer.Helpers.Tasks;
@@ -17,8 +18,7 @@ builder.Services.AddDbContext<Handymen_UI_ConsumerContext>(options =>
 
 builder.Services.AddIdentity<Handymen_UI_ConsumerUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<Handymen_UI_ConsumerContext>()
-    .AddDefaultUI()
-    .AddDefaultTokenProviders();
+    .AddDefaultUI();
 
 builder.Services.AddSingleton<IAPIHelper, APIHelper>();
 builder.Services.AddTransient<IServiceEndPoint, ServiceEndPoint>();
@@ -26,6 +26,7 @@ builder.Services.AddTransient<IOrderEndPoint, OrderEndPoint>();
 builder.Services.AddScoped<IOrderHelper, OrderHelper>();
 builder.Services.AddTransient<ITasksEndPoint, TasksEndPoint>();
 builder.Services.AddTransient<ITasksHelper, TasksHelper>();
+builder.Services.AddTransient<IloggedInUserModel, loggedInUserModel>();
 
 
 //External Login
@@ -56,16 +57,16 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.User.RequireUniqueEmail = false;
 });
 
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    // Cookie settings
-    options.Cookie.HttpOnly = true;
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+//builder.Services.ConfigureApplicationCookie(options =>
+//{
+//    // Cookie settings
+//    options.Cookie.HttpOnly = true;
+//    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
-    options.LoginPath = "/Identity/Account/Login";
-    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
-    options.SlidingExpiration = true;
-});
+//    options.LoginPath = "/Identity/Account/Login";
+//    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+//    options.SlidingExpiration = true;
+//});
 
 builder.Services.AddResponseCompression(opt =>
 {

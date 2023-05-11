@@ -1,8 +1,6 @@
-﻿using Handyman_SP_UI.Areas.Identity.Data;
-using HandymanProviderLibrary.Api.EndPoints.Interface;
+﻿using HandymanProviderLibrary.Api.EndPoints.Interface;
 using HandymanProviderLibrary.Models;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Security.Claims;
 
@@ -12,21 +10,14 @@ public class ProfileHelper : PageModel
 {
     private readonly IServiceProviderEndPoint _providerEndPoint;
     private readonly AuthenticationStateProvider? _authenticationStateProvider;
-    private readonly UserManager<Handyman_SP_UIUser> _userManager;
-    private readonly SignInManager<Handyman_SP_UIUser> signInManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
-    private readonly AppUserManager _appUserManager;
 
-    public ProfileHelper(IServiceProviderEndPoint providerEndPoint, AuthenticationStateProvider? authenticationStateProvider,
-        UserManager<Handyman_SP_UIUser> userManager,
-        AppUserManager appUserManager, RoleManager<IdentityRole> roleManager, SignInManager<Handyman_SP_UIUser> signInManager)
+
+    public ProfileHelper(IServiceProviderEndPoint providerEndPoint, AuthenticationStateProvider? authenticationStateProvider
+       )
     {
         _providerEndPoint = providerEndPoint;
         _authenticationStateProvider = authenticationStateProvider;
-        _userManager = userManager;
-        _roleManager = roleManager;
-        _appUserManager = appUserManager;
-        this.signInManager = signInManager;
+
     }
 
     protected string? userId;
@@ -51,46 +42,9 @@ public class ProfileHelper : PageModel
     protected internal async Task<bool> CreateOwner()
     {
 
-        var User = GetUser();
-        var user = _userManager.GetUserAsync(User).Result;
-        if (!(_roleManager.RoleExistsAsync("Owner").Result))
-        {
-            await _roleManager.CreateAsync(new IdentityRole("Owner"));
-            await _userManager.AddToRoleAsync(_userManager.GetUserAsync(User).Result, "Owner");
-        }
-        else if (_roleManager.RoleExistsAsync("Owner").Result)
-        {
-            try
-            {
-
-                if (User.IsInRole("Owner"))
-                {
-                    return true;
-                }
-                else
-                {
-                    if (user != null)
-                    {
-
-
-                        //IdentityResult result = await _appUserManager.AddToRoleByRoleIdAsync(user, await _roleManager.GetRoleIdAsync(role));
-
-                        return true;
-                    }
-
-                }
 
 
 
-            }
-            catch (Exception ex)
-            {
-
-                throw new Exception(ex.Message, ex.InnerException);
-            }
-
-
-        }
         return false;
     }
 
@@ -129,7 +83,10 @@ public class ProfileHelper : PageModel
         {
             if (userId == null)
             {
-                User = signInManager.Context.User;
+                var claim = await _authenticationStateProvider.GetAuthenticationStateAsync();
+
+                User = claim.User;
+
                 userId = User.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
             }
             return userId;

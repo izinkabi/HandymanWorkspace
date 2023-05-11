@@ -19,7 +19,7 @@
     <h4 class="text-danger">@Errors</h4>
 
 }
-<AuthorizeView Roles="Owner,Member">
+<AuthorizeView>
 
     <Authorized>
         <!--New Requests Section-->
@@ -123,12 +123,7 @@
 
 
     </Authorized>
-    <NotAuthorized>
-        <h2 class="text-warning">No Work Shop Found</h2>
-        <p>
-            Looks like are not authorized for this,but you can <a href="/Identity/Account/WorkShopRegister"> click here</a> to create a WorkShop or you <a href="/Identity/Account/WorkShopRegister">click here</a> to join a WorkShop.
-        </p>
-    </NotAuthorized>
+    
 </AuthorizeView>
 
 @code {

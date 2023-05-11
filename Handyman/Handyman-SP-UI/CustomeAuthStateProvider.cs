@@ -1,9 +1,7 @@
-﻿
-
+﻿using HandymanProviderLibrary.Models;
+using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 using System.Text.Json;
-using HandymanProviderLibrary.Models;
-using Microsoft.AspNetCore.Components.Authorization;
 
 
 namespace Handyman_SP_UI;
@@ -12,21 +10,20 @@ public class CustomeAuthStateProvider : AuthenticationStateProvider
 {
 
     private readonly AuthenticatedUserModel _authuserModel;
+    //private readonly ILocalStorageService _localStorage;
 
-    public CustomeAuthStateProvider(AuthenticatedUserModel authuserModel)
+    public CustomeAuthStateProvider(/*ILocalStorageService localStorage*/AuthenticatedUserModel authenticatedUserModel)
     {
-        _authuserModel = authuserModel;
+        _authuserModel = authenticatedUserModel;
+        //_localStorage = localStorage;
     }
 
     //Get the Authentication state of the token 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-
-        //string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJuaW5qYUBtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJuaW5qYUBtYWlsLmNvbSIsImV4cCI6MTY4MjkzOTkwM30.EvuC2kqi1YDOiClj8Dh_vFhmIeAQkypNbs4YXXdjvAE";
-        
-
-        var identity = new ClaimsIdentity(ParseClaimsFromJwt(_authuserModel.Access_Token),"jwt");
- 
+        var identity = new ClaimsIdentity();
+        if (!string.IsNullOrEmpty(_authuserModel.Access_Token))
+            identity = new ClaimsIdentity(ParseClaimsFromJwt(_authuserModel.Access_Token), "jwt");
         var user = new ClaimsPrincipal(identity);
         AuthenticationState? state = new AuthenticationState(user);
 

@@ -1,14 +1,14 @@
-﻿<CascadingAuthenticationState>
-    <Router AppAssembly="@typeof(App).Assembly" PreferExactMatches="@true">
+﻿@using Handyman_SP_UI.Pages
+<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
         <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
             <NotAuthorized>
-                <p>Sorry bud! <small>you are not authorized</small></p>
+               <Login/>
             </NotAuthorized>
         </AuthorizeRouteView>
     </Found>
     <NotFound>
-        <PageTitle>Not found</PageTitle>
         <LayoutView Layout="@typeof(MainLayout)">
             <p role="alert">Sorry, there's nothing at this address.</p>
         </LayoutView>

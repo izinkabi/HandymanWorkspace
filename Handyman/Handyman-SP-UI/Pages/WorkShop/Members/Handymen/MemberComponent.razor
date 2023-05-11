@@ -3,13 +3,11 @@
 @using Microsoft.AspNetCore.Components.Web
 
 @inject NavigationManager NavManager
-@inject SignInManager<Handyman_SP_UIUser> signInManager
-@inject UserManager<Handyman_SP_UIUser> UserManager
 @inject IBusinessHelper _business
 @inject AuthenticationStateProvider authenticationStateProvider
 @inject IProviderHelper _providerHelper
 
-<AuthorizeView Roles="Member">
+<AuthorizeView>
 
     <Authorized>
 
@@ -107,15 +105,7 @@
         <!--End Ratings Component-->
 
     </Authorized>
-    <NotAuthorized>
-        <div class="p-5 mb-4 bg-light rounded-3">
-            <div class="container-fluid py-5">
-                <h1 class="display-5 fw-bold">Welcome to Handymen</h1>
-                <p class="col-md-8 fs-4">All services you think you can provide are listed here choose at least one and become <strong>Handymen</strong>, become the best in what you do and get money out of it</p>
-                <button @onclick="displayServiceAlbum" class="btn btn-primary btn-lg">Check them out!</button>
-            </div>
-        </div>
-    </NotAuthorized>
+    
 
 </AuthorizeView>
 
@@ -133,8 +123,6 @@
         logistics
 
     }
-
-    [Authorize(Roles = "ServiceProvider")]
     protected override async Task OnInitializedAsync()
     {
         try

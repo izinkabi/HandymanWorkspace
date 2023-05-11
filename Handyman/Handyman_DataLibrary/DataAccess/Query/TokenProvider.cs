@@ -1,21 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Handyman_DataLibrary.DataAccess.Interfaces;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
-using Handyman_DataLibrary.DataAccess.Interfaces;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Handyman_DataLibrary.DataAccess.Query;
 public class TokenProvider : ITokenProvider
 {
     private readonly SymmetricSecurityKey _key;
+    private readonly IConfiguration _configuration;
 
-    public TokenProvider(string secretKey)
+    public TokenProvider(IConfiguration configuration)
     {
-        _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+        _configuration = configuration;
+        _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("Jwt:JWTSecretKey").Value));
+
     }
 
     public string GenerateToken(string email)

@@ -1,3 +1,15 @@
+using Handyman_Api.Areas.Identity.Data;
+using Handyman_DataLibrary.DataAccess.Interfaces;
+using Handyman_DataLibrary.DataAccess.Query;
+using Handyman_DataLibrary.Internal.DataAccess;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +36,7 @@ builder.Services.AddScoped<IBusinessData, BusinessData>();
 builder.Services.AddTransient<IRequestData, RequestData>();
 builder.Services.AddScoped<ITaskData, TaskData>();
 builder.Services.AddScoped<IProfileData, ProfileData>();
+builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {

@@ -2,10 +2,10 @@
 @page "/manager"
 
 
-@inject SignInManager<Handyman_SP_UIUser> _signInManager
+
 @inject AuthenticationStateProvider authProvider
-@inject UserManager<Handyman_SP_UIUser> UserMan
-<AuthorizeView Roles="Owner,Member">
+
+<AuthorizeView>
 
     <Authorized>
 
@@ -116,23 +116,12 @@
 
 
     </Authorized>
-    <NotAuthorized>
-
-        <h2 class="text-warning">No Work Shop Found</h2>
-        <p>
-            Looks like are not authorized for this,but you can <a href="/Identity/Account/WorkShopRegister"> click here</a> to create a WorkShop or you <a href="/Identity/Account/WorkShopRegister">click here</a> to join a WorkShop.
-        </p>
-
-    </NotAuthorized>
+   
 
 </AuthorizeView>
 
 
 @code {
 
-    protected override async Task OnInitializedAsync()
-    {
-       
-        
-    }   
+     
 }

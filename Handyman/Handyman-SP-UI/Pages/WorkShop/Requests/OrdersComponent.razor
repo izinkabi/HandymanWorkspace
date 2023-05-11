@@ -8,7 +8,7 @@
 
 
 
-<AuthorizeView Roles="Owner,Member">
+<AuthorizeView>
 
 <Authorized>
         @if (Errors.Count > 0)
@@ -179,9 +179,7 @@
 
         }
  </Authorized>
-    <NotAuthorized>
-        <Handyman_SP_UI.Pages.WorkShop.Services.ServicesAlbum />
-    </NotAuthorized>
+    
 </AuthorizeView>
 @if (Errors.Count>0)
 {

@@ -8,7 +8,7 @@
 @inject IProviderHelper _providerHelper
 @inject NavigationManager NavManager
 
-<AuthorizeView Roles="ServiceProvider">
+<AuthorizeView>
     
     <Authorized>
 
@@ -53,11 +53,7 @@
      
     </Authorized>
 
-     <NotAuthorized>
-        <Handyman_SP_UI.Pages.Services.ServicesAlbum>
-
-        </Handyman_SP_UI.Pages.Services.ServicesAlbum>
-     </NotAuthorized>
+     
 
 </AuthorizeView>
 

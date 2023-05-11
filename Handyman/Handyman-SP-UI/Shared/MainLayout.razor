@@ -1,10 +1,8 @@
 ﻿@inherits LayoutComponentBase
 @using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Web
 
 @inject NavigationManager Navigation
-@inject TokenProvider  TokenProvider
-@inject SignInManager<Handyman_SP_UIUser> signInManager
-@inject UserManager<Handyman_SP_UIUser> userManager
 @inject IProviderHelper _providerHelper
 @inject IConfiguration _config
 
@@ -24,7 +22,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
     
-       <AuthorizeView Roles="ServiceProvider">
+       <AuthorizeView>
         <Authorized>
      <!--Profile Vie- Dropdown -->
        <div id="sidebarMenu" class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse px-4">
@@ -50,8 +48,7 @@
                <li>
                 <form action="/Identity/Account/Logout?returnUrl=%2F" method="post">
                     <button class="dropdown-item" type="submit">Logout</button>
-                    <input name="__RequestVerificationToken" type="hidden" 
-                        value="@TokenProvider.XsrfToken">
+                   
                 </form>
                </li>
              </ul>
@@ -61,14 +58,14 @@
             </div>
         </Authorized>
         <NotAuthorized>
-                <a href="Identity/Account/Login" class="nav-link text-dark px-3">
+                <button @onclick="NavigateToLogin" class="btn btn-outline-dark border-0 ">
                     <strong>
-                        LOGIN
+                        Sign In
                     </strong>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-lock" viewBox="0 0 16 16">
                         <path d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm0 5.996V14H3s-1 0-1-1 1-4 6-4c.564 0 1.077.038 1.544.107a4.524 4.524 0 0 0-.803.918A10.46 10.46 0 0 0 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h5ZM9 13a1 1 0 0 1 1-1v-1a2 2 0 1 1 4 0v1a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2Zm3-3a1 1 0 0 0-1 1v1h2v-1a1 1 0 0 0-1-1Z" />
                     </svg>
-               </a>
+               </button>
         </NotAuthorized>
        </AuthorizeView>
 
@@ -134,7 +131,7 @@
 </svg>
 
 
-<AuthorizeView Context="Auth" Roles="ServiceProvider">
+<AuthorizeView Context="Auth">
     <Authorized>
         <div class="container-fluid">
     
@@ -162,7 +159,7 @@
                     Profile
                 </a>
                 </li>
-                <AuthorizeView Roles="Owner,Member">
+                <AuthorizeView>
                     <Authorized>
                     <li>
                         <a href="requests" class="nav-link link-dark dropdown-toggle shadow" id="requestsDropdownMenu" data-bs-toggle="dropdown" aria-expanded="true">
@@ -222,11 +219,11 @@
 </AuthorizeView>
     <!--End Side NavBar-->
         
-    <AuthorizeView>
+    
     <main class="col-md-auto ms-sm-auto col-lg-10 px-md-4 bg-white">
         @Body
     </main>
-    </AuthorizeView>
+   
     <!--Body-->
     
  
@@ -268,17 +265,9 @@
 
 @code{
     private string? image; 
-
-    protected override async Task OnInitializedAsync()
+    void NavigateToLogin()
     {
-        //var prof = await _providerHelper.GetProfile();
-        //Call a profile Get without a provider
-        //if(prof!=null)
-        //{
-        //    image = Path.Combine(_config.GetValue<string>("WebStorageRoot")!, prof.ImageUrl);
-        //}
-       
+        Navigation.NavigateTo("sign-in");
     }
-    
 }
  

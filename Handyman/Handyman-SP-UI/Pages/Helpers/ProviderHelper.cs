@@ -1,9 +1,7 @@
-﻿using Handyman_SP_UI.Areas.Identity.Data;
-using HandymanProviderLibrary.Api.EndPoints.Interface;
+﻿using HandymanProviderLibrary.Api.EndPoints.Interface;
 using HandymanProviderLibrary.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Identity;
 
 namespace Handyman_SP_UI.Pages.Helpers;
 
@@ -12,26 +10,21 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
     IServiceProviderEndPoint? _providerEndPoint;
     AuthenticationStateProvider? _authenticationStateProvider;
     ServiceProviderModel? providerModel;
-    private RoleManager<IdentityRole> _roleManager;
-    private UserManager<Handyman_SP_UIUser> _userManager;
+
     private readonly IServiceEndpoint _serviceEndpoint;
     private readonly IBusinessEndPoint _workShopEndPoint;
-    private AppUserManager _appUserManager;
-    private SignInManager<Handyman_SP_UIUser> signInManager;
+
 
 
 
     public ProviderHelper(IServiceProviderEndPoint providerEndPoint,
         AuthenticationStateProvider authenticationStateProvider,
-        RoleManager<IdentityRole> roleManager, AppUserManager appUserManager, UserManager<Handyman_SP_UIUser> userManager,
-        SignInManager<Handyman_SP_UIUser> signInManager, IServiceEndpoint serviceEndpoint, IBusinessEndPoint workShopEndPoint)
-        : base(providerEndPoint, authenticationStateProvider, userManager, appUserManager,
-            roleManager, signInManager)
+          IServiceEndpoint serviceEndpoint, IBusinessEndPoint workShopEndPoint)
+        : base(providerEndPoint, authenticationStateProvider)
     {
         _providerEndPoint = providerEndPoint;
         _authenticationStateProvider = authenticationStateProvider;
-        _roleManager = roleManager;
-        _userManager = userManager;
+
         _serviceEndpoint = serviceEndpoint;
         _workShopEndPoint = workShopEndPoint;
     }

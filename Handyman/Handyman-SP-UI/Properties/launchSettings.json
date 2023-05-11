@@ -16,5 +16,13 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }
+  },
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:51935/",
+      "sslPort": 44325
+    }
   }
 }
