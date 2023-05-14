@@ -1,0 +1,48 @@
+﻿@page "/confirm-email"
+
+@using HandymanProviderLibrary.Api.EndPoints.Interface
+@inject IAuthEndpoint _authEndPoint
+@inject NavigationManager NavManager
+
+@if (Errors.Count > 0)
+{
+    @foreach(string error in Errors)
+    {
+        <span class="text-danger">@error</span>
+    }
+}
+
+
+@code {
+    private string? userId,code; 
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name ="UserId")]
+    public string? UserId { get { return userId; } set { userId = value; } }
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "Code")]
+    public string? Code { get { return code; } set { code = value; } }
+
+    private List<string> Errors = new List<string>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            bool IsConfirmed = await _authEndPoint.ConfirmEmail(userId, code);
+            if (IsConfirmed)
+            {
+                NavManager.NavigateTo("ws-sign-up",true);
+            }
+            else
+            {
+                Errors.Add("Error: Email not confirmed!");
+            }
+        }catch(Exception ex)
+        {
+            Errors.Add(ex.Message);
+        }
+    }
+
+}

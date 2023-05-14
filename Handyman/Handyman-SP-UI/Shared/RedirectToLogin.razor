@@ -1,9 +1,12 @@
-﻿@inject NavigationManager Navigation
+﻿@inject NavigationManager NavigationManager
 
 @code {
+    [Parameter]
+    public string? ReturnUrl { get; set; }
     protected override void OnInitialized()
     {
-        Navigation.NavigateTo("login" +
-        Uri.EscapeDataString(Navigation.Uri));
+        ReturnUrl = "~/" + ReturnUrl;
+        NavigationManager.NavigateTo($"/sign-in?returnUrl={ReturnUrl}",
+           forceLoad: true);
     }
 }

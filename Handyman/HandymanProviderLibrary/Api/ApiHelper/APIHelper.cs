@@ -51,8 +51,8 @@ public class APIHelper : IAPIHelper
 
         LoginModel? data = new LoginModel
         {
-           Email= username,
-           Password= password
+            Email = username,
+            Password = password
 
         };
 
@@ -103,12 +103,22 @@ public class APIHelper : IAPIHelper
 
     }
 
-
-
-
-    public void LogOutuser()
+    //Log the user out of the system ***cheat!
+    public async Task<bool> LogOutuser()
     {
-        _apiClient.DefaultRequestHeaders.Clear();
+
+        try
+        {
+            //_apiClient.DefaultRequestHeaders.Clear();
+            var response = await _apiClient.PostAsJsonAsync("auth/logout", new { });
+            return response.IsSuccessStatusCode;
+
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception(ex.Message);
+        }
     }
 
 

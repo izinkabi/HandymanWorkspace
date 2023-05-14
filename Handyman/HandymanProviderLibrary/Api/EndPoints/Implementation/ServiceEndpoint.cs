@@ -1,6 +1,7 @@
 ﻿using HandymanProviderLibrary.Api.ApiHelper;
 using HandymanProviderLibrary.Api.EndPoints.Interface;
 using HandymanProviderLibrary.Models;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
 
@@ -8,17 +9,19 @@ namespace HandymanProviderLibrary.Api.EndPoints.Implementation;
 
 public class ServiceEndpoint : IServiceEndpoint
 {
-    static IAPIHelper _aPIHelper;
-    static IList<ServiceModel>? services;
+    private readonly IAPIHelper _apiClient;
+    private readonly AuthenticatedUserModel _authedModel;
+    IList<ServiceModel>? services;
     /// <summary>
     /// Constractor for the API helper
     /// </summary>
     /// <param name="aPIHelper"></param>
     /// 
 
-    public ServiceEndpoint(IAPIHelper aPIHelper)
+    public ServiceEndpoint(IAPIHelper aPIHelper, AuthenticatedUserModel authedModel)
     {
-        _aPIHelper = aPIHelper;
+        _apiClient = aPIHelper;
+        _authedModel = authedModel;
     }
     /// <summary>
     /// This method is used to Get a list of Service from the API
@@ -29,9 +32,14 @@ public class ServiceEndpoint : IServiceEndpoint
     {
         try
         {
-            if (services == null)
+            if (services == null && _authedModel.Access_Token != null)
             {
-                services = await _aPIHelper.ApiClient.GetFromJsonAsync<List<ServiceModel>>("/api/services/GetServices");
+                _apiClient.ApiClient.DefaultRequestHeaders.Clear();
+                _apiClient.ApiClient.DefaultRequestHeaders.Accept.Clear();
+                _apiClient.ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("applications/json"));
+                _apiClient.ApiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_authedModel.Access_Token}");
+
+                services = await _apiClient.ApiClient.GetFromJsonAsync<List<ServiceModel>>("/api/services/GetServices");
             }
 
 
@@ -49,7 +57,7 @@ public class ServiceEndpoint : IServiceEndpoint
     {
         try
         {
-            List<ProviderServiceModel>? httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<List<ProviderServiceModel>>($"api/GetProvidersServicesByServiceId?serviceId={serviceId}");
+            List<ProviderServiceModel>? httpResponseMessage = await _apiClient.ApiClient.GetFromJsonAsync<List<ProviderServiceModel>>($"api/GetProvidersServicesByServiceId?serviceId={serviceId}");
             return httpResponseMessage;
         }
         catch (Exception ex)
@@ -64,7 +72,7 @@ public class ServiceEndpoint : IServiceEndpoint
     {
         try
         {
-            List<ProviderServiceModel>? httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<List<ProviderServiceModel>>($"/api/GetProvidersServicesByProviderId?providerId={providerId}");
+            List<ProviderServiceModel>? httpResponseMessage = await _apiClient.ApiClient.GetFromJsonAsync<List<ProviderServiceModel>>($"/api/GetProvidersServicesByProviderId?providerId={providerId}");
             return httpResponseMessage;
         }
         catch (Exception ex)
@@ -86,7 +94,7 @@ public class ServiceEndpoint : IServiceEndpoint
 
         try
         {
-            var httpResponseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync("/api/PostProvidersService", ps);
+            var httpResponseMessage = await _apiClient.ApiClient.PostAsJsonAsync("/api/PostProvidersService", ps);
             if (httpResponseMessage.IsSuccessStatusCode)
             {
                 result = httpResponseMessage.ReasonPhrase;
@@ -107,7 +115,7 @@ public class ServiceEndpoint : IServiceEndpoint
     {
         try
         {
-            var httpResponseMessage = await _aPIHelper.ApiClient.PutAsJsonAsync("api/UpdateProvidersService", providerService);
+            var httpResponseMessage = await _apiClient.ApiClient.PutAsJsonAsync("api/UpdateProvidersService", providerService);
         }
         catch (Exception ex)
         {
@@ -119,7 +127,7 @@ public class ServiceEndpoint : IServiceEndpoint
     {
         try
         {
-            var httpResponseMessage = await _aPIHelper.ApiClient.DeleteAsync($"api/UpdateProvidersService?providerService={providerService}");
+            var httpResponseMessage = await _apiClient.ApiClient.DeleteAsync($"api/UpdateProvidersService?providerService={providerService}");
         }
         catch (Exception ex)
         {
@@ -133,7 +141,7 @@ public class ServiceEndpoint : IServiceEndpoint
 
         try
         {
-            var result = await _aPIHelper.ApiClient.PostAsJsonAsync("/api/services/postservices", services);
+            var result = await _apiClient.ApiClient.PostAsJsonAsync("/api/services/postservices", services);
             if (result.IsSuccessStatusCode)
             {
                 return true;
@@ -154,7 +162,7 @@ public class ServiceEndpoint : IServiceEndpoint
     {
         try
         {
-            var result = await _aPIHelper.ApiClient.PutAsJsonAsync("/api/services/UpdateService", serviceUpdate);
+            var result = await _apiClient.ApiClient.PutAsJsonAsync("/api/services/UpdateService", serviceUpdate);
             if (result.IsSuccessStatusCode)
             {
                 return true;
@@ -176,7 +184,7 @@ public class ServiceEndpoint : IServiceEndpoint
     {
         try
         {
-            var result = await _aPIHelper.ApiClient.PostAsJsonAsync("/api/services/postprice", price);
+            var result = await _apiClient.ApiClient.PostAsJsonAsync("/api/services/postprice", price);
             return await result.Content.ReadFromJsonAsync<int>();
         }
         catch (Exception ex)
@@ -192,7 +200,7 @@ public class ServiceEndpoint : IServiceEndpoint
     {
         try
         {
-            var priceId = await _aPIHelper.ApiClient.PostAsJsonAsync("/api/service/insertbaseprice", price);
+            var priceId = await _apiClient.ApiClient.PostAsJsonAsync("/api/service/insertbaseprice", price);
             if (priceId.IsSuccessStatusCode)
             {
                 return await priceId.Content.ReadFromJsonAsync<int>();
@@ -217,7 +225,7 @@ public class ServiceEndpoint : IServiceEndpoint
             if (priceId == 0)
             { return null; }
 
-            PriceModel? priceModel = await _aPIHelper.ApiClient.GetFromJsonAsync<PriceModel>($"/api/services/getprice?priceId={priceId}");
+            PriceModel? priceModel = await _apiClient.ApiClient.GetFromJsonAsync<PriceModel>($"/api/services/getprice?priceId={priceId}");
             PriceModel? price = priceModel;
             return price;
 
@@ -239,7 +247,7 @@ public class ServiceEndpoint : IServiceEndpoint
 
         try
         {
-            var result = await _aPIHelper.ApiClient.PostAsJsonAsync<ServiceModel>("/api/services/InsertCustomService", service);
+            var result = await _apiClient.ApiClient.PostAsJsonAsync<ServiceModel>("/api/services/InsertCustomService", service);
             if (result.IsSuccessStatusCode)
             {
                 int customServiceId = await result.Content.ReadFromJsonAsync<int>();
@@ -267,7 +275,7 @@ public class ServiceEndpoint : IServiceEndpoint
         }
         try
         {
-            List<CustomServiceModel> customServices = await _aPIHelper.ApiClient.GetFromJsonAsync<List<CustomServiceModel>>($"/api/services/GetWorkShopServices?wsregId={wsregId}");
+            List<CustomServiceModel> customServices = await _apiClient.ApiClient.GetFromJsonAsync<List<CustomServiceModel>>($"/api/services/GetWorkShopServices?wsregId={wsregId}");
             return customServices;
 
         }
@@ -287,7 +295,7 @@ public class ServiceEndpoint : IServiceEndpoint
             {
                 return false;
             }
-            var httpResponse = await _aPIHelper.ApiClient.PutAsJsonAsync<CustomServiceModel>("/api/services/updatewsservice", workshopService);
+            var httpResponse = await _apiClient.ApiClient.PutAsJsonAsync<CustomServiceModel>("/api/services/updatewsservice", workshopService);
             if (httpResponse.IsSuccessStatusCode)
             {
                 return true;
@@ -315,7 +323,7 @@ public class ServiceEndpoint : IServiceEndpoint
 
         try
         {
-            var httpResponse = await _aPIHelper.ApiClient.DeleteAsync($"/api/services/DeleteWorkShopService?wsServiceId={wsServiceId}&wsRegId={wsRegId}");
+            var httpResponse = await _apiClient.ApiClient.DeleteAsync($"/api/services/DeleteWorkShopService?wsServiceId={wsServiceId}&wsRegId={wsRegId}");
             if (httpResponse.IsSuccessStatusCode)
             {
                 return true;
@@ -341,7 +349,7 @@ public class ServiceEndpoint : IServiceEndpoint
         }
         try
         {
-            var httpResponse = await _aPIHelper.ApiClient.DeleteAsync($"/api/services/DeleteProviderService?wsServiceId={wsServiceId}&providerId={providerId}");
+            var httpResponse = await _apiClient.ApiClient.DeleteAsync($"/api/services/DeleteProviderService?wsServiceId={wsServiceId}&providerId={providerId}");
             if (httpResponse.IsSuccessStatusCode)
             {
                 return true;

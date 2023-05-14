@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="Pages\Auth\Login.razor" />
+    <Content Remove="Pages\Auth\ConfirmEmailComponent.razor" />
     <Content Remove="Pages\WorkShop\Requests\InProgressRequestsComponent.razor" />
     <Content Remove="Pages\WorkShop\Requests\Tasks\CancelledRequestsComponent.razor" />
     <Content Remove="wwwroot\assets\dist\js\negotiationModule.js" />
@@ -47,6 +47,7 @@
 
 
   <ItemGroup>
+    <None Include="Shared\ConfirmEmailComponent.razor" />
     <None Include="Shared\Login.razor" />
     <None Include="Pages\WorkShop\Requests\CancelledRequestsComponent.razor" />
     <None Include="Pages\WorkShop\Profile\ProviderProfile.razor" />
@@ -76,6 +77,7 @@
 
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\Auth\ConfirmEmailComponent.razor" />
     <_ContentIncludedByDefault Remove="Pages\Auth\Login.razor" />
     <_ContentIncludedByDefault Remove="Pages\WorkShop\Requests\InProgressRequestsComponent.razor" />
     <_ContentIncludedByDefault Remove="Pages\WorkShop\Requests\Tasks\CancelledRequestsComponent.razor" />
@@ -110,6 +112,12 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Pages\Auth\Login.razor" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Auth\ConfirmEmailComponent.razor" />
   </ItemGroup>
 
 </Project>

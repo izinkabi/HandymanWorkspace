@@ -6,27 +6,27 @@
 @inject NavigationManager NavManager
 
 
-<div class="container container-fluid m-auto">
+<div class="container container-fluid m-auto shadow rounded">
     <h3>Login</h3>
     <EditForm Model="Input" OnValidSubmit="ClickLogin">
 
         <div class="row mb-3">
-            <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
+            <label for="loginInputEmail3" class="col-sm-2 col-form-label">Email</label>
             <div class="col-sm-10">
-                <input type="email" @bind-value="Input.Username" class="form-control" id="inputEmail3" />
+                <InputText type="email" @bind-Value="Input.Username" class="form-control" id="loginInputEmail3" />
             </div>
         </div>
         <div class="row mb-3">
-            <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
+            <label for="loginInputPassword3" class="col-sm-2 col-form-label">Password</label>
             <div class="col-sm-10">
-                <input type="password" @bind-value="Input.Password" class="form-control" id="inputPassword3" />
+                <InputText type="password" @bind-Value="Input.Password" class="form-control" id="loginInputPassword3" />
             </div>
         </div>
 
         <div class="row mb-3">
             <div class="col-sm-10 offset-sm-2">
                 <div class="form-check">
-                    <input @bind-value="Input.RememberMe" class="form-check-input" id="gridCheck1" />
+                    <InputCheckbox @bind-Value="Input.RememberMe" class="form-check-input" id="gridCheck1" />
                     <label class="form-check-label" for="gridCheck1">
                         Remember Me
                     </label>
@@ -34,34 +34,45 @@
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Sign in</button>
-
+        <br/>
+        <a class="link-primary m-auto p-2" @onclick="ToSignUp">Sign-Up</a>
     </EditForm>
 </div>
 
 @code {
-    protected override Task OnInitializedAsync()
-    {
-        return base.OnInitializedAsync();
-    }
+    private string? returnUrl = null;
+
     private InputModel? Input = new InputModel()!;
 
+    [Parameter]
+    [SupplyParameterFromQuery(Name ="returnUrl")]
+    public string? ReturnUrl { get { return returnUrl; } set { returnUrl = value; } }
+    //Login dto
     private class InputModel
     {
-        [Required]
-        public string? Username { get; set; }
-        [Required]
-        public string? Password { get; set; }
+        [EmailAddress(ErrorMessage = "Please enter valid email address")]
+        [Required(ErrorMessage ="Invalid email input")]
+        internal string? Username { get; set; }
+        [Required(ErrorMessage = "Invalid Password")]
+        [DataType(DataType.Password)]
+        internal string? Password { get; set; }
         public bool RememberMe { get; set; }
     }
 
-
+    //Submitting the form execution method
     async Task ClickLogin()
     {
         var authedUserModel = await _authEndPoint.LoginUser(Input.Username, Input.Password);
-        //await _localStorage.SetItemAsync("token", authedUserModel.Access_Token);
-        var user = await _authStateProvider.GetAuthenticationStateAsync();
+        var state = await _authStateProvider.GetAuthenticationStateAsync();
 
-
-
+        if (state.User.Identity.IsAuthenticated)
+        {
+            NavManager.NavigateTo(returnUrl ?? "/",true);
+        }
+        //await InvokeAsync(StateHasChanged); 
+    }
+    async Task ToSignUp()
+    {
+        NavManager.NavigateTo("sign-up");
     }
 }

@@ -10,12 +10,11 @@ public class CustomeAuthStateProvider : AuthenticationStateProvider
 {
 
     private readonly AuthenticatedUserModel _authuserModel;
-    //private readonly ILocalStorageService _localStorage;
 
-    public CustomeAuthStateProvider(/*ILocalStorageService localStorage*/AuthenticatedUserModel authenticatedUserModel)
+    public CustomeAuthStateProvider(AuthenticatedUserModel authenticatedUserModel)
     {
         _authuserModel = authenticatedUserModel;
-        //_localStorage = localStorage;
+
     }
 
     //Get the Authentication state of the token 
@@ -23,7 +22,9 @@ public class CustomeAuthStateProvider : AuthenticationStateProvider
     {
         var identity = new ClaimsIdentity();
         if (!string.IsNullOrEmpty(_authuserModel.Access_Token))
+        {
             identity = new ClaimsIdentity(ParseClaimsFromJwt(_authuserModel.Access_Token), "jwt");
+        }
         var user = new ClaimsPrincipal(identity);
         AuthenticationState? state = new AuthenticationState(user);
 

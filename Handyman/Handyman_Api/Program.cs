@@ -22,7 +22,10 @@ builder.Services.AddDbContext<IdentityDataContext>(options =>
 
 //Configure Identity to use User and Role identity and Framework as storage provider
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<IdentityDataContext>();
+    .AddEntityFrameworkStores<IdentityDataContext>()
+    .AddUserManager<UserManager<IdentityUser>>()
+    .AddDefaultTokenProviders();
+
 
 
 // Add services to the container
@@ -37,6 +40,7 @@ builder.Services.AddTransient<IRequestData, RequestData>();
 builder.Services.AddScoped<ITaskData, TaskData>();
 builder.Services.AddScoped<IProfileData, ProfileData>();
 builder.Services.AddScoped<ITokenProvider, TokenProvider>();
+builder.Services.AddScoped<IAuthData, AuthData>();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {

@@ -1,12 +1,11 @@
 ﻿using HandymanProviderLibrary.Api.EndPoints.Interface;
 using HandymanProviderLibrary.Models;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Security.Claims;
 
 namespace Handyman_SP_UI.Pages.Helpers;
 
-public class ProfileHelper : PageModel
+public class ProfileHelper
 {
     private readonly IServiceProviderEndPoint _providerEndPoint;
     private readonly AuthenticationStateProvider? _authenticationStateProvider;
@@ -38,15 +37,6 @@ public class ProfileHelper : PageModel
         }
     }
 
-    //Create a new role in AspNetRoles(owner) and add the users
-    protected internal async Task<bool> CreateOwner()
-    {
-
-
-
-
-        return false;
-    }
 
     //Register Profile
     protected internal async Task<bool> CreateProfile(ProfileModel newProfile)
@@ -97,14 +87,6 @@ public class ProfileHelper : PageModel
         }
     }
 
-    protected internal ClaimsPrincipal GetUser()
-    {
-        if (User != null)
-        {
-            return User;
-        }
-        return null;
-    }
 
 
 }

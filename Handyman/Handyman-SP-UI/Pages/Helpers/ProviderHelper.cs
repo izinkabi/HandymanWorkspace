@@ -297,6 +297,10 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
         {
             //Await the ower and worshop 
             var owner = await GetProvider();
+            if (owner == null)
+            {
+                return new List<CustomServiceModel>();
+            }
             int wsregid = (await _workShopEndPoint.GetBusiness(owner.BusinessId)).registration.Id;
             if (wsregid == 0)
             {

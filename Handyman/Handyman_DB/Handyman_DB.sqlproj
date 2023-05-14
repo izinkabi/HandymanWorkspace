@@ -158,6 +158,8 @@
     <Build Include="Stored Procedures\Prices\spPriceInsert.sql" />
     <Build Include="Stored Procedures\Prices\spPriceLookUp.sql" />
     <Build Include="Stored Procedures\Prices\spPriceUpdate.sql" />
+    <Build Include="Tables\AspNetUserTokens.sql" />
+    <Build Include="Stored Procedures\spJwtToken_Delete.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Script\DevNathi_Handyman_DB.publish.publish.xml" />

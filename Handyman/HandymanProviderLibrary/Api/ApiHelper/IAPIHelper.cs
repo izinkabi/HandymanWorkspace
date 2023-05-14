@@ -8,6 +8,6 @@ namespace HandymanProviderLibrary.Api.ApiHelper
 
         Task<string> AuthenticateUser(string username, string password);
         Task<IloggedInUserModel> GetLoggedInUserInfor(string Token);
-        void LogOutuser();
+        Task<bool> LogOutuser();
     }
 }
