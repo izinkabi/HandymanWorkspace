@@ -4,7 +4,7 @@
 @inject AuthenticationStateProvider _authStateProvider
 @inject IAuthEndpoint _authEndPoint 
 @inject NavigationManager NavManager
-
+@attribute [AllowAnonymous]
 
 <div class="container container-fluid m-auto shadow rounded">
     <h3>Login</h3>
@@ -40,13 +40,26 @@
 </div>
 
 @code {
-    private string? returnUrl = null;
+    private string? returnUrl;
 
     private InputModel? Input = new InputModel()!;
 
     [Parameter]
     [SupplyParameterFromQuery(Name ="returnUrl")]
     public string? ReturnUrl { get { return returnUrl; } set { returnUrl = value; } }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (string.IsNullOrEmpty(returnUrl))
+        {
+            returnUrl = "/";
+        }
+
+        if ((await _authStateProvider.GetAuthenticationStateAsync()).User.Identity.IsAuthenticated)
+        {
+            NavManager.NavigateTo(returnUrl);
+        }
+    }
     //Login dto
     private class InputModel
     {
@@ -62,14 +75,15 @@
     //Submitting the form execution method
     async Task ClickLogin()
     {
+        
         var authedUserModel = await _authEndPoint.LoginUser(Input.Username, Input.Password);
         var state = await _authStateProvider.GetAuthenticationStateAsync();
-
+        await InvokeAsync(StateHasChanged);
         if (state.User.Identity.IsAuthenticated)
         {
-            NavManager.NavigateTo(returnUrl ?? "/",true);
+            NavManager.NavigateTo(returnUrl);
         }
-        //await InvokeAsync(StateHasChanged); 
+        
     }
     async Task ToSignUp()
     {

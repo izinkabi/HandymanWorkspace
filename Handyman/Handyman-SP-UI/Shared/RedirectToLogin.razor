@@ -1,12 +1,19 @@
-﻿@inject NavigationManager NavigationManager
+﻿@inject NavigationManager NavManager
 
 @code {
+    private string? returnUrl;
+
     [Parameter]
-    public string? ReturnUrl { get; set; }
-    protected override void OnInitialized()
+    public string? ReturnUrl { get { return returnUrl; } set { returnUrl = value; } }
+    protected override async Task OnInitializedAsync()
     {
-        ReturnUrl = "~/" + ReturnUrl;
-        NavigationManager.NavigateTo($"/sign-in?returnUrl={ReturnUrl}",
+
+        if (string.IsNullOrEmpty(returnUrl))
+        {
+            returnUrl = "";
+        }
+        
+        NavManager.NavigateTo($"sign-in?returnUrl={returnUrl}",
            forceLoad: true);
     }
 }

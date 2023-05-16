@@ -3,4 +3,5 @@
 public interface ITokenProvider
 {
     string GenerateToken(string email);
+    string GenerateToken(string email, string? userId);
 }

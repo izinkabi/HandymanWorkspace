@@ -44,23 +44,47 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     [AllowAnonymous]
 
-    public async Task<IActionResult> LoginUser(LoginModel loginModel
-        )
+    public async Task<IActionResult> LoginUser(LoginModel loginModel)
     {
         try
         {
+            Microsoft.AspNetCore.Identity.SignInResult result = new Microsoft.AspNetCore.Identity.SignInResult();
             //Authenticate the user using Identity - Signin Manager
             //This to log in the user
-            var result = await _signInManager.PasswordSignInAsync(userName: loginModel.Email, loginModel.Password, isPersistent: true, true);
+            if (loginModel == null)
+            {
+                return BadRequest("Error login in please try again");
+            }
+
+            if (!string.IsNullOrEmpty(loginModel.UserId))
+            {
+                var identityUser = await _userManager.FindByIdAsync(loginModel.UserId);
+
+                if (identityUser != null)
+                {
+                    // Generate token using JWT
+                    var token = _tokenProvider.GenerateToken(identityUser.Email ?? _signInManager.Context.User.Identity.Name, identityUser.Id);
+                    // Set the token as the authentication token for the user
+                    var identityResult = await _signInManager.UserManager.SetAuthenticationTokenAsync(identityUser, "Jwt", "Bearer", token);
+                    return Ok(token);
+                }
+
+            }
+
+            result = await _signInManager.PasswordSignInAsync(userName: loginModel.Email, loginModel.Password, isPersistent: true, true);
+
+
+
+
             if (result.Succeeded)
             {
                 _logger.LogInformation("User Logged In");
-                var user = await _userManager.FindByEmailAsync(loginModel.Email);
+                var user = await _userManager.FindByEmailAsync(loginModel.Email ?? _signInManager.Context.User.Identity.Name);
 
                 if (user != null)
                 {
                     // Generate token using JWT
-                    var token = _tokenProvider.GenerateToken(user.Email);
+                    var token = _tokenProvider.GenerateToken(user.Email ?? _signInManager.Context.User.Identity.Name);
                     // Set the token as the authentication token for the user
                     var identityResult = await _signInManager.UserManager.SetAuthenticationTokenAsync(user, "Jwt", "Bearer", token);
                     return Ok(token);
@@ -85,10 +109,17 @@ public class AuthController : ControllerBase
         }
         catch (Exception ex)
         {
-
-            throw ex;
+            throw new Exception(ex.Message);
         }
     }
+
+
+    //Overloading the login method
+    //[HttpPost("login")]
+    //[AllowAnonymous]
+
+    //public async Task<IActionResult> LoginUser(LoginModel loginModel
+    //  )
 
     //Register
     [HttpPost("register")]
@@ -202,14 +233,14 @@ public class AuthController : ControllerBase
     private void SendEmail(string body)
     {
         var email = new MimeMessage();
-        email.From.Add(MailboxAddress.Parse("leland.thompson@ethereal.email"));
-        email.To.Add(MailboxAddress.Parse("leland.thompson@ethereal.email"));
+        email.From.Add(MailboxAddress.Parse("cleo.emard@ethereal.email"));
+        email.To.Add(MailboxAddress.Parse("cleo.emard@ethereal.email"));
         email.Subject = "Confirm Email";
         email.Body = new TextPart(TextFormat.Html) { Text = body };
 
         using var smtp = new SmtpClient();
         smtp.Connect("smtp.ethereal.email", 587, SecureSocketOptions.StartTls);
-        smtp.Authenticate("leland.thompson@ethereal.email", "apxfGvfh9KnPngSGNe");
+        smtp.Authenticate("cleo.emard@ethereal.email", "18QqU4asFMsJXfqNya");
         smtp.Send(email);
         smtp.Disconnect(true);
     }

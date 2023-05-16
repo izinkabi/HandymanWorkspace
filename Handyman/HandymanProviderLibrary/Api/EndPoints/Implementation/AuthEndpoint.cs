@@ -50,8 +50,54 @@ public class AuthEndpoint : IAuthEndpoint
 
     }
 
+
+    /// <summary>
+    /// Overloading the Login Function to use a user Id 
+    /// this is mainly for redirecting after confirming the password
+    /// hence it allows the newly confirmed user to immediately 
+    /// jump to creating a new Workshop right after sign up
+    /// </summary>
+    /// <returns> An Authenticated User Model</returns>
+    public async Task<AuthenticatedUserModel> LoginUser(string? userId)
+    {
+        try
+        {
+            if (!string.IsNullOrEmpty(userId))
+            {
+                string? result = await _apiHelper.AuthenticateUser(userId);
+                _authedUser.Access_Token = result;//our precious Jwt Token ;)
+                                                  //get the logged in user's profile
+                var loggedInUser = await _apiHelper.GetLoggedInUserInfor(result);
+                _authedUser.UserName = loggedInUser.Username;
+            }
+
+            return _authedUser;
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception(ex.Message);
+        }
+    }
+
+
+
     //Log the user out
-    public async Task<bool> LogOut() => await _apiHelper.LogOutuser();
+    public async Task<bool> LogOut()
+    {
+        if (_authedUser == null) { return true; }
+        if (_authedUser != null && _authedUser.Access_Token != null)
+        {
+            //remove the token
+            await _apiHelper.LogOutuser();
+            //release variables
+            _authedUser.Access_Token = null;
+            _authedUser = new AuthenticatedUserModel();
+            return true;
+
+        }
+        else { return false; }
+    }
 
     //Register a new user
     public async Task<bool> Register(string username, string password)
@@ -76,6 +122,7 @@ public class AuthEndpoint : IAuthEndpoint
             throw new Exception(ex.Message, ex.InnerException);
         }
     }
+
 
     public async Task<bool> ConfirmEmail(string userId, string? code)
     {

@@ -36,9 +36,6 @@ builder.Services.AddScoped<IProviderHelper, ProviderHelper>();
 
 builder.Services.AddScoped<AuthenticationStateProvider, CustomeAuthStateProvider>();
 
-
-
-
 builder.Services.AddResponseCompression(opt =>
 {
     opt.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(

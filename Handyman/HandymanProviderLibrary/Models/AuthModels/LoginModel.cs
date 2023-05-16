@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace HandymanProviderLibrary.Models.AuthModels;
 public class LoginModel
@@ -18,4 +12,5 @@ public class LoginModel
     public string Password { get; set; }
 
     public bool RememberMe { get; set; }
+    public string? UserId { get; set; }
 }

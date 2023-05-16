@@ -23,13 +23,36 @@ public class TokenProvider : ITokenProvider
         var claims = new[]
         {
             new Claim(ClaimTypes.Email, email),
-            new Claim(ClaimTypes.Name, email)
+            new Claim(ClaimTypes.Name, email) ,
 
         };
 
         var token = new JwtSecurityToken(
             claims: claims,
             expires: DateTime.UtcNow.AddMinutes(30),
+            signingCredentials: new SigningCredentials(_key, SecurityAlgorithms.HmacSha256)
+        );
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    public string GenerateToken(string email, string? userId)
+    {
+        if (userId == null)
+        {
+            return "";
+        }
+        var claims = new[]
+        {
+            new Claim(ClaimTypes.Email, email),
+            new Claim(ClaimTypes.Name, email) ,
+            new Claim(ClaimTypes.NameIdentifier,userId)
+
+        };
+
+        var token = new JwtSecurityToken(
+            claims: claims,
+            expires: DateTime.UtcNow.AddMinutes(13),
             signingCredentials: new SigningCredentials(_key, SecurityAlgorithms.HmacSha256)
         );
 

@@ -1,6 +1,7 @@
 ﻿using Handyman_DataLibrary.DataAccess.Interfaces;
 using Handyman_DataLibrary.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -9,15 +10,19 @@ namespace Handyman_Api.Controllers
 {
     [Route("api/Handymen")]
     [ApiController]
- 
+
     public class HandymenController : ControllerBase
     {
 
         IProfileData _profileData;
+        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly UserManager<IdentityUser> userManager;
 
-        public HandymenController(IProfileData profileData)
+        public HandymenController(IProfileData profileData, SignInManager<IdentityUser> signInManager)
         {
             _profileData = profileData;
+            this.signInManager = signInManager;
+            this.userManager = userManager;
         }
 
         // GET: api/<HandymenController>
@@ -57,6 +62,8 @@ namespace Handyman_Api.Controllers
         {
             if (profile != null)
             {
+                profile.EmailAddress = User.Identity.Name;//cheat cheat
+                profile.UserId = signInManager.UserManager.GetUserId(User);
                 _profileData.InsertProfile(profile);
             }
         }

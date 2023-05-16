@@ -3,7 +3,7 @@
 @using System.ComponentModel.DataAnnotations;
 @inject IAuthEndpoint _authEndPoint
 @inject NavigationManager NavManager
-
+@attribute [AllowAnonymous]
 @if (Errors.Count > 0)
 {
     @foreach(string error in Errors)

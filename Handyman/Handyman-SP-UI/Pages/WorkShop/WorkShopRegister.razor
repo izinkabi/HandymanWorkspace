@@ -1,11 +1,10 @@
 ﻿@page "/ws-sign-up"
-
+@attribute [Authorize]
 @using Microsoft.AspNetCore.Components.Web
-
 @inject NavigationManager NavManager
 @inject IBusinessHelper _workshopHelper
 
-<AuthorizeView Context="Auth">
+
 <!-- Workshop Register Button trigger modal -->
 <button type="button" class="btn btn-dark outline-btn-secondary" data-bs-toggle="modal" data-bs-target="#wsRegisterModal">
    Create WorkShop
@@ -17,7 +16,7 @@
 
 <!-- Workshop Register Modal -->
 <div class="modal fade" id="wsRegisterModal" tabindex="-1" aria-labelledby="wsRegisterModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-fullscreen-xxl-down">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="wsRegisterModalLabel">WorkShop Register</h1>
@@ -72,9 +71,11 @@
                         <label for="inputZip"  class="form-label">Zip</label>
                         <input type="text" @bind-value="newWorkShop.address.add_zip" class="form-control" id="inputZip">
                     </div>
-                    <button type="submit" class="btn outline-btn-primary">
+                     <div class="col-md-4 m-auto">
+                    <button type="submit" class="btn outline-btn-dark">
                         Submit
                     </button>
+                    </div>
 
                 </EditForm>
 
@@ -84,7 +85,7 @@
         </div>
     </div>
 </div>
-</AuthorizeView>
+
 
 
 

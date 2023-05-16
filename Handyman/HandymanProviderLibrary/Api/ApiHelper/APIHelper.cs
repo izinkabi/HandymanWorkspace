@@ -70,6 +70,40 @@ public class APIHelper : IAPIHelper
         }
 
     }
+
+    //Overloading AuthenticateUser method to take a string of a user ID
+    public async Task<string> AuthenticateUser(string userId)
+    {
+        try
+        {
+            LoginModel? data = new LoginModel
+            {
+                Email = "string@mail.com",
+                Password = "string",
+                RememberMe = false,
+                UserId = userId
+
+            };
+            InitializeCLient();
+            using (HttpResponseMessage httpResponse = await _apiClient.PostAsJsonAsync<LoginModel>("Auth/login", data))
+            {
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    var token = await httpResponse.Content.ReadAsStringAsync();
+                    return token;
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            };
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception(ex.Message);
+        }
+    }
     public async Task<IloggedInUserModel> GetLoggedInUserInfor(string Token)
     {
         _apiClient.DefaultRequestHeaders.Clear();
