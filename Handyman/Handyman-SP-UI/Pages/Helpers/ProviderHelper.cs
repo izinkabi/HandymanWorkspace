@@ -187,36 +187,27 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
     [Authorize("ServiceProvider")]
     public async Task<BusinessModel> StampBusinessUserAsync(BusinessModel? newBiz)
     {
-        if (newBiz != null && newBiz.Employees.Count > 0)
+
+
+        try
         {
-            foreach (var member in newBiz.Employees)
-            {
-                try
-                {
-                    if (member.IsOwner)
-                    {
-                        member.employeeId = await GetUserId();
-                        member.pro_providerId = await GetUserId();
-                        member.IsOwner = true;
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                    newBiz.registration.businessType = newBiz.Type;
+            ServiceProviderModel member = new ServiceProviderModel();
+            member.employeeId = await GetUserId();
+            member.employeeProfile = await GetProfile();
+            member.pro_providerId = member.employeeId;
 
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(ex.Message, ex.InnerException);
-                }
-                newBiz.date = DateTime.Now;
-                //UserManager UI to return registered users
-            }
+            newBiz.registration.businessType = newBiz.Type;
 
+            newBiz.Employees.Add(member);
 
-            return newBiz;
         }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex.InnerException);
+        }
+        newBiz.date = DateTime.Now;
+        //UserManager UI to return registered users
+
 
         return newBiz;
 
@@ -272,7 +263,8 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
             if (newCustomServiceId != 0)
             {
                 var owner = await GetProvider();
-                int bi = (await _workShopEndPoint.GetBusiness(owner.BusinessId)).Id;
+                var workShop = await _workShopEndPoint.GetBusiness(owner.BusinessId);
+                int bi = workShop.registration.Id;
                 return await _workShopEndPoint.InsertWorkShopService(bi, newCustomServiceId);
             }
             else

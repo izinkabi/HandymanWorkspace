@@ -1,10 +1,12 @@
-﻿
+﻿@page "/service-register"
+@attribute [Authorize]
+
 @inject IBusinessEndPoint _businessHLP
 @inject IServiceEndpoint _servicesEP
 @inject NavigationManager NavManager
 @inject AuthenticationStateProvider AuthStateProvider
 
-        <div class="row">
+        <div class="row m-auto">
             <!--Member's services-->
             <div class="col">
                 <div>

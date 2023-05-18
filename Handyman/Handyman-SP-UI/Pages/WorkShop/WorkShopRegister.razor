@@ -3,88 +3,100 @@
 @using Microsoft.AspNetCore.Components.Web
 @inject NavigationManager NavManager
 @inject IBusinessHelper _workshopHelper
+@inject IProviderHelper _providerHelper
 
 
-<!-- Workshop Register Button trigger modal -->
-<button type="button" class="btn btn-dark outline-btn-secondary" data-bs-toggle="modal" data-bs-target="#wsRegisterModal">
-   Create WorkShop
-</button>
+@if (!CanAddServices)
+{
+    <!-- Workshop Register Button trigger modal -->
+    <button type="button" class="btn btn-dark outline-btn-secondary" data-bs-toggle="modal" data-bs-target="#wsRegisterModal">
+        Create WorkShop
+    </button>
 
-<button type="button" @onclick="GoToRegisterMember" class="btn btn-secondary outline-btn-dark">
-    Join WorkShop
-</button>
+    <button type="button" @onclick="GoToRegisterMember" class="btn btn-secondary outline-btn-dark">
+        Join WorkShop
+    </button>
 
-<!-- Workshop Register Modal -->
-<div class="modal fade" id="wsRegisterModal" tabindex="-1" aria-labelledby="wsRegisterModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen-xxl-down">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="wsRegisterModalLabel">WorkShop Register</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- Workshop Register Modal -->
+    <div class="modal fade" id="wsRegisterModal" tabindex="-1" aria-labelledby="wsRegisterModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen-xxl-down">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="wsRegisterModalLabel">WorkShop Register</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="newWorkShop" OnSubmit="ClickSubmitWSRegister">
+
+                        <div class="col-12">
+                            <label for="wsName" class="form-label">WorkShop Name</label>
+                            <input type="text" @bind-value="newWorkShop.Name" id="wsName" class="form-control" placeholder="WorkShop Name" aria-label="wsName">
+                        </div>
+                        <div class="mb-3">
+                            <label for="descriptionTextarea1" class="form-label">Description</label>
+                            <textarea @bind="newWorkShop.Description" class="form-control" id="descriptionTextarea1" rows="3"></textarea>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="inputContactNumber" class="form-label">Registration Number </label>
+                            <input class="form-control" type="text" value="@newWorkShop.registration.regNumber" aria-label="Disabled input example" disabled readonly>
+                        </div>
+                        <div class="col-12">
+                            <label for="inputTaxRegNumber" class="form-label fst-italic">Tax Number</label>
+                            <input type="text" @bind-value="newWorkShop.registration.taxNumber" class="form-control" id="inputTaxRegNumber" placeholder="SARS Tax Number">
+                        </div>
+                        <!--Address Section-->
+                        <div class="col-12">
+                            <label for="inputAddress" class="form-label">Address</label>
+                            <input type="text" @bind-value="newWorkShop.address.add_street" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                        </div>
+                        <div class="col-12">
+                            <label for="inputAddress2" class="form-label">Address 2</label>
+                            <input type="text" @bind-value="newWorkShop.address.add_suburb" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="inputCity" class="form-label">City</label>
+                            <select id="inputCity" @bind="newWorkShop.address.add_city" class="form-select">
+                                <option selected>Choose...</option>
+                                <option>Johannesburg</option>
+                                <option>Cape Town</option>
+                                <option>Durban</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="inputState" class="form-label">Province</label>
+                            <select id="inputState" @bind="newWorkShop.address.add_state" class="form-select">
+                                <option selected>Choose...</option>
+                                <option>Gauteng</option>
+                                <option>Western Cape</option>
+                                <option>KwaZulu Natal</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="inputZip" class="form-label">Zip</label>
+                            <input type="text" @bind-value="newWorkShop.address.add_zip" class="form-control" id="inputZip">
+                        </div>
+                        <div class="col-md-4 m-auto">
+                            <button type="submit" class="btn outline-btn-dark" data-bs-dismiss="modal">
+                                Submit
+                            </button>
+                        </div>
+
+                    </EditForm>
+
+
+                </div>
+
             </div>
-            <div class="modal-body">
-                <EditForm Model="newWorkShop" OnSubmit="ClickSubmitWSRegister">
-
-                    <div class="col-12">
-                        <label for="wsName" class="form-label">WorkShop Name</label>
-                        <input type="text" @bind-value="newWorkShop.Name" id="wsName" class="form-control" placeholder="WorkShop Name" aria-label="wsName">
-                    </div>
-                    <div class="mb-3">
-                        <label for="descriptionTextarea1" class="form-label">Description</label>
-                        <textarea @bind="newWorkShop.Description" class="form-control" id="descriptionTextarea1" rows="3"></textarea>
-                    </div>
-
-                    <div class="col-12">
-                        <label for="inputContactNumber" class="form-label">Registration Number </label>
-                        <input class="form-control" type="text" value="@newWorkShop.registration.regNumber" aria-label="Disabled input example" disabled readonly>
-                    </div>
-
-                    <!--Address Section-->
-                    <div class="col-12">
-                        <label for="inputAddress" class="form-label">Address</label>
-                        <input type="text" @bind-value="newWorkShop.address.add_street" class="form-control" id="inputAddress" placeholder="1234 Main St">
-                    </div>
-                    <div class="col-12">
-                        <label for="inputAddress2" class="form-label">Address 2</label>
-                        <input type="text" @bind-value="newWorkShop.address.add_suburb" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-                    </div>
-                    <div class="col-md-4">
-                        <label for="inputCity" class="form-label">City</label>
-                        <select id="inputCity" @bind="newWorkShop.address.add_city" class="form-select">
-                            <option selected>Choose...</option>
-                            <option>Johannesburg</option>
-                            <option>Cape Town</option>
-                            <option>Durban</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label for="inputState" class="form-label">Province</label>
-                        <select id="inputState" @bind="newWorkShop.address.add_state" class="form-select">
-                            <option selected>Choose...</option>
-                            <option>Gauteng</option>
-                            <option>Western Cape</option>
-                            <option>KwaZulu Natal</option>
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="inputZip"  class="form-label">Zip</label>
-                        <input type="text" @bind-value="newWorkShop.address.add_zip" class="form-control" id="inputZip">
-                    </div>
-                     <div class="col-md-4 m-auto">
-                    <button type="submit" class="btn outline-btn-dark">
-                        Submit
-                    </button>
-                    </div>
-
-                </EditForm>
-
-
-            </div>
-           
         </div>
     </div>
-</div>
+
+}
+else
+{
+    <RegisterServices OnSaveServices="SaveServices"/>
+}
 
 
 
@@ -93,6 +105,7 @@
 @code {
     private BusinessModel newWorkShop = new BusinessModel()!;
     List<string> Errors = new List<string>();
+    bool CanAddServices;
 
     protected override async Task OnInitializedAsync()
     {
@@ -108,8 +121,9 @@
 
             if (registerWS != null)
             {
-                NavManager.NavigateTo("service-register");
+                GoToAddServices();
             }
+            await InvokeAsync(StateHasChanged);
 
         }
         catch (Exception ex)
@@ -117,6 +131,34 @@
 
             Errors.Add(ex.Message);
         }
+    }
+    //Add new services to the WorkShop
+    //This should only be done by an Owner
+    private async Task SaveServices(List<ServiceModel> services)
+    {
+        try
+        {
+            if (services.Count > 0)
+            {
+                foreach(ServiceModel service in services)
+                {
+                    await _providerHelper.InsertCustomService(service);
+                }
+
+                NavManager.NavigateTo("/");
+            }
+            else
+            {
+                Errors.Add("No selected service");
+            }
+
+        }
+        catch (Exception ex)
+        {
+            Errors.Add(ex.Message);
+        }
+        
+
     }
 
     //Generating a random string for business registration number
@@ -149,5 +191,10 @@
     private void GoToRegisterMember()
     {
         NavManager.NavigateTo("m-sign-up");
+    }
+
+    private void GoToAddServices()
+    {
+        CanAddServices = true;
     }
 }

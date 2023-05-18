@@ -1,14 +1,11 @@
 ﻿using Handyman_DataLibrary.DataAccess.Interfaces;
 using Handyman_DataLibrary.DataAccess.Query;
+using Handyman_DataLibrary.Helpers;
 using Handyman_DataLibrary.Models;
-using MailKit.Net.Smtp;
-using MailKit.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
-using MimeKit;
-using MimeKit.Text;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -26,11 +23,12 @@ public class AuthController : ControllerBase
     private readonly IConfiguration _config;
     private readonly IAuthData _authData;
     private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly EmailSender emailSender;
 
     public AuthController(SignInManager<IdentityUser> signInManager,
         ILogger<LoginModel> logger, ITokenProvider tokenProvider,
         UserManager<IdentityUser> userManager, IConfiguration config,
-        IAuthData authData, RoleManager<IdentityRole> roleManager)
+        IAuthData authData, RoleManager<IdentityRole> roleManager, EmailSender emailSender)
     {
         _signInManager = signInManager;
         _logger = logger;
@@ -39,6 +37,7 @@ public class AuthController : ControllerBase
         _config = config;
         _authData = authData;
         _roleManager = roleManager;
+        this.emailSender = emailSender;
     }
     //Login
     [HttpPost("login")]
@@ -59,14 +58,26 @@ public class AuthController : ControllerBase
             if (!string.IsNullOrEmpty(loginModel.UserId))
             {
                 var identityUser = await _userManager.FindByIdAsync(loginModel.UserId);
-
+                var token = "";
                 if (identityUser != null)
                 {
+                    var claims = await _userManager.GetClaimsAsync(identityUser);
+                    if (claims == null || claims.Count < 1)
+                    {
+                        token = _tokenProvider.GenerateToken(loginModel.Email, loginModel.UserId, loginModel.Role);
+                    }
+                    else
+                    {
+                        token = _tokenProvider.GenerateToken(claims);
+                    }
                     // Generate token using JWT
-                    var token = _tokenProvider.GenerateToken(identityUser.Email ?? _signInManager.Context.User.Identity.Name, identityUser.Id);
+
                     // Set the token as the authentication token for the user
                     var identityResult = await _signInManager.UserManager.SetAuthenticationTokenAsync(identityUser, "Jwt", "Bearer", token);
-                    return Ok(token);
+                    if (identityResult.Succeeded)
+                        return Ok(token);
+                    else
+                        return BadRequest("Invalid login");
                 }
 
             }
@@ -83,8 +94,9 @@ public class AuthController : ControllerBase
 
                 if (user != null)
                 {
+                    var claims = (await _userManager.GetClaimsAsync(user)).ToList();
                     // Generate token using JWT
-                    var token = _tokenProvider.GenerateToken(user.Email ?? _signInManager.Context.User.Identity.Name);
+                    var token = _tokenProvider.GenerateToken(loginModel.Email ?? user.Email, loginModel.UserId ?? user.Id, loginModel.Role);
                     // Set the token as the authentication token for the user
                     var identityResult = await _signInManager.UserManager.SetAuthenticationTokenAsync(user, "Jwt", "Bearer", token);
                     return Ok(token);
@@ -113,14 +125,6 @@ public class AuthController : ControllerBase
         }
     }
 
-
-    //Overloading the login method
-    //[HttpPost("login")]
-    //[AllowAnonymous]
-
-    //public async Task<IActionResult> LoginUser(LoginModel loginModel
-    //  )
-
     //Register
     [HttpPost("register")]
     [AllowAnonymous]
@@ -146,6 +150,7 @@ public class AuthController : ControllerBase
                     else
                     {
                         await _roleManager.CreateAsync(new IdentityRole(role));
+                        await _userManager.AddToRoleAsync(user, role);
                     }
 
                 }
@@ -167,6 +172,8 @@ public class AuthController : ControllerBase
             return BadRequest(ModelState);
         }
     }
+
+    //Confirm the email from
     [HttpPost("ConfirmEmail")]
     [AllowAnonymous]
     public async Task<IActionResult> Confirm(string userId, string? code)
@@ -194,7 +201,7 @@ public class AuthController : ControllerBase
             return NotFound($"Problem confirming your email.");
         }
     }
-
+    //Helper method for to send the email confirmation link
     private async Task<IActionResult> ConfirmEmail(IdentityUser user)
     {
         try
@@ -210,7 +217,7 @@ public class AuthController : ControllerBase
 
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-            var callbackUrl = new Uri($"https://localhost:7042/confirm-email?userId={user.Id}&code={code}");
+            var callbackUrl = new Uri($"https://localhost:7042/confirm-email?userId={user.Id}&code={code}");//little cheat
             //"/Auth/ConfirmEmail",
             //pageHandler: null,
             //values: new { userId = user.Id, code = code},
@@ -230,20 +237,8 @@ public class AuthController : ControllerBase
     }
 
     //Send an email using Mailkit
-    private void SendEmail(string body)
-    {
-        var email = new MimeMessage();
-        email.From.Add(MailboxAddress.Parse("cleo.emard@ethereal.email"));
-        email.To.Add(MailboxAddress.Parse("cleo.emard@ethereal.email"));
-        email.Subject = "Confirm Email";
-        email.Body = new TextPart(TextFormat.Html) { Text = body };
+    private void SendEmail(string body) => emailSender.SendEmail(body);
 
-        using var smtp = new SmtpClient();
-        smtp.Connect("smtp.ethereal.email", 587, SecureSocketOptions.StartTls);
-        smtp.Authenticate("cleo.emard@ethereal.email", "18QqU4asFMsJXfqNya");
-        smtp.Send(email);
-        smtp.Disconnect(true);
-    }
 
     //Get User Profile
     [HttpGet("userprofile")]
@@ -254,18 +249,18 @@ public class AuthController : ControllerBase
         {
             // Get the email claim from the authenticated user's identity
 
-            var emailClaim = User.FindFirst(ClaimTypes.Email);
-            if (emailClaim == null)
+            var idClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (idClaim == null)
             {
                 _logger.LogInformation("Email Invalid");
                 //email claim not found, empty or null
                 return BadRequest("Invalid Request");
             }
             //Get email value from the claim 
-            var email = emailClaim.Value;
+            var userId = idClaim.Value;
 
             //get the user information using the email you got from the claim
-            IdentityUser? user = await _userManager.FindByEmailAsync(email);
+            IdentityUser? user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
                 _logger.LogInformation("User unauthorized");

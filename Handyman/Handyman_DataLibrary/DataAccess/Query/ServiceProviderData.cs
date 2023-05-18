@@ -90,7 +90,6 @@ public class ServiceProviderData : EmployeeData, IServiceProviderData
     {
         try
         {
-
             if (providerId != null)
             {    //Get employee
                 var employee = this.GetEmployeeWithRatings(providerId);
@@ -108,26 +107,30 @@ public class ServiceProviderData : EmployeeData, IServiceProviderData
                 provider.DateEmployed = employee.DateEmployed;
                 provider.employeeProfile = employee.employeeProfile;
 
-
                 var services = new List<ServiceModel>();
-                foreach (Service_CategoryModel outputItem in service_category)
+                if (service_category.Count > 0)
                 {
-                    //populate service
-                    var service = new ServiceModel()!;
-                    service.datecreated = outputItem.serv_datecreated;
-                    service.status = outputItem.serv_status;
-                    service.img = outputItem.serv_img;
-                    service.id = outputItem.serv_id;
-                    service.name = outputItem.serv_name;
-                    service.category = new ServiceCategoryModel();
-                    service.PriceId = outputItem.price_id;
 
-                    //populate category
-                    service.category.name = outputItem.cat_name;
-                    service.category.description = outputItem.cat_description;
-                    service.category.type = outputItem.cat_type;
-                    services.Add(service);
+                    foreach (Service_CategoryModel outputItem in service_category)
+                    {
+                        //populate service
+                        var service = new ServiceModel()!;
+                        service.datecreated = outputItem.serv_datecreated;
+                        service.status = outputItem.serv_status;
+                        service.img = outputItem.serv_img;
+                        service.id = outputItem.serv_id;
+                        service.name = outputItem.serv_name;
+                        service.category = new ServiceCategoryModel();
+                        service.PriceId = outputItem.price_id;
+
+                        //populate category
+                        service.category.name = outputItem.cat_name;
+                        service.category.description = outputItem.cat_description;
+                        service.category.type = outputItem.cat_type;
+                        services.Add(service);
+                    }
                 }
+
 
                 provider.Services = services;
                 providerLocalmodel = provider;

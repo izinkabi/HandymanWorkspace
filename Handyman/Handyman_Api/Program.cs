@@ -1,6 +1,7 @@
 using Handyman_Api.Areas.Identity.Data;
 using Handyman_DataLibrary.DataAccess.Interfaces;
 using Handyman_DataLibrary.DataAccess.Query;
+using Handyman_DataLibrary.Helpers;
 using Handyman_DataLibrary.Internal.DataAccess;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -41,6 +42,7 @@ builder.Services.AddScoped<ITaskData, TaskData>();
 builder.Services.AddScoped<IProfileData, ProfileData>();
 builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 builder.Services.AddScoped<IAuthData, AuthData>();
+builder.Services.AddTransient<EmailSender>();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {

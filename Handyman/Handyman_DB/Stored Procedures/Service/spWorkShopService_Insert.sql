@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE [Delivery].[spWorkShopService_Insert]
 --Insert new workshop-service
 
- @workShopRegId INT =0,
+ @workShopRegId INT = 0,
  @customServiceId INT = 0
 AS
 IF NOT EXISTS (SELECT * FROM [Delivery].[WorkShopServices] 

@@ -1,5 +1,6 @@
 ﻿using Handyman_DataLibrary.DataAccess.Interfaces;
 using Handyman_DataLibrary.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Handyman_Api.Controllers;
@@ -9,9 +10,15 @@ namespace Handyman_Api.Controllers;
 public class DeliveryController : ControllerBase
 {
     IBusinessData? _businessData;
-    public DeliveryController(IBusinessData business)
+    private readonly SignInManager<IdentityUser> signInManager;
+    private readonly RoleManager<IdentityRole> roleManager;
+
+    public DeliveryController(IBusinessData business,
+        SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager)
     {
         _businessData = business;
+        this.signInManager = signInManager;
+        this.roleManager = roleManager;
     }
     ServiceProviderModel? providermodel;
     BusinessModel? business;
@@ -53,12 +60,30 @@ public class DeliveryController : ControllerBase
     /// <exception cref="Exception"></exception>
     [HttpPost]
     [Route("Create")]
-    public BusinessModel CreateBusiness(BusinessModel business)
+    public async Task<BusinessModel> CreateBusiness(BusinessModel business)
     {
         try
         {
             if (business != null)
             {
+                var claim = signInManager.Context.User;
+                var user = await signInManager.UserManager.GetUserAsync(claim);
+                string[] roles = new string[] { "Owner", "Member" };
+
+                foreach (string role in roles)
+                {
+                    var Exists = await roleManager.RoleExistsAsync("Owner");
+                    if (Exists)
+                    {
+                        await signInManager.UserManager.AddToRoleAsync(user, role);
+                    }
+                    else
+                    {
+                        await roleManager.CreateAsync(new IdentityRole(role));
+                        await signInManager.UserManager.AddToRoleAsync(user, role);
+                    }
+
+                }
                 BusinessModel businessM = _businessData.CreateBusiness(business);
                 if (businessM != null) return businessM;
 

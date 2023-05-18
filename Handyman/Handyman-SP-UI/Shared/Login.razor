@@ -6,42 +6,52 @@
 @inject NavigationManager NavManager
 @attribute [AllowAnonymous]
 
-<div class="container container-fluid m-auto shadow rounded">
-    <h3>Login</h3>
-    <EditForm Model="Input" OnValidSubmit="ClickLogin">
+@if (!IsSubmitted)
+{
+    <div class="container container-fluid m-auto shadow rounded">
+        <h3>Login</h3>
+        <EditForm Model="Input" OnValidSubmit="ClickLogin">
 
-        <div class="row mb-3">
-            <label for="loginInputEmail3" class="col-sm-2 col-form-label">Email</label>
-            <div class="col-sm-10">
-                <InputText type="email" @bind-Value="Input.Username" class="form-control" id="loginInputEmail3" />
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label for="loginInputPassword3" class="col-sm-2 col-form-label">Password</label>
-            <div class="col-sm-10">
-                <InputText type="password" @bind-Value="Input.Password" class="form-control" id="loginInputPassword3" />
-            </div>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-sm-10 offset-sm-2">
-                <div class="form-check">
-                    <InputCheckbox @bind-Value="Input.RememberMe" class="form-check-input" id="gridCheck1" />
-                    <label class="form-check-label" for="gridCheck1">
-                        Remember Me
-                    </label>
+            <div class="row mb-3">
+                <label for="loginInputEmail3" class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-10">
+                    <InputText type="email" @bind-Value="Input.Username" class="form-control" id="loginInputEmail3" />
                 </div>
             </div>
-        </div>
-        <button type="submit" class="btn btn-primary">Sign in</button>
-        <br/>
-        <a class="link-primary m-auto p-2" @onclick="ToSignUp">Sign-Up</a>
-    </EditForm>
-</div>
+            <div class="row mb-3">
+                <label for="loginInputPassword3" class="col-sm-2 col-form-label">Password</label>
+                <div class="col-sm-10">
+                    <InputText type="password" @bind-Value="Input.Password" class="form-control" id="loginInputPassword3" />
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-10 offset-sm-2">
+                    <div class="form-check">
+                        <InputCheckbox @bind-Value="Input.RememberMe" class="form-check-input" id="gridCheck1" />
+                        <label class="form-check-label" for="gridCheck1">
+                            Remember Me
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Sign in</button>
+            <br />
+            <a class="link-primary m-auto p-2" @onclick="ToSignUp">Sign-Up</a>
+        </EditForm>
+    </div>
+}
+else
+{
+    <div class="d-flex align-items-center bg-light m-auto p-2">
+        <strong>Signing In...please wait</strong>
+        <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+    </div>
+}
 
 @code {
     private string? returnUrl;
-
+    bool IsSubmitted;
     private InputModel? Input = new InputModel()!;
 
     [Parameter]
@@ -75,7 +85,7 @@
     //Submitting the form execution method
     async Task ClickLogin()
     {
-        
+        IsSubmitted = true;
         var authedUserModel = await _authEndPoint.LoginUser(Input.Username, Input.Password);
         var state = await _authStateProvider.GetAuthenticationStateAsync();
         await InvokeAsync(StateHasChanged);
@@ -83,7 +93,11 @@
         {
             NavManager.NavigateTo(returnUrl);
         }
-        
+        else
+        {
+            IsSubmitted = false;
+        }
+
     }
     async Task ToSignUp()
     {

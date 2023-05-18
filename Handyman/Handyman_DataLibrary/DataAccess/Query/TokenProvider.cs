@@ -23,8 +23,7 @@ public class TokenProvider : ITokenProvider
         var claims = new[]
         {
             new Claim(ClaimTypes.Email, email),
-            new Claim(ClaimTypes.Name, email) ,
-
+            new Claim(ClaimTypes.Name, email)
         };
 
         var token = new JwtSecurityToken(
@@ -36,9 +35,9 @@ public class TokenProvider : ITokenProvider
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    public string GenerateToken(string email, string? userId)
+    public string GenerateToken(string email, string? userId, string? role)
     {
-        if (userId == null)
+        if (userId == null || role == null)
         {
             return "";
         }
@@ -46,9 +45,25 @@ public class TokenProvider : ITokenProvider
         {
             new Claim(ClaimTypes.Email, email),
             new Claim(ClaimTypes.Name, email) ,
-            new Claim(ClaimTypes.NameIdentifier,userId)
+            new Claim(ClaimTypes.NameIdentifier,userId),
+            new Claim(ClaimTypes.Role,role)
 
         };
+
+        var token = new JwtSecurityToken(
+            claims: claims,
+            expires: DateTime.UtcNow.AddMinutes(30),
+            signingCredentials: new SigningCredentials(_key, SecurityAlgorithms.HmacSha256)
+        );
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+    public string GenerateToken(IList<Claim> claims)
+    {
+        if (claims == null)
+        {
+            return "";
+        }
 
         var token = new JwtSecurityToken(
             claims: claims,
@@ -57,6 +72,7 @@ public class TokenProvider : ITokenProvider
         );
 
         return new JwtSecurityTokenHandler().WriteToken(token);
+
     }
 }
 

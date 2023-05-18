@@ -18,7 +18,7 @@ public class BusinessEndPoint : IBusinessEndPoint
     }
 
     //Get the business's employee(ServiceProvider)
-    public async Task<BusinessModel>? GetBusiness(int busId)
+    public async Task<BusinessModel> GetBusiness(int busId)
     {
         try
         {

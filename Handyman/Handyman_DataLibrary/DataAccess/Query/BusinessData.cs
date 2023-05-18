@@ -145,6 +145,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
                         }).First();
 
                     _dataAccess.CommitTransation();
+                    business.Id = businessId;
 
                     //then save the employee
                     if (business.Employees != null && business.Employees.Count > 0)
@@ -157,6 +158,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
                         }
 
                     }
+
 
                     return business;
                 }
