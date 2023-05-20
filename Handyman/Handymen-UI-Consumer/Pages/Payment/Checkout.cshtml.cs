@@ -1,7 +1,6 @@
-using Handymen_UI_Consumer.Areas.Identity.Data;
 using Handymen_UI_Consumer.Helpers;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -12,16 +11,14 @@ public class CheckoutModel : PageModel
 {
     HandymanUILibrary.Models.OrderModel orderModel;
 
-    IOrderHelper? _orderHelper;
-    SignInManager<Handymen_UI_ConsumerUser>? _signInManager;
-    UserManager<Handymen_UI_ConsumerUser> _userManager;
-    protected string UId;
+    private readonly IOrderHelper _orderHelper;
+    private readonly AuthenticationStateProvider _authStateProvider;
+    protected string? UId;
 
-    public CheckoutModel(IOrderHelper? orderHelper, SignInManager<Handymen_UI_ConsumerUser> signInManager, UserManager<Handymen_UI_ConsumerUser> userManager)
+    public CheckoutModel(IOrderHelper orderHelper, AuthenticationStateProvider authStateProvider)
     {
         _orderHelper = orderHelper;
-        _signInManager = signInManager;
-        _userManager = userManager;
+        _authStateProvider = authStateProvider;
     }
     [BindProperty(SupportsGet = true)]
     public HandymanUILibrary.Models.OrderModel OrderModelProperty { get { return orderModel; } private set { orderModel = value; } }
@@ -33,7 +30,10 @@ public class CheckoutModel : PageModel
             if (id != 0)
             {
 
-                UId = await _signInManager.UserManager.GetUserIdAsync(await _userManager.GetUserAsync(User));
+                var state = await _authStateProvider.GetAuthenticationStateAsync();
+                var user = state.User;
+
+                UId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
                 if (UId != null)
                 {
                     OrderModelProperty = await _orderHelper.GetOrderById(id, UId);

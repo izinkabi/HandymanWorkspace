@@ -33,7 +33,7 @@ public class OrderEndPoint : IOrderEndPoint
     {
         try
         {
-            var httpResponseMessage = await _apiHelper.ApiClient.PostAsJsonAsync<OrderModel>("/api/orders/Post", order);
+            var httpResponseMessage = await _apiHelper.ApiClient.PostAsJsonAsync<OrderModel>("/orders/Post", order);
             if (httpResponseMessage.IsSuccessStatusCode)
             {
                 int orderId = await httpResponseMessage.Content.ReadFromJsonAsync<int>();

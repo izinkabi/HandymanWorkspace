@@ -1,4 +1,3 @@
-using Blazored.LocalStorage;
 using Handyman_SP_UI;
 using Handyman_SP_UI.Hubs;
 using Handyman_SP_UI.Pages.Helpers;
@@ -42,7 +41,6 @@ builder.Services.AddResponseCompression(opt =>
       new[] { "application/octet-stream" });
 });
 builder.Services.AddAuthorizationCore();
-builder.Services.AddBlazoredLocalStorage();
 
 
 var app = builder.Build();

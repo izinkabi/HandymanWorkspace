@@ -2,13 +2,12 @@
 using Handyman_DataLibrary.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NuGet.Common;
 
 namespace Handyman_Api.Controllers;
 
 [ApiController]
 [Route("api/services")]
-[Authorize]
+[Authorize(Roles = "Consumer,ServiceProvider")]
 public class ServicesController : ControllerBase
 {
     IServiceData _serviceData;
@@ -19,6 +18,7 @@ public class ServicesController : ControllerBase
 
     //Get service list
     [HttpGet]
+    [AllowAnonymous]
     [Route("Getservices")]
     public IEnumerable<ServiceModel> Get()
     {

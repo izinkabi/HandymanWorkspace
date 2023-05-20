@@ -7,9 +7,8 @@
 @using Handymen_UI_Consumer.Pages
 
 
-@inject SignInManager<Handymen_UI_ConsumerUser> SignInManager
 @inject IOrderHelper _orderHelper;
-
+@inject AuthenticationStateProvider authStateProvider
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 <!DOCTYPE html>
@@ -21,8 +20,6 @@
     <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/Identity/lib/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="~/Identity/css/site.css" />
    
     <link rel ="stylesheet" href="./css/features.css"/>
     <link rel ="stylesheet" href="./css/carousel.css"/>
@@ -51,9 +48,10 @@
                 </a>
     
                 
-                @if (SignInManager.IsSignedIn(User))
+                @if ((await @authStateProvider.GetAuthenticationStateAsync()).User.Identity.IsAuthenticated)
                 {
-                    var orders = await _orderHelper.LoadUserOrders(SignInManager.UserManager.GetUserId(User));
+                    string? userId = User.FindFirst(u=>u.Type.Contains("nameidentifier"))?.Value;
+                    var orders = await _orderHelper.LoadUserOrders(userId);
 
                     @if (orders!=null)
                     {
@@ -91,7 +89,7 @@
                         <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
                     </svg>
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        @if (SignInManager.IsSignedIn(User))
+                        @if ((await @authStateProvider.GetAuthenticationStateAsync()).User.Identity.IsAuthenticated)
                         {
                             @_orderHelper.NumberOfCancelledRequests().Result
                             
@@ -120,8 +118,7 @@
         
         
        <!--Order Components list Right-side-bar-->
-        
-    @if (SignInManager.IsSignedIn(User))
+        @if ((await @authStateProvider.GetAuthenticationStateAsync()).User.Identity.IsAuthenticated)
         {
 
             @if (_orderHelper == null)
@@ -134,8 +131,9 @@
                 </div>
             }else 
             {
+                string? userId = User.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
                      //Get orders
-                var orders = await _orderHelper.LoadUserOrders(SignInManager.UserManager.GetUserId(User));
+                var orders = await _orderHelper.LoadUserOrders(userId);
                    
                 <div class="offcanvas-body" heightoverflow-y:scroll>
                  <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" class="scrollspy-example bg-light p-3 rounded-2" tabindex="0">
@@ -319,10 +317,10 @@
 
 
     <!--Delete order Confirmation Modal-->
- 
-  @if (SignInManager.IsSignedIn(User))
+    @if ((await @authStateProvider.GetAuthenticationStateAsync()).User.Identity.IsAuthenticated)
   {
-    var ods = await _orderHelper.LoadUserOrders(SignInManager.UserManager.GetUserId(User));
+        string? userId = User.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+    var ods = await _orderHelper.LoadUserOrders(userId);
     @if (ods!=null)
     {
             foreach (var order in ods)

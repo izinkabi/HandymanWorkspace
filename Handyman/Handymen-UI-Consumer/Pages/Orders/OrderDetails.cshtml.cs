@@ -1,8 +1,6 @@
-﻿using Handymen_UI_Consumer.Areas.Identity.Data;
-using Handymen_UI_Consumer.Helpers;
+﻿using Handymen_UI_Consumer.Helpers;
 using Handymen_UI_Consumer.Helpers.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -10,12 +8,11 @@ namespace Handymen_UI_Consumer.Pages.Orders;
 
 public class OrderDetailsModel : PageModel
 {
-    SignInManager<Handymen_UI_ConsumerUser> _signInManager;
-    HandymanUILibrary.Models.OrderModel order;
-    IOrderHelper? _orderHelper;
-    ITasksHelper? _taskHelper;
 
-
+    private HandymanUILibrary.Models.OrderModel order;
+    private readonly IOrderHelper _orderHelper;
+    private readonly ITasksHelper? _taskHelper;
+    private readonly AuthenticationStateProvider _authStateProvider;
     string? ErrorMsg;
     bool isConfirmed;
     bool isBilled;
@@ -23,12 +20,14 @@ public class OrderDetailsModel : PageModel
     bool isCanceled;
 
 
-    public OrderDetailsModel(IOrderHelper orderHelper,
-        SignInManager<Handymen_UI_ConsumerUser> signInManager, ITasksHelper tasksHelper)
+    public OrderDetailsModel(
+        IOrderHelper orderHelper,
+        ITasksHelper tasksHelper,
+        AuthenticationStateProvider authenticationState)
     {
         _orderHelper = orderHelper;
-        _signInManager = signInManager;
         _taskHelper = tasksHelper;
+        _authStateProvider = authenticationState;
     }
 
     public bool IsConfirmed { get { return isConfirmed; } set { isConfirmed = value; } }
@@ -65,8 +64,6 @@ public class OrderDetailsModel : PageModel
     public async Task<IActionResult> OnGetAsync(int? id)
     {
 
-        //order.service = new()!;
-
         if (id == null)
         {
             return NotFound();
@@ -74,7 +71,11 @@ public class OrderDetailsModel : PageModel
 
         try
         {
-            OrderProperty = await _orderHelper.GetOrderById(id.Value, _signInManager.UserManager.GetUserId(User));
+            var state = await _authStateProvider.GetAuthenticationStateAsync();
+            var user = state.User;
+            // var id = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+            var userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+            OrderProperty = await _orderHelper.GetOrderById(id.Value, userId);
 
         }
         catch (Exception ex)
@@ -93,12 +94,13 @@ public class OrderDetailsModel : PageModel
             if (id != null)
                 if (User != null)
                 {
-                    var cancellationOrderModel = await _orderHelper.GetOrderById(id.Value, _signInManager.UserManager.GetUserId(User));
+                    string? userId = User.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+                    var cancellationOrderModel = await _orderHelper.GetOrderById(id.Value, userId);
                     if (cancellationOrderModel != null)
                     {
                         if (cancellationOrderModel.ConsumerID == null)
                         {
-                            cancellationOrderModel.ConsumerID = _signInManager.UserManager.GetUserId(User);
+                            cancellationOrderModel.ConsumerID = userId;
                         }
 
                         if (cancellationOrderModel.ConsumerID != null)
@@ -132,18 +134,23 @@ public class OrderDetailsModel : PageModel
             {
                 //This is a result of a null reference exception at runtime on  a order-variable,
                 //nor was passing a model helping. But an integer id as a parameter worked.
-                var orderModel = await _orderHelper.GetOrderById(id, _signInManager.UserManager.GetUserId(User));
-
-                if (orderModel != null && orderModel.service != null)
+                if (User != null)
                 {
-                    if (orderModel.status == 4) { return Page(); }
+                    string? userId = User.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
 
-                    orderModel.status = 4;
-                    orderModel.ConsumerID = _signInManager.UserManager.GetUserId(User);
-                    await _orderHelper.UpdateOrderStatus(orderModel);
-                    order = new()!;
-                    order = orderModel;
-                    isConfirmed = true;
+                    var orderModel = await _orderHelper.GetOrderById(id, userId);
+
+                    if (orderModel != null && orderModel.service != null)
+                    {
+                        if (orderModel.status == 4) { return Page(); }
+
+                        orderModel.status = 4;
+                        orderModel.ConsumerID = userId;
+                        await _orderHelper.UpdateOrderStatus(orderModel);
+                        order = new()!;
+                        order = orderModel;
+                        isConfirmed = true;
+                    }
                 }
             }
 

@@ -1,9 +1,12 @@
-﻿@using Microsoft.AspNetCore.Components.Routing
+﻿@using Handymen_UI_Consumer.Pages
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.Web
 
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" />
+      
     </Found>
     <NotFound>
         <PageTitle>Not found</PageTitle>

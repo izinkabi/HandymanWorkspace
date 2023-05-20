@@ -4,48 +4,47 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Handymen_UI_Consumer.Pages.Services
+namespace Handymen_UI_Consumer.Pages.Services;
+[Authorize]
+public class DetailsModel : PageModel
 {
-    public class DetailsModel : PageModel
+
+    private IServiceEndPoint _serviceEndPoint;
+    private readonly ILogger<DetailsModel> logger;
+
+    public DetailsModel(IServiceEndPoint serviceEndPoint, ILogger<DetailsModel> logger)
     {
+        _serviceEndPoint = serviceEndPoint;
+        this.logger = logger;
+    }
 
-        private IServiceEndPoint _serviceEndPoint;
-        private readonly ILogger<DetailsModel> logger;
+    public ServiceModel? Service { get; set; }
 
-        public DetailsModel(IServiceEndPoint serviceEndPoint, ILogger<DetailsModel> logger)
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        logger.LogInformation("Details displayed");
+        if (id == null || _serviceEndPoint == null)
         {
-            _serviceEndPoint = serviceEndPoint;
-            this.logger = logger;
+            return NotFound();
         }
 
-        public ServiceModel? Service { get; set; }
-
-        public async Task<IActionResult> OnGetAsync(int? id)
+        List<ServiceModel> services = await _serviceEndPoint.GetServices();
+        foreach (var service in services)
         {
-            logger.LogInformation("Details displayed");
-            if (id == null || _serviceEndPoint == null)
+            if (service == null)
             {
                 return NotFound();
             }
-
-            List<ServiceModel> services = await _serviceEndPoint.GetServices();
-            foreach (var service in services)
+            else if (service.id == id)
             {
-                if (service == null)
-                {
-                    return NotFound();
-                }
-                else if (service.id == id)
-                {
-                    Service = new();
-                    Service = service;
-                    logger.LogInformation("Details displayed");
-                    return Page();
-                }
-
+                Service = new();
+                Service = service;
+                logger.LogInformation("Details displayed");
+                return Page();
             }
-            return Page();
 
         }
+        return Page();
+
     }
 }

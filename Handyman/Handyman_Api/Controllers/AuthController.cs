@@ -145,21 +145,21 @@ public class AuthController : ControllerBase
                     var Exists = await _roleManager.RoleExistsAsync(role);
                     if (Exists)
                     {
-                        await _userManager.AddToRoleAsync(user, role);
+                        var response = await _userManager.AddToRoleAsync(user, role);
                     }
                     else
                     {
                         await _roleManager.CreateAsync(new IdentityRole(role));
-                        await _userManager.AddToRoleAsync(user, role);
+                        var response = await _userManager.AddToRoleAsync(user, role);
                     }
 
                 }
-                await ConfirmEmail(user);
+                var IsConfirmed = await ConfirmEmail(user, registerModel.Roles.First());
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message, ex.InnerException);
             }
             return Ok();
         }
@@ -202,7 +202,7 @@ public class AuthController : ControllerBase
         }
     }
     //Helper method for to send the email confirmation link
-    private async Task<IActionResult> ConfirmEmail(IdentityUser user)
+    private async Task<IActionResult> ConfirmEmail(IdentityUser user, string applicationRole)
     {
         try
         {
@@ -213,11 +213,35 @@ public class AuthController : ControllerBase
             {
                 return NotFound($"Unable to load user with email '{user.EmailConfirmed}'.");
             }
-            //var user = await _userManager.GetUserAsync(claims);
+
 
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-            var callbackUrl = new Uri($"https://localhost:7042/confirm-email?userId={user.Id}&code={code}");//little cheat
+            Dictionary<string, Uri?> appRoles = new Dictionary<string, Uri?>()
+            {
+                ["ServiceProvider"] = new Uri($"https://localhost:7042/confirm-email?userId={user.Id}&code={code}"),
+                ["Consumer"] = new Uri($"https://localhost:7250/auth/confirmemail?userId={user.Id}&code={code}")
+
+            };
+            //Initialized
+            var callbackUrl = new Uri("//empty");
+            if (!string.IsNullOrEmpty(applicationRole))
+            {
+                //foreach (KeyValuePair<string, Uri> role in appRoles)
+                //{
+                //    if (role.Key.ToString() == appRoles.ToString())
+                //    {
+                //        callbackUrl = role.Value;
+                //    }
+                //}
+
+                if (appRoles.ContainsKey(applicationRole))
+                {
+                    callbackUrl = appRoles[applicationRole];
+                }
+
+            }
+            //  = new Uri($"https://localhost:7042/confirm-email?userId={user.Id}&code={code}");//little cheat
             //"/Auth/ConfirmEmail",
             //pageHandler: null,
             //values: new { userId = user.Id, code = code},
@@ -286,10 +310,10 @@ public class AuthController : ControllerBase
         {
             try
             {
-                var User = await _userManager.FindByEmailAsync(user.Identity.Name);
+                var identityUser = await _userManager.FindByEmailAsync(user.Identity.Name);
                 // var id = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
-                if (!string.IsNullOrEmpty(User.Id))
-                    _authData.DeleteToken(User.Id);
+                if (!string.IsNullOrEmpty(identityUser.Id))
+                    _authData.DeleteToken(identityUser.Id);
                 _signInManager.SignOutAsync();
             }
             catch (Exception)

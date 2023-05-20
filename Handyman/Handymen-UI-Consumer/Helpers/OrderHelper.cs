@@ -1,35 +1,29 @@
 ﻿using HandymanUILibrary.API.Consumer.Order.Interface;
 using HandymanUILibrary.API.Services;
 using HandymanUILibrary.Models;
-using Handymen_UI_Consumer.Areas.Identity.Data;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Security.Claims;
 
 namespace Handymen_UI_Consumer.Helpers
 {
-    public class OrderHelper : PageModel, IOrderHelper
+    public class OrderHelper : IOrderHelper
     {
-        SignInManager<Handymen_UI_ConsumerUser> signInManager;
+
         IOrderEndPoint? _orderEndpoint;
         IServiceEndPoint _serviceEndPoint;
         OrderModel? order;
         List<OrderModel>? ordersDisplayList;
-        AuthenticationStateProvider _authenticationStateProvider;
+        AuthenticationStateProvider authStateProvider;
 
         string? ErrorMsg;
         string? userId;
 
 
         public OrderHelper(IOrderEndPoint orderEndPoint,
-            SignInManager<Handymen_UI_ConsumerUser> signInMan,
-            AuthenticationStateProvider authenticationStateProvider,
+            AuthenticationStateProvider authStateProvider,
             IServiceEndPoint serviceEndPoint)
         {
             _orderEndpoint = orderEndPoint;
-            signInManager = signInMan;
-            _authenticationStateProvider = authenticationStateProvider;
+            this.authStateProvider = authStateProvider;
             _serviceEndPoint = serviceEndPoint;
         }
 
@@ -41,21 +35,17 @@ namespace Handymen_UI_Consumer.Helpers
             {
                 if (userId == null)
                 {
-                    var user = new ClaimsPrincipal();
+
+                    var state = await authStateProvider.GetAuthenticationStateAsync();
+                    var user = state.User;
 
                     //(await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
-                    if (User != null)
+                    if (userId != null && !string.IsNullOrEmpty(userId))
                     {
-                        if (User.Identity.IsAuthenticated)
-                            userId = signInManager.UserManager.GetUserId(User);  //userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+                        userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;  //userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
 
                     }
-                    else
-                    {
-                        user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
-                        if (user.Identity.IsAuthenticated)
-                            userId = signInManager.UserManager.GetUserId(user);
-                    }
+
                 }
 
             }

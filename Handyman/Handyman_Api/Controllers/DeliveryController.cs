@@ -1,5 +1,6 @@
 ﻿using Handyman_DataLibrary.DataAccess.Interfaces;
 using Handyman_DataLibrary.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace Handyman_Api.Controllers;
 
 [Route("api/Delivery")]
 [ApiController]
+[Authorize(Roles = "ServiceProvider")]
 public class DeliveryController : ControllerBase
 {
     IBusinessData? _businessData;
@@ -67,24 +69,31 @@ public class DeliveryController : ControllerBase
             if (business != null)
             {
                 var claim = signInManager.Context.User;
+                //Get the user of the given claim
                 var user = await signInManager.UserManager.GetUserAsync(claim);
+
                 string[] roles = new string[] { "Owner", "Member" };
-
-                foreach (string role in roles)
-                {
-                    var Exists = await roleManager.RoleExistsAsync("Owner");
-                    if (Exists)
-                    {
-                        await signInManager.UserManager.AddToRoleAsync(user, role);
-                    }
-                    else
-                    {
-                        await roleManager.CreateAsync(new IdentityRole(role));
-                        await signInManager.UserManager.AddToRoleAsync(user, role);
-                    }
-
-                }
+                //Executing the query
                 BusinessModel businessM = _businessData.CreateBusiness(business);
+                //Member role assignment
+                if (businessM.Id != 0)
+                {
+                    foreach (string role in roles)
+                    {
+                        var Exists = await roleManager.RoleExistsAsync(role);
+                        if (Exists)
+                        {
+                            var result = await signInManager.UserManager.AddToRoleAsync(user, role);
+                        }
+                        else
+                        {
+                            await roleManager.CreateAsync(new IdentityRole(role));
+                            var result = await signInManager.UserManager.AddToRoleAsync(user, role);
+                        }
+
+                    }
+                }
+
                 if (businessM != null) return businessM;
 
             }
@@ -108,7 +117,7 @@ public class DeliveryController : ControllerBase
     /// <exception cref="Exception"></exception>
     [HttpPost]
     [Route("AddNewMember")]
-    public void AddNewMember(ServiceProviderModel serviceProvider)
+    public async Task<IActionResult> AddNewMember(ServiceProviderModel serviceProvider)
     {
         try
         {
@@ -122,12 +131,37 @@ public class DeliveryController : ControllerBase
                 if (!string.IsNullOrEmpty(serviceProvider.employeeId))
                 {
                     _businessData.EmployServiceProvider(serviceProvider);
+                    string role = "Member";
+                    //Executing the query
+                    BusinessModel businessM = _businessData.CreateBusiness(business);
+                    //Member role assignment
+                    if (businessM.Id != 0)
+                    {
+
+                        var claim = signInManager.Context.User;
+                        //Get the user of the given claim
+                        var user = await signInManager.UserManager.GetUserAsync(claim);
+                        var Exists = await roleManager.RoleExistsAsync(role);
+                        if (Exists)
+                        {
+                            var result = await signInManager.UserManager.AddToRoleAsync(user, role);
+                            return Ok();
+                        }
+                        else
+                        {
+                            await roleManager.CreateAsync(new IdentityRole(role));
+                            var result = await signInManager.UserManager.AddToRoleAsync(user, role);
+                            return Ok();
+                        }
+
+                    }
                 }
                 else
                 {
-                    return;
+                    return BadRequest("Invalid Input");
                 }
             }
+            return Ok();
 
         }
         catch (Exception ex)
@@ -135,6 +169,13 @@ public class DeliveryController : ControllerBase
             throw new Exception(ex.Message);
         }
     }
+    /// <summary>
+    ///Get the provider / the Member of the Workshop System
+    ///It is an employee and has profile 
+    /// </summary>
+    /// <param name="employeeId"></param>
+    /// <returns>ServiceProviderModel</returns>
+    /// <exception cref="Exception"></exception>
 
     [HttpGet]
     [Route("GetProvider")]

@@ -10,7 +10,7 @@ namespace Handyman_Api.Controllers
 {
     [Route("api/Handymen")]
     [ApiController]
-
+    [Authorize(Roles = "ServiceProvider")]
     public class HandymenController : ControllerBase
     {
 

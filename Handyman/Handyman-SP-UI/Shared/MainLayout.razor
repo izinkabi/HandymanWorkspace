@@ -115,8 +115,8 @@
                     Profile
                 </a>
                 </li>
-                <AuthorizeView>
-                    <Authorized>
+                   <AuthorizeView Roles="Member">
+                    <Authorized >
                     <li>
                         <a href="requests" class="nav-link link-dark dropdown-toggle shadow" id="requestsDropdownMenu" data-bs-toggle="dropdown" aria-expanded="true">
                         <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"/></svg>
@@ -157,15 +157,20 @@
                     </li>
             
                 
-                    <li>
+                    
+                   
+                
+            </Authorized>
+
+                </AuthorizeView>
+                <AuthorizeRouteView Roles="Owner">
+                     <li>
                         <a href="owner" class="nav-link link-dark">
                             <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#speedometer2" /></svg>
                             Dashboard
                         </a>
                     </li>
-                
-            </Authorized>
-                </AuthorizeView>
+                    </AuthorizeRouteView>
             </ul>
         </div>
         </nav>
