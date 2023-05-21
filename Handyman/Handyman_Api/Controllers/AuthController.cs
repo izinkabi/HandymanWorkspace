@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -75,7 +76,11 @@ public class AuthController : ControllerBase
                     // Set the token as the authentication token for the user
                     var identityResult = await _signInManager.UserManager.SetAuthenticationTokenAsync(identityUser, "Jwt", "Bearer", token);
                     if (identityResult.Succeeded)
+                    {
+                        _signInManager.SignInWithClaimsAsync(identityUser, true, claims);
                         return Ok(token);
+                    }
+                        
                     else
                         return BadRequest("Invalid login");
                 }
@@ -273,7 +278,7 @@ public class AuthController : ControllerBase
         {
             // Get the email claim from the authenticated user's identity
 
-            var idClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            Claim? idClaim = User.FindFirst(ClaimTypes.Email);
             if (idClaim == null)
             {
                 _logger.LogInformation("Email Invalid");
@@ -281,10 +286,10 @@ public class AuthController : ControllerBase
                 return BadRequest("Invalid Request");
             }
             //Get email value from the claim 
-            var userId = idClaim.Value;
+            var email = idClaim.Value;
 
             //get the user information using the email you got from the claim
-            IdentityUser? user = await _userManager.FindByIdAsync(userId);
+            IdentityUser? user = await _userManager.FindByEmailAsync(email);
             if (user == null)
             {
                 _logger.LogInformation("User unauthorized");
@@ -350,18 +355,35 @@ public class AuthController : ControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// Reset the password for an authenticated user
+    /// </summary>
+    /// <param name="identityUser"></param>
+    /// <param name="passwordResetModel"></param>
+    /// <returns>200 status code if password has been reset</returns>
     [HttpPost("resetpassword")]
     [Authorize]
-    public void ResetPassword([FromBody] PasswordResetModel passwordResetModel)
+    public async Task<IActionResult> ResetPassword([FromBody] PasswordResetModel passwordResetModel)
     {
         var user = _signInManager.Context.User;
         if (_signInManager.Context.User.Identity.IsAuthenticated)
         {
             try
             {
+                IdentityUser identityUser = new IdentityUser();
+
+               Claim? EmailClaim = User.FindFirst(ClaimTypes.Email);
+
+               var  email = EmailClaim?.Value;
+                identityUser = await _userManager.FindByEmailAsync(email);
                 //validate model
-                //match password
-                //set new password
+                if (identityUser != null)
+                {
+                    var passwordresetToken = await _userManager.GeneratePasswordResetTokenAsync(identityUser);
+                    var passwordReset = await _userManager.ResetPasswordAsync(identityUser, passwordresetToken, passwordResetModel.ConfirmPassword);
+
+                    return Ok(passwordReset);
+                }
             }
             catch (Exception)
             {
@@ -369,6 +391,7 @@ public class AuthController : ControllerBase
                 throw;
             }
         }
+        return Unauthorized();
     }
 }
 
