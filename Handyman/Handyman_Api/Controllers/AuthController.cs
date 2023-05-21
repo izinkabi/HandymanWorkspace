@@ -304,6 +304,96 @@ public class AuthController : ControllerBase
         }
 
     }
+    /// <summary>
+    /// Password reset endpoint
+    /// Deal with comparing the current and new password to change user password
+    /// If current password is incorrect, new password will not be set.
+    /// 
+    /// </summary>
+    /// <param name="passwrodChangeModel"></param>
+    /// <returns>passwordChanged > Success OR Error message for fail</returns>
+    [HttpPost("changepassword")]
+    [Authorize]
+    public async Task<IActionResult> ChangePassword([FromBody] PasswrodChangeModel passwrodChangeModel)
+    {
+        var user = _signInManager.Context.User;
+        if (_signInManager.Context.User.Identity.IsAuthenticated)
+        {
+            try
+            {
+                IdentityUser identityUser = new IdentityUser();
+
+                Claim? EmailClaim = User.FindFirst(ClaimTypes.Email);
+
+                var email = EmailClaim?.Value;
+                identityUser = await _userManager.FindByEmailAsync(email);
+                //validate the model and make sure the password meets the criteria 
+                if (passwrodChangeModel != null)
+                {
+                    var passwordChanged = await _userManager.ChangePasswordAsync(identityUser, passwrodChangeModel.currentPassword, passwrodChangeModel.newPassword);
+                    
+                    return Ok(passwordChanged);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+        return Ok();
+    }
+
+    /// <summary>
+    /// Reset the password for an authenticated user
+    /// Need to send a Password reset token to the user to 
+    /// </summary>
+    /// <param name="identityUser"></param>
+    /// <param name="passwordResetModel"></param>
+    /// <returns>200 status code if password has been reset</returns>
+    [HttpPost("resetpassword")]
+    [Authorize]
+    public async Task<IActionResult> ResetPassword([FromBody] PasswordResetModel passwordResetModel)
+    {
+        var user = _signInManager.Context.User;
+        if (_signInManager.Context.User.Identity.IsAuthenticated)
+        {
+            try
+            {
+               IdentityUser identityUser = new IdentityUser();
+
+               Claim? EmailClaim = User.FindFirst(ClaimTypes.Email);
+
+               var  email = EmailClaim?.Value;
+                identityUser = await _userManager.FindByEmailAsync(email);
+                //validate model
+                if (identityUser != null)
+                {
+                    // TODO - Need to implement a email handler that will deal with sending this password reset Token 
+                    var passwordresetToken = await _userManager.GeneratePasswordResetTokenAsync(identityUser);
+                    if (passwordresetToken != null)
+                    {
+                        var confirmedToken = emailSender.ResetPasswordEmail(identityUser.Email, passwordresetToken);
+                        //Need get this Password Reset Token from an email sender 
+                        //This need to be fixed. It works for now 
+                        var passwordReset = await _userManager.ResetPasswordAsync(identityUser, confirmedToken, passwordResetModel.NewPassword);
+
+                        return Ok(passwordReset);
+                    }
+                    
+
+
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        return Unauthorized();
+    }
 
     //LogOut
     [HttpPost("logout")]
@@ -330,68 +420,6 @@ public class AuthController : ControllerBase
         }
 
         return Ok();
-    }
-
-    [HttpPost("changepassword")]
-    [Authorize]
-    public async Task<IActionResult> ChangePassword([FromBody] PasswrodChangeModel passwrodChangeModel)
-    {
-        var user = _signInManager.Context.User;
-        if (_signInManager.Context.User.Identity.IsAuthenticated)
-        {
-            try
-            {
-                //validate the model and make sure the password meets the criteria 
-
-                //update password details of locked in  user
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-        }
-        return Ok();
-    }
-
-    /// <summary>
-    /// Reset the password for an authenticated user
-    /// </summary>
-    /// <param name="identityUser"></param>
-    /// <param name="passwordResetModel"></param>
-    /// <returns>200 status code if password has been reset</returns>
-    [HttpPost("resetpassword")]
-    [Authorize]
-    public async Task<IActionResult> ResetPassword([FromBody] PasswordResetModel passwordResetModel)
-    {
-        var user = _signInManager.Context.User;
-        if (_signInManager.Context.User.Identity.IsAuthenticated)
-        {
-            try
-            {
-                IdentityUser identityUser = new IdentityUser();
-
-               Claim? EmailClaim = User.FindFirst(ClaimTypes.Email);
-
-               var  email = EmailClaim?.Value;
-                identityUser = await _userManager.FindByEmailAsync(email);
-                //validate model
-                if (identityUser != null)
-                {
-                    var passwordresetToken = await _userManager.GeneratePasswordResetTokenAsync(identityUser);
-                    var passwordReset = await _userManager.ResetPasswordAsync(identityUser, passwordresetToken, passwordResetModel.ConfirmPassword);
-
-                    return Ok(passwordReset);
-                }
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-        return Unauthorized();
     }
 }
 
