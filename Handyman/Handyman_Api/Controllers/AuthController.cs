@@ -94,7 +94,7 @@ public class AuthController : ControllerBase
 
                 if (user != null)
                 {
-                    var claims = (await _userManager.GetClaimsAsync(user)).ToList();
+                   // var claims = (await _userManager.GetClaimsAsync(user)).ToList();
                     // Generate token using JWT
                     var token = _tokenProvider.GenerateToken(loginModel.Email ?? user.Email, loginModel.UserId ?? user.Id, loginModel.Role);
                     // Set the token as the authentication token for the user
@@ -128,7 +128,7 @@ public class AuthController : ControllerBase
     //Register
     [HttpPost("register")]
     [AllowAnonymous]
-    public async Task<IActionResult> RegisterUser(RegisterModel registerModel)
+    public async Task<IActionResult> RegisterUser([FromBody]RegisterModel registerModel)
     {
         var user = new IdentityUser { UserName = registerModel.Email, Email = registerModel.Email };
         var result = await _userManager.CreateAsync(user, registerModel.Password);
@@ -176,7 +176,7 @@ public class AuthController : ControllerBase
     //Confirm the email from
     [HttpPost("ConfirmEmail")]
     [AllowAnonymous]
-    public async Task<IActionResult> Confirm(string userId, string? code)
+    public async Task<IActionResult> Confirm([FromBody] string userId, string? code)
     {
         var user = await _userManager.FindByIdAsync(userId);
         if (userId == null || code == null)
@@ -326,4 +326,50 @@ public class AuthController : ControllerBase
 
         return Ok();
     }
+
+    [HttpPost("changepassword")]
+    [Authorize]
+    public async Task<IActionResult> ChangePassword([FromBody] PasswrodChangeModel passwrodChangeModel)
+    {
+        var user = _signInManager.Context.User;
+        if (_signInManager.Context.User.Identity.IsAuthenticated)
+        {
+            try
+            {
+                //validate the model and make sure the password meets the criteria 
+
+                //update password details of locked in  user
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+        return Ok();
+    }
+
+    [HttpPost("resetpassword")]
+    [Authorize]
+    public void ResetPassword([FromBody] PasswordResetModel passwordResetModel)
+    {
+        var user = _signInManager.Context.User;
+        if (_signInManager.Context.User.Identity.IsAuthenticated)
+        {
+            try
+            {
+                //validate model
+                //match password
+                //set new password
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+    }
 }
+
+    
