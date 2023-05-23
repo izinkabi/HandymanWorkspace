@@ -1,8 +1,10 @@
 ﻿using HandymanUILibrary.API.User;
 using HandymanUILibrary.Models;
+using HandymanUILibrary.Models.Auth;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
@@ -10,17 +12,17 @@ namespace HandymanUILibrary.API.Services;
 
 public class ServiceEndPoint : IServiceEndPoint
 {
-    private IAPIHelper _aPIHelper;
-
+    private readonly IAPIHelper _apiHelper;
+    private readonly AuthenticatedUserModel _authenticatedUser;
+    private IList<ServiceModel>? services;
     /// <summary>
     /// Constractor for the API helper
     /// </summary>
     /// <param name="aPIHelper"></param>
-    /// 
-
-    public ServiceEndPoint(IAPIHelper aPIHelper)
+    public ServiceEndPoint(IAPIHelper aPIHelper, AuthenticatedUserModel authenticatedUser)
     {
-        _aPIHelper = aPIHelper;
+        _apiHelper = aPIHelper;
+        _authenticatedUser = authenticatedUser;
     }
     /// <summary>
     /// This method is used to Get a list of Service from the API
@@ -32,9 +34,17 @@ public class ServiceEndPoint : IServiceEndPoint
 
         try
         {
+            List<ServiceModel> services = new List<ServiceModel>();
+            if (services != null && _authenticatedUser.Access_Token != null)
+            {
+                _apiHelper.ApiClient.DefaultRequestHeaders.Clear();
+                _apiHelper.ApiClient.DefaultRequestHeaders.Accept.Clear();
+                _apiHelper.ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("applications/json"));
+                _apiHelper.ApiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_authenticatedUser.Access_Token}");
+                services = await _apiHelper.ApiClient.GetFromJsonAsync<List<ServiceModel>>("/api/services/GetServices");
+            }
 
-            List<ServiceModel> httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<List<ServiceModel>>("/api/services/GetServices");
-            return httpResponseMessage;
+            return services;
         }
         catch (Exception ex)
         {
@@ -52,7 +62,7 @@ public class ServiceEndPoint : IServiceEndPoint
     {
         try
         {
-            List<ServiceCategoryModel> httpResponseMessage = await _aPIHelper.ApiClient.GetFromJsonAsync<List<ServiceCategoryModel>>("Services/GetServiceCategories");
+            List<ServiceCategoryModel> httpResponseMessage = await _apiHelper.ApiClient.GetFromJsonAsync<List<ServiceCategoryModel>>("Services/GetServiceCategories");
             return httpResponseMessage;
         }
         catch (Exception ex)
@@ -72,7 +82,7 @@ public class ServiceEndPoint : IServiceEndPoint
     {
 
 
-        using (HttpResponseMessage httpResponseMessage = await _aPIHelper.ApiClient.GetAsync($"/api/GetServiceById?Id={id}"))
+        using (HttpResponseMessage httpResponseMessage = await _apiHelper.ApiClient.GetAsync($"/api/GetServiceById?Id={id}"))
         {
             if (httpResponseMessage.IsSuccessStatusCode)
             {
@@ -94,7 +104,7 @@ public class ServiceEndPoint : IServiceEndPoint
     {
         try
         {
-            await _aPIHelper.ApiClient.PutAsJsonAsync("/api/Services/UpdateService", service);
+            await _apiHelper.ApiClient.PutAsJsonAsync("/api/Services/UpdateService", service);
         }
         catch (Exception)
         {
@@ -107,7 +117,7 @@ public class ServiceEndPoint : IServiceEndPoint
     {
         try
         {
-            await _aPIHelper.ApiClient.DeleteAsync($"/api/Services/DeleteCustom=service?{service}");
+            await _apiHelper.ApiClient.DeleteAsync($"/api/Services/DeleteCustom=service?{service}");
         }
         catch (Exception)
         {
@@ -120,7 +130,7 @@ public class ServiceEndPoint : IServiceEndPoint
     {
         try
         {
-            PriceModel price = await _aPIHelper.ApiClient.GetFromJsonAsync<PriceModel>($"/api/services/GetPrice?priceId={priceId}");
+            PriceModel price = await _apiHelper.ApiClient.GetFromJsonAsync<PriceModel>($"/api/services/GetPrice?priceId={priceId}");
             return price;
         }
         catch (Exception ex)

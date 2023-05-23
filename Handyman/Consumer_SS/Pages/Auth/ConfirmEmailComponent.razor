@@ -1,0 +1,89 @@
+﻿@page "/confirm-email"
+@using HandymanUILibrary.API.Auth;
+@using Microsoft.AspNetCore.Components.Authorization;
+
+@inject NavigationManager NavManager
+@inject AuthenticationStateProvider _authStateProvider
+@inject IAuthEndpoint _authEndPoint
+
+
+@if (Errors.Count > 0)
+{
+    @foreach(string error in Errors)
+    {
+        <span class="text-danger">@error</span>
+    }
+}
+
+@if (IsConfirmed)
+{
+    <div class="alert alert-success alert-disposable">
+        Your email is confirmed! :-)
+        <button class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"> </button>
+    </div>
+}
+
+
+@code {
+    private string? userId,code;
+    private bool IsConfirmed;
+    [Parameter]
+    [SupplyParameterFromQuery(Name ="userId")]
+    public string UserId { get { return userId; } set { userId = value; } }
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name ="code")]
+    public string? Code { get { return code; } set { code = value; } }
+
+    private List<string> Errors = new List<string>();
+
+
+
+    //protected override void OnParametersSet()
+    //{
+    //    var qs = NavManager.ToAbsoluteUri(NavManager.Uri).Query;
+    //    var query = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(qs);
+    //    if (query.TryGetValue("code", out var code))
+    //    {
+            
+    //            this.code = code;
+            
+    //    }
+    //    if (query.TryGetValue("userId", out var userId))
+    //    {
+    //        this.userId = userId;
+    //    }
+    //}
+
+    protected override async Task OnInitializedAsync()
+    {
+        try 
+        {
+
+
+            //Confirm the code and the user
+            IsConfirmed = await _authEndPoint.ConfirmEmail(userId,code);
+            if (IsConfirmed)
+            {
+                //Loggin again to access the Workshop sign-up page
+                var authedUserModel = await _authEndPoint.LoginUser(userId);
+                var state = await _authStateProvider.GetAuthenticationStateAsync();
+                await InvokeAsync(StateHasChanged);
+            }
+            else
+            {
+                Errors.Add("Error: Email not confirmed!");
+            }
+
+            //var returnUrl =
+            //NavManager.ToBaseRelativePath("ws-sign-up");
+            NavManager.NavigateTo("/");
+            
+           
+        }catch(Exception ex)
+        {
+            Errors.Add(ex.Message);
+        }
+    }
+
+}

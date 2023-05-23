@@ -64,7 +64,7 @@ public class AuthController : ControllerBase
                     var claims = await _userManager.GetClaimsAsync(identityUser);
                     if (claims == null || claims.Count < 1)
                     {
-                        token = _tokenProvider.GenerateToken(loginModel.Email, loginModel.UserId, loginModel.Role);
+                        token = _tokenProvider.GenerateToken(identityUser.Email, loginModel.UserId, loginModel.Role);
                     }
                     else
                     {
@@ -220,7 +220,7 @@ public class AuthController : ControllerBase
             Dictionary<string, Uri?> appRoles = new Dictionary<string, Uri?>()
             {
                 ["ServiceProvider"] = new Uri($"https://localhost:7042/confirm-email?userId={user.Id}&code={code}"),
-                ["Consumer"] = new Uri($"https://localhost:7250/auth/confirmemail?userId={user.Id}&code={code}")
+                ["Consumer"] = new Uri($"https://localhost:7207/confirm-email?userId={user.Id}&code={code}")
 
             };
             //Initialized
@@ -313,8 +313,11 @@ public class AuthController : ControllerBase
                 var identityUser = await _userManager.FindByEmailAsync(user.Identity.Name);
                 // var id = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
                 if (!string.IsNullOrEmpty(identityUser.Id))
+                {
                     _authData.DeleteToken(identityUser.Id);
-                _signInManager.SignOutAsync();
+                    await _signInManager.SignOutAsync();
+                }
+
             }
             catch (Exception)
             {

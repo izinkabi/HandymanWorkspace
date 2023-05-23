@@ -11,18 +11,18 @@ namespace HandymanUILibrary.API.User
 {
     public class APIHelper : IAPIHelper
     {
-        //readonly IHttpClientFactory _clientFactory;
+
         private HttpClient _apiClient;
-        private IloggedInUserModel _loggedInUserModel;
-        IConfiguration _Configuration;
+        private readonly IConfiguration _configuration;
 
         public APIHelper(IConfiguration configuration)
         {
-            _Configuration = configuration;
+            _configuration = configuration;
             InitializeCLient();
-            //_loggedInUserModel = loggedInUser;
-
         }
+
+
+
 
         public HttpClient ApiClient
         {
@@ -36,12 +36,8 @@ namespace HandymanUILibrary.API.User
         //We initialize the HTTP client and format the clients headings to pass the data as a json objet
         private void InitializeCLient()
         {
-
-
-            //string api = "https://localhost:44308/api/";
-
             _apiClient = new HttpClient();
-            _apiClient.BaseAddress = new Uri(_Configuration["Api"]);
+            _apiClient.BaseAddress = new Uri(_configuration["ApiUrl"]);
             _apiClient.DefaultRequestHeaders.Accept.Clear();
             _apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/*+json"));
         }
@@ -81,11 +77,7 @@ namespace HandymanUILibrary.API.User
             {
                 LoginModel? data = new LoginModel
                 {
-                    Email = "string@mail.com",
-                    Password = "string",
-                    RememberMe = false,
                     UserId = userId
-
                 };
                 InitializeCLient();
                 using (HttpResponseMessage httpResponse = await _apiClient.PostAsJsonAsync<LoginModel>("Auth/login", data))
@@ -120,15 +112,6 @@ namespace HandymanUILibrary.API.User
                 {
 
                     var result = await httpResponseMessage.Content.ReadFromJsonAsync<loggedInUserModel>();
-                    //_loggedInUserModel.Token = Token;
-                    //_loggedInUserModel.Id = result.Id;
-                    //_loggedInUserModel.Username = result.Username;
-                    //_loggedInUserModel.Email = result.Email;
-                    //_loggedInUserModel.CreateDate = result.CreateDate;
-                    //_loggedInUserModel.FirstName = result.FirstName;
-                    //_loggedInUserModel.LastName = result.LastName;
-                    ////acquiring roles from a model(not recommended, but HEy it wOrKs!)
-                    //_loggedInUserModel.UserRole = result.UserRole;
                     return result;
                 }
                 else
@@ -147,6 +130,7 @@ namespace HandymanUILibrary.API.User
             try
             {
                 //_apiClient.DefaultRequestHeaders.Clear();
+
                 var response = await _apiClient.PostAsJsonAsync("auth/logout", new { });
                 return response.IsSuccessStatusCode;
 

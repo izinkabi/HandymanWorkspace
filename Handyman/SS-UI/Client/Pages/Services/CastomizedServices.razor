@@ -1,0 +1,92 @@
+﻿
+
+@using HandymanUILibrary.Models;
+
+
+@using Microsoft.AspNetCore.Components.Web
+@inject IConfiguration _config
+@if (customedServices != null)
+{
+    <div id="customsCarousel" class="carousel carousel-dark slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+           
+            @for (int i = 0; i < customedServices.Count(); i++)
+            {
+               
+                <button type="button" data-bs-target="#customsCarousel" data-bs-slide-to="@i" class="active" aria-current="true" aria-label="Slide 1"></button>
+            }
+            <button type="button" data-bs-target="#customsCarousel" data-bs-slide-to="@(customedServices.Count+1)" class="active" aria-current="true" aria-label="Slide 1"></button>
+
+        </div>
+        <div class="carousel-inner">
+            
+            @foreach (var customed in customedServices)
+            {
+                <div class="carousel-item">
+                    <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777" /></svg>
+                    @if (string.IsNullOrWhiteSpace(customed.imageUrl) == false)
+                    {
+                        <div class="container">
+                            @if (string.IsNullOrWhiteSpace(customed.imageUrl) == false)
+                            {
+                                <img src="@customed.imageUrl" width="300" />
+                            }
+                            <div class="carousel-caption" >
+
+                                <h1>@customed.title</h1>
+                                <p>@customed.description</p>
+                                <p><a class="btn btn-lg btn-primary" href="#" data-bs-dismiss="modal">Order</a></p>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            }
+            <div class="carousel-item active">
+                <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777" /></svg>
+
+                <div class="container">
+                    <div class="carousel-caption text-start">
+                        <img class="round " src="/Images/handymanGIF.gif" width="300" />
+                        <h1>All Services</h1>
+                        <p>Go check out videos and other material related to this</p>
+                        <p><a class="btn btn-lg btn-primary" href="#" data-bs-dismiss="modal">Order</a></p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#customsCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#customsCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+}
+@code {
+
+    private List<CustomServiceModel>? customedServices;
+
+    [Parameter]
+    public List<CustomServiceModel>? CustomizedServicesProperty { get{return customedServices;} set { customedServices = value; } }
+
+    private string CreateWebPath(string relativePath)
+    {
+        return Path.Combine(_config.GetValue<string>("WebStorageRoot")!, relativePath);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if(customedServices is not null)
+        {
+            foreach (var custom in customedServices)
+            {
+                custom.imageUrl = CreateWebPath(custom.imageUrl);
+            }
+        }
+       
+    }
+}

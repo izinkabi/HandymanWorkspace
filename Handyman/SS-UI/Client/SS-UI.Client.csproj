@@ -1,0 +1,107 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+    <AssemblyName>$(AssemblyName.Replace(' ', '_'))</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="DeleteConfirmation.razor" />
+    <Content Remove="Pages\ConfirmEmailComponent.razor" />
+    <Content Remove="Pages\Login.razor" />
+    <Content Remove="wwwroot\bootstrap.bundle.min.js" />
+    <Content Remove="wwwroot\bootstrap.bundle.min.js.map" />
+    <Content Remove="wwwroot\css\bootstrap.min.css.map" />
+    <Content Remove="wwwroot\Images\ac.jpg" />
+    <Content Remove="wwwroot\Images\cleaning.jpg" />
+    <Content Remove="wwwroot\Images\hand.jpg" />
+    <Content Remove="wwwroot\Images\handy.jpg" />
+    <Content Remove="wwwroot\Images\handyman.jpg" />
+    <Content Remove="wwwroot\Images\oven.jpg" />
+    <Content Remove="wwwroot\Images\pipe.jpg" />
+    <Content Remove="wwwroot\lib\qrcodeGenerator\.gitignore" />
+    <Content Remove="wwwroot\lib\qrcodeGenerator\index.svg" />
+    <Content Remove="wwwroot\lib\qrcodeGenerator\jquery.min.js" />
+    <Content Remove="wwwroot\lib\qrcodeGenerator\LICENSE" />
+    <Content Remove="wwwroot\lib\qrcodeGenerator\qrcode.js" />
+    <Content Remove="wwwroot\lib\qrcodeGenerator\qrcode.min.js" />
+    <Content Remove="wwwroot\lib\qrcodeGenerator\README.md" />
+    <Content Remove="wwwroot\negotiationModule.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Shared\MainLayout.razor~RFb97441.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap.min.css.map" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\calenda.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Shared\DeleteConfirmation.razor" />
+    <None Include="Login.razor" />
+    <None Include="Pages\ConfirmEmailComponent.razor" />
+    <None Include="wwwroot\bootstrap.bundle.min.js" />
+    <None Include="wwwroot\bootstrap.bundle.min.js.map" />
+    <None Include="wwwroot\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\Images\ac.jpg" />
+    <None Include="wwwroot\Images\cleaning.jpg" />
+    <None Include="wwwroot\Images\hand.jpg" />
+    <None Include="wwwroot\Images\handy.jpg" />
+    <None Include="wwwroot\Images\handyman.jpg" />
+    <None Include="wwwroot\Images\oven.jpg" />
+    <None Include="wwwroot\Images\pipe.jpg" />
+    <None Include="wwwroot\lib\qrcodeGenerator\.gitignore" />
+    <None Include="wwwroot\lib\qrcodeGenerator\index.svg" />
+    <None Include="wwwroot\lib\qrcodeGenerator\jquery.min.js" />
+    <None Include="wwwroot\lib\qrcodeGenerator\LICENSE" />
+    <None Include="wwwroot\lib\qrcodeGenerator\qrcode.js" />
+    <None Include="wwwroot\lib\qrcodeGenerator\qrcode.min.js" />
+    <None Include="wwwroot\lib\qrcodeGenerator\README.md" />
+    <None Include="wwwroot\negotiationModule.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.5" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\SS-UI.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Shared\MainLayout.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="wwwroot\css\app.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\carousel.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\carousel.rtl.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\form-validation.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

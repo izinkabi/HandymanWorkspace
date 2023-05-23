@@ -1,9 +1,11 @@
 ﻿using HandymanUILibrary.API.Consumer.Order.Interface;
 using HandymanUILibrary.API.User;
 using HandymanUILibrary.Models;
+using HandymanUILibrary.Models.Auth;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
@@ -12,15 +14,26 @@ namespace HandymanUILibrary.API.Consumer.Order.Implementation;
 public class OrderEndPoint : IOrderEndPoint
 {
     IAPIHelper _apiHelper;
+    private readonly AuthenticatedUserModel _authenticatedUser;
 
     /// <summary>
     /// This method is used to construct a the API helper
     /// </summary>
     /// <param name="aPIHelper"></param>
 
-    public OrderEndPoint(IAPIHelper aPIHelper)
+    public OrderEndPoint(IAPIHelper aPIHelper, AuthenticatedUserModel authenticatedUser)
     {
         _apiHelper = aPIHelper;
+        _authenticatedUser = authenticatedUser;
+        if (_authenticatedUser.Access_Token != null)
+        {
+            _apiHelper.ApiClient.DefaultRequestHeaders.Clear();
+            _apiHelper.ApiClient.DefaultRequestHeaders.Accept.Clear();
+            _apiHelper.ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("applications/json"));
+            _apiHelper.ApiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_authenticatedUser.Access_Token}");
+
+
+        }
     }
 
     /// <summary>

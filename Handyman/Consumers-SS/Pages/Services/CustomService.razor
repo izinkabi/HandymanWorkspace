@@ -1,0 +1,199 @@
+﻿@page "/custom-service"
+@using HandymanUILibrary.API.Services;
+@using HandymanUILibrary.Models;
+@using Microsoft.AspNetCore.Components.Forms;
+@using HandymanUILibrary.API;
+@using Microsoft.AspNetCore.Components.Web
+
+
+@inject IConfiguration _config
+@inject IServiceEndPoint _serviceEP;
+      
+        <div class="card card-cover h-100 overflow-hidden bg-secondary rounded-3 shadow-lg border-4 border-success align-content-sm-center" style="background-image: url('~/Images/unsplash-photo-3.jpg'));">
+          <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1" >
+            <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold text-center">@customService.name</h2>
+            @if (string.IsNullOrWhiteSpace(customService.img ) == false)
+            {
+               <img src="@customService.img" width="200"/>
+            }
+        <ul class="list-unstyled mt-auto">
+            
+            <li class="d-flex align-items-center me-3 font-monospace">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-body-text" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M0 .5A.5.5 0 0 1 .5 0h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 0 .5Zm0 2A.5.5 0 0 1 .5 2h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5Zm9 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5Zm-9 2A.5.5 0 0 1 .5 4h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5Zm5 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5Zm7 0a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5Zm-12 2A.5.5 0 0 1 .5 6h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5Zm8 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5Zm-8 2A.5.5 0 0 1 .5 8h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5Zm7 0a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5Zm-7 2a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8a.5.5 0 0 1-.5-.5Zm0 2a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5Zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5Z" />
+                </svg>
+                <small class="px-5">@customService.category.description</small><br />
+            </li>
+            <hr />
+            <li class="d-flex align-items-center me-3">
+               <div class="row container container-fluid">
+                  <ul class="flex-lg-wrap">
+                        <EditForm Model="@customService" OnValidSubmit="SubmitForm">
+
+                            <li class="align-items-center flex-md-wrap-reverse">
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                            </svg>
+                            <label for="name"> Title </label>
+                            <input type="text" id="name" @bind-value="@customService.name" class="btn btn-sm border-success font-monospace flex-md-wrap text-white text-sm-start" placeholder="Title"><br><br>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                            </svg>
+                                <label for="Cdescription"> Description </label>
+                            <input type="text" id="Cdescription" @bind-value="@customService.category.description" class="btn btn-sm border-success font-monospace flex-md-wrap text-white text-sm-start" placeholder="Description..."><br><br>
+                            
+                            <div class="input-group mb-3">
+
+                                <InputFile OnChange="LoadFiles" multiple accept=".jpg,.png,.jpeg" class="form-control" id="serviceImage" /><br/>
+                                @if (errors.Count > 0)
+                                {
+                                    <h3 class="text-danger">Error!</h3>
+                                    @foreach(var error in errors)
+                                    {
+                                        <small class="text-danger"> @error</small>
+                                    }
+                                       
+                                }
+                                </div>
+                                @if (!isCustomized)
+                                {
+                                    <button type="submit" class="btn btn-dark btn-outline-success" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save2" viewBox="0 0 16 16">
+                                            <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v4.5h2a.5.5 0 0 1 .354.854l-2.5 2.5a.5.5 0 0 1-.708 0l-2.5-2.5A.5.5 0 0 1 5.5 6.5h2V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z" />
+                                        </svg>
+                                        Save
+                                    </button>
+                                }
+
+
+                       
+
+                    </li>
+                        </EditForm>
+                  </ul>
+            </div>   
+              </li>
+        </ul>
+          </div>
+        </div>
+
+              
+                          
+
+@code {
+
+    private ServiceModel? customService;
+
+
+    private long maxFileSize = 1024 * 1024 * 3;
+    private int maxAllowedFiles = 3;
+    List<string> errors = new();
+    IReadOnlyList<IBrowserFile>? files;
+    bool isCustomized;
+
+    List<string> relativePaths = new();
+
+    [Parameter]
+    public ServiceModel? CustomServiceProperty
+    {
+        get { return customService; }
+        set { customService = value; }
+    }
+
+    async Task SubmitForm()
+    {
+        try
+        {
+            var urls = await AddImageFiles();
+            customService.img = @CreateWebPath(urls.ElementAt(0));
+
+            //Map the custom service 
+            CustomServiceModel cService = new();
+
+            cService.title = customService.name;
+            cService.description = customService.category.description;
+            cService.imageUrl = customService.img;
+            cService.originalServiceId = customService.id;
+
+            //add a custom
+            customService.Customs.Add(cService);
+
+            //Update db
+            await _serviceEP.UpdateService(customService);
+            isCustomized = true;
+            StateHasChanged();
+
+        }
+        catch (Exception ex)
+        {
+            errors.Add(ex.Message);
+        }
+    }
+
+    void LoadFiles(InputFileChangeEventArgs e)
+    {
+        files = e.GetMultipleFiles(maxAllowedFiles);
+    }
+
+    private string CreateWebPath(string relativePath)
+    {
+        return Path.Combine(_config.GetValue<string>("WebStorageRoot")!, relativePath);
+    }
+
+    async Task<List<string>> AddImageFiles()
+    {
+        errors.Clear();
+        if (files is null)
+        {
+            return null ;
+        }
+
+        if (files.Count > maxAllowedFiles)
+        {
+            errors.Add($"Error: Attempting to upload {files.Count} files, but only {maxAllowedFiles} is allowed");
+            return null;
+        }
+
+
+        foreach (var file in files)
+        {
+            try
+            {
+                string newFileName = Path.ChangeExtension(Path.GetRandomFileName(), Path.GetExtension(file.Name));
+                string path = Path.Combine(_config.GetValue<string>("FileStorage")!,"order", newFileName);
+
+                relativePaths.Add(Path.Combine("order", newFileName));
+                Directory.CreateDirectory(Path.Combine(_config.GetValue<string>("FileStorage")!, "order"));
+                await using FileStream fs = new(path,FileMode.Create);
+                await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
+
+               
+            }
+            catch (Exception e)
+            {
+                errors.Add($"File: {file.Name} Error: {e.Message}");
+                throw;
+            }
+        }
+
+        //string folder = "orders/images";
+        //    folder += Guid.NewGuid().ToString() + serviceImage.FileName;
+        //    string serverFolder = Path.Combine(_webHostEnvironment.WebRootPath, folder);
+
+        //    await serviceImage.CopyToAsync(new FileStream(serverFolder,FileMode.Create));
+        //    if (serverFolder != null)
+        //    {
+        //        return serverFolder;
+        //    }
+            
+        
+        return relativePaths;
+
+
+    }
+
+
+}

@@ -1,11 +1,14 @@
 ﻿using HandymanUILibrary.API.Services;
 using HandymanUILibrary.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Data;
 
 namespace Handymen_UI_Consumer.Pages;
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class IndexPageModel : PageModel
 {
 

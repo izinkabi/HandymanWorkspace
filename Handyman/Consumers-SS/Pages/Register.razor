@@ -1,0 +1,147 @@
+﻿@page "/sign-up"
+@using HandymanUILibrary.Models.AuthModels;
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel.DataAnnotations;
+
+@inject HttpClient http
+@inject NavigationManager NavManager
+@attribute [AllowAnonymous]
+@if (Errors.Count > 0)
+{
+    @foreach(string error in Errors)
+    {
+        <p class="text-danger">@error</p>
+    }
+}
+
+@if (!IsRegistered)
+{
+    @if (!IsSubmitted)
+    {
+        <div class="container container-fluid m-auto shadow rounded">
+            <h3>Register</h3>
+            <EditForm Model="Input" OnValidSubmit="ClickSubmitRegister" OnInvalidSubmit="DisplayInvalidInput">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div class="row mb-3">
+                    <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+                    <div class="col-sm-10">
+                        <InputText type="email" @bind-Value="Input.Email" class="form-control" id="inputEmail" />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+                    <div class="col-sm-10">
+                        <InputText type="password" @bind-Value="Input.Password" class="form-control" id="inputPassword" />
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="inputConfirmPassword" class="col-sm-2 col-form-label">Confirm Password</label>
+                    <div class="col-sm-10">
+                        <InputText type="password" id="inputConfirmPassword" @bind-Value="Input.ConfirmPassword" class="form-control" />
+
+                    </div>
+                </div>
+
+                @if (Errors.Count > 0)
+                {
+                    @foreach (string error in Errors)
+                    {
+                        <span>@error</span>
+                    }
+
+                }
+
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+                <br />
+                <a class="link-primary m-auto p-2" @onclick="ToSignIn">Sign In</a>
+            </EditForm>
+        </div>
+    }
+    else
+    {
+        <div class="d-flex align-items-center bg-light shadow m-auto p-2">
+            <strong>Signing Up...please wait</strong>
+            <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+        </div>
+    }
+   
+}
+else
+{
+    <p>
+        You have registered, please check your emails for a confirmation. Thank you. 
+    </p>
+}
+
+@code {
+    private InputModel Input = new InputModel();
+    List<string> Errors = new List<string>();
+    private bool IsRegistered;
+    private bool IsSubmitted;
+    //Register input dto model 
+    private class InputModel
+    {
+        [Required]
+        [EmailAddress (ErrorMessage = "Please enter email address")]
+        [Display(Name = "Email Address")]
+        internal string? Email { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Password")]
+        internal string? Password { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm password")]
+        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        internal string? ConfirmPassword { get; set; }
+
+    }
+
+    //On clicking the submit button method 
+    async void ClickSubmitRegister()
+    {
+        try
+        {
+            if (Input != null && Input.Email != null && Input.Password != null)
+            {
+                IsSubmitted = true;
+                if (Input.Password == Input.ConfirmPassword)
+                {
+                    var httpResponse = await http.PostAsJsonAsync<RegisterModel>("Auth", new RegisterModel { Email = Input.Email, Password = Input.Password ,ConfirmPassword = Input.ConfirmPassword});
+                    IsRegistered = httpResponse.IsSuccessStatusCode;
+                    await InvokeAsync(StateHasChanged);
+                    //ToSignIn();
+                }
+                else
+                {
+                    Errors.Add("Password don't match");
+                    IsSubmitted = false;
+                }
+
+            }
+
+        }
+        catch (Exception ex)
+        {
+
+            Errors.Add(ex.Message);
+            IsSubmitted = false;
+        }
+    }
+    void DisplayInvalidInput()
+    {
+        
+    }
+
+    void ToSignIn()
+    {
+        NavManager.NavigateTo("sign-in");
+    }
+}
+
+
+

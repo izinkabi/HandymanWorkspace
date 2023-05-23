@@ -1,0 +1,73 @@
+﻿@page "/cancelled-orders"
+@inject IOrderHelper _orderHelper
+@inject AuthenticationStateProvider _authStateProvider
+
+
+<div class="album py-5 bg-light shadow" role="document">
+    <h4 class="font-monospace shadow rounded bg-transparent">Cancelled Orders</h4>
+
+    <div class="container">
+
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            @if (orders is null)
+            {
+                <div class="card" aria-hidden="true">
+                    <img src="..." class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title placeholder-glow">
+                            <span class="placeholder col-6"></span>
+                        </h5>
+                        <p class="card-text placeholder-glow">
+                            <span class="placeholder col-7"></span>
+                            <span class="placeholder col-4"></span>
+                            <span class="placeholder col-4"></span>
+                            <span class="placeholder col-6"></span>
+                            <span class="placeholder col-8"></span>
+                        </p>
+                        <a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                @foreach (var item in orders)
+                {
+
+                    <CancelledOrderComponent CancelledOrder="item" />
+
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+
+    private List<OrderModel>? orders;
+
+    public List<OrderModel> OrdersProperty
+    {
+        get { return orders; }
+        private set { orders = value; }
+    }
+
+    protected override async void OnInitialized()
+    {
+        try
+        {
+            var state = await _authStateProvider.GetAuthenticationStateAsync();
+            var User = state.User;
+            string? userId = User.FindFirst(u=>u.Type.Contains("nameidentifier"))?.Value;
+            var userOrders = await _orderHelper.LoadUserOrders(userId);
+            orders = _orderHelper.CancelledOrdersProperty;
+            
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+
+    }
+
+}

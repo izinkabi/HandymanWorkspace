@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Pages\DeleteConfirmation.razor" />
     <Content Remove="Pages\Orders\CancelledOrders.cshtml" />
     <Content Remove="wwwroot\assets\dist\js\negotiationModule.js" />
     <Content Remove="wwwroot\Images\ac.jpg" />
@@ -29,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Pages\DeleteConfirmation.razor" />
     <None Include="Pages\Orders\CancelledOrders.cshtml" />
     <None Include="wwwroot\assets\brand\bootstrap-logo-white.svg" />
     <None Include="wwwroot\assets\brand\bootstrap-logo.svg" />
@@ -81,6 +83,14 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\orders\images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\DeleteConfirmation.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\DeleteConfirmation.razor" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,29 @@
+﻿@inject AuthenticationStateProvider _authStateProvider;
+@inject IOrderHelper _orderHelper
+@inject NavigationManager NavManager
+
+
+<!-- Modal -->
+<!-- Modal -->
+<div class="modal fade" id="staticBackdropConfirmorder" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Order-Confirmation</h5>
+                <a type="button" @onclick="@(()=>NavManager.NavigateTo("/"))" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a>
+            </div>
+            <div class="modal-body alert-success">
+                <h2>
+                    Someone is working on your order, be chilled
+                </h2>
+                <img src="/Images/handymanGIF.gif" class="img-thumbnail" alt="...">
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
+@code{
+    
+}
