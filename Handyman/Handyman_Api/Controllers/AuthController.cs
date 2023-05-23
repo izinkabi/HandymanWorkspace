@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -75,7 +76,11 @@ public class AuthController : ControllerBase
                     // Set the token as the authentication token for the user
                     var identityResult = await _signInManager.UserManager.SetAuthenticationTokenAsync(identityUser, "Jwt", "Bearer", token);
                     if (identityResult.Succeeded)
+                    {
+                        _signInManager.SignInWithClaimsAsync(identityUser, true, claims);
                         return Ok(token);
+                    }
+                        
                     else
                         return BadRequest("Invalid login");
                 }
@@ -94,7 +99,7 @@ public class AuthController : ControllerBase
 
                 if (user != null)
                 {
-                    var claims = (await _userManager.GetClaimsAsync(user)).ToList();
+                   // var claims = (await _userManager.GetClaimsAsync(user)).ToList();
                     // Generate token using JWT
                     var token = _tokenProvider.GenerateToken(loginModel.Email ?? user.Email, loginModel.UserId ?? user.Id, loginModel.Role);
                     // Set the token as the authentication token for the user
@@ -128,7 +133,7 @@ public class AuthController : ControllerBase
     //Register
     [HttpPost("register")]
     [AllowAnonymous]
-    public async Task<IActionResult> RegisterUser(RegisterModel registerModel)
+    public async Task<IActionResult> RegisterUser([FromBody]RegisterModel registerModel)
     {
         var user = new IdentityUser { UserName = registerModel.Email, Email = registerModel.Email };
         var result = await _userManager.CreateAsync(user, registerModel.Password);
@@ -176,7 +181,7 @@ public class AuthController : ControllerBase
     //Confirm the email from
     [HttpPost("ConfirmEmail")]
     [AllowAnonymous]
-    public async Task<IActionResult> Confirm(string userId, string? code)
+    public async Task<IActionResult> Confirm([FromBody] string userId, string? code)
     {
         var user = await _userManager.FindByIdAsync(userId);
         if (userId == null || code == null)
@@ -273,7 +278,7 @@ public class AuthController : ControllerBase
         {
             // Get the email claim from the authenticated user's identity
 
-            var idClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            Claim? idClaim = User.FindFirst(ClaimTypes.Email);
             if (idClaim == null)
             {
                 _logger.LogInformation("Email Invalid");
@@ -281,10 +286,10 @@ public class AuthController : ControllerBase
                 return BadRequest("Invalid Request");
             }
             //Get email value from the claim 
-            var userId = idClaim.Value;
+            var email = idClaim.Value;
 
             //get the user information using the email you got from the claim
-            IdentityUser? user = await _userManager.FindByIdAsync(userId);
+            IdentityUser? user = await _userManager.FindByEmailAsync(email);
             if (user == null)
             {
                 _logger.LogInformation("User unauthorized");
@@ -298,6 +303,96 @@ public class AuthController : ControllerBase
             throw new Exception(ex.Message);
         }
 
+    }
+    /// <summary>
+    /// Password reset endpoint
+    /// Deal with comparing the current and new password to change user password
+    /// If current password is incorrect, new password will not be set.
+    /// 
+    /// </summary>
+    /// <param name="passwrodChangeModel"></param>
+    /// <returns>passwordChanged > Success OR Error message for fail</returns>
+    [HttpPost("changepassword")]
+    [Authorize]
+    public async Task<IActionResult> ChangePassword([FromBody] PasswrodChangeModel passwrodChangeModel)
+    {
+        var user = _signInManager.Context.User;
+        if (_signInManager.Context.User.Identity.IsAuthenticated)
+        {
+            try
+            {
+                IdentityUser identityUser = new IdentityUser();
+
+                Claim? EmailClaim = User.FindFirst(ClaimTypes.Email);
+
+                var email = EmailClaim?.Value;
+                identityUser = await _userManager.FindByEmailAsync(email);
+                //validate the model and make sure the password meets the criteria 
+                if (passwrodChangeModel != null)
+                {
+                    var passwordChanged = await _userManager.ChangePasswordAsync(identityUser, passwrodChangeModel.currentPassword, passwrodChangeModel.newPassword);
+                    
+                    return Ok(passwordChanged);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+        return Ok();
+    }
+
+    /// <summary>
+    /// Reset the password for an authenticated user
+    /// Need to send a Password reset token to the user to 
+    /// </summary>
+    /// <param name="identityUser"></param>
+    /// <param name="passwordResetModel"></param>
+    /// <returns>200 status code if password has been reset</returns>
+    [HttpPost("resetpassword")]
+    [Authorize]
+    public async Task<IActionResult> ResetPassword([FromBody] PasswordResetModel passwordResetModel)
+    {
+        var user = _signInManager.Context.User;
+        if (_signInManager.Context.User.Identity.IsAuthenticated)
+        {
+            try
+            {
+               IdentityUser identityUser = new IdentityUser();
+
+               Claim? EmailClaim = User.FindFirst(ClaimTypes.Email);
+
+               var  email = EmailClaim?.Value;
+                identityUser = await _userManager.FindByEmailAsync(email);
+                //validate model
+                if (identityUser != null)
+                {
+                    // TODO - Need to implement a email handler that will deal with sending this password reset Token 
+                    var passwordresetToken = await _userManager.GeneratePasswordResetTokenAsync(identityUser);
+                    if (passwordresetToken != null)
+                    {
+                        var confirmedToken = emailSender.ResetPasswordEmail(identityUser.Email, passwordresetToken);
+                        //Need get this Password Reset Token from an email sender 
+                        //This need to be fixed. It works for now 
+                        var passwordReset = await _userManager.ResetPasswordAsync(identityUser, confirmedToken, passwordResetModel.NewPassword);
+
+                        return Ok(passwordReset);
+                    }
+                    
+
+
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        return Unauthorized();
     }
 
     //LogOut
@@ -330,3 +425,5 @@ public class AuthController : ControllerBase
         return Ok();
     }
 }
+
+    

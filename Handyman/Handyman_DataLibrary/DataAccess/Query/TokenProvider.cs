@@ -17,24 +17,6 @@ public class TokenProvider : ITokenProvider
         _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("Jwt:JWTSecretKey").Value));
 
     }
-
-    public string GenerateToken(string email)
-    {
-        var claims = new[]
-        {
-            new Claim(ClaimTypes.Email, email),
-            new Claim(ClaimTypes.Name, email)
-        };
-
-        var token = new JwtSecurityToken(
-            claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(30),
-            signingCredentials: new SigningCredentials(_key, SecurityAlgorithms.HmacSha256)
-        );
-
-        return new JwtSecurityTokenHandler().WriteToken(token);
-    }
-
     public string GenerateToken(string email, string? userId, string? role)
     {
         if (userId == null || role == null)

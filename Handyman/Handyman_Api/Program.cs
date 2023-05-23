@@ -124,7 +124,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("AllowAll");
+//app.UseCors("AllowAll");
 
 app.UseResponseCaching();
 
