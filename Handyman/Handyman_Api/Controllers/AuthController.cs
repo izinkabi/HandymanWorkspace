@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -80,7 +79,7 @@ public class AuthController : ControllerBase
                         _signInManager.SignInWithClaimsAsync(identityUser, true, claims);
                         return Ok(token);
                     }
-                        
+
                     else
                         return BadRequest("Invalid login");
                 }
@@ -99,7 +98,7 @@ public class AuthController : ControllerBase
 
                 if (user != null)
                 {
-                   // var claims = (await _userManager.GetClaimsAsync(user)).ToList();
+                    // var claims = (await _userManager.GetClaimsAsync(user)).ToList();
                     // Generate token using JWT
                     var token = _tokenProvider.GenerateToken(loginModel.Email ?? user.Email, loginModel.UserId ?? user.Id, loginModel.Role);
                     // Set the token as the authentication token for the user
@@ -133,7 +132,7 @@ public class AuthController : ControllerBase
     //Register
     [HttpPost("register")]
     [AllowAnonymous]
-    public async Task<IActionResult> RegisterUser([FromBody]RegisterModel registerModel)
+    public async Task<IActionResult> RegisterUser([FromBody] RegisterModel registerModel)
     {
         var user = new IdentityUser { UserName = registerModel.Email, Email = registerModel.Email };
         var result = await _userManager.CreateAsync(user, registerModel.Password);
@@ -331,7 +330,7 @@ public class AuthController : ControllerBase
                 if (passwrodChangeModel != null)
                 {
                     var passwordChanged = await _userManager.ChangePasswordAsync(identityUser, passwrodChangeModel.currentPassword, passwrodChangeModel.newPassword);
-                    
+
                     return Ok(passwordChanged);
                 }
             }
@@ -361,11 +360,11 @@ public class AuthController : ControllerBase
         {
             try
             {
-               IdentityUser identityUser = new IdentityUser();
+                IdentityUser identityUser = new IdentityUser();
 
-               Claim? EmailClaim = User.FindFirst(ClaimTypes.Email);
+                Claim? EmailClaim = User.FindFirst(ClaimTypes.Email);
 
-               var  email = EmailClaim?.Value;
+                var email = EmailClaim?.Value;
                 identityUser = await _userManager.FindByEmailAsync(email);
                 //validate model
                 if (identityUser != null)
@@ -374,14 +373,14 @@ public class AuthController : ControllerBase
                     var passwordresetToken = await _userManager.GeneratePasswordResetTokenAsync(identityUser);
                     if (passwordresetToken != null)
                     {
-                        var confirmedToken = emailSender.ResetPasswordEmail(identityUser.Email, passwordresetToken);
+                        //var confirmedToken = emailSender.ResetPasswordEmail(identityUser.Email, passwordresetToken);
                         //Need get this Password Reset Token from an email sender 
                         //This need to be fixed. It works for now 
-                        var passwordReset = await _userManager.ResetPasswordAsync(identityUser, confirmedToken, passwordResetModel.NewPassword);
+                        // var passwordReset = await _userManager.ResetPasswordAsync(identityUser, confirmedToken, passwordResetModel.NewPassword);
 
-                        return Ok(passwordReset);
+                        //return Ok(passwordReset);
                     }
-                    
+
 
 
                 }
@@ -426,4 +425,3 @@ public class AuthController : ControllerBase
     }
 }
 
-    

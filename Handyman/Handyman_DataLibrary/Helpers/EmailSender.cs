@@ -1,4 +1,9 @@
-﻿namespace Handyman_DataLibrary.Helpers
+﻿using MailKit.Net.Smtp;
+using MailKit.Security;
+using MimeKit;
+using MimeKit.Text;
+
+namespace Handyman_DataLibrary.Helpers
 {
     public class EmailSender
     {
@@ -17,7 +22,7 @@
             smtp.Send(email);
             smtp.Disconnect(true);
 
-            return resetPasswordToken;
+            //return resetPasswordToken;
         }
     }
 }
