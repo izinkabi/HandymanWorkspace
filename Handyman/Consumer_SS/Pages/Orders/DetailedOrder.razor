@@ -1,10 +1,9 @@
-﻿
-<h3>DetailedOrder</h3>
+﻿@page "/detailed-order"
 @inject IOrderHelper _orderHelper
 @inject AuthenticationStateProvider _authStateProvider
 
 
-@if (OrderProperty.status == 1)
+@if (OrderProperty != null && OrderProperty.status == 1)
 {
     <div class="alert-info m-3">
 
@@ -54,7 +53,7 @@
             </div>
             <div class="card-body align-content-center">
 
-                <OrderComponent IsOnDetails="false" OrderComponentModel="order" />
+                <OrderComponent IsOnDetails="true" OrderComponentModel="order" />
             </div>
 
         </div>
@@ -232,21 +231,25 @@
 
         private set
         {
+            
             order = value;
-            if (order.status == 4)
+            if (order != null)
             {
-                isConfirmed = true;
-            }
-            if (order.status == 5)
-            {
-                isConfirmed = true;
-                isBilled = true;
-            }
-            if (order.status == 6)
-            {
-                isConfirmed = true;
-                isBilled = true;
-                isCanceled = true;
+                if (order.status == 4)
+                {
+                    isConfirmed = true;
+                }
+                if (order.status == 5)
+                {
+                    isConfirmed = true;
+                    isBilled = true;
+                }
+                if (order.status == 6)
+                {
+                    isConfirmed = true;
+                    isBilled = true;
+                    isCanceled = true;
+                }
             }
         }
     }

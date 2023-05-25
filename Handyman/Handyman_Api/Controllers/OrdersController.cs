@@ -1,6 +1,7 @@
 ﻿using Handyman_DataLibrary.DataAccess.Interfaces;
 using Handyman_DataLibrary.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -12,20 +13,25 @@ namespace Handyman_Api.Controllers;
 public class OrdersController : ControllerBase
 {
     IOrderData _orderData;
+    private readonly SignInManager<IdentityUser> _signInManager;
     IEnumerable<OrderModel>? orders;
-    public OrdersController(IOrderData orderData)
+    public OrdersController(IOrderData orderData, SignInManager<IdentityUser> signInManager)
     {
         _orderData = orderData;
+        _signInManager = signInManager;
     }
     // GET: api/<OrdersController>
     [HttpGet]
     [Route("GetOrders")]
-    public IEnumerable<OrderModel> Get(string consumerId)
+    public IEnumerable<OrderModel> Get()
     {
         try
         {
-            if (consumerId != null)
-                orders = _orderData.GetOrders(consumerId);
+
+            var user = _signInManager.Context.User;
+            var id = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+            if (id != null)
+                orders = _orderData.GetOrders(id);
             return orders;
         }
         catch (Exception ex)

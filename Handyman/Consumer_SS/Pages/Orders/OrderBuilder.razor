@@ -4,6 +4,7 @@
 @inject IServiceEndPoint _serviceEndPoint
 @inject NavigationManager NavManager
 
+<OrderConfirmation />
 <!--Go back button-->
 <!--Breadcrumbs-->
 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
@@ -54,7 +55,7 @@ else
             <div class="col-7 ">
 
                 @*<button type="submit" class="btn btn-outline-success">Confirm</button> <!--data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"-->
-        *@  <!-- Button trigger modal -->
+                *@  <!-- Button trigger modal -->
 
 
 
@@ -80,7 +81,7 @@ else
     [SupplyParameterFromQuery(Name ="OID")]
     public int Id { get; set; }
 
-    public OrderModel? OrderProperty
+    private OrderModel? OrderProperty
     {
         get
         {
@@ -99,17 +100,22 @@ else
 
         await buildOrder(Id);
 
+        if(order!=null)
         if (order.Id == Id)
         {
-            NavManager.NavigateTo("detailed-order");
+            NavManager.NavigateTo($"detailed-order?oid={order.Id}");
         }
 
     }
 
     //Load / Create the Order
-    async Task buildOrder(int? id)
+    private async Task buildOrder(int? id)
     {
-        await LoadServices();
+        if (serviceDisplayList == null)
+        {
+            await LoadServices();
+        }
+      
 
         foreach (var service in serviceDisplayList)
         {
@@ -124,7 +130,7 @@ else
 
     }
     //Load Services from the IServiceEndPoint service
-    async Task LoadServices()
+    private async Task LoadServices()
     {
 
         try

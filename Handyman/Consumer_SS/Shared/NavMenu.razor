@@ -1,39 +1,196 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">Consumer_SS</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</div>
+﻿@using Consumer_SS.Pages.Orders
+@inject AuthenticationStateProvider authStateProvider
+@inject IOrderHelper _orderHelper
+@inject NavigationManager NavManager
+@attribute [Authorize]
+    <!--right Menu-->
+    <div class="offcanvas offcanvas-end rounded" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header shadow bg-black bg-opacity-25 align-content-between border-bottom-3">
+            <div class="container container-fluid">
+              <!--Cancelled Orders Bin-->
+                <a type="button" href="/cancelledorders" class="btn btn-primary position-relative bg-transparent btn-outline-danger border-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                    </svg>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        <AuthorizeView>
+                            <Authorized>
+                                 @NumberOfCancelledRequests
+                            </Authorized>
+                        </AuthorizeView>
+                         
+                        <span class="visually-hidden">unread messages</span>
+                    </span>
+                        </a>
+                <!--End Bin-->
+               
+                <!--Orders In a Calenda Button-->
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-black bg-opacity-25 " data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event" viewBox="0 0 16 16">
+                <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z" />
+                <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
+                </svg>
+                </button>
+                <!--End Calenda Button-->
+                <button type="button" class="btn-close text-reset float-end align-content-end" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                
+                <h5 id="offcanvasRightLabel" class="text-center shadow rounded">Orders </h5>
+            </div>
+            
+        </div>
+        
+        
+       <!--Order Components list Right-side-bar-->
+         <AuthorizeView>
 
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </div>
-    </nav>
-</div>
+            @if (orders.Count<1)
+            {
+                <div class="card bg-dark text-white">
+                    <img src="/Images/handymanGIF.gif" class="card-img" alt="gif image">
+                    <div class="alert alert-danger" role="alert">
+                        You Have Not Made Any Orders As Yet
+                    </div>
+                </div>
+            }
+            else 
+            {
+                //Get orders
+                <div class="offcanvas-body" heightoverflow-y:scroll>
+                 <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" class="scrollspy-example bg-light p-3 rounded-2" tabindex="0">
+                        
+                     <!--No orders-->
+                     @if(orders == null || orders.Count == 0)
+                     {
+                            <div class="card bg-dark text-white">
+                                <img src="/Images/handymanGIF.gif" class="card-img" alt="gif image">
+                                <div class="alert alert-danger" role="alert">
+                                  No Orders Here...Create one
+                                </div>
+                            </div>
+
+                        }else
+                        {
+                            @if (orders.Count > 0)
+                            {
+
+
+                                @foreach (var order in orders)
+                                {
+                                     <!--Inprogress orders-->
+                                    @if (@order.status <= 2)
+                                    {
+
+                                        <div class="bg-secondary bg-opacity-25 shadow p-3 m-3 text-sm-center rounded-4" role="document" id="@order.Id">
+                                               <OrderComponent IsOnDetails="false" OrderComponentModel="@order" />
+                                                <div class="justify-content-center">
+                                                    <button @onclick="@(()=>NavManager.NavigateTo($"detailed-order?oid={order.Id}"))" class="btn btn-sm btn-outline-success p-2 m-2">Track Order</button>
+                                                </div>
+                                        </div>
+                                    }
+
+                                    @if (@order.status >= 3)
+                                    {
+                                        @if (order.status == 3)
+                                        {
+                                           <!--Finished-->
+
+                                            <div class="bg-warning bg-opacity-50 rounded-4 align-content-around text-sm-center p-3 m-3 shadow" role="document" id="@order.Id">
+                                                @* <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(order.Id)" aria-label="Close"></button>*@
+                                                <OrderComponent IsOnDetails="false" OrderComponentModel="@order" />
+                                                    <div class="align-content-center ">
+                                                        <a type="button" href="/OrderDetails?id=@(order.Id)" class="btn btn-md btn-info position-relative bg-success">
+                                                            View
+                                                            <span class="position-absolute top-0 start-100 translate-middle p-2 bg-light border border-light rounded-circle">
+                                                                <span class="visually-hidden">New alerts</span>
+                                                            </span>
+                                                        </a>
+
+                                                    </div>
+                                            </div>
+                                        }
+                                        <!--Confirmed-->
+                                        @if(order.status == 4)
+                                        {
+                                            <!--Header-->
+                                            <div class="rounded-4 align-content-around text-sm-center p-3 m-3 shadow" role="document">
+                                                <h2 class="fw-bold mb-0 font-monospace">@order.service.name</h2>
+                                                <hr/>
+                                                <!--icon-->
+                                                <ul class="d-grid gap-4 my-5 list-unstyled">
+                                                    <li class="d-flex gap-4">
+                                                        <svg class="bi text-warning flex-shrink-0" width="48" height="48"><use xlink:href="#bookmark-star" /></svg>
+                                                        <div>
+                                                            @order.service.category.description
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                                <!--button-->
+                                                <a type="button" href="/Payment/Checkout?id=@order.Id" class="btn bg-warning btn-outline-light position-relative ">
+                                                    Checkout
+                                                    <span class="position-absolute top-0 start-100 translate-middle p-2 bg-warning border border-light rounded-circle">
+                                                        <span class="visually-hidden">New alerts</span>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                                    
+                                        }
+                                        
+
+
+                                    }
+
+                                    @*ViewData["oid"] = order.Id;
+                                    ViewData[$"name{order.Id}"] = order.service.name;
+                                    ViewData[$"id{order.Id}"] = order.Id;*@
+                                }
+                            }
+                     }
+                </div>
+             </div>
+            }
+    
+         </AuthorizeView>
+            <!--End Order Components list scrollabe-->
+
+   </div>
+    <!--end right menu-->
+
+    <!--End NavBar-->
+
+
+    <!--******Modals*******-->
+
+       
+      
+
+@foreach (var order in orders)
+{
+    <AuthorizeView>
+        <Authorized>
+            @foreach(var task in order.Tasks)
+            {
+               <DeleteConfirmation TaskProperty="task"/>
+            }
+           
+        </Authorized>
+    </AuthorizeView>
+}
+    <!--End Delete Modal-->
 
 @code {
-    private bool collapseNavMenu = true;
+    List<OrderModel>? orders = new List<OrderModel>();
+    int NumberOfCancelledRequests;
 
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
+    protected override async Task OnInitializedAsync()
     {
-        collapseNavMenu = !collapseNavMenu;
+
+        var myOrders = await _orderHelper.LoadUserOrders();
+        if (myOrders != null)
+        {
+            orders = myOrders;
+        }
+
     }
 }

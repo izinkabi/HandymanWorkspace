@@ -7,7 +7,7 @@ namespace Consumer_SS.Helpers;
 public interface IOrderHelper
 {
 
-    Task<List<OrderModel>> LoadUserOrders(string userId);
+    Task<List<OrderModel>> LoadUserOrders();
     Task<OrderModel> GetOrderById(int id, string userId);
     Task DeleteOrder(OrderModel order);
     Task<int> CreateOrder(OrderModel newOrder);
