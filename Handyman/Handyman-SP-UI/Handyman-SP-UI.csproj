@@ -10,15 +10,21 @@
 
   <ItemGroup>
     <Compile Remove="Models\ServiceProvider\**" />
+    <Compile Remove="Pages\Shared\**" />
     <Content Remove="Models\ServiceProvider\**" />
+    <Content Remove="Pages\Shared\**" />
     <EmbeddedResource Remove="Models\ServiceProvider\**" />
+    <EmbeddedResource Remove="Pages\Shared\**" />
     <None Remove="Models\ServiceProvider\**" />
+    <None Remove="Pages\Shared\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Remove="Pages\Auth\ConfirmEmailComponent.razor" />
+    <Content Remove="Pages\Login.razor" />
     <Content Remove="Pages\WorkShop\Requests\InProgressRequestsComponent.razor" />
     <Content Remove="Pages\WorkShop\Requests\Tasks\CancelledRequestsComponent.razor" />
+    <Content Remove="Shared\AuthLoginLayout.razor" />
     <Content Remove="wwwroot\assets\dist\js\negotiationModule.js" />
   </ItemGroup>
 
@@ -53,6 +59,8 @@
     <None Include="Pages\WorkShop\Profile\ProviderProfile.razor" />
     <None Include="Pages\WorkShop\InProgressRequestsComponent.razor" />
     <None Include="wwwroot\assets\dist\js\negotiationModule.js" />
+    <None Include="wwwroot\img\bg-auth\signin.svg" />
+    <None Include="wwwroot\img\bg-auth\signup.svg" />
   </ItemGroup>
 
 
@@ -79,8 +87,10 @@
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Pages\Auth\ConfirmEmailComponent.razor" />
     <_ContentIncludedByDefault Remove="Pages\Auth\Login.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Login.razor" />
     <_ContentIncludedByDefault Remove="Pages\WorkShop\Requests\InProgressRequestsComponent.razor" />
     <_ContentIncludedByDefault Remove="Pages\WorkShop\Requests\Tasks\CancelledRequestsComponent.razor" />
+    <_ContentIncludedByDefault Remove="Shared\AuthLoginLayout.razor" />
     <_ContentIncludedByDefault Remove="wwwroot\assets\dist\js\negotiationModule.js" />
   </ItemGroup>
 
@@ -96,10 +106,16 @@
     <Folder Include="Data\" />
     <Folder Include="Models\" />
     <Folder Include="Pages\Auth\" />
-    <Folder Include="Pages\Shared\" />
     <Folder Include="Properties\PublishProfiles\" />
-    <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\images\profile\" />
+    <Folder Include="wwwroot\lib\bootstrap\" />
+    <Folder Include="wwwroot\lib\bootstrap\dist\css\" />
+    <Folder Include="wwwroot\lib\bootstrap\dist\js\" />
+    <Folder Include="wwwroot\lib\jquery-validation-unobtrusive\" />
+    <Folder Include="wwwroot\lib\jquery-validation\" />
+    <Folder Include="wwwroot\lib\jquery-validation\dist\" />
+    <Folder Include="wwwroot\lib\jquery\" />
+    <Folder Include="wwwroot\lib\jquery\dist\" />
   </ItemGroup>
 
 
@@ -118,6 +134,18 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Pages\Auth\ConfirmEmailComponent.razor" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Login.razor" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Shared\AuthLoginLayout.razor" />
   </ItemGroup>
 
 </Project>

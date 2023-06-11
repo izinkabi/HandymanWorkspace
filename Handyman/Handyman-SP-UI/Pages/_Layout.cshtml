@@ -1,46 +1,23 @@
-﻿@using Microsoft.AspNetCore.Components.Web
-@namespace Handyman_SP_UI.Pages
-
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-      <!--CSS Links-->
-    <link href="./assets/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/dashboard/">
+    <!--#########Fonts Links ############-->
+    <script src="https://kit.fontawesome.com/e18caa622e.js" crossorigin="anonymous"></script>
 
-
-    <!-- Custom styles for this template -->
-    <link href="./assets/dist/css/dashboard.css" rel="stylesheet"/>
-    
-    <link href="./assets/dist/css/sidebars.css" rel="stylesheet"/>
-    <link href="./assets/dist/css/headers.css" rel="stylesheet"/>
-    <link href="./assets/dist/css/form-validation.css" rel="stylesheet"/>
-    <link href="./assets/dist/css/pricing.css" rel="stylesheet">
-    <link href="./assets/dist/css/blog.css" rel="stylesheet" />
-   @*<link href="./assets/dist/css/offcanvas-navbar.css" rel="stylesheet" />*@
+    <!--#########CSS Links ############-->
+    <link rel="stylesheet" href="~/css/Auth.css" />
+    <link rel="stylesheet" href="~/css/ProfileRegister.css"/>
 </head>
 <body>
     @RenderBody()
+
+    <!--#########Javascript Links ############-->
+    
     <script src="_framework/blazor.server.js"></script>
-    
-    <!--JS Scripts-->
-    <script src="./assets/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="./assets/dist/js/sidebars.js"></script>
 
-    <script src="./assets/dist/js/form-validation.js"></script>
-    <script src="./assets/dist/js/blog.js/"></script>
-   @* <script src="./assets/dist/js/dashboard.js"></script>*@
-   @* <script src="./assets/dist/js/offcanvas-navbar.js"> </script>*@
-    
-    
-     
-    
-
-    @*<script src="./assets/dist/js/site.js"></script>*@
-    
 </body>
 </html>
