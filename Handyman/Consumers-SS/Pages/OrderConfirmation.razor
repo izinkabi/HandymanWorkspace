@@ -1,0 +1,90 @@
+﻿@page "/new-order-confirmation"
+
+@inject AuthenticationStateProvider _authStateProvider;
+@inject HttpClient http
+
+    @if(Errors.Count>0)
+    {
+        <div>
+            @foreach(string error in Errors)
+            {
+                <span class="text-danger">@error</span>
+            }
+        
+        </div>
+    }
+
+
+<!-- DeleteOrderView -->
+<!-- Modal -->
+    <div class="modal" id="staticBackdropdeleteorder@(orderModel.Id)" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger" id="staticBackdropLabel">Confirm Order Cancel</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete @orderModel.service.name ?
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <form method="post" >
+                    <button type="submit" class="btn btn-primary text-reset">Save</button>  <!-- data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder(Model.Id)" aria-label="Close" data-bs-dismiss="offcanvas" -->
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@code {
+
+    bool IsConfirmed;
+    List<string> Errors = new List<string>();
+
+    private OrderModel orderModel = new OrderModel();
+    [Parameter]
+    public OrderModel OrderProperty { get { return orderModel; } set { orderModel = value; } }
+
+
+
+    private async Task OnClickConfirm()
+    {
+        try
+        {
+            if (orderModel.Id != null)
+            {
+                var state = await _authStateProvider.GetAuthenticationStateAsync();
+                var User = state.User;
+                //This is a result of a null reference exception at runtime on  a order-variable,
+                //nor was passing a model helping. But an integer id as a parameter worked.
+                if (User != null)
+                {
+                    string? userId = User.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+
+                    //var orderModel = await _orderHelper.GetOrderById(order.Id, userId);
+
+                    if (orderModel != null && orderModel.service != null)
+                    {
+                        if (orderModel.status == 4) { return; }
+
+                        orderModel.status = 4;
+                        orderModel.ConsumerID = userId;
+                        await http.PutAsJsonAsync<OrderModel>("Orders",orderModel);
+                        orderModel = new()!;
+                        orderModel = orderModel;
+                        IsConfirmed = true;
+                    }
+                }
+            }
+
+        }
+        catch (Exception ex)
+        {
+
+            Errors.Add(ex.Message);
+        }
+    }
+
+}

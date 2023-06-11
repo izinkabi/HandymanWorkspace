@@ -9,7 +9,7 @@ namespace HandymanUILibrary.API.Auth;
 public class AuthEndpoint : IAuthEndpoint
 {
     //Local Variables for the inherited classes
-    readonly IAPIHelper _apiHelper;
+    private readonly IAPIHelper _apiHelper;
     private AuthenticatedUserModel _authedUser;
 
 
@@ -84,7 +84,29 @@ public class AuthEndpoint : IAuthEndpoint
 
 
     //Log the user out
-    public async Task<bool> LogOut() => await _apiHelper.LogOutUser();
+    public async Task<bool> LogOut()
+    {
+        try
+        {
+            if (_authedUser == null) { return true; }
+            if (_authedUser != null && _authedUser.Access_Token != null)
+            {
+                //remove the token
+                await _apiHelper.LogOutUser();
+                //release variables
+                _authedUser.Access_Token = null;
+                _authedUser = new AuthenticatedUserModel();
+                return true;
+
+            }
+            else { return false; }
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception(ex.Message);
+        }
+    }
 
     //Register a new user
     public async Task<bool> Register(string username, string password)

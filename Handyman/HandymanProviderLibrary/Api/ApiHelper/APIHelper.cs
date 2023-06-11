@@ -11,7 +11,7 @@ public class APIHelper : IAPIHelper
     //readonly IHttpClientFactory _clientFactory;
     private HttpClient _apiClient;
     private IloggedInUserModel _loggedInUserModel;
-    IConfiguration _Configuration;
+    private readonly IConfiguration _Configuration;
 
     public APIHelper(IConfiguration configuration)
     {
@@ -35,7 +35,7 @@ public class APIHelper : IAPIHelper
     {
 
 
-        //string api = "https://localhost:44308/api/";
+        //string api = "https://localhost:7271/api/";
 
         _apiClient = new HttpClient();
         _apiClient.BaseAddress = new Uri(_Configuration["Api"]);

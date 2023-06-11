@@ -5,7 +5,7 @@
 
     [Parameter]
     public string? ReturnUrl { get { return returnUrl; } set { returnUrl = value; } }
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
 
         if (string.IsNullOrEmpty(returnUrl))

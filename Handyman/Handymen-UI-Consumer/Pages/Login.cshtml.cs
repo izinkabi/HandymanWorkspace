@@ -89,7 +89,7 @@ public class LoginModel : PageModel
             if (result.User.Identity.IsAuthenticated)
             {
                 _logger.LogInformation("User logged in.");
-                return LocalRedirect(returnUrl);
+                return LocalRedirect("/Index");
             }
             else
             {

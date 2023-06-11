@@ -23,7 +23,7 @@ public class AuthController : ControllerBase
 	private readonly IConfiguration _config;
 	private readonly IAuthData _authData;
 	private readonly RoleManager<IdentityRole> _roleManager;
-	private readonly EmailSender emailSender;
+	private readonly EmailSender _emailSender;
 
 	public AuthController(SignInManager<IdentityUser> signInManager,
 		ILogger<LoginModel> logger, ITokenProvider tokenProvider,
@@ -37,7 +37,7 @@ public class AuthController : ControllerBase
 		_config = config;
 		_authData = authData;
 		_roleManager = roleManager;
-		this.emailSender = emailSender;
+		_emailSender = emailSender;
 	}
     /// <summary>
     /// Login userr
@@ -61,34 +61,34 @@ public class AuthController : ControllerBase
 				return BadRequest("Error login in please try again");
 			}
 
-			if (!string.IsNullOrEmpty(loginModel.UserId))
-			{
-				var identityUser = await _userManager.FindByIdAsync(loginModel.UserId);
-				var token = "";
-				if (identityUser != null)
-				{
-					var claims = await _userManager.GetClaimsAsync(identityUser);
-					if (claims == null || claims.Count < 1)
-					{
-						token = _tokenProvider.GenerateToken(loginModel.Email, loginModel.UserId, loginModel.Role);
-					}
-					else
-					{
-						token = _tokenProvider.GenerateToken(claims);
-					}
-					// Generate token using JWT
+            if (!string.IsNullOrEmpty(loginModel.UserId))
+            {
+                var identityUser = await _userManager.FindByIdAsync(loginModel.UserId);
+                var token = "";
+                if (identityUser != null)
+                {
+                    var claims = await _userManager.GetClaimsAsync(identityUser);
+                    if (claims == null || claims.Count < 1)
+                    {
+                        token = _tokenProvider.GenerateToken(loginModel.Email, loginModel.UserId, loginModel.Role);
+                    }
+                    else
+                    {
+                        token = _tokenProvider.GenerateToken(claims);
+                    }
+                    // Generate token using JWT
 
-					// Set the token as the authentication token for the user
-					var identityResult = await _signInManager.UserManager.SetAuthenticationTokenAsync(identityUser, "Jwt", "Bearer", token);
-					if (identityResult.Succeeded)
-					{
-						_signInManager.SignInWithClaimsAsync(identityUser, true, claims);
-						return Ok(token);
-					}
-
-					else
-						return BadRequest("Invalid login");
-				}
+                    // Set the token as the authentication token for the user
+                    var identityResult = await _signInManager.UserManager.SetAuthenticationTokenAsync(identityUser, "Jwt", "Bearer", token);
+                    if (identityResult.Succeeded)
+                    {
+                        _signInManager.SignInWithClaimsAsync(identityUser, true, claims);
+                        return Ok(token);
+                    }
+                        
+                    else
+                        return BadRequest("Invalid login");
+                }
 
 			}
 
@@ -102,55 +102,49 @@ public class AuthController : ControllerBase
 				_logger.LogInformation("User Logged In");
 				var user = await _userManager.FindByEmailAsync(loginModel.Email ?? _signInManager.Context.User.Identity.Name);
 
-				if (user != null)
-				{
-					// var claims = (await _userManager.GetClaimsAsync(user)).ToList();
-					// Generate token using JWT
-					var token = _tokenProvider.GenerateToken(loginModel.Email ?? user.Email, loginModel.UserId ?? user.Id, loginModel.Role);
-					// Set the token as the authentication token for the user
-					var identityResult = await _signInManager.UserManager.SetAuthenticationTokenAsync(user, "Jwt", "Bearer", token);
-					return Ok(token);
-				}
-				return Accepted();
-			}
-			else if (result.IsLockedOut)
-			{
-				_logger.LogWarning("User Locked Out");
-				return StatusCode(423);
-			}
-			else if (result.IsNotAllowed)
-			{
-				_logger.LogWarning("User Unauthorized");
-				return Unauthorized();
-			}
-			else
-			{
-				_logger.LogError("Not Found");
-				return NotFound();
-			}
-		}
-		catch (Exception ex)
-		{
-			throw new Exception(ex.Message);
-		}
-	}
+                if (user != null)
+                {
+                   // var claims = (await _userManager.GetClaimsAsync(user)).ToList();
+                    // Generate token using JWT
+                    var token = _tokenProvider.GenerateToken(loginModel.Email ?? user.Email, loginModel.UserId ?? user.Id, loginModel.Role);
+                    // Set the token as the authentication token for the user
+                    var identityResult = await _signInManager.UserManager.SetAuthenticationTokenAsync(user, "Jwt", "Bearer", token);
+                    return Ok(token);
+                }
+                return Accepted();
+            }
+            else if (result.IsLockedOut)
+            {
+                _logger.LogWarning("User Locked Out");
+                return StatusCode(423);
+            }
+            else if (result.IsNotAllowed)
+            {
+                _logger.LogWarning("User Unauthorized");
+                return Unauthorized();
+            }
+            else
+            {
+                _logger.LogError("Not Found");
+                return NotFound();
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
 
-	/// <summary>
-    /// REGISTER USERS 
-    /// Confirm Email before loggining in
-    /// </summary>
-    /// <param name="registerModel"></param>
-    /// <returns></returns>
-    /// <exception cref="Exception"></exception>
-	[HttpPost("register")]
-	[AllowAnonymous]
-	public async Task<IActionResult> RegisterUser([FromBody] RegisterModel registerModel)
-	{
-		var user = new IdentityUser { UserName = registerModel.Email, Email = registerModel.Email };
-		var result = await _userManager.CreateAsync(user, registerModel.Password);
-		if (result.Succeeded)
-		{
-			_logger.LogInformation("user created with a password");
+    //Register
+    [HttpPost("register")]
+    [AllowAnonymous]
+    public async Task<IActionResult> RegisterUser([FromBody]RegisterModel registerModel)
+    {
+        var user = new IdentityUser { UserName = registerModel.Email, Email = registerModel.Email };
+        var result = await _userManager.CreateAsync(user, registerModel.Password);
+        if (result.Succeeded)
+        {
+            _logger.LogInformation("user created with a password");
 
 			//Assigning the User Roles 
 			try
@@ -233,12 +227,12 @@ public class AuthController : ControllerBase
 			}
 
 
-			var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-			code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-			Dictionary<string, Uri?> appRoles = new Dictionary<string, Uri?>()
-			{
-				["ServiceProvider"] = new Uri($"https://localhost:7042/confirm-email?userId={user.Id}&code={code}"),
-				["Consumer"] = new Uri($"https://localhost:7250/auth/confirmemail?userId={user.Id}&code={code}")
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            Dictionary<string, Uri?> appRoles = new Dictionary<string, Uri?>()
+            {
+                ["ServiceProvider"] = new Uri($"https://localhost:7042/confirm-email?userId={user.Id}&code={code}"),
+                ["Consumer"] = new Uri($"https://localhost:7250/auth/confirmemail?userId={user.Id}&code={code}")
 
 			};
 			//Initialized
@@ -279,7 +273,7 @@ public class AuthController : ControllerBase
 	}
 
 	//Send an email using Mailkit
-	private void SendEmail(string body) => emailSender.SendEmail(body);
+	private void SendEmail(string body) => _emailSender.SendEmail(body);
 
 
 	/// <summary>
@@ -343,18 +337,18 @@ public class AuthController : ControllerBase
 
 				Claim? EmailClaim = User.FindFirst(ClaimTypes.Email);
 
-				var email = EmailClaim?.Value;
-				identityUser = await _userManager.FindByEmailAsync(email);
-				//validate the model and make sure the password meets the criteria 
-				if (passwrodChangeModel != null)
-				{
-					var passwordChanged = await _userManager.ChangePasswordAsync(identityUser, passwrodChangeModel.currentPassword, passwrodChangeModel.newPassword);
-
-					return Ok(passwordChanged);
-				}
-			}
-			catch (Exception)
-			{
+                var email = EmailClaim?.Value;
+                identityUser = await _userManager.FindByEmailAsync(email);
+                //validate the model and make sure the password meets the criteria 
+                if (passwrodChangeModel != null)
+                {
+                    var passwordChanged = await _userManager.ChangePasswordAsync(identityUser, passwrodChangeModel.currentPassword, passwrodChangeModel.newPassword);
+                    
+                    return Ok(passwordChanged);
+                }
+            }
+            catch (Exception)
+            {
 
 				throw;
 			}
@@ -363,43 +357,43 @@ public class AuthController : ControllerBase
 		return Ok();
 	}
 
-	/// <summary>
-	/// Reset the password for an authenticated user
-	/// Need to send a Password reset token to the user to 
-	/// </summary>
-	/// <param name="identityUser"></param>
-	/// <param name="passwordResetModel"></param>
-	/// <returns>200 status code if password has been reset</returns>
-	[HttpPost("resetpassword")]
-	[Authorize]
-	public async Task<IActionResult> ResetPassword([FromBody] PasswordResetModel passwordResetModel)
-	{
-		var user = _signInManager.Context.User;
-		if (_signInManager.Context.User.Identity.IsAuthenticated)
-		{
-			try
-			{
-				IdentityUser identityUser = new IdentityUser();
+    /// <summary>
+    /// Reset the password for an authenticated user
+    /// Need to send a Password reset token to the user to 
+    /// </summary>
+    /// <param name="identityUser"></param>
+    /// <param name="passwordResetModel"></param>
+    /// <returns>200 status code if password has been reset</returns>
+    [HttpPost("resetpassword")]
+    [Authorize]
+    public async Task<IActionResult> ResetPassword([FromBody] PasswordResetModel passwordResetModel)
+    {
+        var user = _signInManager.Context.User;
+        if (_signInManager.Context.User.Identity.IsAuthenticated)
+        {
+            try
+            {
+               IdentityUser identityUser = new IdentityUser();
 
-				Claim? EmailClaim = User.FindFirst(ClaimTypes.Email);
+               Claim? EmailClaim = User.FindFirst(ClaimTypes.Email);
 
-				var email = EmailClaim?.Value;
-				identityUser = await _userManager.FindByEmailAsync(email);
-				//validate model
-				if (identityUser != null)
-				{
-					// TODO - Need to implement a email handler that will deal with sending this password reset Token 
-					var passwordresetToken = await _userManager.GeneratePasswordResetTokenAsync(identityUser);
-					if (passwordresetToken != null)
-					{
-						var confirmedToken = emailSender.ResetPasswordEmail(identityUser.Email, passwordresetToken);
-						//Need get this Password Reset Token from an email sender 
-						//This need to be fixed. It works for now 
-						var passwordReset = await _userManager.ResetPasswordAsync(identityUser, confirmedToken, passwordResetModel.NewPassword);
+               var  email = EmailClaim?.Value;
+                identityUser = await _userManager.FindByEmailAsync(email);
+                //validate model
+                if (identityUser != null)
+                {
+                    // TODO - Need to implement a email handler that will deal with sending this password reset Token 
+                    var passwordresetToken = await _userManager.GeneratePasswordResetTokenAsync(identityUser);
+                    if (passwordresetToken != null)
+                    {
+                        var confirmedToken = emailSender.ResetPasswordEmail(identityUser.Email, passwordresetToken);
+                        //Need get this Password Reset Token from an email sender 
+                        //This need to be fixed. It works for now 
+                        var passwordReset = await _userManager.ResetPasswordAsync(identityUser, confirmedToken, passwordResetModel.NewPassword);
 
-						return Ok(passwordReset);
-					}
-
+                        return Ok(passwordReset);
+                    }
+                    
 
 
 				}
@@ -413,29 +407,24 @@ public class AuthController : ControllerBase
 		return Unauthorized();
 	}
 
-	/// <summary>
-	/// Log out 
-	/// Identity user cleared and token disposed.
-	/// 
-	/// </summary>
-	/// <returns></returns>
-	[HttpPost("logout")]
-	[Authorize]
-	public async Task<IActionResult> Logout()
-	{
-		var user = _signInManager.Context.User;
-		if (_signInManager.Context.User.Identity.IsAuthenticated)
-		{
-			try
-			{
-				var identityUser = await _userManager.FindByEmailAsync(user.Identity.Name);
-				// var id = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
-				if (!string.IsNullOrEmpty(identityUser.Id))
-					_authData.DeleteToken(identityUser.Id);
-				_signInManager.SignOutAsync();
-			}
-			catch (Exception)
-			{
+    //LogOut
+    [HttpPost("logout")]
+    [Authorize]
+    public async Task<IActionResult> Logout()
+    {
+        var user = _signInManager.Context.User;
+        if (_signInManager.Context.User.Identity.IsAuthenticated)
+        {
+            try
+            {
+                var identityUser = await _userManager.FindByEmailAsync(user.Identity.Name);
+                // var id = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+                if (!string.IsNullOrEmpty(identityUser.Id))
+                    _authData.DeleteToken(identityUser.Id);
+                _signInManager.SignOutAsync();
+            }
+            catch (Exception)
+            {
 
 				throw;
 			}

@@ -32,7 +32,7 @@ public class ServiceEndpoint : IServiceEndpoint
     {
         try
         {
-            if (services == null && _authedModel.Access_Token != null)
+            if (_authedModel.Access_Token != null)
             {
                 _apiClient.ApiClient.DefaultRequestHeaders.Clear();
                 _apiClient.ApiClient.DefaultRequestHeaders.Accept.Clear();

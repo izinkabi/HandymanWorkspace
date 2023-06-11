@@ -3,7 +3,8 @@
 namespace HandymanUILibrary.Models.AuthModels;
 public class LoginModel
 {
-    [EmailAddress]
+
+    [DataType(DataType.EmailAddress)]
     [Display(Name = "Email")]
     public string? Email { get; set; }
 

@@ -1,0 +1,62 @@
+﻿@page "/delete-confirmation"
+@********Delete Task Confirmation*********@
+@using Consumer_ServiceShop.Helpers.Tasks;
+@using HandymanUILibrary.Models;
+@inject ITasksHelper _taskHelper
+@inject NavigationManager NavManager
+
+<div class="modal" id="deleteTaskModal@(TaskProperty.Id)" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-danger" id="staticBackdropLabel">Confirm Task Removal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete <p class="text-danger">@TaskProperty.tas_title? </p>
+            </div>
+
+            <div class="modal-footer">
+                <form method="post" class="btn btn-lg btn-link fs-6 text-decoration-none justify-content-center col-6 m-0 text-decoration-none  m-0 rounded-0 border-end btn-outline-danger">
+                    <button type="submit"  data-bs-toggle="modal" class="bg-transparent border-0" data-bs-target="#deleteTaskModal@(TaskProperty.Id)" aria-label="Close" data-bs-dismiss="offcanvas">Save</button>
+                </form>
+                <button type="button" @onclick="OnClickCancelTask" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0" data-bs-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private TaskModel? taskProperty;
+    List<string> Errors = new List<string>();
+    [Parameter]
+    public TaskModel? TaskProperty { get { return taskProperty; } set { taskProperty = value; } }
+
+    public void OnClickCancelTask()
+    {
+        try
+        {
+            if (taskProperty==null)
+            {
+                Errors.Add("Invalid operation");
+            }
+
+            if (taskProperty != null)
+            {
+                if (taskProperty.task_id != 0)
+                {
+                    _taskHelper.CancelTask(taskProperty);
+                }
+            }
+            
+        }
+        catch (Exception ex)
+        {
+            Errors.Add(ex.Message);
+        }
+        
+
+    }
+
+}

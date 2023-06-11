@@ -1,5 +1,4 @@
-﻿using System.Net;
-using MailKit.Net.Smtp;
+﻿using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
 using MimeKit.Text;
@@ -19,25 +18,11 @@ namespace Handyman_DataLibrary.Helpers
 
             using var smtp = new SmtpClient();
             smtp.Connect("smtp.ethereal.email", 587, SecureSocketOptions.StartTls);
-            smtp.Authenticate("alessandra.marquardt@ethereal.email", "7szyhRFVTpsrzE2pVs");
-            smtp.Send(email);
-            smtp.Disconnect(true);
-        }
-        public string ResetPasswordEmail(string userEmail, string resetPasswordToken)
-        {
-            var email = new MimeMessage();
-            email.From.Add(MailboxAddress.Parse("alessandra.marquardt@ethereal.email"));
-            email.To.Add(MailboxAddress.Parse(userEmail));
-            email.Subject = "Reset Password";
-            email.Body = new TextPart(TextFormat.Html) { Text = resetPasswordToken };
-
-            using var smtp = new SmtpClient();
-            smtp.Connect("smtp.ethereal.email", 587, SecureSocketOptions.StartTls);
-            smtp.Authenticate("alessandra.marquardt@ethereal.email", "7szyhRFVTpsrzE2pVs");
+            smtp.Authenticate("alex98@ethereal.email", "veWBCbXFZsJZweZ5V1");
             smtp.Send(email);
             smtp.Disconnect(true);
 
-            return resetPasswordToken;
+            //return resetPasswordToken;
         }
     }
 }
