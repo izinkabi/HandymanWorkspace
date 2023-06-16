@@ -20,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="Pages\Auth\ConfirmEmailComponent.razor" />
     <Content Remove="Pages\Login.razor" />
     <Content Remove="Pages\WorkShop\Requests\InProgressRequestsComponent.razor" />
     <Content Remove="Pages\WorkShop\Requests\Tasks\CancelledRequestsComponent.razor" />
@@ -54,8 +53,8 @@
 
 
   <ItemGroup>
-    <None Include="Shared\ConfirmEmailComponent.razor" />
-    <None Include="Shared\Login.razor" />
+    <None Include="Pages\Auth\ConfirmEmailComponent.razor" />
+    <None Include="Pages\Auth\Login.razor" />
     <None Include="Pages\WorkShop\Requests\CancelledRequestsComponent.razor" />
     <None Include="Pages\WorkShop\Profile\ProviderProfile.razor" />
     <None Include="Pages\WorkShop\InProgressRequestsComponent.razor" />
@@ -106,7 +105,6 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="Models\" />
-    <Folder Include="Pages\Auth\" />
     <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="wwwroot\images\profile\" />
     <Folder Include="wwwroot\lib\bootstrap\" />

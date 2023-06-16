@@ -3,7 +3,7 @@ using HandymanProviderLibrary.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace Handyman_SP_UI.Pages.Helpers;
+namespace Handyman_SP_UI.Helpers;
 
 public class ProviderHelper : ProfileHelper, IProviderHelper
 {
@@ -30,10 +30,10 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
     }
 
     //Create a provider profie
-    public Task<bool> RegisterProfile(ProfileModel profile) => this.CreateProfile(profile);
+    public Task<bool> RegisterProfile(ProfileModel profile) => CreateProfile(profile);
 
     //Get the profile of the Handyman/Provider 
-    public async Task<ProfileModel> GetProviderProfile() => await this.GetProfile();
+    public async Task<ProfileModel> GetProviderProfile() => await GetProfile();
 
     //Register a Handyman / Service Provider
     public async void RegisterHandyman(ServiceProviderModel newHandyman)

@@ -4,7 +4,7 @@ using System.Security.Claims;
 using System.Text.Json;
 
 
-namespace Handyman_SP_UI;
+namespace Handyman_SP_UI.Helpers;
 
 public class CustomeAuthStateProvider : AuthenticationStateProvider
 {

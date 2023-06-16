@@ -1,7 +1,7 @@
 ﻿using HandymanProviderLibrary.Api.EndPoints.Interface;
 using HandymanProviderLibrary.Models;
 
-namespace Handyman_SP_UI.Pages.Helpers;
+namespace Handyman_SP_UI.Helpers;
 /// <summary>
 /// This class is responsible for the requests of a service provider
 /// </summary>
@@ -474,15 +474,15 @@ public class RequestHelper : IDisposable, IRequestHelper
                 {
                     return 10;
                 }
-                if (startedTasks.Count + inprogressTasks.Count == request.tasks.Count && (startedTasks.Count > 0 && inprogressTasks.Count > 0))
+                if (startedTasks.Count + inprogressTasks.Count == request.tasks.Count && startedTasks.Count > 0 && inprogressTasks.Count > 0)
                 {
                     return 30;
                 }
-                if (startedTasks.Count + finishedTasks.Count == request.tasks.Count && (startedTasks.Count > finishedTasks.Count && finishedTasks.Count > 0))
+                if (startedTasks.Count + finishedTasks.Count == request.tasks.Count && startedTasks.Count > finishedTasks.Count && finishedTasks.Count > 0)
                 {
                     return 40;
                 }
-                if ((inprogressTasks.Count + finishedTasks.Count == request.tasks.Count && inprogressTasks.Count != 0) || inprogressTasks.Count == request.tasks.Count && finishedTasks.Count != request.tasks.Count)
+                if (inprogressTasks.Count + finishedTasks.Count == request.tasks.Count && inprogressTasks.Count != 0 || inprogressTasks.Count == request.tasks.Count && finishedTasks.Count != request.tasks.Count)
                 {
                     return 50;
                 }

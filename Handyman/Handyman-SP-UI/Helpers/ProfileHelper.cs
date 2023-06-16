@@ -3,7 +3,7 @@ using HandymanProviderLibrary.Models;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 
-namespace Handyman_SP_UI.Pages.Helpers;
+namespace Handyman_SP_UI.Helpers;
 
 public class ProfileHelper
 {

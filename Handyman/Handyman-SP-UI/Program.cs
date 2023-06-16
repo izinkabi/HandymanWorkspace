@@ -1,6 +1,5 @@
-using Handyman_SP_UI;
+using Handyman_SP_UI.Helpers;
 using Handyman_SP_UI.Hubs;
-using Handyman_SP_UI.Pages.Helpers;
 using HandymanProviderLibrary.Api.ApiHelper;
 using HandymanProviderLibrary.Api.EndPoints.Implementation;
 using HandymanProviderLibrary.Api.EndPoints.Interface;

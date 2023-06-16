@@ -1,7 +1,7 @@
 ﻿using HandymanProviderLibrary.Api.EndPoints.Interface;
 using HandymanProviderLibrary.Models;
 
-namespace Handyman_SP_UI.Pages.Helpers
+namespace Handyman_SP_UI.Helpers
 {
 
     public class BusinessHelper : IBusinessHelper
