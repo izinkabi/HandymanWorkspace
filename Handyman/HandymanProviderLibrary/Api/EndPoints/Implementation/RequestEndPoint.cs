@@ -1,6 +1,7 @@
 ﻿using HandymanProviderLibrary.Api.ApiHelper;
 using HandymanProviderLibrary.Api.EndPoints.Interface;
 using HandymanProviderLibrary.Models;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
 
@@ -10,9 +11,12 @@ public class RequestEndPoint : IRequestEndPoint
 {
 
     IAPIHelper? _apiHelper;
-    public RequestEndPoint(IAPIHelper? aPIHelper)
+    private readonly AuthenticatedUserModel _authedUser;
+
+    public RequestEndPoint(IAPIHelper? aPIHelper, AuthenticatedUserModel authedUser)
     {
         _apiHelper = aPIHelper;
+        _authedUser = authedUser;
     }
 
     //Get the orders relavant to the provider
@@ -23,7 +27,16 @@ public class RequestEndPoint : IRequestEndPoint
 
         try
         {
-            httpResponse = await _apiHelper.ApiClient.GetFromJsonAsync<List<OrderModel>>($"/api/Requests/GetNewRequests?serviceId={serviceId}");
+            if (_authedUser != null && _authedUser.Access_Token != null)
+            {
+                _apiHelper.ApiClient.DefaultRequestHeaders.Clear();
+                _apiHelper.ApiClient.DefaultRequestHeaders.Accept.Clear();
+                _apiHelper.ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("applications/json"));
+                _apiHelper.ApiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_authedUser.Access_Token}");
+                httpResponse = await _apiHelper.ApiClient.GetFromJsonAsync<List<OrderModel>>($"/api/Requests/GetNewRequests?serviceId={serviceId}");
+            }
+
+
             return httpResponse;
         }
         catch (Exception ex)
@@ -42,7 +55,15 @@ public class RequestEndPoint : IRequestEndPoint
 
         try
         {
-            httpResponseMessage = await _apiHelper.ApiClient.GetFromJsonAsync<List<RequestModel>>($"/api/Requests/GetProviderRequests?providerId={providerId}");
+            if (_authedUser != null && _authedUser.Access_Token != null)
+            {
+                _apiHelper.ApiClient.DefaultRequestHeaders.Clear();
+                _apiHelper.ApiClient.DefaultRequestHeaders.Accept.Clear();
+                _apiHelper.ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("applications/json"));
+                _apiHelper.ApiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_authedUser.Access_Token}");
+                httpResponseMessage = await _apiHelper.ApiClient.GetFromJsonAsync<List<RequestModel>>($"/api/Requests/GetProviderRequests?providerId={providerId}");
+            }
+
             return httpResponseMessage;
         }
         catch (Exception ex)
@@ -63,7 +84,15 @@ public class RequestEndPoint : IRequestEndPoint
 
         try
         {
-            var httpResponseMessage = await _apiHelper.ApiClient.PostAsJsonAsync("/api/Requests/post", request);
+            HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
+            if (_authedUser != null && _authedUser.Access_Token != null && request != null)
+            {
+                _apiHelper.ApiClient.DefaultRequestHeaders.Clear();
+                _apiHelper.ApiClient.DefaultRequestHeaders.Accept.Clear();
+                _apiHelper.ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("applications/json"));
+                _apiHelper.ApiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_authedUser.Access_Token}");
+                httpResponseMessage = await _apiHelper.ApiClient.PostAsJsonAsync("/api/Requests/post", request);
+            }
             return httpResponseMessage.IsSuccessStatusCode;
 
 

@@ -1,16 +1,10 @@
 ﻿@page "/member"
 
-@using Microsoft.AspNetCore.Components.Web
-
 @inject NavigationManager NavManager
 @inject IBusinessHelper _business
 @inject AuthenticationStateProvider authenticationStateProvider
 @inject IProviderHelper _providerHelper
-
-<AuthorizeView>
-
-    <Authorized>
-
+@attribute [Authorize]
         @if (business != null && business.registration != null)
         {
             <!--Welcome-->
@@ -103,11 +97,6 @@
         <!--End Services Component-->
         <!--Ratings Component-->
         <!--End Ratings Component-->
-
-    </Authorized>
-    
-
-</AuthorizeView>
 
 
 @code {

@@ -53,8 +53,8 @@
 
   <ItemGroup>
     <None Include="Pages\Auth\ConfirmEmailComponent.razor" />
-    <None Include="Login.razor" />
-    <None Include="DeleteConfirmation.razor" />
+    <None Include="Pages\Auth\Login.razor" />
+    <None Include="Pages\Orders\DeleteConfirmation.razor" />
     <None Include="wwwroot\assets\brand\bootstrap-logo-white.svg" />
     <None Include="wwwroot\assets\brand\bootstrap-logo.svg" />
     <None Include="wwwroot\assets\dist\css\bootstrap.min.css.map" />
@@ -91,7 +91,7 @@
     <Content Update="Pages\Index.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-    <Content Update="RedirectToLogin.razor">
+    <Content Update="Pages\Auth\RedirectToLogin.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
     <Content Update="Shared\MainLayout.razor">
@@ -469,6 +469,10 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\" />
   </ItemGroup>
 
 </Project>

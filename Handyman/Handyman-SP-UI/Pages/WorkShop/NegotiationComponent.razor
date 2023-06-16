@@ -3,6 +3,19 @@
 @inject NavigationManager NavManager
 @inject IRequestHelper _requestHelper
 @implements IAsyncDisposable
+@inject AuthenticatedUserModel authUser
+
+
+@*Errors*@
+@if (Errors.Count > 0)
+{
+    <div class="border-2">
+        @foreach(string error in Errors)
+        {
+            <span>@error</span>
+        }
+    </div>
+}
 
 
 <!--Tasks and their total & -->
@@ -149,7 +162,7 @@
     bool HasNewtasks;
     private List<TaskModel>? orderTasks = new List<TaskModel>();
     private Dictionary<DateTime, string?> ReceivedOffers = new Dictionary<DateTime, string?>();
-
+    private List<string> Errors = new List<string>();
     bool IsNewNotification;
     int newTasks;
     Dictionary<int, PriceModel>? TaskPrices = new Dictionary<int, PriceModel>();
@@ -174,6 +187,13 @@
         .WithUrl(NavManager.ToAbsoluteUri("/negoHub"))
         .WithAutomaticReconnect()
         .Build();
+        //, options =>
+        //    {
+        //       //provide the token to SignalR
+        //        options.AccessTokenProvider = () => Task.FromResult(authUser.Access_Token ?? "");
+        //        //Since auto reconnect is on then the token need be reset also else the connection will be lost
+        //    }
+
 
         //Client Side
         //Reciever of the message 
@@ -195,11 +215,12 @@
         try
         {
             await hubConnection.StartAsync();
+            await InvokeAsync(StateHasChanged);
         }
         catch (Exception ex)
         {
 
-            throw;
+            Errors.Add(ex.Message);
         }
 
     }
@@ -220,22 +241,40 @@
     private async Task Send()
     {
         AddTotal();
-        if (hubConnection != null)
+        try
         {
-            negoMessages.Add(DateTime.Now,$"{priceOffer.ToString()} at {TimeOnly.FromDateTime(DateTime.Now)}");
+            if (hubConnection != null)
+            {
+                negoMessages.Add(DateTime.Now, $"{priceOffer.ToString()} at {TimeOnly.FromDateTime(DateTime.Now)}");
 
-            await hubConnection.SendAsync("SendOffer","Blazor Client",TaskPrices,orderDueDate);
-           await InvokeAsync(StateHasChanged);
+                await hubConnection.SendAsync("SendOffer", "Blazor Client", TaskPrices, orderDueDate);
+                await InvokeAsync(StateHasChanged);
+            }
         }
+        catch (Exception ex)
+        {
+
+            Errors.Add(ex.Message);
+        }
+
     }
 
     public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
 
     public async ValueTask DisposeAsync()
     {
-        if (hubConnection != null)
+        try
         {
-            await hubConnection.DisposeAsync();
+            if (hubConnection != null)
+            {
+                await hubConnection.DisposeAsync();
+            }
         }
+        catch (Exception ex)
+        {
+
+            Errors.Add(ex.Message);
+        }
+       
     }
 }

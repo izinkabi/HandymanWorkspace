@@ -1,7 +1,9 @@
 ﻿@page "/nego"
+@using HandymanUILibrary.Models.Auth;
 @using Microsoft.AspNetCore.SignalR.Client;
 
 @inject IJSRuntime JS
+@inject AuthenticatedUserModel authedUser
 @implements IAsyncDisposable
 
 <style>
@@ -314,7 +316,7 @@
         {
             negoMessages.Add(DateTime.Now, ex.Message);
         }
-
+         
     }
 
     //Initialise the hub connection
@@ -505,7 +507,7 @@
     public async ValueTask Prompt(int? zoomSize)
     {
         if(module!=null)
-        await module.InvokeVoidAsync("showVal", zoomSize);
+        await module.InvokeVoidAsync("showVal");
     } 
    
     async ValueTask IAsyncDisposable.DisposeAsync()

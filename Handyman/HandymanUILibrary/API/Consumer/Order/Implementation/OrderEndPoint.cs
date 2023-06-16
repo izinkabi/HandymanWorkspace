@@ -13,7 +13,7 @@ namespace HandymanUILibrary.API.Consumer.Order.Implementation;
 
 public class OrderEndPoint : IOrderEndPoint
 {
-    IAPIHelper _apiHelper;
+    private readonly IAPIHelper _apiHelper;
     private readonly AuthenticatedUserModel _authenticatedUser;
 
     /// <summary>
@@ -25,15 +25,7 @@ public class OrderEndPoint : IOrderEndPoint
     {
         _apiHelper = aPIHelper;
         _authenticatedUser = authenticatedUser;
-        if (_authenticatedUser.Access_Token != null)
-        {
-            _apiHelper.ApiClient.DefaultRequestHeaders.Clear();
-            _apiHelper.ApiClient.DefaultRequestHeaders.Accept.Clear();
-            _apiHelper.ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("applications/json"));
-            _apiHelper.ApiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_authenticatedUser.Access_Token}");
 
-
-        }
     }
 
     /// <summary>
@@ -44,9 +36,18 @@ public class OrderEndPoint : IOrderEndPoint
     /// <exception cref="Exception">Empty Model Exception</exception>
     public async Task<int> PostOrder(OrderModel order)
     {
+        HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
         try
         {
-            var httpResponseMessage = await _apiHelper.ApiClient.PostAsJsonAsync<OrderModel>("/orders/Post", order);
+            if (_authenticatedUser.Access_Token != null)
+            {
+                _apiHelper.ApiClient.DefaultRequestHeaders.Clear();
+                _apiHelper.ApiClient.DefaultRequestHeaders.Accept.Clear();
+                _apiHelper.ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/*+json"));
+                _apiHelper.ApiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_authenticatedUser.Access_Token}");
+                httpResponseMessage = await _apiHelper.ApiClient.PostAsJsonAsync<OrderModel>("/api/orders/Post", order);
+            }
+
             if (httpResponseMessage.IsSuccessStatusCode)
             {
                 int orderId = await httpResponseMessage.Content.ReadFromJsonAsync<int>();
@@ -76,17 +77,22 @@ public class OrderEndPoint : IOrderEndPoint
     /// <param name="customerId"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public async Task<IList<OrderModel>> GetOrders(string customerId)
+    public async Task<IList<OrderModel>> GetOrders()
     {
         try
         {
-            if (customerId != null)
+            IList<OrderModel> orders = new List<OrderModel>();
+            if (_authenticatedUser.Access_Token != null)
             {
-                IList<OrderModel> httpResponseMessage = await _apiHelper.ApiClient.GetFromJsonAsync<IList<OrderModel>>($"/api/orders/GetOrders?consumerId={customerId}");
-                return httpResponseMessage;
+                _apiHelper.ApiClient.DefaultRequestHeaders.Clear();
+                _apiHelper.ApiClient.DefaultRequestHeaders.Accept.Clear();
+                _apiHelper.ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/*+json"));
+                _apiHelper.ApiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_authenticatedUser.Access_Token}");
+                orders = await _apiHelper.ApiClient.GetFromJsonAsync<IList<OrderModel>>($"/api/orders/GetOrders");
             }
 
-            return null;
+            return orders;
+
 
         }
         catch (Exception ex)

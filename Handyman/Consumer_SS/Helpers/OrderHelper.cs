@@ -2,6 +2,7 @@
 using HandymanUILibrary.API.Services;
 using HandymanUILibrary.Models;
 using HandymanUILibrary.Models.Auth;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Consumer_SS.Helpers;
 
@@ -9,8 +10,10 @@ public class OrderHelper : IOrderHelper
 {
 
     IOrderEndPoint? _orderEndpoint;
-    private readonly AuthenticatedUserModel _authenticatedUserModel;
-    private readonly IServiceEndPoint _serviceEndPoint;
+    private readonly AuthenticationStateProvider _authenticationState;
+    //private readonly AuthenticatedUserModel _authenticatedUserModel;
+    private readonly IServiceEndPoint? _serviceEndPoint;
+    private readonly AuthenticatedUserModel _authedUser;
     OrderModel? order;
     List<OrderModel>? ordersDisplayList;
 
@@ -20,12 +23,13 @@ public class OrderHelper : IOrderHelper
 
 
     public OrderHelper(IOrderEndPoint orderEndPoint,
-         AuthenticatedUserModel authenticatedUserModel,
-        IServiceEndPoint serviceEndPoint)
+         AuthenticationStateProvider authenticationState,
+        IServiceEndPoint serviceEndPoint, AuthenticatedUserModel authedUser)
     {
         _orderEndpoint = orderEndPoint;
-        _authenticatedUserModel = authenticatedUserModel;
+        _authenticationState = authenticationState;
         _serviceEndPoint = serviceEndPoint;
+        _authedUser = authedUser;
     }
 
 
@@ -34,20 +38,9 @@ public class OrderHelper : IOrderHelper
     {
         try
         {
-            if (userId == null)
-            {
-
-
-
-                //(await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
-                if (_authenticatedUserModel != null && !string.IsNullOrEmpty(_authenticatedUserModel.UserId))
-                {
-                    userId = _authenticatedUserModel.UserId;  //userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
-
-                }
-
-            }
-
+            var state = await _authenticationState.GetAuthenticationStateAsync();
+            var user = state.User;
+            userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
         }
         catch (Exception ex)
         {
@@ -62,7 +55,7 @@ public class OrderHelper : IOrderHelper
     {
         if (ordersDisplayList == null)
         {
-            await LoadUserOrders(userId);
+            await LoadUserOrders();
         }
 
         foreach (OrderModel o in ordersDisplayList)
@@ -77,25 +70,20 @@ public class OrderHelper : IOrderHelper
     }
 
     //Load all the orders that belong to the given user's id
-    public async Task<List<OrderModel>> LoadUserOrders(string userId)
+    public async Task<List<OrderModel>> LoadUserOrders()
     {
-        //if (userId == null)
-        //{
-        //    userId = await GetUserId();
-        //}
-        if (userId != null)
-        {
-            ordersDisplayList = (List<OrderModel>?)await _orderEndpoint?.GetOrders(userId);
-            if (ordersDisplayList != null)
-                foreach (var item in ordersDisplayList)
+
+        ordersDisplayList = (List<OrderModel>?)await _orderEndpoint?.GetOrders();
+        if (ordersDisplayList != null)
+            foreach (var item in ordersDisplayList)
+            {
+                item.status = CheckStatus(item);
+                if (item.status == 11)
                 {
-                    item.status = CheckStatus(item);
-                    if (item.status == 11)
-                    {
-                        cancelledOrders.Add(item);
-                    }
+                    cancelledOrders.Add(item);
                 }
-        }
+            }
+
 
         return ordersDisplayList;
 
@@ -104,7 +92,7 @@ public class OrderHelper : IOrderHelper
     //Get orders of the date
     public async Task<List<OrderModel>> GetOrdersOfDate(DateTime date)
     {
-        List<OrderModel> orders = await LoadUserOrders(userId);
+        List<OrderModel> orders = await LoadUserOrders();
         List<OrderModel> dateOrders = new();
         if (orders != null)
         {
@@ -157,7 +145,7 @@ public class OrderHelper : IOrderHelper
 
         try
         {
-            await LoadUserOrders(userId);
+            await LoadUserOrders();
             if (cancelledOrders != null && cancelledOrders.Count() != 0)
             {
                 return cancelledOrders.Count();

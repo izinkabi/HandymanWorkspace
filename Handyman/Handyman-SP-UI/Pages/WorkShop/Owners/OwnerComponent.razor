@@ -1,13 +1,9 @@
 ﻿@page "/owner"
 @page "/manager"
 
-
-
 @inject AuthenticationStateProvider authProvider
-
-<AuthorizeView>
-
-   
+@attribute [Authorize]
+  
 
 <div class="nav-scroller bg-body shadow-sm">
     <nav class="nav" aria-label="Secondary navigation">
@@ -116,9 +112,6 @@
 
 
   
-   
-
-</AuthorizeView>
 
 
 @code {

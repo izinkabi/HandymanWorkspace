@@ -1,43 +1,35 @@
 ﻿<!--This component deals with requests for service providers, specifically a new request-->
-@page "/request-c"
-@page "/request/"
-
+@page "/request"
 
 @using Microsoft.AspNetCore.Components.Web
 @inject NavigationManager NavManager;
 @inject IRequestHelper _requestHelper
-@inject IJSRuntime JSRuntime
+@attribute [Authorize]
 
 
-<AuthorizeView>
-      <Authorized>
+@if (Errors.Count > 0)
+{
+    @foreach(string error in Errors)
+    {
+        <span>@error</span>
+    }
+}
 
-        
         @if (newRequest != null && !isAccepted)
         {
-           
-            <section class="container container-fluid row p-0 m-0 justify-content-center">
-
-           
             <!--New request / Unaccepted request-->
-                <NewRequestComponent NewRequestModelProperty="@newRequest">
-
-                </NewRequestComponent>
-                @if (!isAccepted)
-                {
-                    <button type="submit" @onclick="AcceptRequest" class="btn btn-lg btn-outline-primary">Accept</button>
-                }
+            <NewRequestComponent NewRequestModelProperty="@newRequest"  OnAcceptRequest="AcceptRequest"/>
             <!--End New Request-->
-             </section>
+          
         }
-        else if(ownRequest!=null && isAccepted)
-        {
-            <AcceptedRequestComponent AcceptedRequestProperty="ownRequest" OnViewTask="ViewTask"/>
 
-           <!--End Accepted-->
-  
+        @if(ownRequest!=null && isAccepted)
+        {
+            <AcceptedRequestComponent AcceptedRequestProperty="@ownRequest" OnViewTask="ViewTask"/>
+
+                <!--End Accepted-->
         }
-        else
+        @if(ownRequest==null)
         {
             <span class="visually-visible text-center text-danger">Loading a request...</span>
             <div class="d-flex justify-content-center">
@@ -47,22 +39,16 @@
                 
             </div>
         }
-    </Authorized>
-    <NotAuthorized>
-        <h1>
-            Please LogIn
-        </h1>
-    </NotAuthorized>
-</AuthorizeView>
+
 
 @code {
-    OrderModel? newRequest;
-    RequestModel? ownRequest;
+    OrderModel? newRequest = new OrderModel();
+    RequestModel? ownRequest = new RequestModel();
 
     int ownRequestId;
     int newRequestId;
     int serviceId;
-
+    List<string> Errors = new List<string>();
     bool isAccepted;  
 
     [Parameter]
@@ -105,76 +91,74 @@
 
         try
         {
-
-            if (ownRequest==null && newRequest==null)
+            if (newRequestId != 0 && SId != 0)
             {
-                if (newRequestId != 0 && SId != 0)
+                var req = await _requestHelper.GetNewRequest(serviceId, newRequestId);
+
+                if (await _requestHelper.IsAccepted(req))
                 {
-                    var req = await _requestHelper.GetNewRequest(serviceId, newRequestId);
 
-                    if (await _requestHelper.IsAccepted(req))
-                    {
+                    ownRequest = await _requestHelper.ConfirmAccepted(req);
+                    isAccepted = true;
+                    UpdateRequests();
+                    newRequest = null;
+                }
+                else
+                {
+                    newRequest = req;
+                }
+            }
 
-                        ownRequest = await _requestHelper.ConfirmAccepted(req);
-                        isAccepted = true;
-                        await UpdateRequests();
-                        newRequest = null;
-                    }
-                    else
-                    {
-                        newRequest = req;
-                    }
+            if (ownRequestId != 0)
+            {
+                if(newRequest.Id == 0)
+                {
+
+                    ownRequest = await _requestHelper.GetOwnRequest(ownRequestId);
+                    isAccepted = true;
+                    UpdateRequests();
                 }
 
             }
 
 
 
-            if (ownRequestId != 0)
-            {
-                if(newRequest==null && ownRequest==null)
-                    ownRequest = await _requestHelper.GetOwnRequest(ownRequestId);
-                isAccepted = true;
-                UpdateRequests();
-
-            }
-
-
-
         }catch(Exception ex)
         {
-            throw new Exception(ex.Message,ex.InnerException);
+            Errors.Add(ex.Message);
         }
     }
 
     //Accept the new request
-    async Task AcceptRequest()
+    private async Task AcceptRequest(OrderModel order)
     {
         try
         {
-            //Update the DB 
-            await _requestHelper.AcceptRequest(newRequest); ///----should return the accepted request
+            //Update the DB
+            await _requestHelper.AcceptRequest(order); ///----should return the accepted request
             //switch label to accepted
-
+            isAccepted = true;
 
             //Make new instance of an accepted request
-            ownRequest = new RequestModel()!;
+            var ownRequest = new RequestModel()!;
             ownRequest.tasks = new()!;
             //Populate the request
-            ownRequest.req_datecreated = newRequest.datecreated;
-            ownRequest.req_orderid = newRequest.Id;
-            ownRequest.tasks = newRequest.Tasks.ToList();
-            ownRequest.Service = newRequest.service;
+            ownRequest.req_datecreated = order.datecreated;
+            ownRequest.req_orderid = order.Id;
+            ownRequest.tasks = order.Tasks.ToList();
+            ownRequest.Service = order.service;
             ownRequest.req_status = 1;
 
             //make sure there is no new request anymore
             newRequest = null;
-            isAccepted = true;
-            NRId = 0;
-            
-        }catch(Exception ex)
+            UpdateRequests();
+            await InvokeAsync(StateHasChanged);
+
+
+        }
+        catch (Exception ex)
         {
-            throw new Exception(ex.Message, ex.InnerException);
+            Errors.Add(ex.Message);
         }
     }
 
@@ -187,12 +171,11 @@
                 ["id"] = taskId
             }));
 
-
     }
 
 
     //Updating the request and its relevent tasks
-    async Task UpdateRequests()
+    void UpdateRequests()
     {
         try
         {
@@ -209,10 +192,10 @@
 
             //await _requestHelper.UpdateRequest(requestUpdate);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
                 
-            throw;
+            Errors.Add(ex.Message);
         }
     }
 

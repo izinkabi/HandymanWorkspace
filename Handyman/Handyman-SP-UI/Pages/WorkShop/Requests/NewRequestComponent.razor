@@ -1,8 +1,8 @@
 ﻿@page "/new-request"
-@page  "/new-r"
-@using HandymanProviderLibrary.Models
-@using Microsoft.AspNetCore.Components.Web
+
 @inject NavigationManager NavManager
+@inject IRequestHelper _requestHelper
+@attribute [Authorize]
 
 
 <div class="container container-fluid">
@@ -26,31 +26,36 @@
                         <li>@newRequest.service.category.description</li>
                         <li>@newRequest.service.category.type</li>
                     </ul>
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#negoModal">
-                            Go Nego
-                        </button>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#negoModal">
+                        Go Nego
+                    </button>
                 </div>
                
 
 
                     <!-- Modal -->
-                    <div class="modal fade" id="negoModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-fullscreen-xxl-down">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">@newRequest.service.name</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                   <NegotiationComponent OrderTasks="newRequest.Tasks.ToList()"/>
-                                </div>
+                <div class="modal fade" id="negoModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-fullscreen-xxl-down">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="staticBackdropLabel">@newRequest.service.name</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <NegotiationComponent OrderTasks="newRequest.Tasks.ToList()" />
                             </div>
                         </div>
                     </div>
+                </div>
 
+                    <div class="m-auto shadow ">
+                        <button type="button" @onclick="@(()=>OnAcceptRequest.InvokeAsync(newRequest))" class="btn btn-sm btn-outline-dark float-sm-none float-md-end float-lg-end">
+                            Accept
+                        </button>
+                    </div>
 
-            }
+                }
         </div>
     </div>
 
@@ -59,7 +64,7 @@
 
 <!--New Order Tasks-->
 
-<div class="container container-fluid" style="height:250px;overflow-y:scroll">
+   <div class="container container-fluid" style="height:250px;overflow-y:scroll">
 
 
     <div class="table-responsive align-items-center rounded" >
@@ -96,26 +101,30 @@
 
         </tbody>
     </table>
+        
 </div>
+       
 <!--End Tasks-->
+       
    </div>
+    
 </div>
 @code {
-    OrderModel? newRequest;
+    OrderModel? newRequest = new OrderModel()!;
+    bool IsAccepted;
+    private List<string> Errors = new List<string>();
 
     [Parameter]
-    public OrderModel NewRequestModelProperty { get { return newRequest; } set{newRequest=value;} }
+    public OrderModel NewRequestModelProperty { get { return newRequest; } set { newRequest = value; } }
 
-    protected override async Task OnInitializedAsync()
-    {
-        if(newRequest is null)
-        {
-           newRequest =  new OrderModel();
-        }
-    }
+    [Parameter]
+    public EventCallback<OrderModel> OnAcceptRequest { get; set; }
     //Navigate to negotiation
     private void GoNego()
     {
         NavManager.NavigateTo("nego",true);
     } 
+
+
+    
 }

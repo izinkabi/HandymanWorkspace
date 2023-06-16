@@ -57,7 +57,7 @@
             var state = await _authStateProvider.GetAuthenticationStateAsync();
             var User = state.User;
             string? userId = User.FindFirst(u=>u.Type.Contains("nameidentifier"))?.Value;
-            var userOrders = await _orderHelper.LoadUserOrders(userId);
+            var userOrders = await _orderHelper.LoadUserOrders();
             orders = _orderHelper.CancelledOrdersProperty;
             
         }
