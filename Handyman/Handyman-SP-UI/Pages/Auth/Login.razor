@@ -1,111 +1,268 @@
 ﻿@page "/sign-in"
 
+@using System.ComponentModel.DataAnnotations
 @inject IJSRuntime JS 
+@inject IAuthEndpoint authEndPoint
+@inject NavigationManager NavManager
+@inject AuthenticationStateProvider _authStateProvider
 
-<div class="container">
-    <div class="signin-signup">
-        <form action="#" class="sign-in-form">
-            <h2 class="title">Sign In</h2>
-            <div class="input-field">
-                <i class="fas fa-user"></i>
-                <input type="text" placeholder="Username">
-            </div>
-            <div class="input-field">
-                <i class="fas fa-lock"></i>
-                <input type="password" placeholder="Password">
-            </div>
-            <input type="submit" value="Login" class="login-btn">
-            <p class="social-text">Or Sign In with socail platforms</p>
-            <div class="social-media">
-                <a href="" class="social-icon">
-                    <i class="fab fa-facebook"></i>
-                </a>
-                <a href="" class="social-icon">
-                    <i class="fab fa-facebook"></i>
-                </a>
-                <a href="" class="social-icon">
-                    <i class="fab fa-facebook"></i>
-                </a>
-                <a href="" class="social-icon">
-                    <i class="fab fa-facebook"></i>
-                </a>
-            </div>
-        </form>
-        <form action="RegisterProfile" class="sign-up-form">
-            <h2 class="title">Sign Up</h2>
-            <div class="input-field">
-                <i class="fas fa-user"></i>
-                <input type="text" placeholder="Username">
-            </div>
-            <div class="input-field">
-                <i class="fas fa-envelope"></i>
-                <input type="text" placeholder="Email">
-            </div>
-            <div class="input-field">
-                <i class="fas fa-lock"></i>
-                <input type="password" placeholder="Password">
-            </div>
-            <input type="submit" value="Regiater" class="login-btn">
-            <p class="social-text">Or Sign Up with socail platforms</p>
-            <div class="social-media">
-                <a href="" class="social-icon">
-                    <i class="fab fa-facebook"></i>
-                </a>
-                <a href="" class="social-icon">
-                    <i class="fab fa-facebook"></i>
-                </a>
-                <a href="" class="social-icon">
-                    <i class="fab fa-facebook"></i>
-                </a>
-                <a href="" class="social-icon">
-                    <i class="fab fa-facebook"></i>
-                </a>
-            </div>
-        </form>
-    </div>
-    <div class="panels-container">
-        <div class="panel left-panel">
-            <div class="content">
-                <h3>Member of Brand</h3>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos possimus odio laudantium nobis ad, iure ratione ea? Similique doloribus modi delectus, pariatur illo quaerat nulla exercitationem consequatur, magni natus doloremque.</p>
-                <button class="login-btn" id="sign-in-btn">Sign in</button>
-            </div>
-            <img src="/img/bg-auth/signin.svg" alt="" class="image">
-        </div>
-        <div class="panel right-panel">
-            <div class="content">
-                <h3>New to Brand</h3>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos possimus odio laudantium nobis ad, iure ratione ea? Similique doloribus modi delectus, pariatur illo quaerat nulla exercitationem consequatur, magni natus doloremque.</p>
-                <button class="login-btn" @onclick="swapSlide" id="sign-up-btn">Sign up</button>
-            </div>
-            <img src="/img/bg-auth/signup.svg" alt="" class="image">
-        </div>
-    </div>
-</div>
+@if (!IsSubmitted)
+{
+    <div class="container">
+        <div class="signin-signup">
 
+            @*-------Sign in form-------*@
+            <EditForm Model="LoginCredentialsInput" OnValidSubmit="SignIn" class="sign-in-form">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <h2 class="title">Sign In</h2>
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <InputText @bind-Value="LoginCredentialsInput.Username" placeholder="Username" />
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <InputText @bind-Value="LoginCredentialsInput.Password" placeholder="Password" />
+                </div>
+                @*-----Form Errors-----*@
+                @if (Errors.Count > 0)
+                {
+                    @foreach (string error in Errors)
+                    {
+                        <span class="text-bg-danger">@error</span>
+                    }
+
+                }
+                @*-----End Form Errors-----*@
+                <button type="submit" class="login-btn">Login</button>
+                <p class="social-text">Or Sign In with socail platforms</p>
+                <div class="social-media">
+                    <a href="" class="social-icon">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="" class="social-icon">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="" class="social-icon">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="" class="social-icon">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                </div>
+            </EditForm>
+            @*-----End Sign in form-----*@
+
+            @*----Sign Up Form----*@
+            <EditForm Model="@RegistrationInput" OnValidSubmit="SignUp" class="sign-up-form">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <h2 class="title">Sign Up</h2>
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <InputText  @bind-Value="RegistrationInput.Email" placeholder="Email"/>
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <InputText @bind-Value="RegistrationInput.Password" placeholder=" Password"/>
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <InputText  @bind-Value="RegistrationInput.ConfirmPassword" placeholder="Confirm Password"/>
+                </div>
+                @*-----Errors-----*@
+                @if (Errors.Count > 0)
+                {
+                    @foreach (string error in Errors)
+                    {
+                        <span class="text-bg-danger">@error</span>
+                    }
+
+                }
+                @*-----End Errors-----*@
+                <button type="submit" class="login-btn">Register</button>
+                <p class="social-text">Or Sign Up with socail platforms</p>
+                <div class="social-media">
+                    <a href="" class="social-icon">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="" class="social-icon">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="" class="social-icon">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="" class="social-icon">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                </div>
+            </EditForm>
+            @*----End Sign Up Form----*@
+        </div>
+        <div class="panels-container">
+            <div class="panel left-panel">
+                <div class="content">
+                    <h3>Member of Brand</h3>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos possimus odio laudantium nobis ad, iure ratione ea? Similique doloribus modi delectus, pariatur illo quaerat nulla exercitationem consequatur, magni natus doloremque.</p>
+
+                    <button class="login-btn" id="sign-in-btn">Sign in</button>
+                </div>
+                <img src="/img/bg-auth/signin.svg" alt="" class="image">
+            </div>
+            <div class="panel right-panel">
+                <div class="content">
+                    <h3>New to Brand</h3>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos possimus odio laudantium nobis ad, iure ratione ea? Similique doloribus modi delectus, pariatur illo quaerat nulla exercitationem consequatur, magni natus doloremque.</p>
+
+                    <button class="login-btn" @onclick="swapSlide" id="sign-up-btn">Sign up</button>
+                </div>
+                <img src="/img/bg-auth/signup.svg" alt="" class="image">
+            </div>
+        </div>
+    </div>
+}else
+{
+    <Loader/>
+}
 @code {
+
+    /// <summary>
+    /// Registration blue print form of inputs 
+    /// </summary>
+    private class SignUpModel
+    {
+        [Required]
+        [DataType(DataType.EmailAddress)]
+        public string? Email { get; set; }
+        [Required]
+        [DataType(DataType.Password)]      
+        public string? Password { get; set; }
+        [Compare("Password")]
+        [DataType(DataType.Password)]
+        public string? ConfirmPassword { get; set; }
+    }
+
+    /// <summary>
+    /// Login Class for the form inputs
+    /// </summary>
+    private class SignInModel
+    {
+        [Required]
+        [DataType(DataType.EmailAddress)]
+        public string? Username { get; set; }
+        [Required]
+        [DataType(DataType.Password)]
+        public string? Password { get; set; }
+    }
+
+    /// <summary>
+    /// Local variables
+    /// </summary>
+    ///
     private IJSObjectReference? moduleReference;
+    private SignInModel? LoginCredentialsInput = new SignInModel()!;
+    private SignUpModel? RegistrationInput = new SignUpModel()!;
+    private List<string> Errors = new List<string>();
+    private string? returnUrl;
+    private bool IsSubmitted,IsRegistered;
+
+    /// <summary>
+    /// After the component is rendered
+    /// </summary>
+    /// <param name="firstRender"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if(firstRender)
         {
-           try
+            Errors.Clear();
+            try
             {
                 moduleReference = await JS.InvokeAsync<IJSObjectReference>("import", "/js/Auth.js");
+
             }
             catch (Exception ex)
             {
-                    
+
                 throw new Exception(ex.Message);
             }
         }
     }
-    [JSInvokable]
-    private async Task swapSlide()
+
+    //JS Method for swapping login and register display 
+    private async void swapSlide()
     {
         if (moduleReference!=null)
         {
-           await moduleReference.InvokeVoidAsync("swapLogin");
+            try
+            {
+                await moduleReference.InvokeVoidAsync("swapLogin");
+            }
+            catch (Exception ex)
+            {
+
+                Errors.Add(ex.Message);
+            }
+
+        }
+    }
+
+    /// <summary>
+    /// Sign in method for logging the user in
+    /// by passing the input values to the back end service
+    /// </summary>
+    private async void SignIn()
+    {
+        if (LoginCredentialsInput != null &&
+            LoginCredentialsInput.Username !=null &&
+                LoginCredentialsInput.Password!=null)
+        {
+            try
+            {
+                IsSubmitted = true;
+                //call the login service
+                AuthenticatedUserModel? authedUser = await authEndPoint.LoginUser(LoginCredentialsInput.Username, LoginCredentialsInput.Password);
+                //get the auth state
+                var state = await _authStateProvider?.GetAuthenticationStateAsync();
+                await InvokeAsync(StateHasChanged);
+                if (state.User.Identity.IsAuthenticated)
+                {
+                    if (string.IsNullOrEmpty(returnUrl))
+                    {
+                        returnUrl = "/";
+                    }
+                    NavManager.NavigateTo(returnUrl);
+                }
+                else
+                {
+                    IsSubmitted = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Errors.Add("Invalid Credentials please try again");
+                LoginCredentialsInput = new SignInModel();
+            }
+
+
+        }
+    }
+
+    private async void SignUp()
+    {
+        if (RegistrationInput.Password.Equals(RegistrationInput.ConfirmPassword))
+        {
+            try
+            {
+                IsSubmitted = true;
+                IsRegistered = await authEndPoint.Register(RegistrationInput.Email, RegistrationInput.Password);
+                
+            }catch (Exception ex)
+            {
+
+                Errors.Add(ex.Message);
+            }
         }
     }
 }
