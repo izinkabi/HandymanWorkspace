@@ -1,0 +1,100 @@
+﻿@page "/RegisterProfile"
+
+@inject IJSRuntime JS 
+
+    <div class="container">
+        <div class="profile">
+            <form action="#" class="profile-form" target="_blank" autocomplete="on" validate>
+                <h2 class="title">Profile Infomation</h2>
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input type="text" placeholder="Name" required>
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input type="text" placeholder="Last Name" required >
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input type="email" placeholder="Email" required >
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input type="tel" placeholder="Cell NO" required >
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input type="text" placeholder="Male" required >
+                </div>
+            
+                <input type="submit" value="Create" class="create-btn" id="sign-up-btn">
+            </form>
+            <form action="" class="email-confirm-form">
+                <h2 class="title">Confirm Email</h2>
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input type="text" placeholder="***-***">
+                </div>
+                <input type="submit" value="Confirm" class="create-btn">
+                <p class="social-text">social platforms</p>
+                <div class="social-media">
+                    <a href="" class="social-icon">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="" class="social-icon">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="" class="social-icon">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="" class="social-icon">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                </div>
+            </form>
+        </div>
+        <div class="panels-container">
+            <div class="panel left-panel">
+                <div class="content">
+                    <h3>Member of Brand</h3>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos possimus odio laudantium nobis ad, iure ratione ea? Similique doloribus modi delectus, pariatur illo quaerat nulla exercitationem consequatur, magni natus doloremque.</p>
+                    <button class="create-btn" id="sign-in-btn">back</button>
+                </div>
+                <img src="/img/bg-auth/signin.svg" alt="" class="image">
+            </div>
+            <div class="panel right-panel">
+                <div class="content">
+                    <h3>New to Brand</h3>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos possimus odio laudantium nobis ad, iure ratione ea? Similique doloribus modi delectus, pariatur illo quaerat nulla exercitationem consequatur, magni natus doloremque.</p>
+                </div>
+                <img src="/img/bg-auth/signin.svg" alt="" class="image">
+            </div>
+        </div>
+    </div>
+
+@code {
+        private IJSObjectReference? moduleReference;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+           try
+            {
+                moduleReference = await JS.InvokeAsync<IJSObjectReference>("import", "/js/Auth.js");
+            }
+            catch (Exception ex)
+            {
+                    
+                throw new Exception(ex.Message);
+            }
+        }
+    }
+    [JSInvokable]
+    private async Task swapSlide()
+    {
+        if (moduleReference!=null)
+        {
+           await moduleReference.InvokeVoidAsync("swapLogin");
+        }
+    }
+}

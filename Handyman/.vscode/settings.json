@@ -1,0 +1,4 @@
+{
+    "dotnet.defaultSolution": "Handyman.sln",
+    "csharp.debug.console": "externalTerminal"
+}

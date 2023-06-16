@@ -11,12 +11,12 @@ namespace Handymen_UI_Consumer.Pages.Auth
     public class ForgotPasswordModel : PageModel
     {
         //private readonly UserManager<Handymen_UI_ConsumerUser> _userManager;
-        //private readonly IEmailSender _emailSender;
+        //private readonly IEmailSender emailSender;
 
         //public ForgotPasswordModel(UserManager<Handymen_UI_ConsumerUser> userManager, IEmailSender emailSender)
         //{
         //    _userManager = userManager;
-        //    _emailSender = emailSender;
+        //    emailSender = emailSender;
         //}
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Handymen_UI_Consumer.Pages.Auth
                 //    values: new { area = "Identity", code },
                 //    protocol: Request.Scheme);
 
-                //await _emailSender.SendEmailAsync(
+                //await emailSender.SendEmailAsync(
                 //    Input.Email,
                 //    "Reset Password",
                 //    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");

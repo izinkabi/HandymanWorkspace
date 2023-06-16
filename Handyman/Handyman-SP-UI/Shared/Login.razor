@@ -1,106 +1,111 @@
 ﻿@page "/sign-in"
-@using System.ComponentModel.DataAnnotations;
-@using Microsoft.AspNetCore.Components.Web
-@inject AuthenticationStateProvider _authStateProvider
-@inject IAuthEndpoint _authEndPoint 
-@inject NavigationManager NavManager
-@attribute [AllowAnonymous]
 
-@if (!IsSubmitted)
-{
-    <div class="container container-fluid m-auto shadow rounded">
-        <h3>Login</h3>
-        <EditForm Model="Input" OnValidSubmit="ClickLogin">
+@inject IJSRuntime JS 
 
-            <div class="row mb-3">
-                <label for="loginInputEmail3" class="col-sm-2 col-form-label">Email</label>
-                <div class="col-sm-10">
-                    <InputText type="email" @bind-Value="Input.Username" class="form-control" id="loginInputEmail3" />
-                </div>
+<div class="container">
+    <div class="signin-signup">
+        <form action="#" class="sign-in-form">
+            <h2 class="title">Sign In</h2>
+            <div class="input-field">
+                <i class="fas fa-user"></i>
+                <input type="text" placeholder="Username">
             </div>
-            <div class="row mb-3">
-                <label for="loginInputPassword3" class="col-sm-2 col-form-label">Password</label>
-                <div class="col-sm-10">
-                    <InputText type="password" @bind-Value="Input.Password" class="form-control" id="loginInputPassword3" />
-                </div>
+            <div class="input-field">
+                <i class="fas fa-lock"></i>
+                <input type="password" placeholder="Password">
             </div>
-
-            <div class="row mb-3">
-                <div class="col-sm-10 offset-sm-2">
-                    <div class="form-check">
-                        <InputCheckbox @bind-Value="Input.RememberMe" class="form-check-input" id="gridCheck1" />
-                        <label class="form-check-label" for="gridCheck1">
-                            Remember Me
-                        </label>
-                    </div>
-                </div>
+            <input type="submit" value="Login" class="login-btn">
+            <p class="social-text">Or Sign In with socail platforms</p>
+            <div class="social-media">
+                <a href="" class="social-icon">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="" class="social-icon">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="" class="social-icon">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="" class="social-icon">
+                    <i class="fab fa-facebook"></i>
+                </a>
             </div>
-            <button type="submit" class="btn btn-primary">Sign in</button>
-            <br />
-            <a class="link-primary m-auto p-2" @onclick="ToSignUp">Sign-Up</a>
-        </EditForm>
+        </form>
+        <form action="RegisterProfile" class="sign-up-form">
+            <h2 class="title">Sign Up</h2>
+            <div class="input-field">
+                <i class="fas fa-user"></i>
+                <input type="text" placeholder="Username">
+            </div>
+            <div class="input-field">
+                <i class="fas fa-envelope"></i>
+                <input type="text" placeholder="Email">
+            </div>
+            <div class="input-field">
+                <i class="fas fa-lock"></i>
+                <input type="password" placeholder="Password">
+            </div>
+            <input type="submit" value="Regiater" class="login-btn">
+            <p class="social-text">Or Sign Up with socail platforms</p>
+            <div class="social-media">
+                <a href="" class="social-icon">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="" class="social-icon">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="" class="social-icon">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="" class="social-icon">
+                    <i class="fab fa-facebook"></i>
+                </a>
+            </div>
+        </form>
     </div>
-}
-else
-{
-    <div class="d-flex align-items-center bg-light m-auto p-2">
-        <strong>Signing In...please wait</strong>
-        <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+    <div class="panels-container">
+        <div class="panel left-panel">
+            <div class="content">
+                <h3>Member of Brand</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos possimus odio laudantium nobis ad, iure ratione ea? Similique doloribus modi delectus, pariatur illo quaerat nulla exercitationem consequatur, magni natus doloremque.</p>
+                <button class="login-btn" id="sign-in-btn">Sign in</button>
+            </div>
+            <img src="/img/bg-auth/signin.svg" alt="" class="image">
+        </div>
+        <div class="panel right-panel">
+            <div class="content">
+                <h3>New to Brand</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos possimus odio laudantium nobis ad, iure ratione ea? Similique doloribus modi delectus, pariatur illo quaerat nulla exercitationem consequatur, magni natus doloremque.</p>
+                <button class="login-btn" @onclick="swapSlide" id="sign-up-btn">Sign up</button>
+            </div>
+            <img src="/img/bg-auth/signup.svg" alt="" class="image">
+        </div>
     </div>
-}
+</div>
 
 @code {
-    private string? returnUrl;
-    bool IsSubmitted;
-    private InputModel? Input = new InputModel()!;
-
-    [Parameter]
-    [SupplyParameterFromQuery(Name ="returnUrl")]
-    public string? ReturnUrl { get { return returnUrl; } set { returnUrl = value; } }
-
-    protected override async Task OnInitializedAsync()
+    private IJSObjectReference? moduleReference;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (string.IsNullOrEmpty(returnUrl))
+        if(firstRender)
         {
-            returnUrl = "/";
-        }
-
-        if ((await _authStateProvider.GetAuthenticationStateAsync()).User.Identity.IsAuthenticated)
-        {
-            NavManager.NavigateTo(returnUrl);
+           try
+            {
+                moduleReference = await JS.InvokeAsync<IJSObjectReference>("import", "/js/Auth.js");
+            }
+            catch (Exception ex)
+            {
+                    
+                throw new Exception(ex.Message);
+            }
         }
     }
-    //Login dto
-    private class InputModel
+    [JSInvokable]
+    private async Task swapSlide()
     {
-        [EmailAddress(ErrorMessage = "Please enter valid email address")]
-        [Required(ErrorMessage ="Invalid email input")]
-        internal string? Username { get; set; }
-        [Required(ErrorMessage = "Invalid Password")]
-        [DataType(DataType.Password)]
-        internal string? Password { get; set; }
-        public bool RememberMe { get; set; }
-    }
-
-    //Submitting the form execution method
-    async Task ClickLogin()
-    {
-        IsSubmitted = true;
-        var authedUserModel = await _authEndPoint.LoginUser(Input.Username, Input.Password);
-        var state = await _authStateProvider.GetAuthenticationStateAsync();
-        await InvokeAsync(StateHasChanged);
-        if (state.User.Identity.IsAuthenticated)
+        if (moduleReference!=null)
         {
-            NavManager.NavigateTo(returnUrl);
+           await moduleReference.InvokeVoidAsync("swapLogin");
         }
-        else
-        {
-            IsSubmitted = false;
-        }
-
-    }
-    async Task ToSignUp()
-    {
-        NavManager.NavigateTo("sign-up");
     }
 }
