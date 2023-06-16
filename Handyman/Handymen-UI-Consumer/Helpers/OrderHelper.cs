@@ -85,7 +85,7 @@ namespace Handymen_UI_Consumer.Helpers
             //}
             if (userId != null)
             {
-                ordersDisplayList = (List<OrderModel>?)await _orderEndpoint?.GetOrders(userId);
+                ordersDisplayList = (List<OrderModel>?)await _orderEndpoint?.GetOrders();
                 if (ordersDisplayList != null)
                     foreach (var item in ordersDisplayList)
                     {

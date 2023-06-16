@@ -4,7 +4,7 @@ using System.Security.Claims;
 using System.Text.Json;
 
 
-namespace SS_UI;
+namespace Consumer_SS.Helpers;
 
 public class CustomAuthStateProvider : AuthenticationStateProvider
 {

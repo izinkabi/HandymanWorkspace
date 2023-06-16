@@ -91,7 +91,7 @@ else
         await InvokeAsync(StateHasChanged);
         if (state.User.Identity.IsAuthenticated)
         {
-            NavManager.NavigateTo(returnUrl,true);
+            NavManager.NavigateTo(returnUrl);
         }
         else
         {

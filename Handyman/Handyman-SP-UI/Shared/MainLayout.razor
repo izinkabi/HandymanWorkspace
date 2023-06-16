@@ -87,7 +87,7 @@
 </svg>
 
 
-<AuthorizeView Context="Auth" Roles="ServiceProvider">
+<AuthorizeView Context="Auth">
     <Authorized>
         <div class="container-fluid">
     
@@ -115,7 +115,7 @@
                     Profile
                 </a>
                 </li>
-                   <AuthorizeView Roles="Member">
+                   <AuthorizeView>
                     <Authorized >
                     <li>
                         <a href="requests" class="nav-link link-dark dropdown-toggle shadow" id="requestsDropdownMenu" data-bs-toggle="dropdown" aria-expanded="true">
@@ -163,7 +163,7 @@
             </Authorized>
 
                 </AuthorizeView>
-                <AuthorizeView Roles="Owner">
+                <AuthorizeView>
                      <li>
                         <a href="owner" class="nav-link link-dark">
                             <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#speedometer2" /></svg>

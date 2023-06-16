@@ -8,7 +8,6 @@ using HandymanUILibrary.API.User;
 using HandymanUILibrary.Models.Auth;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.ResponseCompression;
-using SS_UI;
 
 var builder = WebApplication.CreateBuilder(args);
 

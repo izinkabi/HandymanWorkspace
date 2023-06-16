@@ -100,12 +100,12 @@
                                                 @* <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#staticBackdropdeleteorder@(order.Id)" aria-label="Close"></button>*@
                                                 <OrderComponent IsOnDetails="false" OrderComponentModel="@order" />
                                                     <div class="align-content-center ">
-                                                        <a type="button" href="/OrderDetails?id=@(order.Id)" class="btn btn-md btn-info position-relative bg-success">
+                                                        <button type="button" @onclick="@(()=>NavManager.NavigateTo($"detailed-order?oid={order.Id}"))" class="btn btn-md btn-info position-relative bg-success">
                                                             View
                                                             <span class="position-absolute top-0 start-100 translate-middle p-2 bg-light border border-light rounded-circle">
                                                                 <span class="visually-hidden">New alerts</span>
                                                             </span>
-                                                        </a>
+                                                        </button>
 
                                                     </div>
                                             </div>

@@ -1,7 +1,9 @@
 ﻿using HandymanProviderLibrary.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 namespace Handyman_SP_UI.Hubs;
 
+[Authorize]
 public class NegotiationHub : Hub
 {
     /// <summary>

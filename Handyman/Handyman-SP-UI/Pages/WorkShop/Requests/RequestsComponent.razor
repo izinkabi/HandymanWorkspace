@@ -1,27 +1,29 @@
 ﻿@page "/requests"
-@page "/requests-all"
 
 @using HandymanProviderLibrary.Models;
 @using Handyman_SP_UI.Pages.Helpers;
 @using Handyman_SP_UI.Pages.WorkShop.Requests
 @using Microsoft.AspNetCore.Components.Web
-@using Microsoft.JSInterop;
-
+@using Microsoft.JSInterop
+@attribute [Authorize]
 @inject NavigationManager NavManager
 @inject IRequestHelper _requestHelper
 @inject IProviderHelper _providerHelper
 @inject IJSRuntime JSRuntime
 
 
+
 @if (Errors != null)
 {
-
-    <h4 class="text-danger">@Errors</h4>
+    @foreach(string error in Errors)
+    {
+        <h4 class="text-danger">@Errors</h4>
+    }
+   
 
 }
-<AuthorizeView>
 
-    <Authorized>
+
         <!--New Requests Section-->
         <section class="container-fluid justify-content-center  m-auto align-content-lg-center ">
 
@@ -92,18 +94,19 @@
                                     <AcceptedRequestComponent AcceptedRequestProperty="@ownR" IsOnFrontDisplay="true" OnViewTask="OnViewTask" />
                                 </div>
                             }
+                            <!--End Own requests Album-->
+                            <!--Back to top button-->
+                            <button @onclick="@BackToTop" class="float-end border-0 bg-transparent">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-up-circle border-0" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z" />
+                                </svg>
+                            </button>
+                            <!--End Back to top button-->
                         </div>
                     </div>
                 </div>
 
-                <!--End Own requests Album-->
-                <!--Back to top button-->
-                <button @onclick="@BackToTop" class="float-end border-0 bg-transparent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-up-circle border-0" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z" />
-                    </svg>
-                </button>
-                <!--End Back to top button-->
+               
             }
             else if (requests != null && requests.Count == 0)
             {
@@ -122,18 +125,17 @@
 
 
 
-    </Authorized>
+   
     
-</AuthorizeView>
 
 @code {
 
 
-    List<RequestModel> requests = new()!;
+    List<RequestModel>? requests = new List<RequestModel>();
     int NumberOfOrders;
     bool isOrdersDisplayed;
     bool isRequestsDisplayed;
-    string Errors;
+    List<string>? Errors = new List<string>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -142,23 +144,26 @@
             try
             {
                 requests = await _requestHelper.GetOwnRequests();
-                foreach (var service in await _providerHelper.GetWorkShopServices())
+                if(requests!=null& requests.Count > 0)
                 {
-                    var listoforders = await _requestHelper.GetNewRequests(service.originalServiceId);
-                    foreach (var o in listoforders)
+                    foreach (var service in await _providerHelper.GetWorkShopServices())
                     {
-                        if (o.status == 0)
+                        var listoforders = await _requestHelper.GetNewRequests(service.originalServiceId) ?? new List<OrderModel>();
+                        foreach (var o in listoforders)
                         {
-                            NumberOfOrders++;
+                            if (o.status == 0)
+                            {
+                                NumberOfOrders++;
+                            }
                         }
                     }
+                    await InvokeAsync(StateHasChanged);
                 }
-                StateHasChanged();
+
             }
             catch (Exception ex)
             {
-                Errors = ex.Message;
-                throw new Exception(ex.Message, ex.InnerException);
+                Errors.Add(ex.Message);
 
             }
 
@@ -168,14 +173,12 @@
                 //Display both the new and old requests
                 isOrdersDisplayed = true;
                 isRequestsDisplayed = true;
-                StateHasChanged();
+                await InvokeAsync(StateHasChanged);
             }
         }
         catch (Exception ex)
         {
-            Errors = ex.Message;
-            throw new Exception(ex.Message, ex.InnerException);
-
+            Errors.Add(ex.Message);
         }
     }
 
@@ -194,8 +197,7 @@
     {
         NavManager.NavigateTo(NavManager.GetUriWithQueryParameters("request", new Dictionary<string, object>()
             {
-                ["ORId"] = ownRId,
-
+                ["ORId"] = ownRId
             }));
     }
 
@@ -237,10 +239,10 @@
                 }
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
 
-            throw;
+            Errors.Add(ex.Message);
         }
     }
 
@@ -263,7 +265,7 @@
         catch (Exception ex)
         {
 
-            throw new Exception(ex.Message, ex.InnerException);
+            Errors.Add(ex.Message);
         }
     }
 

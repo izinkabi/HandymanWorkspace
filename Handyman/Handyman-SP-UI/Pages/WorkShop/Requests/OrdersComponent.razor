@@ -5,12 +5,10 @@
 @inject IProviderHelper _providerHelper
 @inject IRequestHelper _requestHelper
 @inject NavigationManager NavManager
+@attribute [Authorize]
 
 
 
-<AuthorizeView>
-
-<Authorized>
         @if (Errors.Count > 0)
         {
             @foreach(string error in Errors)
@@ -87,7 +85,7 @@
                                 @if (o.status == 0)
                                 {
 
-                                    <tr class="bg-success" onclick="@(()=> viewOrder(o.service.id,o.Id))">
+                                    <tr class="bg-success" @onclick="@(()=> viewOrder(o.service.id,o.Id))">
 
                                         <!--Onclick test-->
                                         <td class="border-0 btn-outline-info">
@@ -126,7 +124,7 @@
                                         @if (nr.status < 2)
                                         {
 
-                                          <tr onclick="@(()=> viewOrder(nr.service.id,nr.Id))">
+                                          <tr @onclick="@(()=> viewOrder(nr.service.id,nr.Id))">
                                         
                                                 <!--Onclick test-->
                                                 <td class="border-0 btn-outline-info">
@@ -148,7 +146,7 @@
                                                                 <strong>R </strong>
                                                                 @price.base_Price
                                                                 break;
-                                                    }
+                                                            }
                                                         }
                                                     }
                                                 </td>
@@ -164,9 +162,20 @@
                                     <!--End rows-->
                                 </tbody>
                             }
-                            else if(newRequests==null||newRequests.Count==0)
+                            else if(newRequests!=null && newRequests.Count==0)
                             {
-                               <p class="fst-italic"> You have 0 requests</p>
+                                <span>Loading you orders...please wait</span>
+                                <div class="d-flex justify-content-end">
+                                    <div class="spinner-border" role="status">
+                                    </div>
+                                </div>
+                            }else if(newRequests==null)
+                            {
+                                <span>Loading you orders...please wait</span>
+                                <div class="d-flex justify-content-end">
+                                    <div class="spinner-border" role="status">
+                                    </div>
+                                </div>
                             }
                             <!--End body-->
                         </table>
@@ -178,9 +187,7 @@
            
 
         }
- </Authorized>
-    
-</AuthorizeView>
+
 @if (Errors.Count>0)
 {
     @foreach(var error in Errors)

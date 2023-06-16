@@ -401,7 +401,7 @@ public class RequestHelper : IDisposable, IRequestHelper
         internal int CheckStatus(RequestModel request)
         {
 
-            if (request != null)
+            if (request != null && request.tasks != null)
             {
                 //initialize attributes
                 startedTasks = new()!;
@@ -468,7 +468,7 @@ public class RequestHelper : IDisposable, IRequestHelper
         internal int calculateProgress(RequestModel request)
         {
 
-            if (request != null && request.tasks.Count > 0)
+            if (request != null && request.tasks != null && request.tasks.Count > 0)
             {
                 if (startedTasks.Count == request.tasks.Count)
                 {
