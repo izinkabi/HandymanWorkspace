@@ -61,7 +61,7 @@
     }
     private async Task OnClickLogOut()
     {
-        var IsLoggedIn = await _authEndPoint.LogOut();
+        //var IsLoggedIn = await _authEndPoint.LogOut();
         var state = await _authStateProvider.GetAuthenticationStateAsync();
         if (!state.User.Identity.IsAuthenticated)
         {

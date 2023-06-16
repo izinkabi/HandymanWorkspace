@@ -23,7 +23,7 @@ public class AuthController : ControllerBase
 	private readonly IConfiguration _config;
 	private readonly IAuthData _authData;
 	private readonly RoleManager<IdentityRole> _roleManager;
-	private readonly EmailSender _emailSender;
+	private readonly EmailSender emailSender;
 
 	public AuthController(SignInManager<IdentityUser> signInManager,
 		ILogger<LoginModel> logger, ITokenProvider tokenProvider,
@@ -37,7 +37,7 @@ public class AuthController : ControllerBase
 		_config = config;
 		_authData = authData;
 		_roleManager = roleManager;
-		_emailSender = emailSender;
+		this.emailSender = emailSender;
 	}
     /// <summary>
     /// Login userr
@@ -273,7 +273,7 @@ public class AuthController : ControllerBase
 	}
 
 	//Send an email using Mailkit
-	private void SendEmail(string body) => _emailSender.SendEmail(body);
+	private void SendEmail(string body) => emailSender.SendEmail(body);
 
 
 	/// <summary>
@@ -386,12 +386,12 @@ public class AuthController : ControllerBase
                     var passwordresetToken = await _userManager.GeneratePasswordResetTokenAsync(identityUser);
                     if (passwordresetToken != null)
                     {
-                        var confirmedToken = emailSender.ResetPasswordEmail(identityUser.Email, passwordresetToken);
+                        //var confirmedToken = emailSender.ResetPasswordEmail(identityUser.Email, passwordresetToken);
                         //Need get this Password Reset Token from an email sender 
                         //This need to be fixed. It works for now 
-                        var passwordReset = await _userManager.ResetPasswordAsync(identityUser, confirmedToken, passwordResetModel.NewPassword);
+                       // var passwordReset = await _userManager.ResetPasswordAsync(identityUser, confirmedToken, passwordResetModel.NewPassword);
 
-                        return Ok(passwordReset);
+                       // return Ok(passwordReset);
                     }
                     
 
