@@ -29,10 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Pages\WorkShop\Profile\ProviderProfile.razor~RF303c31b.TMP" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
     <PackageReference Include="MailKit" Version="3.6.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.5" />
@@ -58,7 +54,6 @@
     <None Include="Pages\Auth\Login.razor" />
     <None Include="Shared\Loader.razor" />
     <None Include="Pages\WorkShop\Requests\CancelledRequestsComponent.razor" />
-    <None Include="Pages\WorkShop\Profile\ProviderProfile.razor" />
     <None Include="Pages\WorkShop\InProgressRequestsComponent.razor" />
     <None Include="wwwroot\assets\dist\js\negotiationModule.js" />
     <None Include="wwwroot\img\bg-auth\signin.svg" />

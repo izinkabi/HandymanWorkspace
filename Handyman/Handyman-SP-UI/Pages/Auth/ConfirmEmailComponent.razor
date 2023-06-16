@@ -1,12 +1,10 @@
 ﻿@page "/confirm-email"
 
-@using HandymanProviderLibrary.Api.EndPoints.Interface
-@using Microsoft.AspNetCore.WebUtilities;
 @inject IAuthEndpoint _authEndPoint
 @inject NavigationManager NavManager
 @inject AuthenticationStateProvider _authStateProvider
 
-
+@*-----Errors-----*@
 @if (Errors.Count > 0)
 {
     @foreach(string error in Errors)
@@ -14,14 +12,8 @@
         <span class="text-danger">@error</span>
     }
 }
+@*-----End Errors-----*@
 
-@if (IsConfirmed)
-{
-    <div class="alert alert-success alert-disposable">
-        Your email is confirmed! :-)
-        <button class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"> </button>
-    </div>
-}
 
 
 @code {
@@ -37,47 +29,27 @@
 
     private List<string> Errors = new List<string>();
 
-
-
-    //protected override void OnParametersSet()
-    //{
-    //    var qs = NavManager.ToAbsoluteUri(NavManager.Uri).Query;
-    //    var query = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(qs);
-    //    if (query.TryGetValue("code", out var code))
-    //    {
-            
-    //            this.code = code;
-            
-    //    }
-    //    if (query.TryGetValue("userId", out var userId))
-    //    {
-    //        this.userId = userId;
-    //    }
-    //}
-
     protected override async Task OnInitializedAsync()
     {
         try 
         {
-
-
+            if (userId !=null && code != null)
+            {
+                IsConfirmed = await _authEndPoint.ConfirmEmail(userId, code);
+                if (IsConfirmed)
+                {
+                    //Logging again to access the Workshop sign-up page
+                    var authedUserModel = await _authEndPoint.LoginUser(userId);
+                    var state = await _authStateProvider.GetAuthenticationStateAsync();
+                    await InvokeAsync(StateHasChanged);
+                    NavManager.NavigateTo("profile-register", true);
+                }
+                else
+                {
+                    Errors.Add("Error: Email not confirmed!");
+                }
+            }
             //Confirm the code and the user
-            IsConfirmed = await _authEndPoint.ConfirmEmail(userId,code);
-            if (IsConfirmed)
-            {
-                //Loggin again to access the Workshop sign-up page
-                var authedUserModel = await _authEndPoint.LoginUser(userId);
-                var state = await _authStateProvider.GetAuthenticationStateAsync();
-                await InvokeAsync(StateHasChanged);
-            }
-            else
-            {
-                Errors.Add("Error: Email not confirmed!");
-            }
-
-            //var returnUrl =
-            //NavManager.ToBaseRelativePath("ws-sign-up");
-            NavManager.NavigateTo("profile-register");
             
            
         }catch(Exception ex)

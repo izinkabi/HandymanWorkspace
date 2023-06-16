@@ -67,8 +67,8 @@ public class AuthEndpoint : IAuthEndpoint
                 string? result = await _apiHelper.AuthenticateUser(userId);
                 _authedUser.Access_Token = result;//our precious Jwt Token ;)
                                                   //get the logged in user's profile
-                var loggedInUser = await _apiHelper.GetLoggedInUserInfor(result);
-                _authedUser.UserName = loggedInUser.Username;
+                                                  //var loggedInUser = await _apiHelper.GetLoggedInUserInfor(result);
+                                                  //_authedUser.UserName = loggedInUser.Username;
             }
 
             return _authedUser;
@@ -99,12 +99,19 @@ public class AuthEndpoint : IAuthEndpoint
         else { return false; }
     }
 
-    //Register a new user
+    /// <summary>
+    /// Register a new user
+    /// </summary>
+    /// <param name="username"></param>
+    /// <param name="password"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
     public async Task<bool> Register(string username, string password)
     {
         try
         {
 
+            //Register Model
             RegisterModel newUser = new RegisterModel
             {
 
@@ -113,6 +120,7 @@ public class AuthEndpoint : IAuthEndpoint
                 ConfirmPassword = password,
                 Roles = { "ServiceProvider" }
             };
+            //API Call to auth controller in register end point
             var response = await _apiHelper.ApiClient.PostAsJsonAsync<RegisterModel>("auth/register", newUser);
             return response.IsSuccessStatusCode;
         }
@@ -123,11 +131,19 @@ public class AuthEndpoint : IAuthEndpoint
         }
     }
 
-
+    /// <summary>
+    /// Confirming the emai address of the newly added user
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="code"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
     public async Task<bool> ConfirmEmail(string userId, string? code)
     {
         try
         {
+            //Null check
+            if (userId == null || code == null) { return false; }
             var response = await _apiHelper.ApiClient.PostAsJsonAsync($"auth/confirmemail?userId={userId}&code={code}", new { });
             return response.IsSuccessStatusCode;
         }

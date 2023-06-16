@@ -80,7 +80,8 @@
 
                 }
                 @*-----End Errors-----*@
-                <button type="submit" class="login-btn">Register</button>
+                <button type="submit" class="login-btn" data-bs-toggle="collapse" data-bs-target="#confirmedEmailCollapse" aria-expanded="false" aria-controls="confirmedEmailCollapse">
+                    Register</button>
                 <p class="social-text">Or Sign Up with socail platforms</p>
                 <div class="social-media">
                     <a href="" class="social-icon">
@@ -249,6 +250,9 @@
         }
     }
 
+    /// <summary>
+    /// Registering a application user 
+    /// </summary>
     private async void SignUp()
     {
         if (RegistrationInput.Password.Equals(RegistrationInput.ConfirmPassword))
@@ -257,6 +261,7 @@
             {
                 IsSubmitted = true;
                 IsRegistered = await authEndPoint.Register(RegistrationInput.Email, RegistrationInput.Password);
+
                 
             }catch (Exception ex)
             {
