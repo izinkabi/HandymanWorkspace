@@ -29,10 +29,7 @@ public class RequestEndPoint : IRequestEndPoint
         {
             if (_authedUser != null && _authedUser.Access_Token != null)
             {
-                _apiHelper.ApiClient.DefaultRequestHeaders.Clear();
-                _apiHelper.ApiClient.DefaultRequestHeaders.Accept.Clear();
-                _apiHelper.ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("applications/json"));
-                _apiHelper.ApiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_authedUser.Access_Token}");
+                _apiHelper.InitializeClient(_authedUser.Access_Token);
                 httpResponse = await _apiHelper.ApiClient.GetFromJsonAsync<List<OrderModel>>($"/api/Requests/GetNewRequests?serviceId={serviceId}");
             }
 

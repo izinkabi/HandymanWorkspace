@@ -47,11 +47,11 @@ public class ProfileHelper
             {
                 return await _providerEndPoint.CreateProfile(newProfile);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
-                return false;
+                throw new Exception(ex.Message);
+
             }
         }
         else

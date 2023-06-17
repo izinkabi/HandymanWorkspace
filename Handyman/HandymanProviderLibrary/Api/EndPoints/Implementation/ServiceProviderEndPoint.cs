@@ -8,12 +8,14 @@ namespace HandymanProviderLibrary.Api.EndPoints.Implementation;
 public class ServiceProviderEndPoint : EmployeeEndPoint, IServiceProviderEndPoint
 {
 
-    IAPIHelper? _apiHelper;
+    private readonly IAPIHelper? _apiHelper;
+    private readonly AuthenticatedUserModel _authedUser;
     ServiceProviderModel? serviceProvider;
 
-    public ServiceProviderEndPoint(IAPIHelper apiHelper) : base(apiHelper)
+    public ServiceProviderEndPoint(IAPIHelper apiHelper, AuthenticatedUserModel authedUserModel) : base(apiHelper)
     {
         _apiHelper = apiHelper;
+        _authedUser = authedUserModel;
     }
     //Add service(s) of business's provider
     async Task IServiceProviderEndPoint.AddService(ServiceProviderModel provider)
@@ -83,18 +85,37 @@ public class ServiceProviderEndPoint : EmployeeEndPoint, IServiceProviderEndPoin
             {
                 return false;
             }
-            HttpResponseMessage responseMessage = new HttpResponseMessage();
-            responseMessage =  await _apiHelper.ApiClient.PostAsJsonAsync<ProfileModel>("/api/handymen/PostProviderProfile",newProfile);
 
-            return responseMessage.IsSuccessStatusCode;
+            if (_authedUser != null && _authedUser.Access_Token != null || newProfile.UserId != null)
+            {
+                if (newProfile.UserId != null && string.IsNullOrEmpty(_authedUser.Access_Token))
+                {
+                    _authedUser.Access_Token = await _apiHelper.AuthenticateUser(newProfile.UserId);
+                }
 
+                if (!string.IsNullOrEmpty(_authedUser.Access_Token))
+                {
+                    HttpResponseMessage responseMessage = new HttpResponseMessage();
+                    _apiHelper.InitializeClient(_authedUser.Access_Token);
+                    responseMessage = await _apiHelper.ApiClient.PostAsJsonAsync<ProfileModel>("/api/auth/PostProfile", newProfile);
+                    return responseMessage.IsSuccessStatusCode;
+                }
+                else
+                {
+                    return false;
+                }
 
+            }
+            else
+            {
+
+                return false;
+            }
         }
         catch (Exception ex)
         {
 
             throw new Exception(ex.Message);
-            return false;
         }
 
     }

@@ -18,11 +18,11 @@
                 <h2 class="title">Sign In</h2>
                 <div class="input-field">
                     <i class="fas fa-user"></i>
-                    <InputText @bind-Value="LoginCredentialsInput.Username" placeholder="Username" />
+                    <input type="email" @bind-value="LoginCredentialsInput.Username" placeholder="Username">
                 </div>
                 <div class="input-field">
                     <i class="fas fa-lock"></i>
-                    <InputText @bind-Value="LoginCredentialsInput.Password" placeholder="Password" />
+                    <input type="password" @bind-value="LoginCredentialsInput.Password" placeholder="Password" >
                 </div>
                 @*-----Form Errors-----*@
                 @if (Errors.Count > 0)
@@ -60,15 +60,15 @@
                 <h2 class="title">Sign Up</h2>
                 <div class="input-field">
                     <i class="fas fa-user"></i>
-                    <InputText  @bind-Value="RegistrationInput.Email" placeholder="Email"/>
+                    <input type="email" @bind-value="RegistrationInput.Email" placeholder="Email">
                 </div>
                 <div class="input-field">
                     <i class="fas fa-lock"></i>
-                    <InputText @bind-Value="RegistrationInput.Password" placeholder=" Password"/>
+                    <input type="password" @bind-value="RegistrationInput.Password" placeholder=" Password">
                 </div>
                 <div class="input-field">
                     <i class="fas fa-lock"></i>
-                    <InputText  @bind-Value="RegistrationInput.ConfirmPassword" placeholder="Confirm Password"/>
+                    <input type="password"  @bind-value="RegistrationInput.ConfirmPassword" placeholder="Confirm Password">
                 </div>
                 @*-----Errors-----*@
                 @if (Errors.Count > 0)

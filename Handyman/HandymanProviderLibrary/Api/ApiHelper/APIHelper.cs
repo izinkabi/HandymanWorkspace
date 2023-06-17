@@ -16,7 +16,7 @@ public class APIHelper : IAPIHelper
     public APIHelper(IConfiguration configuration)
     {
         _Configuration = configuration;
-        InitializeCLient();
+        InitializeClient();
         //_loggedInUserModel = loggedInUser;
 
     }
@@ -31,16 +31,21 @@ public class APIHelper : IAPIHelper
 
 
     //We initialize the HTTP client and format the clients headings to pass the data as a json objet
-    private void InitializeCLient()
+    private void InitializeClient()
     {
-
-
         //string api = "https://localhost:7271/api/";
 
         _apiClient = new HttpClient();
         _apiClient.BaseAddress = new Uri(_Configuration["Api"]);
         _apiClient.DefaultRequestHeaders.Accept.Clear();
         _apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/*+json"));
+    }
+
+    //Overloading the initializeClient method to pass the token as a parameter
+    public void InitializeClient(string token)
+    {
+        InitializeClient();
+        _apiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
     }
     /// <summary>
     ///authenticate the user by passing a username and password to the token endpoint and return a authenticate user with a token
@@ -84,7 +89,7 @@ public class APIHelper : IAPIHelper
                 UserId = userId
 
             };
-            InitializeCLient();
+            InitializeClient();
             using (HttpResponseMessage httpResponse = await _apiClient.PostAsJsonAsync<LoginModel>("Auth/login", data))
             {
                 if (httpResponse.IsSuccessStatusCode)

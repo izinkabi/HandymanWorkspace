@@ -52,7 +52,7 @@
   <ItemGroup>
     <None Include="Pages\Auth\ConfirmEmailComponent.razor" />
     <None Include="Pages\Auth\Login.razor" />
-    <None Include="Shared\Loader.razor" />
+    <None Include="Loader.razor" />
     <None Include="Pages\WorkShop\Requests\CancelledRequestsComponent.razor" />
     <None Include="Pages\WorkShop\InProgressRequestsComponent.razor" />
     <None Include="wwwroot\assets\dist\js\negotiationModule.js" />
@@ -101,7 +101,6 @@
 
 
   <ItemGroup>
-    <Folder Include="Data\" />
     <Folder Include="Models\" />
     <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="wwwroot\images\profile\" />

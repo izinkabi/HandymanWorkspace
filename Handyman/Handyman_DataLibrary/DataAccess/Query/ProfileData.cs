@@ -25,7 +25,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
                         Names = profile.Names,
                         Surname = profile.Surname,
                         DateOfBirth = profile.DateOfBirth.Date,
-                        AddressId = profile.AddressId,
+                        AddressId = profile.Address.add_Id,
                         PhoneNumber = profile.PhoneNumber,
                         EmailAddress = profile.EmailAddress,
                         profileGender = profile.Gender,

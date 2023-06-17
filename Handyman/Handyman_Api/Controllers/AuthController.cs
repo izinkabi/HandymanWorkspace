@@ -23,12 +23,14 @@ public class AuthController : ControllerBase
     private readonly IConfiguration _config;
     private readonly IAuthData _authData;
     private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly IProfileData _profileData;
     private readonly EmailSender emailSender;
 
     public AuthController(SignInManager<IdentityUser> signInManager,
         ILogger<LoginModel> logger, ITokenProvider tokenProvider,
         UserManager<IdentityUser> userManager, IConfiguration config,
-        IAuthData authData, RoleManager<IdentityRole> roleManager, EmailSender emailSender)
+        IAuthData authData, RoleManager<IdentityRole> roleManager,
+        IProfileData profileData, EmailSender emailSender)
     {
         _signInManager = signInManager;
         _logger = logger;
@@ -37,6 +39,7 @@ public class AuthController : ControllerBase
         _config = config;
         _authData = authData;
         _roleManager = roleManager;
+        _profileData = profileData;
         this.emailSender = emailSender;
     }
     /// <summary>
@@ -70,7 +73,7 @@ public class AuthController : ControllerBase
                     var claims = await _userManager.GetClaimsAsync(identityUser);
                     if (claims == null || claims.Count < 1)
                     {
-                        token = _tokenProvider.GenerateToken(loginModel.Email, loginModel.UserId, loginModel.Role);
+                        token = _tokenProvider.GenerateToken(identityUser.Email, loginModel.UserId, loginModel.Role);
                     }
                     else
                     {
@@ -179,6 +182,29 @@ public class AuthController : ControllerBase
                 ModelState.AddModelError(string.Empty, error.Description);
             }
             return BadRequest(ModelState);
+        }
+    }
+
+
+    /// <summary>
+    /// Create the user-profile
+    /// </summary>
+    /// <param name="profile"></param>
+    // POST api/<AuthController>
+    [HttpPost]
+    [Route("PostProfile")]
+    public void PostProfile(ProfileModel profile)
+    {
+        if (profile != null)
+        {
+
+            profile.EmailAddress = User.Identity.Name;
+            if (string.IsNullOrEmpty(profile.UserId))
+            {
+                profile.UserId = _signInManager.UserManager.GetUserId(User);
+            }
+
+            _profileData.InsertProfile(profile);
         }
     }
 

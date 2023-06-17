@@ -80,8 +80,6 @@ public class AuthEndpoint : IAuthEndpoint
         }
     }
 
-
-
     //Log the user out
     public async Task<bool> LogOut()
     {

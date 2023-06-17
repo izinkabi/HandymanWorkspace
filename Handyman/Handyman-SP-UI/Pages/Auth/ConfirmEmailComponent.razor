@@ -42,7 +42,10 @@
                     var authedUserModel = await _authEndPoint.LoginUser(userId);
                     var state = await _authStateProvider.GetAuthenticationStateAsync();
                     await InvokeAsync(StateHasChanged);
-                    NavManager.NavigateTo("profile-register", true);
+                    NavManager.NavigateTo(NavManager.GetUriWithQueryParameters("profile-register", new Dictionary<string, object>()
+                    {
+                        ["uid"]=userId,
+                    }));
                 }
                 else
                 {

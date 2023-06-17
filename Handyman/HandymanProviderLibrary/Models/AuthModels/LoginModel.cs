@@ -4,14 +4,11 @@ namespace HandymanProviderLibrary.Models.AuthModels;
 public class LoginModel
 {
     [EmailAddress]
-    [Display(Name = "Email")]
     public string? Email { get; set; }
-
     [DataType(DataType.Password)]
-    [Display(Name = "Password")]
     public string? Password { get; set; }
-
-    public bool RememberMe { get; set; }
+    public bool? RememberMe { get; set; }
+    [Key]
     public string? UserId
     {
         get; set;

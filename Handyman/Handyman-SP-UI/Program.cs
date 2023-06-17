@@ -22,7 +22,7 @@ builder.Services.AddSingleton<IAPIHelper, APIHelper>();
 builder.Services.AddScoped<IBusinessEndPoint, BusinessEndPoint>();
 builder.Services.AddScoped<AuthenticatedUserModel>();
 builder.Services.AddTransient<EmployeeEndPoint>();
-builder.Services.AddTransient<IServiceProviderEndPoint, ServiceProviderEndPoint>();
+builder.Services.AddScoped<IServiceProviderEndPoint, ServiceProviderEndPoint>();
 builder.Services.AddTransient<IRequestEndPoint, RequestEndPoint>();
 builder.Services.AddScoped<IServiceEndpoint, ServiceEndpoint>();
 builder.Services.AddScoped<IAuthEndpoint, AuthEndpoint>();
