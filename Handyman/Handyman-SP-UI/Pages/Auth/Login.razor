@@ -123,7 +123,11 @@
     </div>
 }else
 {
-    <Loader/>
+    <div>
+        <p class="text-bg-light">
+            You have registered, please check your emails for a confirmation. Thank you.
+        </p>
+    </div>
 }
 @code {
 
@@ -192,7 +196,7 @@
     }
 
     //JS Method for swapping login and register display 
-    private async void swapSlide()
+    private async Task swapSlide()
     {
         if (moduleReference!=null)
         {
