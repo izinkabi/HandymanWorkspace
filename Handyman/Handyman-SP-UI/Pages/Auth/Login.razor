@@ -228,25 +228,29 @@
                 //call the login service
                 AuthenticatedUserModel? authedUser = await authEndPoint.LoginUser(LoginCredentialsInput.Username, LoginCredentialsInput.Password);
                 //get the auth state
-                var state = await _authStateProvider?.GetAuthenticationStateAsync();
-                await InvokeAsync(StateHasChanged);
-                if (state.User.Identity.IsAuthenticated)
+                if (authedUser != null)
                 {
-                    if (string.IsNullOrEmpty(returnUrl))
+                    var state = await _authStateProvider?.GetAuthenticationStateAsync();
+                    await InvokeAsync(StateHasChanged);
+                    if (state.User.Identity.IsAuthenticated)
                     {
-                        returnUrl = "/";
+                        if (string.IsNullOrEmpty(returnUrl))
+                        {
+                            returnUrl = "/";
+                        }
+                        NavManager.NavigateTo(returnUrl);
                     }
-                    NavManager.NavigateTo(returnUrl);
-                }
-                else
-                {
-                    IsSubmitted = false;
+                    else
+                    {
+                        IsSubmitted = false;
+                    }
                 }
             }
             catch (Exception ex)
             {
                 Errors.Add("Invalid Credentials please try again");
                 LoginCredentialsInput = new SignInModel();
+                throw new Exception(ex.Messagefix);
             }
 
 

@@ -34,7 +34,8 @@ public class AuthEndpoint : IAuthEndpoint
             {
                 //authenticate and get the Authenticated user model
                 string? result = await _apiHelper.AuthenticateUser(Email, Password);
-                _authedUser.Access_Token = result;//our precious Jwt Token ;)
+                if (result != null)
+                    _authedUser.Access_Token = result;//our precious Jwt Token ;)
                 //get the logged in user's profile
                 var loggedInUser = await _apiHelper.GetLoggedInUserInfor(result);
                 _authedUser.UserName = loggedInUser.Username;
