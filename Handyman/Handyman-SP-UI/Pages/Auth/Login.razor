@@ -8,7 +8,7 @@
 
 @if (!IsSubmitted)
 {
-    <div class="container">
+    <div class="authContainer">
         <div class="signin-signup">
 
             @*-------Sign in form-------*@
@@ -31,7 +31,6 @@
                     {
                         <span class="text-bg-danger">@error</span>
                     }
-
                 }
                 @*-----End Form Errors-----*@
                 <button type="submit" class="login-btn">Login</button>
@@ -100,7 +99,7 @@
             </EditForm>
             @*----End Sign Up Form----*@
         </div>
-        <div class="panels-container">
+        <div class="panels-authContainer">
             <div class="panel left-panel">
                 <div class="content">
                     <h3>Member of Brand</h3>
