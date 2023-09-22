@@ -6,7 +6,7 @@
 @inject NavigationManager NavManager
 @inject AuthenticationStateProvider _authStateProvider
 
-@if (!IsSubmitted)
+@if (!IsSubmitted || !IsLoggedIn)
 {
     <div class="authContainer">
         <div class="signin-signup">
@@ -105,7 +105,7 @@
                     <h3>Member of Brand</h3>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos possimus odio laudantium nobis ad, iure ratione ea? Similique doloribus modi delectus, pariatur illo quaerat nulla exercitationem consequatur, magni natus doloremque.</p>
 
-                    <button class="login-btn" id="sign-in-btn">Sign in</button>
+                    <button class="login-btn" @onclick="swapLogin" id="sign-in-btn">Sign in</button>
                 </div>
                 <img src="/img/bg-auth/signin.svg" alt="" class="image">
             </div>
@@ -114,7 +114,7 @@
                     <h3>New to Brand</h3>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos possimus odio laudantium nobis ad, iure ratione ea? Similique doloribus modi delectus, pariatur illo quaerat nulla exercitationem consequatur, magni natus doloremque.</p>
 
-                    <button class="login-btn" @onclick="swapSlide" id="sign-up-btn">Sign up</button>
+                    <button class="login-btn" @onclick="swapRegister" id="sign-up-btn">Sign up</button>
                 </div>
                 <img src="/img/bg-auth/signup.svg" alt="" class="image">
             </div>
@@ -122,11 +122,10 @@
     </div>
 }else
 {
-    <div>
-        <p class="text-bg-light">
-            You have registered, please check your emails for a confirmation. Thank you.
-        </p>
-    </div>
+    //TODO - Timer for loader
+    <Loader/>
+        
+
 }
 @code {
 
@@ -168,7 +167,7 @@
     private SignUpModel? RegistrationInput = new SignUpModel()!;
     private List<string> Errors = new List<string>();
     private string? returnUrl;
-    private bool IsSubmitted,IsRegistered;
+    private bool IsSubmitted,IsRegistered,IsLoggedIn;
 
     /// <summary>
     /// After the component is rendered
@@ -195,7 +194,7 @@
     }
 
     //JS Method for swapping login and register display 
-    private async Task swapSlide()
+    private async Task swapLogin()
     {
         if (moduleReference!=null)
         {
@@ -211,13 +210,33 @@
 
         }
     }
+    
+    private async Task swapRegister()
+    {
+        if (moduleReference!=null)
+        {
+            try
+            {
+                await moduleReference.InvokeVoidAsync("swapRegister");
+            }
+            catch (Exception ex)
+            {
+
+                Errors.Add(ex.Message);
+            }
+
+        }
+    }
+    
+    
 
     /// <summary>
     /// Sign in method for logging the user in
     /// by passing the input values to the back end service
     /// </summary>
-    private async void SignIn()
+    private async Task SignIn()
     {
+        Errors.Clear();
         if (LoginCredentialsInput != null &&
             LoginCredentialsInput.Username !=null &&
                 LoginCredentialsInput.Password!=null)
@@ -232,8 +251,9 @@
                 {
                     var state = await _authStateProvider?.GetAuthenticationStateAsync();
                     await InvokeAsync(StateHasChanged);
-                    if (state.User.Identity.IsAuthenticated)
+                    if ( state!=null && state.User.Identity.IsAuthenticated)
                     {
+                        IsLoggedIn = true;
                         if (string.IsNullOrEmpty(returnUrl))
                         {
                             returnUrl = "/";
@@ -250,7 +270,8 @@
             {
                 Errors.Add("Invalid Credentials please try again");
                 LoginCredentialsInput = new SignInModel();
-                throw new Exception(ex.Messagefix);
+                IsSubmitted = false;
+                throw new Exception(ex.Message);
             }
 
 
