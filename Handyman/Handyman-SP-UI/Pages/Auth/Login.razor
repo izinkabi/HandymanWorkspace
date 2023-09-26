@@ -6,7 +6,7 @@
 @inject NavigationManager NavManager
 @inject AuthenticationStateProvider _authStateProvider
 
-@if (!IsSubmitted || !IsLoggedIn)
+@if (!IsSubmitted && !IsLoggedIn && !IsRegistered)
 {
     <div class="authContainer">
         <div class="signin-signup">
@@ -120,13 +120,22 @@
             </div>
         </div>
     </div>
-}else
-{
-    //TODO - Timer for loader
-    <Loader/>
-        
-
 }
+else if (IsSubmitted && IsRegistered)
+{
+
+    <div class="alert">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <strong>Successfully Registered</strong> Thank you for registering wiTabth us, please check your email for a confirmation .You can close this window.
+    </div>
+}
+else
+{
+    <Loader/>
+}
+
+
+
 @code {
 
     /// <summary>
@@ -210,7 +219,7 @@
 
         }
     }
-    
+
     private async Task swapRegister()
     {
         if (moduleReference!=null)
@@ -227,8 +236,8 @@
 
         }
     }
-    
-    
+
+
 
     /// <summary>
     /// Sign in method for logging the user in
@@ -263,6 +272,7 @@
                     else
                     {
                         IsSubmitted = false;
+                        IsLoggedIn = false;
                     }
                 }
             }
@@ -271,7 +281,9 @@
                 Errors.Add("Invalid Credentials please try again");
                 LoginCredentialsInput = new SignInModel();
                 IsSubmitted = false;
-                throw new Exception(ex.Message);
+                IsLoggedIn = false;
+                Errors.Add(ex.Message);
+                //throw new Exception(ex.Message);
             }
 
 
@@ -281,19 +293,20 @@
     /// <summary>
     /// Registering a application user 
     /// </summary>
-    private async void SignUp()
+    private async Task SignUp()
     {
+
         if (RegistrationInput.Password.Equals(RegistrationInput.ConfirmPassword))
         {
             try
             {
                 IsSubmitted = true;
                 IsRegistered = await authEndPoint.Register(RegistrationInput.Email, RegistrationInput.Password);
-
-                
+                await InvokeAsync(StateHasChanged);  
             }catch (Exception ex)
             {
-
+                IsRegistered = false;
+                IsSubmitted = false;
                 Errors.Add(ex.Message);
             }
         }

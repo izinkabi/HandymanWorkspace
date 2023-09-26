@@ -251,6 +251,30 @@ a {
     pointer-events: all;
 }
 
+/*Authentication Alert Style*/
+.alert {
+    padding: 20px;
+    background-color: white;
+    color: darkolivegreen;
+    box-shadow: 10px;
+    border-radius: 3px 3px 3px 0px;
+}
+
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+    .closebtn:hover {
+        color: black;
+    }
+
 
 /*Media Queries*/
 @media (max-width:635px) {
