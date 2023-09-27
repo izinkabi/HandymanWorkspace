@@ -37,9 +37,8 @@
                     <option value="Female">Female</option>
                     <option value="Other">Other</option>
                 </select>
-                
 
-                <button type="submit" @onclick="swapSlide" class="create-btn" id="sign-up-btn">Next</button>
+                <button type="submit" @onclick="swapCreateAddress" class="create-btn" id="sign-up-btn">Next</button>
             </EditForm>
             
             <EditForm Model="newProfile.Address" OnValidSubmit="SaveProfile" class="email-confirm-form">
@@ -109,7 +108,7 @@
                 <div class="content">
                     <h3>Member of Brand</h3>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos possimus odio laudantium nobis ad, iure ratione ea? Similique doloribus modi delectus, pariatur illo quaerat nulla exercitationem consequatur, magni natus doloremque.</p>
-                    <button class="create-btn" id="sign-in-btn">back</button>
+                    <button class="create-btn" @onclick="swapCreateAddress" >back</button>
                 </div>
                 <img src="/img/bg-auth/signin.svg" alt="" class="image">
             </div>
@@ -166,11 +165,19 @@ else
     }
 
 
-    private async Task swapSlide()
+    private async Task swapCreateProfile()
     {
         if (moduleReference!=null)
         {
-            await moduleReference.InvokeVoidAsync("swapLogin");
+            await moduleReference.InvokeVoidAsync("swapCreateProfile");
+        }
+    }
+    
+    private async Task swapCreateAddress()
+    {
+        if (moduleReference!=null)
+        {
+            await moduleReference.InvokeVoidAsync("swapCreateAddress");
         }
     }
 

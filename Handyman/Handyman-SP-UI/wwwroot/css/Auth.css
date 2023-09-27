@@ -221,33 +221,33 @@ a {
 }
 
 /*Animation for the Sign in and Sign up*/
-.authContainer.sign-up-mode::before {
+.container.sign-up-mode::before {
     transform: translateX(0);
 }
 
-.authContainer.sign-up-mode .right-panel .image,
+.container.sign-up-mode .right-panel .image,
 .authContainer.sign-up-mode .right-panel .content {
     transform: translateX(200%);
 }
 
-.authContainer.sign-up-mode .left-panel .image,
-.authContainer.sign-up-mode .left-panel .content {
+.container.sign-up-mode .left-panel .image,
+.container.sign-up-mode .left-panel .content {
     transform: translateX(0);
 }
 
-.authContainer.sign-up-mode form.sign-in-form {
+.container.sign-up-mode form.sign-in-form {
     opacity: 0;
 }
 
-.authContainer.sign-up-mode form.sign-up-form {
+.container.sign-up-mode form.sign-up-form {
     opacity: 1;
 }
 
-.authContainer.authContainer.sign-up-mode .right-panel {
+.container.sign-up-mode .right-panel {
     pointer-events: none;
 }
 
-.authContainer.sign-up-mode .left-panel {
+.container.sign-up-mode .left-panel {
     pointer-events: all;
 }
 

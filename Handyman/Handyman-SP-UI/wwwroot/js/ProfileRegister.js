@@ -1,17 +1,14 @@
 ﻿
-const container = document.querySelector(".Container");
+const container = document.querySelector(".container");
 
-export function swapLogin() {
+export function swapCreateProfile() {
 
-    //sign_in_btn.addEventListener("click", () => {
     container.classList.remove("sign-up-mode");
-    // });
 
 };
 
-export function swapRegister() {
+export function swapCreateAddress() {
 
-    //sign_up_btn.addEventListener("click", () => {
     container.classList.add("sign-up-mode");
-    //});
+  
 };
