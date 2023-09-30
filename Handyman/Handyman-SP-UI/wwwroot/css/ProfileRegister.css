@@ -1,4 +1,4 @@
-﻿:root {
+:root {
     --bg-PAMPAS: #fff;
     --bg-GRANNY-SMITH: #849BA0;
     --bg-MUDDY-WATERS: #BB8751;
@@ -21,7 +21,7 @@ body {
     background: var(--bg-GRANNY-SMITH);
 }
 
-.container {
+.profileContainer {
     position: relative;
     width: 70vw;
     height: 80vh;
@@ -31,7 +31,7 @@ body {
     overflow: hidden;
 }
 
-    .container::before {
+    .profileContainer::before {
         content: "";
         position: absolute;
         top: 0;
@@ -72,7 +72,7 @@ form {
         transition-delay: 1s;
     }
 
-    form.email-confirm-form {
+    form.add-address-form {
         opacity: 0;
         transition: 0.5s ease-in-out;
         transition-delay: 1s;
@@ -220,40 +220,40 @@ a {
 }
 
 /*Animation for the Sign in and Sign up*/
-.container.sign-up-mode::before {
+.profileContainer.create-profile-mode::before {
     transform: translateX(0);
 }
 
-.container.sign-up-mode .right-panel .image,
-.container.sign-up-mode .right-panel .content {
+.profileContainer.create-profile-mode .right-panel .image,
+.profileContainer.create-profile-mode .right-panel .content {
     transform: translateX(200%);
 }
 
-.container.sign-up-mode .left-panel .image,
-.container.sign-up-mode .left-panel .content {
+.profileContainer.create-profile-mode .left-panel .image,
+.profileContainer.create-profile-mode .left-panel .content {
     transform: translateX(0);
 }
 
-.container.sign-up-mode form.profile-form {
+.profileContainer.create-profile-mode .profile-form {
     opacity: 0;
 }
 
-.container.sign-up-mode form.email-confirm-form {
+.profileContainer.create-profile-mode .add-address-form {
     opacity: 1;
 }
 
-.container.container.sign-up-mode .right-panel {
+.profileContainer.create-profile-mode.create-profile-mode .right-panel {
     pointer-events: none;
 }
 
-.container.sign-up-mode .left-panel {
+.profileContainer.create-profile-mode .left-panel {
     pointer-events: all;
 }
 
 
 /*Media Queries*/
 @media (max-width:635px) {
-    .container::before {
+    .profileContainer::before {
         display: none;
     }
 
@@ -261,7 +261,7 @@ a {
         width: 80%;
     }
 
-        form.email-confirm-form {
+        form.add-address-form {
             display: none;
         }
 }

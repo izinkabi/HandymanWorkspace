@@ -4,12 +4,12 @@
 @inject NavigationManager NavManager
 @inject IProviderHelper _providerHelper
 
-@if (!IsSubmitted)
+@if (!IsSubmitted && !IsProfileSuccefullySave)
 {
-    <div class="container">
+    <div class="profileContainer">
         <div class="profile">
             @*-----Profile Form-----*@
-            <EditForm Model="newProfile" class="profile-form" target="_blank" autocomplete="on" validate>
+            <EditForm Model="newProfile" OnValidSubmit="swapToAddAddress" class="profile-form" target="_blank" autocomplete="on" validate>
                 <DataAnnotationsValidator />
                 <ValidationSummary />
                 <h2 class="title">Profile Infomation</h2>
@@ -31,17 +31,17 @@
                 </div>
 
 
-                <select @bind="newProfile.Gender">
+                <select title="ProfileGenderSelectList" name="profileGenderSelectList" @bind="newProfile.Gender">
                     <option>--Gender--</option>
                     <option value="Male">Male</option>
-                    <option value="Female">Female</option>
+                    <option value="Female">Female</option>                                                    
                     <option value="Other">Other</option>
                 </select>
 
-                <button type="submit" @onclick="swapCreateAddress" class="create-btn" id="sign-up-btn">Next</button>
+                <input type="submit" class="create-btn" value="Next" id="create-profile-btn">
             </EditForm>
             
-            <EditForm Model="newProfile.Address" OnValidSubmit="SaveProfile" class="email-confirm-form">
+            <EditForm Model="newProfile.Address" OnValidSubmit="SaveProfile" class="add-address-form">
                 <DataAnnotationsValidator />
                 <ValidationSummary />
                 <h2 class="title">Add Address</h2>
@@ -55,14 +55,14 @@
                 </div>
                 <div>
                     <i class="fas fa-map"></i>
-                    <select @bind="newProfile.Address.add_country">
+                    <select title="ProfileCountrySelectList" name="profileCountrySelectList" @bind="newProfile.Address.add_country">
                         <option value="" >--Country--</option>
-                        <option value="South Africa" >South Africa</option>
+                        <option value="South Africa"  >South Africa</option>
                     </select>
                 </div>
                 <div>
                     <i class="fas fa-house"></i>
-                    <select type="text" @bind="newProfile.Address.add_state" placeholder="State">
+                    <select name="addressPovinceSelectList" type="text" @bind="newProfile.Address.add_state" placeholder="State">
                         <option value="">--Province--</option>
                         <option value="Western Cape">Western Cape</option>
                         <option value="Gauteng">Gauteng</option>
@@ -73,7 +73,7 @@
                 </div>
                 <div>
                     <i class="fas fa-address-book"></i>
-                    <select type="text" @bind="newProfile.Address.add_city" placeholder="City">
+                    <select title="Address City SelectList" name="addressCitySelectList" type="text" @bind="newProfile.Address.add_city" placeholder="City">
                         <option value="" >--City--</option>
                         <option value="Cape Town" >Cape Town</option>
                         <option value="Johannesburg">Johannesburg</option>
@@ -83,8 +83,6 @@
                     </select>
                 </div>
              
-                
-                
                 <input type="submit" value="Submit" class="create-btn">
                 <p class="social-text">social platforms</p>
                 <div class="social-media">
@@ -108,7 +106,7 @@
                 <div class="content">
                     <h3>Member of Brand</h3>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos possimus odio laudantium nobis ad, iure ratione ea? Similique doloribus modi delectus, pariatur illo quaerat nulla exercitationem consequatur, magni natus doloremque.</p>
-                    <button class="create-btn" @onclick="swapCreateAddress" >back</button>
+                    <button class="create-btn" @onclick="swapToCreateProfile" >back</button>
                 </div>
                 <img src="/img/bg-auth/signin.svg" alt="" class="image">
             </div>
@@ -136,7 +134,7 @@ else
     private ProfileModel newProfile = new ProfileModel() { DateOfBirth= DateTime.Now};
     private IJSObjectReference? moduleReference;
     private List<string> Errors = new List<string>()!;
-    private bool IsSubmitted;
+    private bool IsSubmitted, IsProfileSuccefullySave;
     private string? userId;
 
     [Parameter]
@@ -164,20 +162,39 @@ else
         }
     }
 
-
-    private async Task swapCreateProfile()
+    //JS Invokable method to swap to add address 
+    private async Task swapToAddAddress()
     {
+        Errors.Clear();
         if (moduleReference!=null)
         {
-            await moduleReference.InvokeVoidAsync("swapCreateProfile");
+            try
+            {
+                await moduleReference.InvokeVoidAsync("swapToAddAddress");
+            }catch(Exception ex)
+            {
+                Errors.Add(ex.Message);
+            }
+            
         }
     }
-    
-    private async Task swapCreateAddress()
+    //JS Invokable method to swap to create profile
+    private async Task swapToCreateProfile()
     {
+        Errors.Clear();
         if (moduleReference!=null)
         {
-            await moduleReference.InvokeVoidAsync("swapCreateAddress");
+            try
+            {
+               
+                await moduleReference.InvokeVoidAsync("swapToCreateProfile");
+            }
+            catch (Exception ex)
+            {
+                Errors.Add(ex.Message);
+            }
+
+            
         }
     }
 
@@ -206,8 +223,8 @@ else
                 newProfile.UserId = userId;
             }
             
-            var IsValidResponse = await _providerHelper.RegisterProfile(newProfile);
-            if (IsValidResponse)
+            IsProfileSuccefullySave = await _providerHelper.RegisterProfile(newProfile);
+            if (IsProfileSuccefullySave)
             {
                 NavManager.NavigateTo("/", true);
             }

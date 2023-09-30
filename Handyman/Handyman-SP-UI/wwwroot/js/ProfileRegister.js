@@ -1,14 +1,16 @@
 ﻿
-const container = document.querySelector(".container");
+// profile container
+const container = document.querySelector(".profileContainer");
 
-export function swapCreateProfile() {
-
-    container.classList.remove("sign-up-mode");
+// swap create-profile panel with add-address panel -> (Forward Direction)
+export function swapToCreateProfile() {
+    container.classList.remove("create-profile-mode");
 
 };
 
-export function swapCreateAddress() {
-
-    container.classList.add("sign-up-mode");
+// swap create-profile panel with add-address panel -> ( Reverse Direction )
+export function swapToAddAddress() {
+    
+    container.classList.add("create-profile-mode");
   
 };
