@@ -1,0 +1,296 @@
+
+:root {
+    --bg-PAMPAS: #fff;
+    --bg-GRANNY-SMITH: #849BA0;
+    --bg-MUDDY-WATERS: #BB8751;
+    --bg-STORM-GRAY: #6C738C;
+    --bg-OUTER-SPACE: #2D3939;
+    --bg-SideNav-Colour: #04172D;
+}
+main {
+    width:100%;
+    height:100%;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+/*######Top Navigation Section Start #######*/
+nav{
+  position: absolute;
+  top: 13px;
+  width: 85vw;
+  height: 11vh;
+  background: var(--bg-PAMPAS);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  padding: 0px 30px;
+  border-radius: 10px;
+  box-shadow: 3px 1px 3px 1px var(--bg-GRANNY-SMITH);
+}
+.logo {
+    width: 270px;
+    height: 60px;
+    
+}
+
+/*#### Search Box ####*/
+.search{
+    width: 300px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+/*#### Search Box Input ####*/
+.search input {
+  font-family: inherit;
+  font-size: inherit;
+  background-color: #f4f2f2;
+  border: none;
+  color: #646464;
+  padding: 0.7rem 1rem;
+  border-radius: 30px;
+  width: 100%;
+  transition: all ease-in-out .5s;
+  margin-right: -2rem;
+}
+
+.search input:hover, .search input:focus {
+  box-shadow: 0 0 1em #00000013;
+}
+
+.search input:focus {
+  outline: none;
+  background-color: #f7f7f7;
+}
+
+.search input::-webkit input placeholder {
+  font-weight: 100;
+  color: #ccc;
+}
+
+.search input:focus + .search button {
+  background-color: #f0eeee;
+}
+/*#### Search Button inside the search box ####*/
+.search button {
+  border: none;
+
+  margin-top: .1em;
+}
+
+.search button:hover {
+  cursor: pointer;
+}
+
+.search img{
+  height: 1.3em;
+  width: 1.3em;
+  fill: #b4b4b4;
+}
+
+/*#### Icons on Top Nav ####*/
+.icons-profile{
+    width: 250px;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
+/*#### Icons for Chat, Notification and Calendar ####*/
+.icons{
+    width: 200px;
+    height: 50px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
+}
+.icons ul{
+  list-style:none ;   /* Remove bullets */
+}
+.icons li{
+  display: inline-block;    /* Make icons appear as a block element instead of an in line one.*/
+  padding: 5px;
+}
+.icons li:hover{
+  cursor: pointer;
+  box-shadow: 0 0 0.8em var(--bg-GRANNY-SMITH);
+  border-radius: 50%;
+}
+/*#### Profile Drowdown*/
+.profile-icon{
+  width: 45px !important;
+  height: 45px! important;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-around;
+  align-content: space-around;
+  flex-wrap: nowrap;
+  flex-direction: row;
+}
+.profile-icon img{
+  width: 45px;
+  height:45px;
+}
+.dropbtn{
+ background: var(--bg-PAMPAS);
+  border: none;
+  width: 100%;
+  height: 100%;
+}
+button.dropbtn:hover {
+  box-shadow: 0 0 0.8em var(--bg-MUDDY-WATERS);
+  border-radius: 50%;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 135px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  top: 87%;
+  border-radius: 7px;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1
+
+}
+
+.profile-icon:hover  .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}
+
+/*####Side Navigation Bar ####*/
+aside{
+    position: relative;
+    width: 9vh;
+    height: 58vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-SideNav-Colour);
+    
+    right: 47%;
+    border-radius: 30px;
+    box-shadow: 0px 2px 13px 1px var(--bg-GRANNY-SMITH);
+}
+.side-nav{
+  list-style: none;
+  height: inherit;
+  width: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  padding: 15px 5px;
+}
+.side-nav li{
+  width: fit-content;
+  height: 30px;
+}
+
+.side-nav li:hover{
+  cursor: pointer;
+  box-shadow: 0 0 8em var(--bg-MUDDY-WATERS);
+  border-radius: 10px;
+  background-color: var(--bg-PAMPAS);
+}
+/*#### Dashboard cards, infor and summary SECTION */
+section {
+    position: absolute;
+    top: 45px;
+    width: 94vw;
+    height: 87vh;
+    background: var(--bg-PAMPAS);
+    border-radius: 20px;
+    overflow: hidden;
+    z-index: -1;
+    box-shadow: 0px 2px 13px 1px var(--bg-GRANNY-SMITH);
+}
+.container{
+  padding: 10px;
+  width: 90%;
+  height: 80%;
+  border-radius: 15px;
+  background-color: hsla(210, 28%, 55%, 0.13);
+  display: flex;
+  justify-content: space-evenly;
+  position: relative;
+  top: 10%;
+  left: 5%;
+  box-shadow: 0px 2px 13px 1px var(--bg-GRANNY-SMITH);
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+.card-top{
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+  border-radius: 15px;
+  flex-wrap: wrap;
+  width: 75%;
+  flex-direction: row;
+  align-content: space-around;
+  justify-content: space-evenly;
+}
+.cards{
+  height: 48%;
+  width: 32%;
+  /* align-self: auto; */
+  background-color: var(--bg-PAMPAS);
+  box-shadow: 0px 2px 8px 2px var(--bg-GRANNY-SMITH);
+  border-radius: 15px;
+  padding: 10px;
+}
+.card-bottom{
+  padding: 10px v;
+  height: 48%;
+  width: 98%;
+  align-self: auto;
+  background-color: var(--bg-PAMPAS);
+  box-shadow: 0px 2px 8px 2px var(--bg-GRANNY-SMITH);
+  border-radius: 15px;
+  padding: 10px;
+
+}
+
+.card-side{
+  width: 25%;
+  height: 100%;
+  border-radius: 15px;
+  background-color: var(--bg-PAMPAS);
+  box-shadow: 0px 2px 8px 2px var(--bg-GRANNY-SMITH);
+}
+
+/*Test Code*/
+
+
+
+/*#### Icons RESIZING*/
+img {
+    width: 30px;
+    height: 30px;
+
+}
