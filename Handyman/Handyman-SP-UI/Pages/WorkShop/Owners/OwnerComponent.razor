@@ -5,59 +5,63 @@
 @attribute [Authorize]
 
 <main>
-<div class="container">
-    <div>
-            <img src="./img/logo/logo.jpg" width="26" style="width:100px;border-radius: 50%;" alt="logo" />
-    </div>
-
-    <div class="row">
-        <div class="col-3 menu animable">
-          <ul>
-            <li>
-                <a  href="#home">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
-                        <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z" />
-                    </svg>
-                    Home
-                </a>
-            </li>
-            
-            <li>
-                <a class="a2" href="#news">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-briefcase" viewBox="0 0 16 16">
-                        <path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z" />
-                    </svg>
-                    Work
-                </a>
-            </li>
-            <li>
-                <a class="a3" href="#contact">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
-                        <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
-                    </svg>
-                    Stuff
-                </a>
-            </li>
-            <li>
-                <a class="a4 animable1" href="#about">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-coin" viewBox="0 0 16 16">
-                        <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z" />
-                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                        <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z" />
-                    </svg>
-                    Finance
-                </a>
-            </li>
+     <!--######Top Navigation Section Start #######-->
+     <nav>
+        <div class="logo">
+            <img src="#" alt="Logo">
+        </div>
+        <div class="search">
+            <input type="text" placeholder="Type your text">
+            <button class="search-button">
+                <img src="/img/Search.png" aria-hidden="true" viewBox="0 0 24 24"/>
+            </button>
+        </div>
+        <div class="icons-profile">
+            <div class="icons">
+                <ul>
+                    <li><img src="/img/Planner.png" alt="calender"></li>
+                    <li><img src="/img/Chat.png" alt="chats"></li>
+                    <li><img src="/img/Notification.png" alt="notification"></li>
+                </ul>
+            </div>
+            <div class="profile-icon">
+                <button class="dropbtn"><img src="/img/Male User.png" alt="profile picture"></button>
+                <div class="dropdown-content">
+                <a href="#">{User}</a><br>
+                <a href="#">{Profile}</a>
+                <a href="#">LogOut</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!--####Side Navigation Bar Start####-->
+    <aside>
+        <ul class="side-nav">
+            <li><img src="/img/Home.png" alt="home"></li>
+            <li><img src="/img/Work Boot.png" alt="services"></li>
+            <li><img src="/img/Purchase Order.png" alt="order"></li>
+            <li><img src="/img/Profit.png" alt="revenue"></li>
+            <li><img src="/img/Worker.png" alt="stuff"></li>
+            <li><img src="/img/Small Business.png" alt="workshop"></li>
+            <li><img src="/img/Graph Report.png" alt="reports"></li>
         </ul>
-    </div>
-
-    <div class="col-9 ownerroom">
-        <h1>The City</h1>
-        
-    </div>
-    </div>
-    </div>
-
+    </aside>
+    <!--#### Container for the Cards on the Dashboard ####-->
+    <section>
+        <div class="container">    
+            <div class="card-top">
+                <div class="cards">Orders
+                    <!--TODO - Display -->
+                </div>
+                <div class="cards">Revenue</div>
+                <div class="cards">stuff</div>
+                <div class="card-bottom" >Chart</div>
+            </div>
+            <div class="card-side">
+                    
+            </div>
+        </div>
+    </section>
 </main>
 
 
