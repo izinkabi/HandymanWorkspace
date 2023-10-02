@@ -6,7 +6,15 @@
 
 @if (!IsSubmitted && !IsProfileSuccefullySave)
 {
+   
     <div class="profileContainer">
+        @if (IsNewUser)
+        {
+            <div class="alert">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                <strong>Email Successfully Confirmed</strong> Welcome the Service Shop.
+            </div>
+        }
         <div class="profile">
             @*-----Profile Form-----*@
             <EditForm Model="newProfile" OnValidSubmit="swapToAddAddress" class="profile-form" target="_blank" autocomplete="on" validate>
@@ -18,23 +26,17 @@
                     <input type="text" @bind-value="newProfile.Names" placeholder="Names"  required >
                 </div>
                 <div class="input-field">
-                    <i class="fas fa-user"></i>
+                    <i class="fas fa-card"></i>
                     <input type="text" @bind-value="newProfile.Surname" placeholder="Last Name" required>
                 </div>
                 
                 <div class="input-field">
-                    <i class="fas fa-user"></i>
+                    <i class="fas fa-phone"></i>
                     <input type="tel" @bind-value="newProfile.PhoneNumber" placeholder="Cell Number" required >
                 </div>
                  <div class="input-field">
-                    <div id="calendarContainer">
-                        <i class="fas fa-calendar "></i>
-                    </div>
-                    <div class="hide">
-                        <div placeholder="DateOfBirth" data-app="calendar-app">
-                        </div>
-                    </div>
-                   
+                    <i class="fas fa-calendar "></i>
+                    <input type="date" @bind-value="newProfile.DateOfBirth" placeholder="Date Of Birth" required>
                 </div>
 
                 <select title="ProfileGenderSelectList" name="profileGenderSelectList" @bind="newProfile.Gender" required>
@@ -52,7 +54,7 @@
                 <ValidationSummary />
                 <h2 class="title">Add Address</h2>
                 <div class="input-field">
-                    <i class="fas fa-mouse-pointer"></i>
+                    <i class="fas fa-house"></i>
                     <input type="text" @bind-value="newProfile.Address.add_street" placeholder="Street Address">
                 </div>
                 <div class="input-field">
@@ -63,11 +65,11 @@
                     <i class="fas fa-map"></i>
                     <select title="ProfileCountrySelectList" name="profileCountrySelectList" @bind="newProfile.Address.add_country">
                         <option value="" >--Country--</option>
-                        <option value="South Africa"  >South Africa</option>
+                        <option value="South Africa" >South Africa</option>
                     </select>
                 </div>
                 <div>
-                    <i class="fas fa-house"></i>
+                    <i class="fas fa-globe"></i>
                     <select name="addressPovinceSelectList" type="text" @bind="newProfile.Address.add_state" placeholder="State">
                         <option value="">--Province--</option>
                         <option value="Western Cape">Western Cape</option>
@@ -140,8 +142,9 @@ else
     private ProfileModel newProfile = new ProfileModel() { DateOfBirth= DateTime.Now};
     private IJSObjectReference? profileModuleReference,calendaModuleReference;
     private List<string> Errors = new List<string>()!;
-    private bool IsSubmitted, IsProfileSuccefullySave;
+    private bool IsSubmitted, IsProfileSuccefullySave,IsNewUser;
     private string? userId;
+
 
     [Parameter]
     [SupplyParameterFromQuery(Name ="UID")]
@@ -158,8 +161,9 @@ else
         {
             try
             {
+                IsNewUser = true;
                 profileModuleReference = await JS.InvokeAsync<IJSObjectReference>("import", "/js/ProfileRegister.js");
-                calendaModuleReference = await JS.InvokeAsync<IJSObjectReference>("import","/js/Calenda.js");
+               
             }
             catch (Exception ex)
             {
@@ -205,31 +209,8 @@ else
         }
     }
 
-    /// <summary>
-    /// showCalendar() function is the main entry point. It takes one numerical argument prevNextIndicator
-    /// -1 = previous month
-    ///  0 = current month
-    ///  1 = next month
-    /// </summary>
-    /// <returns></returns>
 
-    private async Task showCalendar()
-    {
-        Errors.Clear();
-        if (profileModuleReference != null)
-        {
-            try
-            {
-                await profileModuleReference.InvokeVoidAsync("displayCalendar");
-            }
-            catch (Exception ex)
-            {
-                Errors.Add(ex.Message);
-            }
-
-
-        }
-    }
+    
 
     
 

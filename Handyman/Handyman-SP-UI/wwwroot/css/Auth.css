@@ -254,7 +254,7 @@ a {
 /*Authentication Alert Style*/
 .alert {
     padding: 20px;
-    background-color: white;
+    background-image: linear-gradient(to right, #D3959B, #BFE6BA);
     color: darkolivegreen;
     box-shadow: 10px;
     border-radius: 3px 3px 3px 0px;
