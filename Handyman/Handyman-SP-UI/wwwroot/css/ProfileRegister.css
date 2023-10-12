@@ -13,14 +13,6 @@
     font-family: 'Poppins', sans-serif;
 }
 
-body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: var(--bg-GRANNY-SMITH);
-}
-
 .profileContainer {
     position: relative;
     width: 70vw;
