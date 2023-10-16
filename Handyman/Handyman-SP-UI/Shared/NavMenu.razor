@@ -1,47 +1,38 @@
 ﻿   <!-- * ####Side Navigation Bar Start####-->
-   <!-- * ####Side Navigation Bar Start####-->
-    <aside>
-        <ul class="side-nav">
-            <li><img src="/img/Home.png" alt="home"></li>
-            <li><img src="/img/Work Boot.png" alt="services"></li>
-            <li><img src="/img/Purchase Order.png" alt="order"></li>
-            <li><img src="/img/Profit.png" alt="revenue"></li>
-            <li><img src="/img/Worker.png" alt="stuff"></li>
-            <li><img src="/img/Small Business.png" alt="workshop"></li>
-            <li><img src="/img/Graph Report.png" alt="reports"></li>
-        </ul>
-    </aside>
-
-
-
-@*<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">Handyman-SP-UI</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
+<!--######Top Navigation Section Start #######-->
+<!--######Top Navigation Section Start #######-->
+<nav>
+    <div class="logo">
+        <i class="fa-solid fa-fingerprint fa-2x"></i>
+        <h1>Okane</h1>
+    </div>
+    <div class="search">
+        <input type="text" placeholder="Type your text">
+        <button class="search-button">
+            <i class="fa-solid fa-magnifying-glass fa-1x"></i>
         </button>
     </div>
-</div>
-
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
+    <div class="icons-profile">
+        <div class="icons">
+            <ul>
+                <li><img src="/img/Planner.png" alt="calender"></li>
+                <li><img src="/img/Chat.png" alt="chats"></li>
+                <li><img src="/img/Notification.png" alt="notification"></li>
+            </ul>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
+        <div class="profile">
+            <button class="dropbtn"><img src="/img/Male User.png" alt="profile picture"></button>
+            <div class="dropdown-content">
+                <a href="#">Mbuzi</a><hr>
+                <a href="#">Owner</a>
+                <a href="/pages/Samples/Profile-Owner.html">Profile</a>
+                <a href="#">Support</a>
+                <a href="/pages/error-pages/400.html">Setting</a><hr>
+                <a href="#">LogOut</a>
+            </div>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </div>
-    </nav>
-</div>*@
+    </div>
+</nav>
 
 @code {
     private bool collapseNavMenu = true;
