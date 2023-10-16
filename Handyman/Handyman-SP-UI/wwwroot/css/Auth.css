@@ -1,26 +1,5 @@
 ﻿
-:root {
-    --bg-PAMPAS: #fff;
-    --bg-GRANNY-SMITH: #849BA0;
-    --bg-MUDDY-WATERS: #BB8751;
-    --bg-STORM-GRAY: #6C738C;
-    --bg-OUTER-SPACE: #2D3939;
-}
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}
-
-body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: var(--bg-GRANNY-SMITH);
-}
 
 .authContainer {
     position: relative;
