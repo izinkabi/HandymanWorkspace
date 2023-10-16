@@ -6,32 +6,40 @@
 
 @if (!IsSubmitted && !IsProfileSuccefullySave)
 {
+   
     <div class="profileContainer">
+        @if (IsNewUser)
+        {
+            <div class="alert">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                <strong>Email Successfully Confirmed</strong> Welcome the Service Shop.
+            </div>
+        }
         <div class="profile">
             @*-----Profile Form-----*@
             <EditForm Model="newProfile" OnValidSubmit="swapToAddAddress" class="profile-form" target="_blank" autocomplete="on" validate>
                 <DataAnnotationsValidator />
                 <ValidationSummary />
-                <h2 class="title">Profile Infomation</h2>
+                <h2 class="title">Profile Information</h2>
                 <div class="input-field">
                     <i class="fas fa-user"></i>
                     <input type="text" @bind-value="newProfile.Names" placeholder="Names"  required >
                 </div>
                 <div class="input-field">
-                    <i class="fas fa-user"></i>
+                    <i class="fas fa-card"></i>
                     <input type="text" @bind-value="newProfile.Surname" placeholder="Last Name" required>
                 </div>
+                
                 <div class="input-field">
-                    <i class="fas fa-user"></i>
-                    <input type="date" @bind-value="newProfile.DateOfBirth" placeholder="DateOfBirth" required >
-                </div>
-                <div class="input-field">
-                    <i class="fas fa-user"></i>
+                    <i class="fas fa-phone"></i>
                     <input type="tel" @bind-value="newProfile.PhoneNumber" placeholder="Cell Number" required >
                 </div>
+                 <div class="input-field">
+                    <i class="fas fa-calendar "></i>
+                    <input type="date" @bind-value="newProfile.DateOfBirth" placeholder="Date Of Birth" required>
+                </div>
 
-
-                <select title="ProfileGenderSelectList" name="profileGenderSelectList" @bind="newProfile.Gender">
+                <select title="ProfileGenderSelectList" name="profileGenderSelectList" @bind="newProfile.Gender" required>
                     <option>--Gender--</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>                                                    
@@ -46,7 +54,7 @@
                 <ValidationSummary />
                 <h2 class="title">Add Address</h2>
                 <div class="input-field">
-                    <i class="fas fa-mouse-pointer"></i>
+                    <i class="fas fa-house"></i>
                     <input type="text" @bind-value="newProfile.Address.add_street" placeholder="Street Address">
                 </div>
                 <div class="input-field">
@@ -57,11 +65,11 @@
                     <i class="fas fa-map"></i>
                     <select title="ProfileCountrySelectList" name="profileCountrySelectList" @bind="newProfile.Address.add_country">
                         <option value="" >--Country--</option>
-                        <option value="South Africa"  >South Africa</option>
+                        <option value="South Africa" >South Africa</option>
                     </select>
                 </div>
                 <div>
-                    <i class="fas fa-house"></i>
+                    <i class="fas fa-globe"></i>
                     <select name="addressPovinceSelectList" type="text" @bind="newProfile.Address.add_state" placeholder="State">
                         <option value="">--Province--</option>
                         <option value="Western Cape">Western Cape</option>
@@ -132,10 +140,11 @@ else
     /// Locals
     /// </summary>
     private ProfileModel newProfile = new ProfileModel() { DateOfBirth= DateTime.Now};
-    private IJSObjectReference? moduleReference;
+    private IJSObjectReference? profileModuleReference,calendaModuleReference;
     private List<string> Errors = new List<string>()!;
-    private bool IsSubmitted, IsProfileSuccefullySave;
+    private bool IsSubmitted, IsProfileSuccefullySave,IsNewUser;
     private string? userId;
+
 
     [Parameter]
     [SupplyParameterFromQuery(Name ="UID")]
@@ -152,7 +161,9 @@ else
         {
             try
             {
-                moduleReference = await JS.InvokeAsync<IJSObjectReference>("import", "/js/ProfileRegister.js");
+                IsNewUser = true;
+                profileModuleReference = await JS.InvokeAsync<IJSObjectReference>("import", "/js/ProfileRegister.js");
+               
             }
             catch (Exception ex)
             {
@@ -166,37 +177,42 @@ else
     private async Task swapToAddAddress()
     {
         Errors.Clear();
-        if (moduleReference!=null)
+        if (profileModuleReference!=null)
         {
             try
             {
-                await moduleReference.InvokeVoidAsync("swapToAddAddress");
+                await profileModuleReference.InvokeVoidAsync("swapToAddAddress");
             }catch(Exception ex)
             {
                 Errors.Add(ex.Message);
             }
-            
+
         }
     }
     //JS Invokable method to swap to create profile
     private async Task swapToCreateProfile()
     {
         Errors.Clear();
-        if (moduleReference!=null)
+        if (profileModuleReference!=null)
         {
             try
             {
-               
-                await moduleReference.InvokeVoidAsync("swapToCreateProfile");
+
+                await profileModuleReference.InvokeVoidAsync("swapToCreateProfile");
             }
             catch (Exception ex)
             {
                 Errors.Add(ex.Message);
             }
 
-            
+
         }
     }
+
+
+    
+
+    
 
     /// <summary>
     /// Assign the gender 
