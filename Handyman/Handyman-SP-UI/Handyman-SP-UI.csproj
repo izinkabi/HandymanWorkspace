@@ -20,11 +20,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Pages\Error\404_error.razor" />
     <Content Remove="Pages\Loader.razor" />
     <Content Remove="Pages\Login.razor" />
     <Content Remove="Pages\WorkShop\Requests\Tasks\CancelledRequestsComponent.razor" />
     <Content Remove="Shared\AuthLoginLayout.razor" />
     <Content Remove="wwwroot\assets\dist\js\negotiationModule.js" />
+    <Content Remove="wwwroot\js\Chart.js" />
     <Content Remove="wwwroot\js\dashboard.js" />
   </ItemGroup>
 
@@ -52,12 +54,14 @@
   <ItemGroup>
     <None Include="Pages\Auth\ConfirmEmailComponent.razor" />
     <None Include="Pages\Auth\Login.razor" />
+    <None Include="Pages\Error\404_error.razor" />
     <None Include="Shared\Loader.razor" />
     <None Include="Pages\WorkShop\Requests\CancelledRequestsComponent.razor" />
     <None Include="Pages\WorkShop\Requests\InProgressRequestsComponent.razor" />
     <None Include="wwwroot\assets\dist\js\negotiationModule.js" />
     <None Include="wwwroot\img\bg-auth\signin.svg" />
     <None Include="wwwroot\img\bg-auth\signup.svg" />
+    <None Include="wwwroot\js\Chart.js" />
     <None Include="wwwroot\js\dashboard.js" />
   </ItemGroup>
 
@@ -85,12 +89,14 @@
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Pages\Auth\ConfirmEmailComponent.razor" />
     <_ContentIncludedByDefault Remove="Pages\Auth\Login.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Error\404_error.razor" />
     <_ContentIncludedByDefault Remove="Pages\Loader.razor" />
     <_ContentIncludedByDefault Remove="Pages\Login.razor" />
     <_ContentIncludedByDefault Remove="Pages\WorkShop\Requests\InProgressRequestsComponent.razor" />
     <_ContentIncludedByDefault Remove="Pages\WorkShop\Requests\Tasks\CancelledRequestsComponent.razor" />
     <_ContentIncludedByDefault Remove="Shared\AuthLoginLayout.razor" />
     <_ContentIncludedByDefault Remove="wwwroot\assets\dist\js\negotiationModule.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\Chart.js" />
     <_ContentIncludedByDefault Remove="wwwroot\js\dashboard.js" />
   </ItemGroup>
 
@@ -150,6 +156,12 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Pages\Loader.razor" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Error\404_error.razor" />
   </ItemGroup>
 
 </Project>

@@ -4,6 +4,7 @@
 
 
 @inject AuthenticationStateProvider authProvider
+@inject IJSRuntime JS
 @attribute [Authorize]
 
 <main>
@@ -62,7 +63,14 @@
 
 
 @code {
+    private IJSObjectReference jSObjectReference;
 
-     
+    public async Task AfterRender(bool isfirstRender)
+    {
+        if (isfirstRender)
+        {
+            jSObjectReference = await JS.InvokeAsync<IJSObjectReference>("import", "~/js/site.js");
+        }
+    }
 }
  
