@@ -1,0 +1,64 @@
+﻿@using Microsoft.JSInterop;
+@inject IJSRuntime JS
+<div id="qrcode"></div>
+<button @onclick="clearQRCode">Clear QR</button>
+
+@code {
+    private IList<string>? Errors;
+    private IJSObjectReference? moduleReference;
+
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Errors.Clear();
+            try
+            {
+                moduleReference = await JS.InvokeAsync<IJSObjectReference>("import", "/js/qrcodescanner.js");
+
+            }
+            catch (Exception ex)
+            {
+                Errors.Add(ex.Message);
+                throw new Exception(ex.Message);
+            }
+        }
+         await displayQRCode();
+    }
+
+    //JS invoking method to display the QR Code
+    private async Task displayQRCode()
+    {
+        if (moduleReference != null)
+        {
+            try
+            {
+                await moduleReference.InvokeVoidAsync("openQRCode");
+            }
+            catch (Exception ex)
+            {
+                Errors.Add(ex.Message);
+            }
+
+        }
+    }
+
+    //JS invoking method to clear the QR Code for a new instance
+    private async Task clearQRCode()
+    {
+        if (moduleReference != null)
+        {
+            try
+            {
+                await moduleReference.InvokeVoidAsync("clearQRCode");
+            }
+            catch (Exception ex)
+            {
+                Errors.Add(ex.Message);
+            }
+
+        }
+    }
+}
