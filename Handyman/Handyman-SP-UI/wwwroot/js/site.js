@@ -1,40 +1,29 @@
 ﻿
-//* This how we pass data and chart set up to 
-const ctx = document.getElementById('bar-chart');
 
-new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        datasets: [{
-            label: 'Expenses R',
-            data: [4, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 2],
-            fill: false,
-            borderColor: 'Red',
-            tension: 0.1,
+export function displayGraph() {
+    const xValues = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
+
+    new Chart("myChart", {
+        type: "line",
+        data: {
+            labels: xValues,
+            datasets: [{
+                data: [860, 1140, 1060, 1060, 1070, 1110, 1330, 2210, 7830, 2478],
+                borderColor: "red",
+                fill: false
+            }, {
+                data: [1600, 1700, 1700, 1900, 2000, 2700, 4000, 5000, 6000, 7000],
+                borderColor: "green",
+                fill: false
+            }, {
+                data: [300, 700, 2000, 5000, 6000, 4000, 2000, 1000, 200, 100],
+                borderColor: "blue",
+                fill: false
+            }]
         },
-        {
-            label: 'Orders No',
-            data: [8, 3, 4, 6, 8, 10, 1, 12, 16, 22, 44, 6],
-            fill: false,
-            borderColor: 'green',
-            tension: 0.3,
-        },
-        {
-            label: 'Money R',
-            data: [1, 9, 3, 5, 2, 3, 4, 7, 3, 5, 2, 3],
-            fill: false,
-            borderColor: 'grey',
-            tension: 0.2,
-        }]
-    },
-    options: {
-        scales: {
-            y: {
-                beginAtZero: true
-            }
+        options: {
+            legend: { display: false }
         }
-    }
-});
+    });
+};
 
-console.log(Chart);

@@ -1,5 +1,7 @@
 /* globals Chart:false, feather:false */
+import 'https://cdn.jsdelivr.net/npm/chart.js'
 
+export function displayGraph() {
 (() => {
   'use strict'
 
@@ -51,3 +53,4 @@
     }
   })
 })()
+}

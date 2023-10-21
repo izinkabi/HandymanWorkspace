@@ -2,8 +2,8 @@
 @page "/manager"
 
 
-
 @inject AuthenticationStateProvider authProvider
+@inject IJSRuntime JS
 @attribute [Authorize]
 
 <main>
@@ -52,8 +52,18 @@
                 </div>
                 <!--Add a small table to display events with buttons to edit-->
             </div>
+            
             <div class="card-bottom">
-                <canvas id="bar-chart" width="400" height="135" aria-label="Hello ARIA World" role="img">
+              
+
+                @if(Errors!=null){
+                    @foreach(var error in Errors)
+                    {
+                        <p>Error : error</p>
+                    }
+                    <hr/>
+                }
+                <canvas id="myChart" width="400" height="auto" aria-label="Hello ARIA World" role="img">
                 </canvas>
             </div>
         </div>
@@ -63,6 +73,27 @@
 
 @code {
 
-     
+private IList<string?> Errors;
+private IJSObjectReference? moduleReference;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+          if(Errors!=null) Errors.Clear();   
+                 
+            try{
+                moduleReference  = await JS.InvokeAsync<IJSObjectReference>("import","/js/site.js");
+                if (moduleReference != null) await moduleReference.InvokeVoidAsync("displayGraph");
+
+            }catch(Exception ex)
+            {
+                Errors.Add(ex.Message);
+            }
+        }
+
+    }
+
+    
 }
  
