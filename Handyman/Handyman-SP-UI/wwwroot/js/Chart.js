@@ -1,8 +1,10 @@
 
+
+import "https://cdn.jsdelivr.net/npm/chart.js"
 //* This how we pass data and chart set up to 
 const ctx = document.getElementById('bar-chart');
 
-new Chart(ctx, {
+export new Chart(ctx, {
     type: 'line',
     data: {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
