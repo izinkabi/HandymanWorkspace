@@ -7,7 +7,7 @@
 @if (!IsSubmitted && !IsProfileSuccefullySave)
 {
    
-    <div class="profileContainer">
+    <div class="container">
         @if (IsNewUser)
         {
             <div class="alert">
@@ -205,14 +205,8 @@ else
                 Errors.Add(ex.Message);
             }
 
-
         }
     }
-
-
-    
-
-    
 
     /// <summary>
     /// Assign the gender 
