@@ -9,7 +9,7 @@ namespace Handyman_Api.Controllers;
 
 [Route("api/orders")]
 [ApiController]
-[Authorize(Roles = "Consumer,Member,Owner")]
+//[Authorize(Roles = "Consumer,Member,Owner")]
 public class OrdersController : ControllerBase
 {
     IOrderData _orderData;

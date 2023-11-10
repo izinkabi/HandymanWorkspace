@@ -78,16 +78,16 @@ builder.Services.AddSwaggerGen(options =>
 {
     //Configure Swagger to Handle Authorizing using Bearer
     //Bearer token handling and API lock down
-    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
-    {
-        //Define the definition of the Authorize
-        Description = "JWT Authorization header using the Bearer scheme",
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.Http,
-        Scheme = "bearer",
-        BearerFormat = "JWT"
-    });
+    //options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    //{
+    //    //Define the definition of the Authorize
+    //    //Description = "JWT Authorization header using the Bearer scheme",
+    //    //Name = "Authorization",
+    //    //In = ParameterLocation.Header,
+    //    //Type = SecuritySchemeType.Http,
+    //    //Scheme = "bearer",
+    //    //BearerFormat = "JWT"
+    //});
     //options.AddSecurityRequirement(new OpenApiSecurityRequirement
     //{
     //    //Add the requirement fot the Authorize. 

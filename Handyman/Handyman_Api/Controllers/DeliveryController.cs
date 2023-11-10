@@ -8,7 +8,7 @@ namespace Handyman_Api.Controllers;
 
 [Route("api/Delivery")]
 [ApiController]
-[Authorize(Roles = "ServiceProvider")]
+//[Authorize(Roles = "ServiceProvider")]
 public class DeliveryController : ControllerBase
 {
     IBusinessData? _businessData;

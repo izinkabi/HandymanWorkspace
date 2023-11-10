@@ -7,7 +7,7 @@ namespace Handyman_Api.Controllers;
 
 [ApiController]
 [Route("api/services")]
-[Authorize(Roles = "Consumer,ServiceProvider")]
+//[Authorize(Roles = "Consumer,ServiceProvider")]
 public class ServicesController : ControllerBase
 {
     IServiceData _serviceData;

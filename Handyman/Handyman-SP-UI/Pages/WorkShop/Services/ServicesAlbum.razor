@@ -4,16 +4,132 @@
 @using Microsoft.AspNetCore.Components.Web
 @inject IServiceEndpoint _serviceEP
 @inject IProviderHelper _proHelper
-@inject NavigationManager NavManager 
-  
-    <section class="py-1 text-center container">
-        <div class="p-2 bg-light rounded-3">
-            <div class="container-fluid py-1">
-                <h1 class="fw-light">Offered Services</h1>
-                <p class="lead text-muted">These are all service you need to add your business and start up on tha money making </p>
-            </div>
+@inject NavigationManager NavManager
+
+<div class="service-container">
+    <div class="service-status">
+        <div class="service-card">
+            <h4>Service Status:</h4>
+            <ul>
+                <li>Active</li>
+                <li>Inactive</li>
+                <li> Approval</li>
+                <li>Approved</li>
+                <li>Rejected</li>
+            </ul>
         </div>
-    </section>
+        <div class="service-card">
+            <h4>Service Status:</h4>
+            <ul>
+                <li>Active</li>
+                <li>Inactive</li>
+                <li>Pending Approval</li>
+                <li>Approved</li>
+                <li>Rejected</li>
+            </ul>
+        </div>
+    </div>
+    <div class="service-functions">
+        <div class="service-card">
+            <h4>Service Status:</h4>
+            <ul>
+                <li>Active</li>
+                <li>Inactive</li>
+                <li> Approval</li>
+                <li>Approved</li>
+                <li>Rejected</li>
+            </ul>
+        </div>
+        <div class="service-card">
+            <h4>Service Status:</h4>
+            <ul>
+                <li>Active</li>
+                <li>Inactive</li>
+                <li>Pending Approval</li>
+                <li>Approved</li>
+                <li>Rejected</li>
+            </ul>
+        </div>
+    </div>
+    <div class="services-table">
+        <table class="blueTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Price</th>
+                    <th>Date Created</th>
+                    <th>Description</th>
+                    <th>Image</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td colspan="10">
+                        <div class="links"><a href="#">&laquo;</a> <a class="active" href="#">1</a> <a href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a href="#">&raquo;</a></div>
+                    </td>
+                </tr>
+            </tfoot>
+            <tbody>
+                <tr>
+                    <td>Wall Painting</td>
+                    <td>Renovations and Remodeling</td>
+                    <td>in-house</td>
+                    <td>Available</td>
+                    <td>R800.00</td>
+                    <td>12-10-2023</td>
+                    <td>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit itaque, cumque consequuntur</td>
+                    <td><img src="#" alt=""></td>
+                    <td><i class="fa-regular fa-trash-can fa-1x"></i></td>
+                    <td><i class="fa-regular fa-clipboard fa-1x"></i></td>
+                    <td><i class="fa-regular fa-pen-to-square fa-1x"></i></td>
+                </tr>
+                <tr>
+                    <td>Wall Painting</td>
+                    <td>Renovations and Remodeling</td>
+                    <td>in-house</td>
+                    <td>Available</td>
+                    <td>R800.00</td>
+                    <td>12-10-2023</td>
+                    <td>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit itaque, cumque consequuntur</td>
+                    <td><img src="#" alt=""></td>
+                    <td><i class="fa-regular fa-trash-can fa-1x"></i></td>
+                    <td><i class="fa-regular fa-clipboard fa-1x"></i></td>
+                    <td><i class="fa-regular fa-pen-to-square fa-1x"></i></td>
+                </tr>
+                <tr>
+                    <td>Wall Painting</td>
+                    <td>Renovations and Remodeling</td>
+                    <td>in-house</td>
+                    <td>Available</td>
+                    <td>R800.00</td>
+                    <td>12-10-2023</td>
+                    <td>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit itaque, cumque consequuntur</td>
+                    <td><img src="#" alt=""></td>
+                    <td><i class="fa-regular fa-trash-can fa-1x"></i></td>
+                    <td><i class="fa-regular fa-clipboard fa-1x"></i></td>
+                    <td><i class="fa-regular fa-pen-to-square fa-1x"></i></td>
+                </tr>
+                <tr>
+                    <td>Wall Painting</td>
+                    <td>Renovations and Remodeling</td>
+                    <td>in-house</td>
+                    <td>Available</td>
+                    <td>R800.00</td>
+                    <td>12-10-2023</td>
+                    <td>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit itaque, cumque consequuntur</td>
+                    <td><img src="#" alt=""></td>
+                    <td><i class="fa-regular fa-trash-can fa-1x"></i></td>
+                    <td><i class="fa-regular fa-clipboard fa-1x"></i></td>
+                    <td><i class="fa-regular fa-pen-to-square fa-1x"></i></td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
     <div class="album py-1 bg-light">
         <div class="container">
         @if (services != null)

@@ -10,7 +10,7 @@ export new Chart(ctx, {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         datasets: [{
             label: 'Expenses R',
-            data: [4, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 2],
+            data: [4, 2, 3, 5, 6, 7, 8, 9, 10, 11, 1  v2, 2],
             fill: false,
             borderColor: 'Red',
             tension: 0.1,

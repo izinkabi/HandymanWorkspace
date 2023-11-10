@@ -13,7 +13,7 @@ using System.Text.Encodings.Web;
 namespace Handyman_Api.Controllers;
 [Route("api/Auth")]
 [ApiController]
-[Authorize]
+//[Authorize]
 public class AuthController : ControllerBase
 {
     private readonly SignInManager<IdentityUser> _signInManager;

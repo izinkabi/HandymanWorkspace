@@ -8,7 +8,7 @@ namespace Handyman_Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+//[Authorize]
 public class RequestsController : ControllerBase
 {
     IRequestData _requestData;
