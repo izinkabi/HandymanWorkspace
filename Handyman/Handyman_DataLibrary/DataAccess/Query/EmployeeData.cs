@@ -23,7 +23,7 @@ public class EmployeeData
             {
 
                 employee.employeeId = EmployeeId;
-                employee.BusinessId = er.emp_businessid;
+                employee.WorkshopId = er.emp_businessid;
                 employee.employeeProfile.Names = er.Names;
                 employee.employeeProfile.Surname = er.Surname;
                 employee.employeeProfile.PhoneNumber = er.PhoneNumber;
@@ -60,7 +60,7 @@ public class EmployeeData
                     {
                         //Then complete the employee  
                         employeeId = employee.employeeId,
-                        BusinessId = employee.BusinessId,
+                        BusinessId = employee.WorkshopId,
                         DateEmployed = DateTime.UtcNow,
                         role = employee.IsOwner
                     },
@@ -108,7 +108,7 @@ public class EmployeeData
                     {
                         EmployeeModel employee = new();
 
-                        employee.BusinessId = er.emp_businessid;
+                        employee.WorkshopId = er.emp_businessid;
                         employee.employeeProfile.DateOfBirth = er.DateOfBirth;
                         employee.DateEmployed = er.emp_date_employed;
                         employee.employeeId = er.emp_profile_id;

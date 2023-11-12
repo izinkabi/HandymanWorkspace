@@ -4,47 +4,40 @@ using Handyman_DataLibrary.Models;
 
 namespace Handyman_DataLibrary.DataAccess.Query;
 
-public class ServiceProviderData : EmployeeData, IServiceProviderData
+public class MemberData : EmployeeData, IMemberData
 {
     ISQLDataAccess? _dataAccess;
-    ServiceProviderModel? providerLocalmodel;
-    public ServiceProviderData(ISQLDataAccess dataAccess) : base(dataAccess)
+    Models.Member? memberLocalmodel;
+    public MemberData(ISQLDataAccess dataAccess) : base(dataAccess)
     {
         _dataAccess = dataAccess;
     }
 
 
-
-    //Remove a service of a provider
-    public void RemoveService(int serviceId, string providerId)
-    {
-
-    }
-
-    public List<ServiceProviderModel> GetMemberShips(int businessId)
+    public List<Models.Member> GetMemberShips(int workId)
     {
         try
         {
-            List<ServiceProviderModel> members = new List<ServiceProviderModel>();
-            if (businessId != 0)
+            List<Models.Member> members = new List<Models.Member>();
+            if (workId != 0)
             {
 
                 //Get employee
-                List<EmployeeModel> employees = this.GetMemberships(businessId);
+                List<EmployeeModel> employees = this.GetMemberships(workId);
 
 
-                //Get the service of the provider (Provider's Service)
+                //Get the service of the member (member's Service)
                 foreach (var employee in employees)
                 {
-                    List<Service_CategoryModel> service_category = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Delivery.spProvider_Service_LookUp",
-                    new { providerId = employee.employeeId }, "Handyman_DB");
+                    List<Service_CategoryModel> service_category = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Delivery.spMember_Service_LookUp",
+                    new { memberId = employee.employeeId }, "Handyman_DB");
 
 
-                    var provider = new ServiceProviderModel()!;
+                    var member = new Models.Member()!;
                     //Membership
-                    provider.IsOwner = employee.IsOwner;
-                    provider.DateEmployed = employee.DateEmployed;
-                    provider.BusinessId = employee.BusinessId;
+                    member.IsOwner = employee.IsOwner;
+                    member.DateEmployed = employee.DateEmployed;
+                    member.WorkshopId = employee.WorkshopId;
 
                     //Services
                     var services = new List<ServiceModel>();
@@ -66,8 +59,8 @@ public class ServiceProviderData : EmployeeData, IServiceProviderData
                         services.Add(service);
                     }
 
-                    provider.Services = services;
-                    members.Add(provider);
+                    member.Services = services;
+                    members.Add(member);
                 }
 
 
@@ -84,28 +77,28 @@ public class ServiceProviderData : EmployeeData, IServiceProviderData
             throw new Exception(ex.Message, ex);
         }
     }
-    //Since the service provider is an employee, get the employee then
-    //Get the service provider and the services
-    public ServiceProviderModel GetServiceProvider(string providerId)
+    //Since the service member is an employee, get the employee then
+    //Get the service member and the services
+    public Member GetMember(string memberId)
     {
         try
         {
-            if (providerId != null)
+            if (memberId != null)
             {    //Get employee
-                var employee = this.GetEmployeeWithRatings(providerId);
+                var employee = this.GetEmployeeWithRatings(memberId);
 
 
-                //Get the service of the provider
-                List<Service_CategoryModel> service_category = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Delivery.spProvider_Service_LookUp",
-                    new { providerId = providerId }, "Handyman_DB");
+                //Get the service of the member
+                List<Service_CategoryModel> service_category = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Delivery.spMember_Service_LookUp",
+                    new { member_profileId = memberId }, "Handyman_DB");
 
 
-                var provider = new ServiceProviderModel()!;
-                provider.BusinessId = employee.BusinessId;
-                provider.employeeId = employee.employeeId;
-                provider.pro_providerId = employee.employeeId;
-                provider.DateEmployed = employee.DateEmployed;
-                provider.employeeProfile = employee.employeeProfile;
+                var member = new Models.Member()!;
+                member.WorkshopId = employee.WorkshopId;
+                member.employeeId = employee.employeeId;
+                member.member_profileId = employee.employeeId;
+                member.DateEmployed = employee.DateEmployed;
+                member.employeeProfile = employee.employeeProfile;
 
                 var services = new List<ServiceModel>();
                 if (service_category.Count > 0)
@@ -132,12 +125,12 @@ public class ServiceProviderData : EmployeeData, IServiceProviderData
                 }
 
 
-                provider.Services = services;
-                providerLocalmodel = provider;
-                return provider;
+                member.Services = services;
+                memberLocalmodel = member;
+                return member;
             }
 
-            return providerLocalmodel;
+            return memberLocalmodel;
         }
         catch (Exception ex)
         {
@@ -145,26 +138,26 @@ public class ServiceProviderData : EmployeeData, IServiceProviderData
         }
     }
 
-    //Insert the employee followed by provider 
-    public void InsertProvider(ServiceProviderModel serviceProvider)
+    //Insert the employee followed by member 
+    public void InsertMember(Models.Member member)
     {
         try
         {
             //insert the employee details 
-            if (serviceProvider.employeeId != null && serviceProvider.employeeProfile.UserId != null)
+            if (member.employeeId != null && member.employeeProfile.UserId != null)
             {
-                this.InsertEmployee(serviceProvider);
+                this.InsertEmployee(member);
             }
 
-            if (serviceProvider.Services != null && serviceProvider.Services.Count() > 0)
+            if (member.Services != null && member.Services.Count() > 0)
             {
-                foreach (var service in serviceProvider.Services)
+                foreach (var service in member.Services)
                 {
-                    //Insert the provider 
-                    _dataAccess.SaveData("Delivery.spProviderInsert",
+                    //Insert the member 
+                    _dataAccess.SaveData("Delivery.spMemberInsert",
                         new
                         {
-                            pro_providerId = serviceProvider.pro_providerId,
+                            member_profileId = member.member_profileId,
                             ServiceId = service.id
                         },
                         "Handyman_DB");
@@ -177,6 +170,5 @@ public class ServiceProviderData : EmployeeData, IServiceProviderData
             throw new Exception(ex.Message);
         }
     }
-
 
 }

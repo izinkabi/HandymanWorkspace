@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [Delivery].[spProviderInsert]
+﻿CREATE PROCEDURE [Delivery].[spMemberInsert]
 	   @ServiceId INT = 0,
        @member_profileId NVARCHAR(450)
 AS

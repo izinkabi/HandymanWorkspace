@@ -1,11 +1,9 @@
 ﻿namespace Handyman_DataLibrary.Models
 {
-    public class ServiceProviderModel : EmployeeModel
+    public class Member : EmployeeModel
     {
-
         public List<ServiceModel>? Services { get; set; }
-        public string? pro_providerId { get; set; }
-
+        public string? member_profileId { get; set; }
 
     }
 }

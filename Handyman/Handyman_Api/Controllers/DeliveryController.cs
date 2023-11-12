@@ -11,19 +11,19 @@ namespace Handyman_Api.Controllers;
 [Authorize(Roles = "ServiceProvider")]
 public class DeliveryController : ControllerBase
 {
-    IBusinessData? _businessData;
+    IWorkshopData? _businessData;
     private readonly SignInManager<IdentityUser> signInManager;
     private readonly RoleManager<IdentityRole> roleManager;
 
-    public DeliveryController(IBusinessData business,
+    public DeliveryController(IWorkshopData business,
         SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager)
     {
         _businessData = business;
         this.signInManager = signInManager;
         this.roleManager = roleManager;
     }
-    ServiceProviderModel? providermodel;
-    BusinessModel? business;
+    Member? providermodel;
+    WorkshopModel? business;
 
     /// <summary>
     /// Get the business under which the employee(userId) which is a provider is registered
@@ -33,7 +33,7 @@ public class DeliveryController : ControllerBase
     /// <exception cref="Exception"></exception>
     [HttpGet]
     [Route("GetBusiness")]
-    public BusinessModel? Get(int? busId)
+    public WorkshopModel? Get(int? busId)
     {
 
         try
@@ -62,7 +62,7 @@ public class DeliveryController : ControllerBase
     /// <exception cref="Exception"></exception>
     [HttpPost]
     [Route("Create")]
-    public async Task<BusinessModel> CreateBusiness(BusinessModel business)
+    public async Task<WorkshopModel> CreateBusiness(WorkshopModel business)
     {
         try
         {
@@ -74,7 +74,7 @@ public class DeliveryController : ControllerBase
 
                 string[] roles = new string[] { "Owner", "Member" };
                 //Executing the query
-                BusinessModel businessM = _businessData.CreateBusiness(business);
+                WorkshopModel businessM = _businessData.CreateBusiness(business);
                 //Member role assignment
                 if (businessM.Id != 0)
                 {
@@ -117,7 +117,7 @@ public class DeliveryController : ControllerBase
     /// <exception cref="Exception"></exception>
     [HttpPost]
     [Route("AddNewMember")]
-    public async Task<IActionResult> AddNewMember(ServiceProviderModel serviceProvider)
+    public async Task<IActionResult> AddNewMember(Member serviceProvider)
     {
         try
         {
@@ -130,10 +130,10 @@ public class DeliveryController : ControllerBase
 
                 if (!string.IsNullOrEmpty(serviceProvider.employeeId))
                 {
-                    _businessData.EmployServiceProvider(serviceProvider);
+                    _businessData.EmployMember(serviceProvider);
                     string role = "Member";
                     //Executing the query
-                    BusinessModel businessM = _businessData.CreateBusiness(business);
+                    WorkshopModel businessM = _businessData.CreateBusiness(business);
                     //Member role assignment
                     if (businessM.Id != 0)
                     {
@@ -179,7 +179,7 @@ public class DeliveryController : ControllerBase
 
     [HttpGet]
     [Route("GetProvider")]
-    public ServiceProviderModel GetProvider(string employeeId)
+    public Member GetProvider(string employeeId)
     {
         try
         {
@@ -204,7 +204,7 @@ public class DeliveryController : ControllerBase
     /// <exception cref="Exception"></exception>
     [HttpPost]
     [Route("PostProviderService")]
-    public void PostProviderService(ServiceProviderModel serviceProvider)
+    public void PostProviderService(Member serviceProvider)
     {
         try
         {
@@ -226,7 +226,7 @@ public class DeliveryController : ControllerBase
     /// <exception cref="Exception"></exception>
     [HttpGet]
     [Route("GetWorkShop")]
-    public BusinessModel Get(string regNumber)
+    public WorkshopModel Get(string regNumber)
     {
         try
         {

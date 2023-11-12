@@ -1,13 +1,17 @@
-﻿namespace Handyman_DataLibrary.Models;
-
-public class RequestModel
+﻿
+namespace Handyman_DataLibrary.Models
 {
-    public int req_id { get; set; }
-    public ServiceModel? Service { get; set; } = new ServiceModel();
-    public DateTime req_datecreated { get; set; }
-    public int req_status { get; set; }
-    public int req_progress { get; set; }
-    public string? req_employeeid { get; set; }
-    public int req_orderid { get; set; }
-    public List<TaskModel>? tasks { get; set; }
+    //An order model with tasks model
+    public class RequestModel
+    {
+        public string? ConsumerID { get; set; }
+        public DateTime datecreated { get; set; }
+        public int status { get; set; }
+        public DateTime duedate { get; set; }
+        public ServiceModel? service { get; set; }
+        public IList<TaskModel>? Tasks { get; set; }
+        public int Id { get; set; }
+
+        public HandymenDetailsModel? Provider { get; set; } //member as a service provider or order delivery guy
+    }
 }

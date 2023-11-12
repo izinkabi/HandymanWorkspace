@@ -20,10 +20,10 @@ public class RequestData : IRequestData
 
     //Get all the requests for the given service and their tasks
     //These are actually orders that represent new requests
-    public IList<OrderModel> GetNewRequests(int serviceId)
+    public IList<RequestModel> GetNewRequests(int serviceId)
     {
         List<OrderTaskModel> ordertasks = new()!;
-        HashSet<OrderModel> orderSet = new()!;//It does not allow duplicates
+        HashSet<RequestModel> orderSet = new()!;//It does not allow duplicates
         try
         {
             ordertasks = _dataAccess.LoadData<OrderTaskModel, dynamic>("Delivery.spOrderLookUpByService",
@@ -33,7 +33,7 @@ public class RequestData : IRequestData
             //First get get orders then get services
             foreach (var ordertask in ordertasks)
             {
-                var order = new OrderModel();
+                var order = new RequestModel();
                 order.service = new();
                 //populate order
 
@@ -94,18 +94,18 @@ public class RequestData : IRequestData
     public TaskModel GetTask(int Id) => _taskData.GetTask(Id);
 
     //Get the request(s) of the given provider and their tasks
-    public IList<RequestModel> GetRequests(string providerId)
+    public IList<OrderModel> GetRequests(string providerId)
     {
         try
         {
             //Get the requests first
-            List<RequestModel> requests = _dataAccess.LoadData<RequestModel, dynamic>("Delivery.spRequestLookUpByProvider", new { providerId = providerId }, "Handyman_DB");
+            List<OrderModel> requests = _dataAccess.LoadData<OrderModel, dynamic>("Delivery.spRequestLookUpByProvider", new { providerId = providerId }, "Handyman_DB");
 
 
             //Get tasks for each order, hence for each request 
             if (requests != null && requests.Count > 0)
             {
-                foreach (RequestModel request in requests)
+                foreach (OrderModel request in requests)
                 {
                     //Get the service
                     request.Service = _serviceData.GetServiceByOrder(request.req_orderid);
@@ -133,7 +133,7 @@ public class RequestData : IRequestData
     /// <exception cref="Exception"></exception>
     //This can only be made by the provider given
     //the fact that it is an order accepted by the provider
-    public void InsertRequest(RequestModel request)
+    public void InsertRequest(OrderModel request)
     {
         try
         {
@@ -164,7 +164,7 @@ public class RequestData : IRequestData
     /// Update a task for a given request
     /// </summary>
     /// <param name="task"></param>
-    public void UpdateRequest(RequestModel requestUpdate)
+    public void UpdateRequest(OrderModel requestUpdate)
     {
         try
         {
@@ -186,14 +186,14 @@ public class RequestData : IRequestData
     }
 
     //Get Request by an ID
-    public RequestModel GetRequest(int id)
+    public OrderModel GetRequest(int id)
     {
         try
         {
-            RequestModel request = new()!;
+            OrderModel request = new()!;
             if (id > 0)
             {
-                request = _dataAccess.LoadData<RequestModel, dynamic>("Delivery.spRequestLookUpByProvider", new { orderId = id }, "Handyman_DB").FirstOrDefault();
+                request = _dataAccess.LoadData<OrderModel, dynamic>("Delivery.spRequestLookUpByProvider", new { orderId = id }, "Handyman_DB").FirstOrDefault();
             }
 
 
@@ -224,15 +224,15 @@ public class RequestData : IRequestData
     /// <param name="employeeId"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public IList<RequestModel> GetCurrentMonthRequests(string employeeId)
+    public IList<OrderModel> GetCurrentMonthRequests(string employeeId)
     {
         try
         {
-            IList<RequestModel> thisMonthRequests = _dataAccess.LoadData<RequestModel, dynamic>("Delivery.spRequestsLookUp_ByCurrentMonth", new { employeeId = employeeId }, "Handyman_DB");
+            IList<OrderModel> thisMonthRequests = _dataAccess.LoadData<OrderModel, dynamic>("Delivery.spRequestsLookUp_ByCurrentMonth", new { employeeId = employeeId }, "Handyman_DB");
 
             if (thisMonthRequests != null && thisMonthRequests.Count > 0)
             {
-                foreach (RequestModel request in thisMonthRequests)
+                foreach (OrderModel request in thisMonthRequests)
                 {
                     request.tasks = _taskData.GetTasks(request.req_orderid).ToList();
                     request.Service = _serviceData.GetServiceByOrder(request.req_orderid);
@@ -257,15 +257,15 @@ public class RequestData : IRequestData
     /// <param name="employeeId"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public IList<RequestModel> GetCurrentWeekRequests(string employeeId)
+    public IList<OrderModel> GetCurrentWeekRequests(string employeeId)
     {
         try
         {
-            IList<RequestModel>? thisWeekRequests = _dataAccess.LoadData<RequestModel, dynamic>("Delivery.spRequestsLookUp_ByCurrentWeek", new { employeeId = employeeId }, "Handyman_DB");
+            IList<OrderModel>? thisWeekRequests = _dataAccess.LoadData<OrderModel, dynamic>("Delivery.spRequestsLookUp_ByCurrentWeek", new { employeeId = employeeId }, "Handyman_DB");
 
             if (thisWeekRequests != null && thisWeekRequests.Count > 0)
             {
-                foreach (RequestModel request in thisWeekRequests)
+                foreach (OrderModel request in thisWeekRequests)
                 {
                     request.tasks = _taskData.GetTasks(request.req_orderid).ToList();
                     request.Service = _serviceData.GetServiceByOrder(request.req_orderid);
@@ -290,15 +290,15 @@ public class RequestData : IRequestData
     /// <param name="employeeId"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public IList<RequestModel> GetCancelledRequests(string employeeId)
+    public IList<OrderModel> GetCancelledRequests(string employeeId)
     {
         try
         {
-            IList<RequestModel> cancelledRequests = _dataAccess.LoadData<RequestModel, dynamic>("Delivery.spCancelledRequestLookUp", new { employeeId = employeeId }, "Handyman_DB");
+            IList<OrderModel> cancelledRequests = _dataAccess.LoadData<OrderModel, dynamic>("Delivery.spCancelledRequestLookUp", new { employeeId = employeeId }, "Handyman_DB");
 
             if (cancelledRequests != null && cancelledRequests.Count > 0)
             {
-                foreach (RequestModel request in cancelledRequests)
+                foreach (OrderModel request in cancelledRequests)
                 {
 
                     request.tasks = _taskData.GetTasks(request.req_orderid).ToList();

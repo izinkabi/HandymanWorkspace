@@ -24,11 +24,11 @@ public class RequestsController : ControllerBase
     // GET: api/<RequestsController>/5
     [HttpGet]
     [Route("GetRequest")]
-    public RequestModel GetRequest(int Id)
+    public OrderModel GetRequest(int Id)
     {
         try
         {
-            RequestModel newRequest = _requestData.GetRequest(Id);
+            OrderModel newRequest = _requestData.GetRequest(Id);
             return newRequest;
         }
         catch (Exception ex)
@@ -40,25 +40,25 @@ public class RequestsController : ControllerBase
     //--------Filtering Methods
     [HttpGet]
     [Route("GetCurrentWeek")]
-    public IList<RequestModel> GetCurrentWeekRequests(string empID) => _requestData.GetCurrentWeekRequests(empID);
+    public IList<OrderModel> GetCurrentWeekRequests(string empID) => _requestData.GetCurrentWeekRequests(empID);
     [HttpGet]
     [Route("GetCurrentMonth")]
-    public IList<RequestModel> GetCurrentMonthRequests(string empID) => _requestData.GetCurrentMonthRequests(empID);
+    public IList<OrderModel> GetCurrentMonthRequests(string empID) => _requestData.GetCurrentMonthRequests(empID);
     [HttpGet]
     [Route("GetCancelled")]
-    public IList<RequestModel> GetCancelledRequests(string empID) => _requestData.GetCancelledRequests(empID);
+    public IList<OrderModel> GetCancelledRequests(string empID) => _requestData.GetCancelledRequests(empID);
     //----------End Filtering methods
 
     // GET: api/<RequestsController>/5
     [HttpGet]
     [Route("GetNewRequests")]
-    public IList<OrderModel> GetNewRequests(int serviceId)
+    public IList<RequestModel> GetNewRequests(int serviceId)
     {
         try
         {
             if (serviceId > 0)
             {
-                IList<OrderModel> newRequests = _requestData.GetNewRequests(serviceId);
+                IList<RequestModel> newRequests = _requestData.GetNewRequests(serviceId);
                 return newRequests;
             }
 
@@ -73,11 +73,11 @@ public class RequestsController : ControllerBase
     // GET api/<RequestsController>/string
     [HttpGet]
     [Route("GetProviderRequests")]
-    public IList<RequestModel> GetProviderRequests(string providerId)
+    public IList<OrderModel> GetProviderRequests(string providerId)
     {
         try
         {
-            IList<RequestModel> requests = _requestData.GetRequests(providerId);
+            IList<OrderModel> requests = _requestData.GetRequests(providerId);
             return requests;
         }
         catch (Exception ex)
@@ -109,7 +109,7 @@ public class RequestsController : ControllerBase
     // POST api/<RequestsController>
     [HttpPost]
     [Route("Post")]
-    public void Post(RequestModel requestModel)
+    public void Post(OrderModel requestModel)
     {
         try
         {

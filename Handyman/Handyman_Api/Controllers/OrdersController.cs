@@ -14,7 +14,7 @@ public class OrdersController : ControllerBase
 {
     IOrderData _orderData;
     private readonly SignInManager<IdentityUser> _signInManager;
-    IEnumerable<OrderModel>? orders;
+    IEnumerable<RequestModel>? orders;
     public OrdersController(IOrderData orderData, SignInManager<IdentityUser> signInManager)
     {
         _orderData = orderData;
@@ -23,7 +23,7 @@ public class OrdersController : ControllerBase
     // GET: api/<OrdersController>
     [HttpGet]
     [Route("GetOrders")]
-    public IEnumerable<OrderModel> Get()
+    public IEnumerable<RequestModel> Get()
     {
         try
         {
@@ -44,7 +44,7 @@ public class OrdersController : ControllerBase
     // POST api/<OrdersController>
     [HttpPost]
     [Route("Post")]
-    public int Post(OrderModel order)
+    public int Post(RequestModel order)
     {
         try
         {
@@ -63,7 +63,7 @@ public class OrdersController : ControllerBase
     // PUT api/<OrdersController>/5
     [HttpPut]
     [Route("Update")]
-    public void Update(OrderModel orderUpdate)
+    public void Update(RequestModel orderUpdate)
     {
         try
         {

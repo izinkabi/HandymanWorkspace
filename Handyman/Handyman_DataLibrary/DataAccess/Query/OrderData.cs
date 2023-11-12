@@ -23,10 +23,10 @@ public class OrderData : IOrderData
     /// <param name="consumerID"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public IEnumerable<OrderModel> GetOrders(string consumerID)
+    public IEnumerable<RequestModel> GetOrders(string consumerID)
     {
         List<OrderTaskModel> ordertasks = new()!;
-        HashSet<OrderModel> orderSet = new()!;//It does not allow duplicates
+        HashSet<RequestModel> orderSet = new()!;//It does not allow duplicates
         try
         {
             ordertasks = _dataAccess.LoadData<OrderTaskModel, dynamic>("Request.spOrderLookUp_ByConsumerId_OrderByDateCreated",
@@ -36,7 +36,7 @@ public class OrderData : IOrderData
             //First get get orders then get 
             foreach (var ordertask in ordertasks)
             {
-                var order = new OrderModel();
+                var order = new RequestModel();
                 order.service = new();
                 //populate order
 
@@ -143,7 +143,7 @@ public class OrderData : IOrderData
     /// Insert an order
     /// </summary>
     /// <param name="order"></param>
-    public int InsertOrder(OrderModel order)
+    public int InsertOrder(RequestModel order)
     {
         try
         {
@@ -191,7 +191,7 @@ public class OrderData : IOrderData
     }
 
     //Update order and request
-    public void UpdateOrder(OrderModel order)
+    public void UpdateOrder(RequestModel order)
     {
         try
         {
@@ -265,10 +265,10 @@ public class OrderData : IOrderData
     /// <param name="orderId"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public IList<OrderModel> GetOrder(int orderId)
+    public IList<RequestModel> GetOrder(int orderId)
     {
         List<OrderTaskModel> ordertasks = new()!;
-        HashSet<OrderModel> orderSet = new()!;//It does not allow duplicates
+        HashSet<RequestModel> orderSet = new()!;//It does not allow duplicates
         try
         {
             ordertasks = _dataAccess.LoadData<OrderTaskModel, dynamic>("Delivery.spOrderLookUpByService",
@@ -278,7 +278,7 @@ public class OrderData : IOrderData
             //First get get orders then get 
             foreach (var ordertask in ordertasks)
             {
-                var order = new OrderModel();
+                var order = new RequestModel();
                 order.service = new();
                 //populate order
 

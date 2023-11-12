@@ -104,10 +104,9 @@
     <Build Include="Stored Procedures\Service\spServiceLookUpBy_Id.sql" />
     <Build Include="Schemas\dbo.sql" />
     <Build Include="Stored Procedures\WorkShop\Members\spEmployeesLookUp.sql" />
-    <Build Include="Stored Procedures\WorkShop\Members\spWorhshop_Registration_LookUp.sql" />
-    <Build Include="Stored Procedures\WorkShop\Members\Provider\spProvider_Service_LookUp.sql" />
+    <Build Include="Stored Procedures\WorkShop\Members\Provider\spMember_Service_LookUp.sql" />
     <Build Include="Stored Procedures\WorkShop\Members\spEmployeeInsert.sql" />
-    <Build Include="Stored Procedures\WorkShop\Members\Provider\spProviderInsert.sql" />
+    <Build Include="Stored Procedures\WorkShop\Members\Provider\spMemberInsert.sql" />
     <Build Include="Tables\employee_ratings.sql" />
     <Build Include="Stored Procedures\WorkShop\Members\spEmployee_Rating_Insert.sql" />
     <Build Include="Stored Procedures\WorkShop\Members\spRatingInsert.sql" />
@@ -142,7 +141,7 @@
     <Build Include="Stored Procedures\Service\spWorShopServices_LookUp.sql" />
     <Build Include="Stored Procedures\Service\spWorkShopService_Update.sql" />
     <Build Include="Stored Procedures\Service\spWorkShopService_Delete.sql" />
-    <Build Include="Stored Procedures\WorkShop\Members\Provider\spProviderService_Delete.sql" />
+    <Build Include="Stored Procedures\WorkShop\Members\Provider\spMemberService_Delete.sql" />
     <Build Include="Tables\negotiation.sql" />
     <Build Include="Stored Procedures\WorkShop\Registration\spAddressInsert.sql" />
     <Build Include="Stored Procedures\WorkShop\Registration\spWorkshopInsert.sql" />
@@ -161,6 +160,7 @@
     <Build Include="Tables\workshop_owner.sql" />
     <Build Include="Stored Procedures\Order\spOrderInsert.sql" />
     <Build Include="Stored Procedures\Request\spRequestInsert.sql" />
+    <Build Include="Stored Procedures\WorkShop\Registration\spWorkshop_Registration_LookUp.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Script\DevNathi_Handyman_DB.publish.publish.xml" />
