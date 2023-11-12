@@ -72,26 +72,32 @@
 
 @code {
 
-private IList<string?> Errors;
-private IJSObjectReference? moduleReference;
+    private IList<string?>? Errors;
+    /// <summary>
+    /// JS Object Reference 
+    /// </summary>
+    private IJSObjectReference? moduleReference;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if(firstRender)
         {
-          if(Errors!=null) Errors.Clear();   
-                 
+            if(Errors!=null) Errors.Clear();   
+
             try{
+                //importing site.js as a module and invoking the referenced methods 
                 moduleReference  = await JS.InvokeAsync<IJSObjectReference>("import","/js/site.js");
                 if (moduleReference != null) await moduleReference.InvokeVoidAsync("displayGraph");
 
             }catch(Exception ex)
             {
-                Errors.Add(ex.Message);
+                Errors?.Add($"Something happened not, while importing the js module, Error: " + ex.Message);
             }
         }
 
     }
+
+
 
     
 }

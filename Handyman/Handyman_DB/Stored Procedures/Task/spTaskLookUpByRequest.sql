@@ -1,4 +1,5 @@
-﻿CREATE PROCEDURE [Request].[spTaskLookUpByOrder]
+﻿CREATE PROCEDURE [Request].[spTaskLookUpByRequest]
+--Lookup task by the request
 	@orderId int = 0
 AS
 BEGIN
@@ -8,7 +9,7 @@ BEGIN
            t.[tas_status] ,t.[tas_description],t.[tas_service_id]
 
     FROM [Request].[task] t
-    INNER JOIN [Request].[order_task] o ON o.[task_id] = t.[task_id]
-    WHERE o.[order_id] = @orderId
+    INNER JOIN [Request].[request_task] r ON r.[task_id] = t.[task_id]
+    WHERE r.[request_id] = @orderId
 
 END

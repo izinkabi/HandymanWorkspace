@@ -1,9 +1,9 @@
 ﻿CREATE PROCEDURE [Delivery].[spProviderInsert]
 	   @ServiceId INT = 0,
-       @pro_providerId NVARCHAR(450)
+       @member_profileId NVARCHAR(450)
 AS
 BEGIN
-    IF NOT EXISTS(SELECT * FROM [Delivery].[provider] WHERE [pro_serviceid] = @ServiceId AND [pro_userid]=@pro_providerId)
-	INSERT INTO [Delivery].[provider] ([pro_serviceid],[pro_userid])
-    VALUES (@ServiceId,@pro_providerId)
+    IF NOT EXISTS(SELECT * FROM [Delivery].[member] WHERE [member_serviceid] = @ServiceId AND [member_profileId]=@member_profileId)
+	INSERT INTO [Delivery].[member] ([member_serviceid],[member_profileId])
+    VALUES (@ServiceId,@member_profileId)
 END

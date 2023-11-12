@@ -10,9 +10,9 @@ IF EXISTS (SELECT * FROM [Request].negotiation
            WHERE [Id] = @Id)
 BEGIN
 	UPDATE [Request].[negotiation] 
-    SET [IsCompleted] = @IsCompleted,
-        [Order_DueDate] = @Order_DueDate, 
-        [LastDateModified] = @LastDateModified
+    SET [neg_IsCompleted] = @IsCompleted,
+        [neg_Order_DueDate] = @Order_DueDate, 
+        [neg_LastDateModified] = @LastDateModified
 
     WHERE [Id] = @Id
 END

@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE [Request].[spNegoInsert]
 --Insert a new negotiation
-	@OrderId INT = 0,
+	@RequestId INT = 0,
 	@DateCreated DATETIME,
     @PriceId INT = 0,
     @IsCompleted INT = 0,
@@ -11,16 +11,16 @@ BEGIN
 
 	INSERT INTO [Request].[negotiation] 
     (
-    OrderId,
-	DateCreated,
-    PriceId ,
-    IsCompleted ,
-    Order_DueDate,
-    LastDateModified
+    neg_requestId,
+	neg_DateCreated,
+    neg_PriceId ,
+    neg_IsCompleted ,
+    neg_Order_DueDate,
+    neg_LastDateModified
     )
 
     VALUES(
-    @OrderId ,
+    @RequestId,
 	@DateCreated,
     @PriceId ,
     @IsCompleted ,

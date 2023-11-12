@@ -1,5 +1,5 @@
 ﻿CREATE PROCEDURE [Delivery].[spProvider_Service_LookUp]
-	@providerId NVARCHAR(450)
+	@memberId NVARCHAR(450)
 	
 AS
 BEGIN
@@ -14,9 +14,9 @@ BEGIN
       ,c.[cat_name]
       ,c.[cat_type]
       ,c.[cat_description]
-    FROM [Delivery].[provider] p
-    INNER JOIN [Service].[service] s ON s.[serv_id] = p.[pro_serviceid]
+    FROM [Delivery].[member] m
+    INNER JOIN [Service].[service] s ON s.[serv_id] = m.[member_serviceid]
     INNER JOIN [Service].[category] c ON c.[cat_id] = s.[serv_categoryid]
-    WHERE [pro_userid] = @providerId
+    WHERE m.[member_profileId] = @memberId
 
 END
