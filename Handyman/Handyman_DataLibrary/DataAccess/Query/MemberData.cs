@@ -7,23 +7,23 @@ namespace Handyman_DataLibrary.DataAccess.Query;
 public class MemberData : EmployeeData, IMemberData
 {
     ISQLDataAccess? _dataAccess;
-    Models.Member? memberLocalmodel;
+    MemberModel? memberLocalmodel;
     public MemberData(ISQLDataAccess dataAccess) : base(dataAccess)
     {
         _dataAccess = dataAccess;
     }
 
 
-    public List<Models.Member> GetMemberShips(int workId)
+    public List<MemberModel> GetMemberShips(int workId)
     {
         try
         {
-            List<Models.Member> members = new List<Models.Member>();
+            List<MemberModel> members = new List<MemberModel>();
             if (workId != 0)
             {
 
                 //Get employee
-                List<EmployeeModel> employees = this.GetMemberships(workId);
+                List<EmployeeModel> employees = GetMemberships(workId);
 
 
                 //Get the service of the member (member's Service)
@@ -33,7 +33,7 @@ public class MemberData : EmployeeData, IMemberData
                     new { memberId = employee.employeeId }, "Handyman_DB");
 
 
-                    var member = new Models.Member()!;
+                    var member = new MemberModel()!;
                     //Membership
                     member.IsOwner = employee.IsOwner;
                     member.DateEmployed = employee.DateEmployed;
@@ -79,13 +79,13 @@ public class MemberData : EmployeeData, IMemberData
     }
     //Since the service member is an employee, get the employee then
     //Get the service member and the services
-    public Member GetMember(string memberId)
+    public MemberModel GetMember(string memberId)
     {
         try
         {
             if (memberId != null)
             {    //Get employee
-                var employee = this.GetEmployeeWithRatings(memberId);
+                var employee = GetEmployeeWithRatings(memberId);
 
 
                 //Get the service of the member
@@ -93,7 +93,7 @@ public class MemberData : EmployeeData, IMemberData
                     new { member_profileId = memberId }, "Handyman_DB");
 
 
-                var member = new Models.Member()!;
+                var member = new MemberModel()!;
                 member.WorkshopId = employee.WorkshopId;
                 member.employeeId = employee.employeeId;
                 member.member_profileId = employee.employeeId;
@@ -139,14 +139,14 @@ public class MemberData : EmployeeData, IMemberData
     }
 
     //Insert the employee followed by member 
-    public void InsertMember(Models.Member member)
+    public void InsertMember(MemberModel member)
     {
         try
         {
             //insert the employee details 
             if (member.employeeId != null && member.employeeProfile.UserId != null)
             {
-                this.InsertEmployee(member);
+                InsertEmployee(member);
             }
 
             if (member.Services != null && member.Services.Count() > 0)
@@ -157,7 +157,7 @@ public class MemberData : EmployeeData, IMemberData
                     _dataAccess.SaveData("Delivery.spMemberInsert",
                         new
                         {
-                            member_profileId = member.member_profileId,
+                            member.member_profileId,
                             ServiceId = service.id
                         },
                         "Handyman_DB");

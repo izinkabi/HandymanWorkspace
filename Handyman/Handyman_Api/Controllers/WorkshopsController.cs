@@ -8,44 +8,44 @@ namespace Handyman_Api.Controllers;
 
 [Route("api/Delivery")]
 [ApiController]
-[Authorize(Roles = "ServiceProvider")]
-public class DeliveryController : ControllerBase
+[Authorize(Roles = "Member")]
+public class WorkshopsController : ControllerBase
 {
-    IWorkshopData? _businessData;
+    IWorkshopData? _workshopData;
     private readonly SignInManager<IdentityUser> signInManager;
     private readonly RoleManager<IdentityRole> roleManager;
 
-    public DeliveryController(IWorkshopData business,
+    public WorkshopsController(IWorkshopData workshop,
         SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager)
     {
-        _businessData = business;
+        _workshopData = workshop;
         this.signInManager = signInManager;
         this.roleManager = roleManager;
     }
-    Member? providermodel;
-    WorkshopModel? business;
+    MemberModel? memberModel;
+    WorkshopModel? workshop;
 
     /// <summary>
-    /// Get the business under which the employee(userId) which is a provider is registered
+    /// Get the workshop under which the employee(userId) which is a Provider is registered
     /// </summary>
-    /// <param name="busId"></param>
+    /// <param name="workId"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
     [HttpGet]
-    [Route("GetBusiness")]
-    public WorkshopModel? Get(int? busId)
+    [Route("GetWorkshop")]
+    public WorkshopModel? Get(int? workId)
     {
 
         try
         {
-            if (busId != null && busId.Value != 0)
+            if (workId != null && workId.Value != 0)
             {
-                business = new()!;
-                business = _businessData.GetBusinessById(busId.Value);
-                return business;
+                workshop = new()!;
+                workshop = _workshopData.GetWorkshopById(workId.Value);
+                return workshop;
             }
 
-            return business;
+            return workshop;
         }
         catch (Exception ex)
         {
@@ -55,18 +55,18 @@ public class DeliveryController : ControllerBase
     }
 
     /// <summary>
-    /// Register A business
+    /// Register A workshop
     /// </summary>
-    /// <param name="business"></param>
+    /// <param name="workshop"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
     [HttpPost]
     [Route("Create")]
-    public async Task<WorkshopModel> CreateBusiness(WorkshopModel business)
+    public async Task<WorkshopModel> CreateWorkshop(WorkshopModel workshop)
     {
         try
         {
-            if (business != null)
+            if (workshop != null)
             {
                 var claim = signInManager.Context.User;
                 //Get the user of the given claim
@@ -74,9 +74,9 @@ public class DeliveryController : ControllerBase
 
                 string[] roles = new string[] { "Owner", "Member" };
                 //Executing the query
-                WorkshopModel businessM = _businessData.CreateBusiness(business);
-                //Member role assignment
-                if (businessM.Id != 0)
+                WorkshopModel workshopM = _workshopData.CreateWorkshop(workshop);
+                //Provider role assignment
+                if (workshopM.Id != 0)
                 {
                     foreach (string role in roles)
                     {
@@ -94,7 +94,7 @@ public class DeliveryController : ControllerBase
                     }
                 }
 
-                if (businessM != null) return businessM;
+                if (workshopM != null) return workshopM;
 
             }
 
@@ -113,29 +113,29 @@ public class DeliveryController : ControllerBase
     /// <summary>
     /// Employ a new member
     /// </summary>
-    /// <param name="serviceProvider"></param>
+    /// <param name="member"></param>
     /// <exception cref="Exception"></exception>
     [HttpPost]
     [Route("AddNewMember")]
-    public async Task<IActionResult> AddNewMember(Member serviceProvider)
+    public async Task<IActionResult> AddNewMember(MemberModel member)
     {
         try
         {
-            if (serviceProvider != null && serviceProvider.pro_providerId != null)
+            if (member != null && member.member_profileId != null)
             {
-                if (string.IsNullOrEmpty(serviceProvider.employeeId))
+                if (string.IsNullOrEmpty(member.employeeId))
                 {
-                    serviceProvider.employeeId = serviceProvider.pro_providerId;
+                    member.employeeId = member.member_profileId;
                 }
 
-                if (!string.IsNullOrEmpty(serviceProvider.employeeId))
+                if (!string.IsNullOrEmpty(member.employeeId))
                 {
-                    _businessData.EmployMember(serviceProvider);
+                    _workshopData.EmployMember(member);
                     string role = "Member";
                     //Executing the query
-                    WorkshopModel businessM = _businessData.CreateBusiness(business);
-                    //Member role assignment
-                    if (businessM.Id != 0)
+                    WorkshopModel workshopM = _workshopData.CreateWorkshop(workshop);
+                    //Provider role assignment
+                    if (workshopM.Id != 0)
                     {
 
                         var claim = signInManager.Context.User;
@@ -170,25 +170,25 @@ public class DeliveryController : ControllerBase
         }
     }
     /// <summary>
-    ///Get the provider / the Member of the Workshop System
+    ///Get the Provider / the Provider of the Workshop System
     ///It is an employee and has profile 
     /// </summary>
     /// <param name="employeeId"></param>
-    /// <returns>ServiceProviderModel</returns>
+    /// <returns>MemberModel</returns>
     /// <exception cref="Exception"></exception>
 
     [HttpGet]
-    [Route("GetProvider")]
-    public Member GetProvider(string employeeId)
+    [Route("GetMember")]
+    public MemberModel GetMember(string employeeId)
     {
         try
         {
             if (employeeId != null)
             {
-                providermodel = _businessData.GetProvider(employeeId);
-                return providermodel;
+                memberModel = _workshopData.GetMember(employeeId);
+                return memberModel;
             }
-            return providermodel;
+            return memberModel;
         }
         catch (Exception ex)
         {
@@ -198,18 +198,18 @@ public class DeliveryController : ControllerBase
     }
 
     /// <summary>
-    /// Post a Member/Service Provider
+    /// Post a Provider/Service Provider
     /// </summary>
-    /// <param name="serviceProvider"></param>
+    /// <param name="member"></param>
     /// <exception cref="Exception"></exception>
     [HttpPost]
-    [Route("PostProviderService")]
-    public void PostProviderService(Member serviceProvider)
+    [Route("PostMemberService")]
+    public void PostMemberService(MemberModel member)
     {
         try
         {
-            if (serviceProvider != null)
-                _businessData.AddProviderServices(serviceProvider);
+            if (member != null)
+                _workshopData.AddMemberServices(member);
         }
         catch (Exception ex)
         {
@@ -230,7 +230,7 @@ public class DeliveryController : ControllerBase
     {
         try
         {
-            var workshop = _businessData.GetWorkShop(regNumber);
+            var workshop = _workshopData.GetWorkShop(regNumber);
             return workshop;
         }
         catch (Exception ex)
@@ -251,7 +251,7 @@ public class DeliveryController : ControllerBase
 
         try
         {
-            _businessData.InsertWorkShopService(workshopRegId, customServiceId);
+            _workshopData.InsertWorkShopService(workshopRegId, customServiceId);
         }
         catch (Exception ex)
         {

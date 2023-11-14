@@ -4,12 +4,12 @@ using Handyman_DataLibrary.Models;
 
 namespace Handyman_DataLibrary.DataAccess.Query
 {
-    public class WorshopData : IWorshopData
+    public class WorkshopData : IWorkshopData
     {
         ISQLDataAccess? _dataAccess;
         IMemberData? _member;
-        Models.Member employee;
-        public WorshopData(ISQLDataAccess dataAccess, IMemberData member)
+        Models.MemberModel employee;
+        public WorkshopData(ISQLDataAccess dataAccess, IMemberData member)
         {
             _dataAccess = dataAccess;
             _member = member;
@@ -172,19 +172,19 @@ namespace Handyman_DataLibrary.DataAccess.Query
         }
 
         //Create an employee in a work
-        public void EmployMember(Models.Member member)
+        public void EmployMember(Models.MemberModel member)
         {
             try
             {
-                //check if the service provider is a employee
+                //check if the service member is a employee
                 if (member is not null)
                 {
-                    //Insert a provider and its employee details
+                    //Insert a member and its employee details
                     _member?.InsertMember(member);
 
-                    //Give the an employee a role 'Service Provider'
+                    //Give the an employee a role 'Service member'
 
-                    //_dataAccess.SaveData("spUserRoleInsert", new { userId = member.pro_providerId, roleName = "ServiceProvider" }, "Handyman_DB");
+                    //_dataAccess.SaveData("spUserRoleInsert", new { userId = member.pro_memberId, roleName = "member" }, "Handyman_DB");
                 }
 
             }
@@ -256,12 +256,12 @@ namespace Handyman_DataLibrary.DataAccess.Query
             //Also from _employeeData
         }
 
-        //Get a service provider of the given employee ID
-        public Member GetProvider(string employeeId)
+        //Get a service member of the given employee ID
+        public MemberModel GetMember(string employeeId)
         {
             try
             {
-                Member sp = _member?.GetMember(employeeId);
+                MemberModel sp = _member?.GetMember(employeeId);
                 return sp;
             }
             catch (Exception ex)
@@ -270,19 +270,19 @@ namespace Handyman_DataLibrary.DataAccess.Query
             }
         }
 
-        public void AddProviderServices(Member memeber)
+        public void AddMemberServices(MemberModel member)
         {
             try
             {
-                if (memeber != null && memeber.member_profileId != null)
+                if (member != null && member.member_profileId != null)
                 {
-                    if (memeber.WorkshopId == 0)
+                    if (member.WorkshopId == 0)
                     {
                         return;
                     }
                     else
                     {
-                        _member.InsertMember(memeber);
+                        _member.InsertMember(member);
                     }
 
                 }

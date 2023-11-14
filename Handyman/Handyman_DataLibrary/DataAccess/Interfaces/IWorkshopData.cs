@@ -2,12 +2,12 @@
 
 namespace Handyman_DataLibrary.DataAccess.Interfaces
 {
-    public interface IWorshopData
+    public interface IWorkshopData
     {
-        void AddProviderServices(Member memeber);
-        WorkshopModel CreateBusiness(WorkshopModel workshop);
-        void EmployMember(Member member);
-        Member GetProvider(string employeeId);
+        void AddMemberServices(MemberModel memeber);
+        WorkshopModel CreateWorkshop(WorkshopModel workshop);
+        void EmployMember(MemberModel member);
+        MemberModel GetMember(string employeeId);
         WorkshopModel GetWorkShop(string regNumber);
         WorkshopModel GetWorkshopById(int? workshopId);
         void InsertWorkShopService(int workShopRegId, int customServiceId);

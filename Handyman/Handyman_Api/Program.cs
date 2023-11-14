@@ -36,7 +36,7 @@ builder.Services.AddScoped<IServiceData, ServiceData>();
 builder.Services.AddTransient<IOrderData, OrderData>();
 builder.Services.AddScoped<EmployeeData>();
 builder.Services.AddScoped<IMemberData, MemberData>();
-builder.Services.AddScoped<IWorkshopData, WorshopData>();
+builder.Services.AddScoped<IWorkshopData, WorkshopData>();
 builder.Services.AddTransient<IRequestData, RequestData>();
 builder.Services.AddScoped<ITaskData, TaskData>();
 builder.Services.AddScoped<IProfileData, ProfileData>();

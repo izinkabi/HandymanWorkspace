@@ -1,139 +1,95 @@
 ﻿using Handyman_DataLibrary.DataAccess.Interfaces;
 using Handyman_DataLibrary.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace Handyman_Api.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/Requests")]
 [ApiController]
-[Authorize]
+[Authorize(Roles = "Consumer,Member,Owner")]
 public class RequestsController : ControllerBase
 {
     IRequestData _requestData;
-
-
-    public RequestsController(IRequestData requestData)
+    private readonly SignInManager<IdentityUser> _signInManager;
+    IEnumerable<RequestModel>? Requests;
+    public RequestsController(IRequestData requestData, SignInManager<IdentityUser> signInManager)
     {
         _requestData = requestData;
-        //_orderData = orderData;
+        _signInManager = signInManager;
     }
-
-
-    // GET: api/<RequestsController>/5
+    // GET: api/<RequestsController>
     [HttpGet]
-    [Route("GetRequest")]
-    public OrderModel GetRequest(int Id)
+    [Route("GetRequests")]
+    public IEnumerable<RequestModel> Get()
     {
         try
         {
-            OrderModel newRequest = _requestData.GetRequest(Id);
-            return newRequest;
+
+            var user = _signInManager.Context.User;
+            var id = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+            if (id != null)
+                Requests = _requestData.GetRequests(id);
+            return Requests;
         }
         catch (Exception ex)
         {
-            throw new Exception(ex.Message, ex.InnerException);
+            throw new Exception(ex.Message);
         }
-    }
 
-    //--------Filtering Methods
-    [HttpGet]
-    [Route("GetCurrentWeek")]
-    public IList<OrderModel> GetCurrentWeekRequests(string empID) => _requestData.GetCurrentWeekRequests(empID);
-    [HttpGet]
-    [Route("GetCurrentMonth")]
-    public IList<OrderModel> GetCurrentMonthRequests(string empID) => _requestData.GetCurrentMonthRequests(empID);
-    [HttpGet]
-    [Route("GetCancelled")]
-    public IList<OrderModel> GetCancelledRequests(string empID) => _requestData.GetCancelledRequests(empID);
-    //----------End Filtering methods
-
-    // GET: api/<RequestsController>/5
-    [HttpGet]
-    [Route("GetNewRequests")]
-    public IList<RequestModel> GetNewRequests(int serviceId)
-    {
-        try
-        {
-            if (serviceId > 0)
-            {
-                IList<RequestModel> newRequests = _requestData.GetNewRequests(serviceId);
-                return newRequests;
-            }
-
-            return null;
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message, ex.InnerException);
-        }
-    }
-
-    // GET api/<RequestsController>/string
-    [HttpGet]
-    [Route("GetProviderRequests")]
-    public IList<OrderModel> GetProviderRequests(string providerId)
-    {
-        try
-        {
-            IList<OrderModel> requests = _requestData.GetRequests(providerId);
-            return requests;
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message, ex.InnerException);
-        }
-    }
-
-    // GET api/<RequestsController>/string
-    [HttpGet]
-    [Route("GetTask")]
-    public TaskModel GetTask(int Id)
-    {
-        try
-        {
-            if (Id > 0)
-            {
-                TaskModel request = _requestData.GetTask(Id);
-                return request;
-            }
-            return null;
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message, ex.InnerException);
-        }
     }
 
     // POST api/<RequestsController>
     [HttpPost]
     [Route("Post")]
-    public void Post(OrderModel requestModel)
+    public int Post(RequestModel request)
     {
         try
         {
-            _requestData.InsertRequest(requestModel);
+            if (Request == null)
+            {
+                return 0;
+            }
+            return _requestData.InsertRequest(request);
         }
         catch (Exception ex)
         {
-            throw new Exception(ex.Message, ex.InnerException);
+            throw new Exception(ex.Message);
         }
     }
 
     // PUT api/<RequestsController>/5
     [HttpPut]
     [Route("Update")]
-    public void Update(TaskModel taskUpdate)
+    public void Update(RequestModel requestUpdate)
     {
         try
         {
-            _requestData.UpdateTask(taskUpdate);
+            if (requestUpdate == null)
+            {
+                return;
+            }
+            _requestData.UpdateRequest(requestUpdate);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    // DELETE api/<RequestsController>/5
+    [HttpDelete]
+    public void Delete(string consumerId, int RequestId)
+    {
+        try
+        {
+            _requestData.DeleteRequestAndTasks(consumerId, RequestId);
         }
         catch (Exception ex)
         {
             throw new Exception(ex.Message, ex.InnerException);
         }
     }
-
 }

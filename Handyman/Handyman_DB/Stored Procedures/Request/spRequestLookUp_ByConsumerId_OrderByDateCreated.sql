@@ -1,5 +1,5 @@
 ﻿CREATE PROCEDURE [Request].[spRequestLookUp_ByConsumerId_OrderByDateCreated]
---Get orders and tasks
+--Get requests and tasks
 	@consumerID NVARCHAR(MAX)
 AS
 BEGIN

@@ -4,7 +4,7 @@ namespace Handyman_DataLibrary.DataAccess.Interfaces;
 
 public interface IMemberData
 {
-    Member GetMember(string memberId);
-    List<Member> GetMemberShips(int workId);
-    void InsertMember(Member member);
+    MemberModel GetMember(string memberId);
+    List<MemberModel> GetMemberShips(int workId);
+    void InsertMember(MemberModel member);
 }

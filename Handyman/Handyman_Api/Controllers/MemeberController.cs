@@ -10,15 +10,15 @@ namespace Handyman_Api.Controllers
 {
     [Route("api/Handymen")]
     [ApiController]
-    [Authorize(Roles = "ServiceProvider")]
-    public class HandymenController : ControllerBase
+    [Authorize(Roles = "Member")]
+    public class MemeberController : ControllerBase
     {
 
         IProfileData _profileData;
         private readonly SignInManager<IdentityUser> signInManager;
         private readonly UserManager<IdentityUser> userManager;
 
-        public HandymenController(IProfileData profileData, SignInManager<IdentityUser> signInManager)
+        public MemeberController(IProfileData profileData, SignInManager<IdentityUser> signInManager)
         {
             _profileData = profileData;
             this.signInManager = signInManager;
@@ -57,7 +57,7 @@ namespace Handyman_Api.Controllers
 
         // POST api/<HandymenController>
         [HttpPost]
-        [Route("PostProviderProfile")]
+        [Route("PostMemberProfile")]
         public void PostProfile(ProfileModel profile)
         {
             if (profile != null)

@@ -10,4 +10,5 @@ public class OrderModel
     public string? order_employeeid { get; set; }
     public int order_requestid { get; set; }
     public List<TaskModel>? tasks { get; set; }
+    public HandymenDetailsModel? Provider { get; set; } //member as a service provider or order delivery guy
 }
