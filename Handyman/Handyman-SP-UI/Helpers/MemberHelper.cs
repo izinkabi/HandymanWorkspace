@@ -5,66 +5,66 @@ using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Handyman_SP_UI.Helpers;
 
-public class ProviderHelper : ProfileHelper, IProviderHelper
+public class MemberHelper : ProfileHelper, IMemberHelper
 {
-    IServiceProviderEndPoint? _providerEndPoint;
-    AuthenticationStateProvider? _authenticationStateProvider;
-    ServiceProviderModel? providerModel;
+    IMemberEndpoint? _memberEndPoint;
+    AuthenticationStateProvider? _AuthenticationStateProvider;
+    MemberModel? memberModel;
 
     private readonly IServiceEndpoint _serviceEndpoint;
-    private readonly IBusinessEndPoint _workShopEndPoint;
+    private readonly IWorkshopEndPoint _workShopEndPoint;
 
 
 
 
-    public ProviderHelper(IServiceProviderEndPoint providerEndPoint,
-        AuthenticationStateProvider authenticationStateProvider,
-          IServiceEndpoint serviceEndpoint, IBusinessEndPoint workShopEndPoint)
-        : base(providerEndPoint, authenticationStateProvider)
+    public MemberHelper(IMemberEndpoint memberEndpoint,
+        AuthenticationStateProvider AuthenticationStateProvider,
+          IServiceEndpoint serviceEndpoint, IWorkshopEndPoint workShopEndPoint)
+        : base(memberEndpoint, AuthenticationStateProvider)
     {
-        _providerEndPoint = providerEndPoint;
-        _authenticationStateProvider = authenticationStateProvider;
+        _memberEndPoint = memberEndpoint;
+        _AuthenticationStateProvider = AuthenticationStateProvider;
 
         _serviceEndpoint = serviceEndpoint;
         _workShopEndPoint = workShopEndPoint;
     }
 
-    //Create a provider profie
+    //Create a member profie
     public Task<bool> RegisterProfile(ProfileModel profile) => CreateProfile(profile);
 
-    //Get the profile of the Handyman/Provider 
-    public async Task<ProfileModel> GetProviderProfile() => await GetProfile();
+    //Get the profile of the Handyman/member 
+    async Task<ProfileModel> IMemberHelper.GetMemberProfile() => await GetProfile();
 
-    //Register a Handyman / Service Provider
-    public async void RegisterHandyman(ServiceProviderModel newHandyman)
+    //Register a Handyman / Service member
+    async void IMemberHelper.RegisterHandyman(MemberModel newHandyman)
     {
         if (newHandyman != null && newHandyman.employeeProfile != null)
         {
             userId = await GetUserId() ?? string.Empty;
             if (!string.IsNullOrEmpty(userId))
             {
-                newHandyman.pro_providerId = userId;
+                newHandyman.member_profileId = userId;
                 newHandyman.employeeProfile.UserId = userId;
-                await _providerEndPoint.CreateServiceProvider(newHandyman);
+                await _memberEndPoint.CreateMember(newHandyman);
             }
         }
     }
 
     /// <summary>
-    /// Add new service using the employee's ID hence the provider's ID
+    /// Add new service using the employee's ID hence the member's ID
     /// </summary>
-    /// <param name="provider"></param>
+    /// <param name="member"></param>
     /// <returns></returns>
-    public async Task AddService(ServiceModel service)
+    async Task IMemberHelper.AddService(ServiceModel service)
     {
         try
         {
-            ServiceProviderModel provider = new();
-            if (provider.pro_providerId == null)
+            MemberModel member = new();
+            if (member.member_profileId == null)
             {
                 await GetUserId();
-                provider = await GetProvider();
-                provider.Services.Add(service);
+                member = await GetMember();
+                member.Services.Add(service);
             }
             List<int> newServicesIDs = new List<int>();
             //insert new services and 
@@ -81,14 +81,14 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
             {
                 service.Customs.Add(workshopService);
 
-                if (provider.BusinessId > 0)
+                if (member.WorkId > 0)
                 {
                     int customID = await _serviceEndpoint.CreateCustomService(service);
-                    int regNumber = (await _workShopEndPoint.GetBusiness(provider.BusinessId)).registration.Id;
+                    int regNumber = (await _workShopEndPoint.GetWorkshop(member.WorkId)).registration.Id;
                     var result = await _workShopEndPoint.InsertWorkShopService(regNumber, customID);
                     if (result)
                     {
-                        await _providerEndPoint.AddService(provider);
+                        await _memberEndPoint.AddService(member);
                     }
                 }
                 else
@@ -112,18 +112,18 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
     /// <param name="service"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public async Task<bool> IsServiceProvided(ServiceModel service)
+    async Task<bool> IMemberHelper.IsServiceProvided(ServiceModel service)
     {
         try
         {
-            if (providerModel == null)
+            if (memberModel == null)
             {
-                providerModel = await GetProvider();
+                memberModel = await GetMember();
             }
 
-            if (providerModel != null && providerModel.Services.Count > 0)
+            if (memberModel != null && memberModel.Services.Count > 0)
             {
-                foreach (var serviceModel in providerModel.Services)
+                foreach (var serviceModel in memberModel.Services)
                 {
                     if (serviceModel.id == service.id)
                     {
@@ -146,7 +146,7 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
     /// </summary>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public async Task<ServiceProviderModel> GetProvider()
+    public async Task<MemberModel> GetMember()
     {
         try
         {
@@ -157,15 +157,15 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
 
             if (userId != null)
             {
-                providerModel = await _providerEndPoint?.GetProvider(userId);
-                if (providerModel != null)
+                memberModel = await GetMember();
+                if (memberModel != null)
                 {
-                    if (providerModel.employeeProfile.UserId == null)
+                    if (memberModel.employeeProfile.UserId == null)
                     {
-                        providerModel.employeeProfile = await GetProfile();
+                        memberModel.employeeProfile = await GetProfile();
                     }
                 }
-                return providerModel;
+                return memberModel;
             }
 
 
@@ -180,60 +180,60 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
 
     }
     /// <summary>
-    /// Stamp the new business with the owner's details / IDs
+    /// Stamp the new Workshop with the owner's details / IDs
     /// </summary>
-    /// <param name="newBiz"></param>
+    /// <param name="work"></param>
     /// <returns></returns>
-    [Authorize("ServiceProvider")]
-    public async Task<BusinessModel> StampBusinessUserAsync(BusinessModel? newBiz)
+    [Authorize("Member")]
+    async Task<WorkshopModel> IMemberHelper.StampWorkshopUserAsync(WorkshopModel? work)
     {
 
 
         try
         {
-            ServiceProviderModel member = new ServiceProviderModel();
+            MemberModel member = new MemberModel();
             member.employeeId = await GetUserId();
             member.employeeProfile = await GetProfile();
-            member.pro_providerId = member.employeeId;
+            member.member_profileId = member.employeeId;
 
-            newBiz.registration.businessType = newBiz.Type;
+            work.registration.workType = work.Type;
 
-            newBiz.Employees.Add(member);
+            work.Employees.Add(member);
 
         }
         catch (Exception ex)
         {
             throw new Exception(ex.Message, ex.InnerException);
         }
-        newBiz.date = DateTime.Now;
+        work.date = DateTime.Now;
         //UserManager UI to return registered users
 
 
-        return newBiz;
+        return work;
 
     }
 
     /// <summary>
-    /// Get the employee ID hence the provider ID and stamping the request
+    /// Get the employee ID hence the member ID and stamping the Order
     /// </summary>
-    /// <param name="newRequest"></param>
+    /// <param name="newOrder"></param>
     /// <returns></returns>
-    public async Task<RequestModel> StampNewRequest(RequestModel newRequest)
+    async Task<OrderModel> IMemberHelper.StampNewOrder(OrderModel newOrder)
     {
         if (userId == null)
         {
             userId = await GetUserId();
         }
-        if (newRequest != null && userId != null)
+        if (newOrder != null && userId != null)
         {
-            newRequest.req_employeeid = userId;
+            newOrder.order_employeeid = userId;
         }
-        return newRequest;
+        return newOrder;
 
     }
 
     //Get the prices of the service
-    public async Task<PriceModel> GetServicePrice(int priceId)
+    async Task<PriceModel> IMemberHelper.GetServicePrice(int priceId)
     {
         if (priceId == 0)
         {
@@ -252,7 +252,7 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
     }
 
     //Insert a custom-Service of the workshop
-    public async Task<bool> InsertCustomService(ServiceModel service)
+    async Task<bool> IMemberHelper.InsertCustomService(ServiceModel service)
     {
         if (service is null)
         { return false; }
@@ -262,8 +262,8 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
             int newCustomServiceId = await _serviceEndpoint.CreateCustomService(service);
             if (newCustomServiceId != 0)
             {
-                var owner = await GetProvider();
-                var workShop = await _workShopEndPoint.GetBusiness(owner.BusinessId);
+                var owner = await GetMember();
+                var workShop = await _workShopEndPoint.GetWorkshop(owner.WorkId);
                 int bi = workShop.registration.Id;
                 return await _workShopEndPoint.InsertWorkShopService(bi, newCustomServiceId);
             }
@@ -283,17 +283,17 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
     }
 
     //Get workshop services of the given workshop-registration id
-    public async Task<List<CustomServiceModel>> GetWorkShopServices()
+    async Task<List<CustomServiceModel>> IMemberHelper.GetWorkShopServices()
     {
         try
         {
             //Await the ower and worshop 
-            var owner = await GetProvider();
+            var owner = await GetMember();
             if (owner == null)
             {
                 return new List<CustomServiceModel>();
             }
-            int wsregid = (await _workShopEndPoint.GetBusiness(owner.BusinessId)).registration.Id;
+            int wsregid = (await _workShopEndPoint.GetWorkshop(owner.WorkId)).registration.Id;
             if (wsregid == 0)
             {
                 return null;
@@ -309,7 +309,7 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
 
     }
     //Update workshop service
-    public async Task<bool> UpdateWorkShopService(CustomServiceModel wsServices)
+    async Task<bool> IMemberHelper.UpdateWorkShopService(CustomServiceModel wsServices)
     {
         if (wsServices is null)
         {
@@ -327,7 +327,7 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
     }
 
     //Remove a workshop service
-    public async Task<bool> DeleteWorkShopService(int wsServiceId, int ogServiceId)
+    async Task<bool> IMemberHelper.DeleteWorkShopService(int wsServiceId, int ogServiceId)
     {
 
         if (wsServiceId == 0 && ogServiceId == 0)
@@ -337,8 +337,8 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
         try
         {
             //Await the ower and worshop 
-            var owner = await GetProvider();
-            int wsregid = (await _workShopEndPoint.GetBusiness(owner.BusinessId)).registration.Id;
+            var owner = await GetMember();
+            int wsregid = (await _workShopEndPoint.GetWorkshop(owner.WorkId)).registration.Id;
             if (wsregid == 0)
             {
                 return false;
@@ -347,7 +347,7 @@ public class ProviderHelper : ProfileHelper, IProviderHelper
             bool IsWSServiceDeleted = await _serviceEndpoint.DeleteWorkShopService(wsServiceId, wsregid);
             if (IsWSServiceDeleted)
             {
-                return await _serviceEndpoint.DeleteProviderService(ogServiceId, owner.pro_providerId);
+                return await _serviceEndpoint.DeleteMemberService(ogServiceId, owner.member_profileId);
             }
             else
             {

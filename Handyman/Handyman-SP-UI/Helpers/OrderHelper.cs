@@ -3,34 +3,34 @@ using HandymanProviderLibrary.Models;
 
 namespace Handyman_SP_UI.Helpers;
 /// <summary>
-/// This class is responsible for the requests of a service provider
+/// This class is responsible for the Orders of a service member
 /// </summary>
-public class RequestHelper : IDisposable, IRequestHelper
+public class OrderHelper : IDisposable, IOrderHelper
 {
-    IRequestEndPoint? _requestEndPoint;
-    IProviderHelper _providerHelper;
+    IOrderEndpoint? _orderEndpoint;
+    IMemberHelper _memberHelper;
 
     IList<OrderModel> orders;
-    readonly IList<RequestModel> _requests;
+    readonly IList<OrderModel> _Orders;
     StatusCheckHelper statusCheckHelper;
-    RequestModel newRequest;
+    OrderModel newOrder;
 
 
-    public RequestHelper(IRequestEndPoint requestEndPoint, IProviderHelper providerHelper)
+    public OrderHelper(IOrderEndpoint OrderEndPoint, IMemberHelper MemberHelper)
     {
-        _requestEndPoint = requestEndPoint;
-        _providerHelper = providerHelper;
+        _orderEndpoint = OrderEndPoint;
+        _memberHelper = MemberHelper;
         orders = new List<OrderModel>();
         statusCheckHelper = new StatusCheckHelper();
     }
 
-    readonly List<RequestModel> NewRequests = new()!;
-    List<RequestModel> StartedRequests = new()!;
-    List<RequestModel> AcceptedRequests;
-    List<RequestModel> FinishedRequests = new()!;
-    List<RequestModel> OwnRequests;
-    ServiceProviderModel provider;
-    enum RequestStage
+    readonly List<OrderModel> NewOrders = new()!;
+    List<OrderModel> StartedOrders = new()!;
+    List<OrderModel> AcceptedOrders;
+    List<OrderModel> FinishedOrders = new()!;
+    List<OrderModel> OwnOrders;
+    MemberModel member;
+    enum OrderStage
     {
         None = 0,
         Accepted = 1,
@@ -38,18 +38,18 @@ public class RequestHelper : IDisposable, IRequestHelper
     }
     /// <summary>
     /// Helper method for getting all the orders of the given service
-    /// These orders will be turned to requests when accepted by provider(s)
-    /// For now they are refered to as new request(s)
+    /// These orders will be turned to Orders when accepted by member(s)
+    /// For now they are refered to as new Order(s)
     /// </summary>
     /// <param name="serviceId"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public async Task<IList<OrderModel>> GetNewRequests(int serviceId)
+    public async Task<IList<OrderModel>> GetNewOrders(int serviceId)
     {
 
         try
         {
-            orders = await _requestEndPoint?.GetNewRequestsByService(serviceId);
+            orders = await _orderEndpoint?.GetNewOrdersByService(serviceId);
             if (orders != null)
             {
                 return orders;
@@ -63,36 +63,36 @@ public class RequestHelper : IDisposable, IRequestHelper
     }
 
     /// <summary>
-    /// Get the new request from the new requests list
+    /// Get the new Order from the new Orders list
     /// </summary>
     /// <param name="serviceId"></param>
     /// <param name="orderId"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public async Task<OrderModel> GetNewRequest(int serviceId, int orderId)
+    async Task<OrderModel> IOrderHelper.GetNewOrder(int serviceId, int orderId)
     {
-        OrderModel newRequest = new()!;
+        OrderModel newOrder = new()!;
 
         try
         {
             if (orders.Count < 1)
             {
-                orders = await GetNewRequests(serviceId);
+                orders = await GetNewOrders(serviceId);
             }
 
             if (orders != null && orders.Count > 0)
             {
                 foreach (var o in orders)
                 {
-                    if (o.Id == orderId)
+                    if (o.order_id == orderId)
                     {
-                        newRequest = o;
-                        return newRequest;
+                        newOrder = o;
+                        return newOrder;
                     }
 
                 }
             }
-            return newRequest;
+            return newOrder;
         }
         catch (Exception ex)
         {
@@ -101,29 +101,29 @@ public class RequestHelper : IDisposable, IRequestHelper
     }
 
     //Get Task Price
-    public async Task<PriceModel> GetTaskPrice(int TaskId) => await _requestEndPoint.GetTaskPrice(TaskId);
+    public async Task<PriceModel> GetTaskPrice(int TaskId) => await _orderEndpoint.GetTaskPrice(TaskId);
     //-----Filter Methods
-    //Current Week requests GET
-    public async Task<List<RequestModel>> GetCurrentWeekRequests()
+    //Current Week Orders GET
+    async Task<List<OrderModel>> IOrderHelper.GetCurrentWeekOrders()
     {
         try
         {
-            if (provider is null)
+            if (member is null)
             {
-                provider = await _providerHelper.GetProvider();
+                member = await _memberHelper.GetMember();
             }
 
-            if (provider != null && provider.pro_providerId != null)
+            if (member != null && member.member_profileId != null)
             {
 
 
-                var jobs = await _requestEndPoint.GetCurrentWeekRequests(provider.pro_providerId);
+                var jobs = await _orderEndpoint.GetCurrentWeekOrders(member.member_profileId);
                 if (jobs != null && jobs.Count > 0)
                 {
                     foreach (var rq in jobs)
                     {
-                        rq.req_status = CheckStatus(rq);
-                        rq.req_progress = GetProgress(rq);
+                        rq.order_status = CheckStatus(rq);
+                        rq.order_progress = GetProgress(rq);
                     }
                 }
 
@@ -138,23 +138,23 @@ public class RequestHelper : IDisposable, IRequestHelper
     }
 
     //Check Current Month
-    public async Task<List<RequestModel>> GetCurrentMonthRequests()
+    async Task<List<OrderModel>> IOrderHelper.GetCurrentMonthOrders()
     {
         try
         {
-            if (provider is null)
+            if (member is null)
             {
-                provider = await _providerHelper.GetProvider();
+                member = await _memberHelper.GetMember();
             }
-            if (provider != null && provider.pro_providerId != null)
+            if (member != null && member.member_profileId != null)
             {
-                var jobs = await _requestEndPoint.GetCurrentMonthRequests(provider.pro_providerId);
+                var jobs = await _orderEndpoint.GetCurrentMonthOrders(member.member_profileId);
                 if (jobs != null && jobs.Count > 0)
                 {
                     foreach (var rq in jobs)
                     {
-                        rq.req_status = CheckStatus(rq);
-                        rq.req_status = GetProgress(rq);
+                        rq.order_status = CheckStatus(rq);
+                        rq.order_status = GetProgress(rq);
                     }
                 }
 
@@ -168,20 +168,20 @@ public class RequestHelper : IDisposable, IRequestHelper
             throw new Exception(ex.Message, ex.InnerException);
         }
     }
-    public async Task<IList<RequestModel>> GetCancelledRequests(string empID) => await _requestEndPoint.GetCancelledRequests(empID);
+    public async Task<IList<OrderModel>> GetCancelledOrders(string empID) => await _orderEndpoint.GetCancelledOrders(empID);
 
 
     //------End Filter Methods
 
 
-    //Confirm if the request is accepted
-    public async Task<RequestModel> ConfirmAccepted(OrderModel requestChecked)
+    //Confirm if the Order is accepted
+    async Task<OrderModel> IOrderHelper.ConfirmAccepted(OrderModel OrderChecked)
     {
-        if (requestChecked != null)
+        if (OrderChecked != null)
         {
-            if (await IsAccepted(requestChecked))
+            if (await IsAccepted(OrderChecked))
             {
-                return newRequest;
+                return newOrder;
             }
         }
         return null;
@@ -193,22 +193,22 @@ public class RequestHelper : IDisposable, IRequestHelper
     /// </summary>
     /// <param name="order"></param>
     /// <returns></returns>
-    public async Task<bool> IsAccepted(OrderModel order)
+    async Task<bool> IsAccepted(OrderModel order)
     {
         try
         {
-            if (AcceptedRequests == null || AcceptedRequests.Count == 0)
+            if (AcceptedOrders == null || AcceptedOrders.Count == 0)
             {
-                AcceptedRequests = (List<RequestModel>?)await GetOwnRequests();
+                AcceptedOrders = (List<OrderModel>?)await GetOwnOrders();
             }
 
-            if (AcceptedRequests != null && AcceptedRequests.Count > 0)
+            if (AcceptedOrders != null && AcceptedOrders.Count > 0)
             {
-                foreach (var item in AcceptedRequests)
+                foreach (var item in AcceptedOrders)
                 {
-                    if (item.req_orderid == order.Id)
+                    if (item.order_orderid == order.order_id)
                     {
-                        newRequest = item;
+                        newOrder = item;
                         return true;
                     }
                 }
@@ -222,27 +222,27 @@ public class RequestHelper : IDisposable, IRequestHelper
         }
     }
     /// <summary>
-    /// Make / create a new request
+    /// Make / create a new Order
     /// </summary>
-    /// <param name="newRequest"></param>
+    /// <param name="newOrder"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
 
-    public async Task<bool> AcceptRequest(OrderModel newRequest)
+    async Task<bool> IOrderHelper.AcceptOrder(OrderModel newOrder)
     {
-        RequestModel nr = new()!;
-        //populate a request without a provider ID
-        nr.req_orderid = newRequest.Id;
-        nr.req_datecreated = DateTime.Now;
-        nr.req_status = 1;
-        nr.req_progress = 1;
+        OrderModel nr = new()!;
+        //populate a Order without a member ID
+        nr.order_orderid = newOrder.order_orderid;
+        nr.order_datecreated = DateTime.Now;
+        nr.order_status = 1;
+        nr.order_progress = 1;
 
         try
         {
-            if (!await IsAccepted(newRequest))
+            if (!await IsAccepted(newOrder))
             {
-                //save the accepted request
-                return await _requestEndPoint.PostRequest(await _providerHelper.StampNewRequest(nr));
+                //save the accepted Order
+                return await _orderEndpoint.PostOrder(await _memberHelper.StampNewOrder(nr));
 
             }
 
@@ -255,37 +255,37 @@ public class RequestHelper : IDisposable, IRequestHelper
         return false;
     }
     /// <summary>
-    /// Get the provider's requests
+    /// Get the member's Orders
     /// </summary>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public async Task<List<RequestModel>> GetOwnRequests()
+    async Task<List<OrderModel>> GetOwnOrders()
     {
         try
         {
-            if (provider is null)
+            if (member is null)
             {
-                provider = await _providerHelper.GetProvider();//not sure if this guy will budge!
+                member = await _memberHelper.GetMember();//not sure if this guy will budge!
             }
 
-            if (provider != null && provider.pro_providerId != null)
+            if (member != null && member.member_profileId != null)
             {
 
-                if (OwnRequests is null)
+                if (OwnOrders is null)
                 {
-                    OwnRequests = await _requestEndPoint.GetRequestsByProvider(provider.pro_providerId);
+                    OwnOrders = await _orderEndpoint.GetOrdersByProvider(member.member_profileId);
                 }
 
-                if (OwnRequests != null && OwnRequests.Count > 0)
+                if (OwnOrders != null && OwnOrders.Count > 0)
                 {
-                    foreach (var request in OwnRequests)
+                    foreach (var Order in OwnOrders)
                     {
-                        request.req_status = statusCheckHelper.CheckStatus(request);
-                        request.req_progress = GetProgress(request);
+                        Order.order_status = statusCheckHelper.CheckStatus(Order);
+                        Order.order_progress = GetProgress(Order);
                     }
 
                 }
-                return OwnRequests;
+                return OwnOrders;
             }
             return null;
         }
@@ -297,39 +297,39 @@ public class RequestHelper : IDisposable, IRequestHelper
 
 
 
-    //------------------------Updating a request--------------------------//
-    public int GetProgress(RequestModel request) => statusCheckHelper.calculateProgress(request);
-    public int CheckStatus(RequestModel request) => statusCheckHelper.CheckStatus(request);
+    //------------------------Updating a Order--------------------------//
+    public int GetProgress(OrderModel Order) => statusCheckHelper.calculateProgress(Order);
+    public int CheckStatus(OrderModel Order) => statusCheckHelper.CheckStatus(Order);
 
-    //------------------------End Updating a request--------------------------//
+    //------------------------End Updating a Order--------------------------//
 
 
 
     /// <summary>
-    /// Look for the request of the given ID
+    /// Look for the Order of the given ID
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public async Task<RequestModel> GetOwnRequest(int id)
+    public async Task<OrderModel> GetOwnOrder(int id)
     {
-        RequestModel request = new()!;
+        OrderModel Order = new()!;
         try
         {
-            if (OwnRequests is null)
+            if (OwnOrders is null)
             {
-                await GetOwnRequests();
+                await GetOwnOrders();
             }
-            if (OwnRequests is not null && OwnRequests.Count > 0)
+            if (OwnOrders is not null && OwnOrders.Count > 0)
             {
-                foreach (var r in OwnRequests)
+                foreach (var r in OwnOrders)
                 {
-                    if (r.req_id == id)
+                    if (r.order_id == id)
                     {
-                        request = r;
+                        Order = r;
                     }
                 }
-                return request;
+                return Order;
             }
             return null;
         }
@@ -344,12 +344,12 @@ public class RequestHelper : IDisposable, IRequestHelper
     /// <param name="id"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public async Task<TaskModel> GetTask(int id)
+    async Task<TaskModel> IOrderHelper.GetTask(int id)
     {
         TaskModel taskModel;
         try
         {
-            taskModel = await _requestEndPoint.GetTask(id);
+            taskModel = await _orderEndpoint.GetTask(id);
             return taskModel;
         }
         catch (Exception ex)
@@ -359,18 +359,18 @@ public class RequestHelper : IDisposable, IRequestHelper
     }
 
     /// <summary>
-    /// Update a given Request (Update the tasks in the request)
+    /// Update a given Order (Update the tasks in the Order)
     /// </summary>
-    /// <param name="requestUpdate"></param>
+    /// <param name="OrderUpdate"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public async Task UpdateTask(TaskModel taskUpdate)
+    async Task IOrderHelper.UpdateTask(TaskModel taskUpdate)
     {
         try
         {
             if (taskUpdate != null)
             {
-                await _requestEndPoint.UpdateTask(taskUpdate);
+                await _orderEndpoint.UpdateTask(taskUpdate);
             }
         }
         catch (Exception ex)
@@ -395,27 +395,27 @@ public class RequestHelper : IDisposable, IRequestHelper
         List<TaskModel>? startedTasks;
         List<TaskModel>? inprogressTasks;
         List<TaskModel>? finishedTasks;
-        List<RequestModel>? cancelledRequests;
+        List<OrderModel>? cancelledOrders;
 
-        //Return the request stage
-        internal int CheckStatus(RequestModel request)
+        //Return the Order stage
+        internal int CheckStatus(OrderModel Order)
         {
 
-            if (request != null && request.tasks != null)
+            if (Order != null && Order.tasks != null)
             {
                 //initialize attributes
                 startedTasks = new()!;
                 inprogressTasks = new()!;
                 finishedTasks = new()!;
-                cancelledRequests = new()!;
-                //Cancelled request
-                if (request.req_status == 11)
+                cancelledOrders = new()!;
+                //Cancelled Order
+                if (Order.order_status == 11)
                 {
-                    cancelledRequests.Add(request);
+                    cancelledOrders.Add(Order);
                 }
 
                 //Check for task status
-                foreach (var t in request.tasks)
+                foreach (var t in Order.tasks)
                 {
 
                     //STATUS STARTED
@@ -436,20 +436,20 @@ public class RequestHelper : IDisposable, IRequestHelper
 
                 }
 
-                //Request not started
+                //Order not started
                 if (startedTasks.Count == 0 && inprogressTasks.Count == 0 && finishedTasks.Count == 0)
                 {
                     return 1;
                 }
-                else if (startedTasks.Count == 0 && inprogressTasks.Count == 0 && finishedTasks.Count > 0)//Request closed
+                else if (startedTasks.Count == 0 && inprogressTasks.Count == 0 && finishedTasks.Count > 0)//Order closed
                 {
                     return 3;
                 }
-                //else if (cancelledRequests != null)
+                //else if (cancelledOrders != null)
                 //{
                 //    return 11;
                 //}
-                else //Request inprogress
+                else //Order inprogress
                 {
                     return 2;
                 }
@@ -463,30 +463,30 @@ public class RequestHelper : IDisposable, IRequestHelper
         /// <summary>
         /// a psudo algorithm for getting progress using number of tasks per list
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="Order"></param>
         /// <returns></returns>
-        internal int calculateProgress(RequestModel request)
+        internal int calculateProgress(OrderModel Order)
         {
 
-            if (request != null && request.tasks != null && request.tasks.Count > 0)
+            if (Order != null && Order.tasks != null && Order.tasks.Count > 0)
             {
-                if (startedTasks.Count == request.tasks.Count)
+                if (startedTasks.Count == Order.tasks.Count)
                 {
                     return 10;
                 }
-                if (startedTasks.Count + inprogressTasks.Count == request.tasks.Count && startedTasks.Count > 0 && inprogressTasks.Count > 0)
+                if (startedTasks.Count + inprogressTasks.Count == Order.tasks.Count && startedTasks.Count > 0 && inprogressTasks.Count > 0)
                 {
                     return 30;
                 }
-                if (startedTasks.Count + finishedTasks.Count == request.tasks.Count && startedTasks.Count > finishedTasks.Count && finishedTasks.Count > 0)
+                if (startedTasks.Count + finishedTasks.Count == Order.tasks.Count && startedTasks.Count > finishedTasks.Count && finishedTasks.Count > 0)
                 {
                     return 40;
                 }
-                if (inprogressTasks.Count + finishedTasks.Count == request.tasks.Count && inprogressTasks.Count != 0 || inprogressTasks.Count == request.tasks.Count && finishedTasks.Count != request.tasks.Count)
+                if (inprogressTasks.Count + finishedTasks.Count == Order.tasks.Count && inprogressTasks.Count != 0 || inprogressTasks.Count == Order.tasks.Count && finishedTasks.Count != Order.tasks.Count)
                 {
                     return 50;
                 }
-                if (finishedTasks.Count == request.tasks.Count)
+                if (finishedTasks.Count == Order.tasks.Count)
                 {
                     return 100;
                 }

@@ -3,7 +3,7 @@
 
 @using Microsoft.AspNetCore.Components.Web
 @inject NavigationManager NavManager
-@inject IProviderHelper _providerHelper
+@inject IMemberHelper _memberHelper
 @inject IJSRuntime JSRuntime
 @if (@svc != null)
 {
@@ -112,7 +112,7 @@
 
             if(svc!=null)
             {
-                if(await _providerHelper.IsServiceProvided(svc))
+                if (await _memberHelper.IsServiceProvided(svc))
                 {
                     isAdded = true;
                     StateHasChanged();
@@ -138,9 +138,9 @@
 
         try
         {
-            ServiceProviderModel providerModel = new ServiceProviderModel();
+            MemberModel providerModel = new MemberModel();
             providerModel.Services.Add(serviceModel);
-            await _providerHelper.AddService(serviceModel);
+            await _memberHelper.AddService(serviceModel);
           
            await InvokeAsync(StateHasChanged);
 

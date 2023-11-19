@@ -7,13 +7,13 @@ using System.Net.Http.Json;
 
 namespace HandymanProviderLibrary.Api.EndPoints.Implementation;
 
-public class RequestEndPoint : IRequestEndPoint
+public class OrderEndpoint : IOrderEndpoint
 {
 
     IAPIHelper? _apiHelper;
     private readonly AuthenticatedUserModel _authedUser;
 
-    public RequestEndPoint(IAPIHelper? aPIHelper, AuthenticatedUserModel authedUser)
+    public OrderEndpoint(IAPIHelper? aPIHelper, AuthenticatedUserModel authedUser)
     {
         _apiHelper = aPIHelper;
         _authedUser = authedUser;
@@ -21,7 +21,7 @@ public class RequestEndPoint : IRequestEndPoint
 
     //Get the orders relavant to the provider
     //This allows an order filter by the provider's service(s)
-    public async Task<IList<OrderModel>> GetNewRequestsByService(int serviceId)
+    public async Task<IList<OrderModel>> GetNewOrdersByService(int serviceId)
     {
         List<OrderModel>? httpResponse = new();
 
@@ -30,7 +30,7 @@ public class RequestEndPoint : IRequestEndPoint
             if (_authedUser != null && _authedUser.Access_Token != null)
             {
                 _apiHelper.InitializeClient(_authedUser.Access_Token);
-                httpResponse = await _apiHelper.ApiClient.GetFromJsonAsync<List<OrderModel>>($"/api/Requests/GetNewRequests?serviceId={serviceId}");
+                httpResponse = await _apiHelper.ApiClient.GetFromJsonAsync<List<OrderModel>>($"/api/Orders/GetNewOrders?serviceId={serviceId}");
             }
 
 
@@ -44,11 +44,11 @@ public class RequestEndPoint : IRequestEndPoint
 
     }
 
-    //Get the provider's request
-    //Using the ID of the service provider prompt for request
-    public async Task<List<RequestModel>> GetRequestsByProvider(string? providerId)
+    //Get the provider's Order
+    //Using the ID of the service provider prompt for Order
+    public async Task<List<OrderModel>> GetOrdersByProvider(string? providerId)
     {
-        List<RequestModel>? httpResponseMessage = new();
+        List<OrderModel>? httpResponseMessage = new();
 
         try
         {
@@ -58,7 +58,7 @@ public class RequestEndPoint : IRequestEndPoint
                 _apiHelper.ApiClient.DefaultRequestHeaders.Accept.Clear();
                 _apiHelper.ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("applications/json"));
                 _apiHelper.ApiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_authedUser.Access_Token}");
-                httpResponseMessage = await _apiHelper.ApiClient.GetFromJsonAsync<List<RequestModel>>($"/api/Requests/GetProviderRequests?providerId={providerId}");
+                httpResponseMessage = await _apiHelper.ApiClient.GetFromJsonAsync<List<OrderModel>>($"/api/Orders/GetProviderOrders?providerId={providerId}");
             }
 
             return httpResponseMessage;
@@ -72,23 +72,23 @@ public class RequestEndPoint : IRequestEndPoint
 
     }
 
-    //Post a request
+    //Post a Order
     //This method is invoked when the provider accepts
     //an order that was place by a consumer
-    public async Task<bool> PostRequest(RequestModel request)
+    public async Task<bool> PostOrder(OrderModel Order)
     {
         string? result = string.Empty;
 
         try
         {
             HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
-            if (_authedUser != null && _authedUser.Access_Token != null && request != null)
+            if (_authedUser != null && _authedUser.Access_Token != null && Order != null)
             {
                 _apiHelper.ApiClient.DefaultRequestHeaders.Clear();
                 _apiHelper.ApiClient.DefaultRequestHeaders.Accept.Clear();
                 _apiHelper.ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("applications/json"));
                 _apiHelper.ApiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_authedUser.Access_Token}");
-                httpResponseMessage = await _apiHelper.ApiClient.PostAsJsonAsync("/api/Requests/post", request);
+                httpResponseMessage = await _apiHelper.ApiClient.PostAsJsonAsync("/api/Orders/post", Order);
             }
             return httpResponseMessage.IsSuccessStatusCode;
 
@@ -102,14 +102,14 @@ public class RequestEndPoint : IRequestEndPoint
 
     }
 
-    //Update a request
-    //This method is called when there is a change in the request by the provider
+    //Update a Order
+    //This method is called when there is a change in the Order by the provider
     //Change of state/stage, cancellation of completion by the service provider
     public async Task<bool> UpdateTask(TaskModel taskUpdate)
     {
         try
         {
-            var result = await _apiHelper.ApiClient.PutAsJsonAsync<TaskModel>("/api/Requests/Update", taskUpdate);
+            var result = await _apiHelper.ApiClient.PutAsJsonAsync<TaskModel>("/api/Orders/Update", taskUpdate);
             return result.IsSuccessStatusCode;
         }
         catch (Exception ex)
@@ -127,7 +127,7 @@ public class RequestEndPoint : IRequestEndPoint
 
         try
         {
-            TaskModel taskmodel = await _apiHelper.ApiClient.GetFromJsonAsync<TaskModel>($"/api/Requests/GetTask?Id={id}");
+            TaskModel taskmodel = await _apiHelper.ApiClient.GetFromJsonAsync<TaskModel>($"/api/Orders/GetTask?Id={id}");
             return taskmodel;
         }
         catch (Exception ex)
@@ -167,18 +167,18 @@ public class RequestEndPoint : IRequestEndPoint
             throw new Exception(ex.Message);
         }
     }
-    //Get Request current month request
-    public async Task<List<RequestModel>> GetCurrentMonthRequests(string empID)
+    //Get Order current month Order
+    public async Task<List<OrderModel>> GetCurrentMonthOrders(string empID)
     {
         try
         {
             if (empID != null)
             {
-                List<RequestModel> thisMonthRequests = await _apiHelper.ApiClient.GetFromJsonAsync<List<RequestModel>>($"/api/Requests/GetCurrentMonth?empID={empID}");
+                List<OrderModel> thisMonthOrders = await _apiHelper.ApiClient.GetFromJsonAsync<List<OrderModel>>($"/api/Orders/GetCurrentMonth?empID={empID}");
 
-                if (thisMonthRequests != null && thisMonthRequests.Count > 0)
+                if (thisMonthOrders != null && thisMonthOrders.Count > 0)
                 {
-                    return thisMonthRequests;
+                    return thisMonthOrders;
                 }
             }
             return null;
@@ -190,8 +190,8 @@ public class RequestEndPoint : IRequestEndPoint
         }
     }
 
-    //Get this month's requests
-    public async Task<List<RequestModel>> GetCurrentWeekRequests(string empID)
+    //Get this month's Orders
+    public async Task<List<OrderModel>> GetCurrentWeekOrders(string empID)
     {
         try
         {
@@ -199,11 +199,11 @@ public class RequestEndPoint : IRequestEndPoint
             {
 
 
-                List<RequestModel> thisMonthRequests = await _apiHelper.ApiClient.GetFromJsonAsync<List<RequestModel>>($"/api/Requests/GetCurrentWeek?empId={empID}");
+                List<OrderModel> thisMonthOrders = await _apiHelper.ApiClient.GetFromJsonAsync<List<OrderModel>>($"/api/Orders/GetCurrentWeek?empId={empID}");
 
-                if (thisMonthRequests != null && thisMonthRequests.Count > 0)
+                if (thisMonthOrders != null && thisMonthOrders.Count > 0)
                 {
-                    return thisMonthRequests;
+                    return thisMonthOrders;
                 }
             }
             return null;
@@ -215,8 +215,8 @@ public class RequestEndPoint : IRequestEndPoint
         }
     }
 
-    //Get Cancelled requests
-    public async Task<IList<RequestModel>> GetCancelledRequests(string empID)
+    //Get Cancelled Orders
+    public async Task<IList<OrderModel>> GetCancelledOrders(string empID)
     {
         try
         {
@@ -224,11 +224,11 @@ public class RequestEndPoint : IRequestEndPoint
             {
 
 
-                IList<RequestModel> thisMonthRequests = await _apiHelper.ApiClient.GetFromJsonAsync<IList<RequestModel>>($"/api/Requests/GetCancelled?empID={empID}");
+                IList<OrderModel> thisMonthOrders = await _apiHelper.ApiClient.GetFromJsonAsync<IList<OrderModel>>($"/api/Orders/GetCancelled?empID={empID}");
 
-                if (thisMonthRequests != null && thisMonthRequests.Count > 0)
+                if (thisMonthOrders != null && thisMonthOrders.Count > 0)
                 {
-                    return thisMonthRequests;
+                    return thisMonthOrders;
                 }
             }
             return null;

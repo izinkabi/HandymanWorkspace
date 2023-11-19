@@ -38,7 +38,7 @@
                 IsConfirmed = await _authEndPoint.ConfirmEmail(userId, code);
                 if (IsConfirmed)
                 {
-                    //Logging again to access the Workshop sign-up page
+                    //Logging again to access the workshop sign-up page
                     var authedUserModel = await _authEndPoint.LoginUser(userId);
                     var state = await _authStateProvider.GetAuthenticationStateAsync();
                     await InvokeAsync(StateHasChanged);

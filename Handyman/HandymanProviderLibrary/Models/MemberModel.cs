@@ -1,10 +1,10 @@
 ﻿namespace HandymanProviderLibrary.Models;
 
-public class ServiceProviderModel : EmployeeModel
+public class MemberModel : EmployeeModel
 {
 
     public List<ServiceModel>? Services { get; set; } = new();
-    public string? pro_providerId { get; set; }
+    public string? member_profileId { get; set; }
 
 
 }

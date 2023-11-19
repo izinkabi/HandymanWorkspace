@@ -1,9 +1,9 @@
 ﻿namespace HandymanProviderLibrary.Models
 {
-    public class ProviderServiceModel
+    public class MemberServiceModel
     {
         public int Id { get; set; }
-        public string? ServiceProviderId { get; set; }
+        public string? MemberId { get; set; }
         public int ServiceId { get; set; }
     }
 }

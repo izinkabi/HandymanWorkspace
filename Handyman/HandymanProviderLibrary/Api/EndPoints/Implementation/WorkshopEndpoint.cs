@@ -5,29 +5,29 @@ using System.Net.Http.Json;
 
 namespace HandymanProviderLibrary.Api.EndPoints.Implementation;
 
-public class BusinessEndPoint : IBusinessEndPoint
+public class WorkshopEndPoint : IWorkshopEndPoint
 {
     IAPIHelper? _apiHelper;
-    IServiceProviderEndPoint? _serviceProvider;
-    BusinessModel? business;
+    IMemberEndpoint? _member;
+    WorkshopModel? Workshop;
     string? ErrorMsg;
-    public BusinessEndPoint(IAPIHelper apiHelper, IServiceProviderEndPoint serviceProvider)
+    public WorkshopEndPoint(IAPIHelper apiHelper, IMemberEndpoint member)
     {
         _apiHelper = apiHelper;
-        _serviceProvider = serviceProvider;
+        _member = member;
     }
 
-    //Get the business's employee(ServiceProvider)
-    public async Task<BusinessModel> GetBusiness(int busId)
+    //Get the Workshop's employee(Member)
+    public async Task<WorkshopModel> GetWorkshop(int busId)
     {
         try
         {
             if (busId > 0)
             {
-                business = new();
+                Workshop = new();
                 if (busId != null)
                 {
-                    business = await _apiHelper?.ApiClient?.GetFromJsonAsync<BusinessModel>($"/api/Delivery/GetBusiness?busId={busId}");
+                    Workshop = await _apiHelper?.ApiClient?.GetFromJsonAsync<WorkshopModel>($"/api/Delivery/GetWorkshop?busId={busId}");
                 }
 
             }
@@ -38,22 +38,22 @@ public class BusinessEndPoint : IBusinessEndPoint
         {
             throw new Exception(ex.Message);
         }
-        return business;
+        return Workshop;
     }
 
-    //Create a new business
-    public async Task<BusinessModel> CreateNewBusiness(BusinessModel business)
+    //Create a new Workshop
+    public async Task<WorkshopModel> CreateNewWorkshop(WorkshopModel Workshop)
     {
         try
         {
-            if (business != null)
+            if (Workshop != null)
             {
-                var response = await _apiHelper.ApiClient.PostAsJsonAsync<BusinessModel>("/api/Delivery/Create", business);
-                BusinessModel newBusiness;
+                var response = await _apiHelper.ApiClient.PostAsJsonAsync<WorkshopModel>("/api/Delivery/Create", Workshop);
+                WorkshopModel newWorkshop;
                 if (response.IsSuccessStatusCode)
                 {
-                    newBusiness = response.Content.ReadFromJsonAsync<BusinessModel>().Result;
-                    return newBusiness;
+                    newWorkshop = response.Content.ReadFromJsonAsync<WorkshopModel>().Result;
+                    return newWorkshop;
                 }
             }
 
@@ -66,14 +66,14 @@ public class BusinessEndPoint : IBusinessEndPoint
 
     }
 
-    //Add new services under the business's provider
-    public async Task<bool> EmployMember(ServiceProviderModel serviceProvider)
+    //Add new services under the Workshop's provider
+    public async Task<bool> EmployMember(MemberModel Member)
     {
         try
         {
-            if (serviceProvider != null)
+            if (Member != null)
             {
-                var result = await _serviceProvider.CreateServiceProvider(serviceProvider);
+                var result = await _member.CreateMember(Member);
                 return result;
             }
             else
@@ -84,7 +84,7 @@ public class BusinessEndPoint : IBusinessEndPoint
         }
         catch (Exception ex)
         {
-            serviceProvider = null;
+            Member = null;
             return false;
             throw new Exception(ex.Message);
         }
@@ -92,12 +92,12 @@ public class BusinessEndPoint : IBusinessEndPoint
 
 
 
-    public async Task<BusinessModel> GetWorkShop(string regNumber)
+    public async Task<WorkshopModel> GetWorkShop(string regNumber)
     {
         try
         {
-            var WorkShop = await _apiHelper.ApiClient.GetFromJsonAsync<BusinessModel>($"/api/Delivery/GetWorkShop?regNumber={regNumber}");
-            return WorkShop;
+            var workShop = await _apiHelper.ApiClient.GetFromJsonAsync<WorkshopModel>($"/api/Delivery/GetWorkShop?regNumber={regNumber}");
+            return workShop;
         }
         catch (Exception ex)
         {

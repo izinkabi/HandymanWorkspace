@@ -37,13 +37,13 @@ public class EmployeeEndPoint
     }
 
     //Get a service provider of the given ID
-    public async Task<ServiceProviderModel> GetProvider(string userId)
+    public async Task<MemberModel> GetProvider(string userId)
     {
         try
         {
             if (userId != null)
             {
-                var serviceProvider = await _apiHelper.ApiClient.GetFromJsonAsync<ServiceProviderModel>($"/api/Delivery/GetProvider?employeeId={userId}");
+                var serviceProvider = await _apiHelper.ApiClient.GetFromJsonAsync<MemberModel>($"/api/Delivery/GetProvider?employeeId={userId}");
                 if (serviceProvider != null)
                 {
                     return serviceProvider;

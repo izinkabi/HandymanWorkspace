@@ -4,47 +4,47 @@ using HandymanProviderLibrary.Models;
 namespace Handyman_SP_UI.Helpers
 {
 
-    public class BusinessHelper : IBusinessHelper
+    public class WorkshopHelper : IWorkshopHelper
     {
-        IBusinessEndPoint _business;
-        IProviderHelper _providerHelper;
+        IWorkshopEndPoint _work;
+        IMemberHelper _memberHelper;
 
-        ServiceProviderModel? provider;
-        BusinessModel? business;
+        MemberModel? member;
+        WorkshopModel? workshop;
 
-        public BusinessHelper(IBusinessEndPoint business, IProviderHelper providerH)
+        public WorkshopHelper(IWorkshopEndPoint Workshop, IMemberHelper memberH)
         {
-            _business = business;
-            _providerHelper = providerH;
+            _work = Workshop;
+            _memberHelper = memberH;
         }
 
 
 
         /// <summary>
-        /// Get the business with the logged in employee
+        /// Get the workshop with the logged in employee
         /// </summary>
-        /// <returns>BusinessModel</returns>
+        /// <returns>WorkshopModel</returns>
         /// <exception cref="Exception">Null Reference</exception>
-        public async Task<BusinessModel>? GetBusiness()
+        async Task<WorkshopModel> IWorkshopHelper.GetWorkshop()
         {
             try
             {
 
-                if (await GetProvider() != null)
+                if (await Getmember() != null)
                 {
-                    if (provider.employeeProfile.UserId != null)
+                    if (member.employeeProfile.UserId != null)
                     {
-                        business = await _business.GetBusiness(provider.BusinessId);
-                        if (business != null)
+                        workshop = await _work.GetWorkshop(member.WorkId);
+                        if (workshop != null)
                         {
-                            business.Employees.Add(provider);
+                            workshop.Employees.Add(member);
                         }
                     }
 
 
                 }
 
-                return business;
+                return workshop;
             }
             catch (Exception ex)
             {
@@ -57,28 +57,28 @@ namespace Handyman_SP_UI.Helpers
         /// Get WorkShops 
         /// </summary>
         /// <returns></returns>
-        public async Task<BusinessModel> GetWorkShop(string regNumber) => await _business.GetWorkShop(regNumber);
+        public async Task<WorkshopModel> GetWorkShop(string regNumber) => await _work.GetWorkShop(regNumber);
         /// <summary>
         /// Add a new member to the WorkShop
         /// </summary>
         /// <param name="member"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<bool> AddMemberToWorkShop(ServiceProviderModel member)
+        public async Task<bool> AddMemberToWorkShop(MemberModel member)
         {
             if (member == null)
             {
                 return false;
             }
 
-            if (member.BusinessId == 0)
+            if (member.WorkId == 0)
             {
                 return false;
             }
 
             try
             {
-                return await _business.EmployMember(member);
+                return await _work.EmployMember(member);
             }
             catch (Exception ex)
             {
@@ -89,20 +89,20 @@ namespace Handyman_SP_UI.Helpers
         }
 
         /// <summary>
-        /// Create a new business
+        /// Create a new workshop
         /// </summary>
-        /// <param name="newBiz"></param>
+        /// <param name="work"></param>
         /// <returns></returns>
         /// <exception cref="Exception">Null reference</exception>
 
-        async Task<BusinessModel> IBusinessHelper.CreateBusiness(BusinessModel newBiz)
+        async Task<WorkshopModel> IWorkshopHelper.CreateWorkshop(WorkshopModel work)
         {
-            if (newBiz != null)
+            if (work != null)
             {
                 try
                 {
-                    business = await _business.CreateNewBusiness(await StampBusinessUserAsync(newBiz));
-                    return business ?? newBiz;
+                    workshop = await _work.CreateNewWorkshop(await StampWorkshopUserAsync(work));
+                    return workshop ?? work;
                 }
                 catch (Exception ex)
                 {
@@ -114,12 +114,12 @@ namespace Handyman_SP_UI.Helpers
         }
 
         /// <summary>
-        /// Stamp a new business with employee and provider id
+        /// Stamp a new workshop with employee and member id
         /// </summary>
         /// <param name="newBiz"></param>
         /// <returns></returns>
         /// <exception cref="Exception">Null reference</exception>
-        public async Task<BusinessModel>? StampBusinessUserAsync(BusinessModel? newBiz)
+        public async Task<WorkshopModel>? StampWorkshopUserAsync(WorkshopModel? newBiz)
         {
             try
             {
@@ -130,7 +130,7 @@ namespace Handyman_SP_UI.Helpers
 
                 newBiz.registration.name = newBiz.Name;
                 newBiz.address.add_country = "Sout Africa";
-                var result = await _providerHelper.StampBusinessUserAsync(newBiz);
+                var result = await _memberHelper.StampWorkshopUserAsync(newBiz);
 
                 return result;
             }
@@ -141,19 +141,19 @@ namespace Handyman_SP_UI.Helpers
             }
         }
         /// <summary>
-        /// Get the logged in provider of the business
+        /// Get the logged in member of the workshop
         /// </summary>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<ServiceProviderModel>? GetProvider()
+        public async Task<MemberModel>? Getmember()
         {
             try
             {
-                if (provider == null || provider.pro_providerId == null)
+                if (member == null || member.member_profileId == null)
                 {
-                    provider = await _providerHelper.GetProvider();
+                    member = await _memberHelper.GetMember();
                 }
-                return provider;
+                return member;
             }
             catch (Exception ex)
             {

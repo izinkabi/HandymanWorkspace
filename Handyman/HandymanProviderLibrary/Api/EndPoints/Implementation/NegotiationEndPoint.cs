@@ -15,12 +15,12 @@ namespace HandymanProviderLibrary.Api.EndPoints.Implementation
         }
 
         //Get a negotiation model
-        public async Task<NegoModel> GetNego(int negoId)
+        public async Task<NegotiationModel> GetNego(int negoId)
         {
             if (negoId is 0) return null;
             try
             {
-                NegoModel negotiation = await _apiHelper.ApiClient.GetFromJsonAsync<NegoModel>($"/api/negos/getnego?negoId={negoId}");
+                NegotiationModel negotiation = await _apiHelper.ApiClient.GetFromJsonAsync<NegotiationModel>($"/api/negos/getnego?negoId={negoId}");
                 return negotiation;
             }
             catch (Exception ex)
@@ -31,12 +31,12 @@ namespace HandymanProviderLibrary.Api.EndPoints.Implementation
         }
 
         //Insert a new Nego
-        public async Task<bool> InsertNego(NegoModel negotiation)
+        public async Task<bool> InsertNego(NegotiationModel negotiation)
         {
             if (negotiation is null) return false;
             try
             {
-                var result = await _apiHelper.ApiClient.PostAsJsonAsync<NegoModel>("/api/negos/postnego", negotiation);
+                var result = await _apiHelper.ApiClient.PostAsJsonAsync<NegotiationModel>("/api/negos/postnego", negotiation);
                 return result.IsSuccessStatusCode;
             }
             catch (Exception ex)
@@ -47,12 +47,12 @@ namespace HandymanProviderLibrary.Api.EndPoints.Implementation
         }
 
         //Update a negotiation
-        public async Task<bool> UpdateNego(NegoModel negotiation)
+        public async Task<bool> UpdateNego(NegotiationModel negotiation)
         {
             if (negotiation is null) return false;
             try
             {
-                var httpResponse = await _apiHelper.ApiClient.PutAsJsonAsync<NegoModel>("/api/negos/UpdateNego", negotiation);
+                var httpResponse = await _apiHelper.ApiClient.PutAsJsonAsync<NegotiationModel>("/api/negos/UpdateNego", negotiation);
                 return httpResponse.IsSuccessStatusCode;
             }
             catch (Exception ex)

@@ -53,11 +53,11 @@ public class ServiceEndpoint : IServiceEndpoint
 
 
     //Get the provider's service(s) by provider Id
-    public async Task<List<ProviderServiceModel>> GetProviderServicesByServiceId(int serviceId)
+    public async Task<List<MemberServiceModel>> GetProviderServicesByServiceId(int serviceId)
     {
         try
         {
-            List<ProviderServiceModel>? httpResponseMessage = await _apiClient.ApiClient.GetFromJsonAsync<List<ProviderServiceModel>>($"api/GetProvidersServicesByServiceId?serviceId={serviceId}");
+            List<MemberServiceModel>? httpResponseMessage = await _apiClient.ApiClient.GetFromJsonAsync<List<MemberServiceModel>>($"api/GetProvidersServicesByServiceId?serviceId={serviceId}");
             return httpResponseMessage;
         }
         catch (Exception ex)
@@ -68,11 +68,11 @@ public class ServiceEndpoint : IServiceEndpoint
 
     //Identity shall be used in the api to get the userId and hence up security breach
     //GET a list of provider's service (a list of providers that are providing a certaing service)
-    public async Task<List<ProviderServiceModel>> GetProviderServiceByProviderId(string providerId)
+    public async Task<List<MemberServiceModel>> GetProviderServiceByProviderId(string providerId)
     {
         try
         {
-            List<ProviderServiceModel>? httpResponseMessage = await _apiClient.ApiClient.GetFromJsonAsync<List<ProviderServiceModel>>($"/api/GetProvidersServicesByProviderId?providerId={providerId}");
+            List<MemberServiceModel>? httpResponseMessage = await _apiClient.ApiClient.GetFromJsonAsync<List<MemberServiceModel>>($"/api/GetProvidersServicesByProviderId?providerId={providerId}");
             return httpResponseMessage;
         }
         catch (Exception ex)
@@ -82,13 +82,13 @@ public class ServiceEndpoint : IServiceEndpoint
     }
 
     //Create a new service provided by the give provider
-    public async Task<string> CreateProviderService(ProviderServiceModel providerService)
+    public async Task<string> CreateProviderService(MemberServiceModel providerService)
     {
         string? result = null;
         var ps = new
         {
             providerService.ServiceId,
-            providerService.ServiceProviderId,
+            providerService.MemberId,
             providerService.Id
         };
 
@@ -111,7 +111,7 @@ public class ServiceEndpoint : IServiceEndpoint
     }
 
     //Upadate the provider's service
-    public async Task UpdateProviderService(ProviderServiceModel providerService)
+    public async Task UpdateProviderService(MemberServiceModel providerService)
     {
         try
         {
@@ -123,7 +123,7 @@ public class ServiceEndpoint : IServiceEndpoint
         }
     }
     //Deleting the provider's service
-    public async Task DeleteProviderService(ProviderServiceModel providerService)
+    public async Task DeleteProviderService(MemberServiceModel providerService)
     {
         try
         {
@@ -341,7 +341,7 @@ public class ServiceEndpoint : IServiceEndpoint
     }
 
     //Delete the original service from provider
-    public async Task<bool> DeleteProviderService(int wsServiceId, string providerId)
+    public async Task<bool> DeleteMemberService(int wsServiceId, string providerId)
     {
         if (wsServiceId == 0 || providerId is null)
         {

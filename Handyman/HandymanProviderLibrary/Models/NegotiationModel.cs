@@ -1,6 +1,6 @@
 ﻿namespace HandymanProviderLibrary.Models
 {
-    public class NegoModel
+    public class NegotiationModel
     {
         public int Id { get; set; }
         public int OrderId { get; set; }

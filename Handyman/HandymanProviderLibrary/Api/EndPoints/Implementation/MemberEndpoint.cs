@@ -5,32 +5,32 @@ using System.Net.Http.Json;
 
 namespace HandymanProviderLibrary.Api.EndPoints.Implementation;
 
-public class ServiceProviderEndPoint : EmployeeEndPoint, IServiceProviderEndPoint
+public class MemberEndpoint : EmployeeEndPoint, IMemberEndpoint
 {
 
     private readonly IAPIHelper? _apiHelper;
     private readonly AuthenticatedUserModel _authedUser;
-    ServiceProviderModel? serviceProvider;
+    MemberModel? Member;
 
-    public ServiceProviderEndPoint(IAPIHelper apiHelper, AuthenticatedUserModel authedUserModel) : base(apiHelper)
+    public MemberEndpoint(IAPIHelper apiHelper, AuthenticatedUserModel authedUserModel) : base(apiHelper)
     {
         _apiHelper = apiHelper;
         _authedUser = authedUserModel;
     }
-    //Add service(s) of business's provider
-    async Task IServiceProviderEndPoint.AddService(ServiceProviderModel provider)
+    //Add service(s) of business's member
+    async Task IMemberEndpoint.AddService(MemberModel member)
     {
         try
         {
-            await _apiHelper.ApiClient.PostAsJsonAsync("/api/Delivery/PostProviderService", provider);
+            await _apiHelper.ApiClient.PostAsJsonAsync("/api/Delivery/PostmemberService", member);
         }
         catch (Exception ex)
         {
             throw new Exception(ex.Message);
         }
     }
-    //Remove the service of a provider
-    async Task IServiceProviderEndPoint.RemoveService(ServiceModel service, string providerId)
+    //Remove the service of a member
+    async Task IMemberEndpoint.RemoveService(ServiceModel service, string memberId)
     {
         try
         {
@@ -42,19 +42,19 @@ public class ServiceProviderEndPoint : EmployeeEndPoint, IServiceProviderEndPoin
         }
 
     }
-    //Adding a new service provider
-    async Task<bool> IServiceProviderEndPoint.CreateServiceProvider(ServiceProviderModel provider)
+    //Adding a new service member
+    async Task<bool> IMemberEndpoint.CreateMember(MemberModel member)
     {
         try
         {
 
-            if (provider != null)
+            if (member != null)
             {
 
-                if (provider.pro_providerId is not null)
+                if (member.member_profileId is not null)
                 {
                     HttpResponseMessage responseMessage = new HttpResponseMessage();
-                    responseMessage = await _apiHelper.ApiClient.PostAsJsonAsync("/api/Delivery/AddNewMember", provider);
+                    responseMessage = await _apiHelper.ApiClient.PostAsJsonAsync("/api/Delivery/AddNewMember", member);
                     return responseMessage.IsSuccessStatusCode;
                 }
                 else
@@ -77,7 +77,7 @@ public class ServiceProviderEndPoint : EmployeeEndPoint, IServiceProviderEndPoin
     }
 
     //Create a new profile
-    public async Task<bool> CreateProfile(ProfileModel newProfile)
+    async Task<bool> IMemberEndpoint.CreateProfile(ProfileModel newProfile)
     {
         try
         {
@@ -121,7 +121,7 @@ public class ServiceProviderEndPoint : EmployeeEndPoint, IServiceProviderEndPoin
     }
 
     //Query profile by Id
-    public async Task<ProfileModel> GetProfile(string id)
+    async Task<ProfileModel> IMemberEndpoint.GetProfile(string id)
     {
         try
         {
