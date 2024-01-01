@@ -26,7 +26,7 @@ public class MemberData : EmployeeData, IMemberData
                 List<EmployeeModel> employees = GetMemberships(workId);
 
 
-                //Get the service of the member (member's Service)
+                //Get the Service of the member (member's Service)
                 foreach (var employee in employees)
                 {
                     List<Service_CategoryModel> service_category = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Delivery.spMember_Service_LookUp",
@@ -43,7 +43,7 @@ public class MemberData : EmployeeData, IMemberData
                     var services = new List<ServiceModel>();
                     foreach (Service_CategoryModel outputItem in service_category)
                     {
-                        //populate service
+                        //populate Service
                         var service = new ServiceModel()!;
                         service.datecreated = outputItem.serv_datecreated;
                         service.status = outputItem.serv_status;
@@ -77,8 +77,8 @@ public class MemberData : EmployeeData, IMemberData
             throw new Exception(ex.Message, ex);
         }
     }
-    //Since the service member is an employee, get the employee then
-    //Get the service member and the services
+    //Since the Service member is an employee, get the employee then
+    //Get the Service member and the services
     public MemberModel GetMember(string memberId)
     {
         try
@@ -88,7 +88,7 @@ public class MemberData : EmployeeData, IMemberData
                 var employee = GetEmployeeWithRatings(memberId);
 
 
-                //Get the service of the member
+                //Get the Service of the member
                 List<Service_CategoryModel> service_category = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Delivery.spMember_Service_LookUp",
                     new { member_profileId = memberId }, "Handyman_DB");
 
@@ -106,7 +106,7 @@ public class MemberData : EmployeeData, IMemberData
 
                     foreach (Service_CategoryModel outputItem in service_category)
                     {
-                        //populate service
+                        //populate Service
                         var service = new ServiceModel()!;
                         service.datecreated = outputItem.serv_datecreated;
                         service.status = outputItem.serv_status;

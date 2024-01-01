@@ -1,13 +1,12 @@
 ﻿using Handyman_DataLibrary.DataAccess.Interfaces;
 using Handyman_DataLibrary.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Handyman_Api.Controllers
 {
     [Route("api/negos")]
     [ApiController]
-    [Authorize(Roles = "Consumer,Member,Owner")]
+    //[Authorize(Roles = "Consumer,Member,Owner")]
     public class NegosController : ControllerBase
     {
         private readonly INegotiationData _negoData;

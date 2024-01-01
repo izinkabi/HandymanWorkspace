@@ -1,6 +1,5 @@
 ﻿using Handyman_DataLibrary.DataAccess.Interfaces;
 using Handyman_DataLibrary.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,7 +7,7 @@ namespace Handyman_Api.Controllers;
 
 [Route("api/Delivery")]
 [ApiController]
-[Authorize(Roles = "Member")]
+//[Authorize(Roles = "Member")]
 public class WorkshopsController : ControllerBase
 {
     IWorkshopData? _workshopData;
@@ -239,7 +238,7 @@ public class WorkshopsController : ControllerBase
         }
     }
 
-    //Insert new workshop service
+    //Insert new workshop Service
     [HttpPost]
     [Route("InsertWorkShopService")]
     public void Post(int workshopRegId, int customServiceId)

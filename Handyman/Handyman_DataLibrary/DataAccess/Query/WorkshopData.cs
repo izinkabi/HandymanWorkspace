@@ -176,7 +176,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
         {
             try
             {
-                //check if the service member is a employee
+                //check if the Service member is a employee
                 if (member is not null)
                 {
                     //Insert a member and its employee details
@@ -256,7 +256,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
             //Also from _employeeData
         }
 
-        //Get a service member of the given employee ID
+        //Get a Service member of the given employee ID
         public MemberModel GetMember(string employeeId)
         {
             try
@@ -294,7 +294,7 @@ namespace Handyman_DataLibrary.DataAccess.Query
             }
         }
 
-        //Insert a new service for the work
+        //Insert a new Service for the work
         public void InsertWorkShopService(int workShopRegId, int customServiceId)
         {
             if (workShopRegId == 0 || customServiceId == 0)

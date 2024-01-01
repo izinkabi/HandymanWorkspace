@@ -1,6 +1,5 @@
 ﻿using Handyman_DataLibrary.DataAccess.Interfaces;
 using Handyman_DataLibrary.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -9,7 +8,7 @@ namespace Handyman_Api.Controllers;
 
 [Route("api/Tasks")]
 [ApiController]
-[Authorize(Roles = "Consumer,Owner,Member")]
+//[Authorize(Roles = "Consumer,Owner,Member")]
 public class TasksController : ControllerBase
 {
     readonly ITaskData? _taskData;

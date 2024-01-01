@@ -5,7 +5,7 @@
 @inject IAuthEndpoint authEndPoint
 @inject NavigationManager NavManager
 @inject AuthenticationStateProvider _authStateProvider
-
+<meta name="google-signin-client_id" content="868484711602-rvsfj11o5t8jn7b3lgg8f93ajjvrfseo.apps.googleusercontent.com">
 @if (!IsSubmitted && !IsLoggedIn && !IsRegistered)
 {
     <div class="authContainer">
@@ -106,6 +106,7 @@
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos possimus odio laudantium nobis ad, iure ratione ea? Similique doloribus modi delectus, pariatur illo quaerat nulla exercitationem consequatur, magni natus doloremque.</p>
 
                     <button class="login-btn" @onclick="swapLogin" id="sign-in-btn">Sign in</button>
+                     <div class="g-signin2" data-onsuccess="onSignIn"></div> 
                 </div>
                 <img src="/img/bg-auth/signin.svg" alt="" class="image">
             </div>
@@ -172,6 +173,7 @@ else
     /// </summary>
     ///
     private IJSObjectReference? moduleReference;
+    private IJSObjectReference? googleModuleRef;
     private SignInModel? LoginCredentialsInput = new SignInModel()!;
     private SignUpModel? RegistrationInput = new SignUpModel()!;
     private List<string> Errors = new List<string>();
@@ -192,7 +194,7 @@ else
             try
             {
                 moduleReference = await JS.InvokeAsync<IJSObjectReference>("import", "/js/Auth.js");
-
+                googleModuleRef = await JS.InvokeAsync<IJSObjectReference>("import", "/js/googleAuth.js");
             }
             catch (Exception ex)
             {

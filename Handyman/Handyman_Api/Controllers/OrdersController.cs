@@ -1,6 +1,5 @@
 ﻿using Handyman_DataLibrary.DataAccess.Interfaces;
 using Handyman_DataLibrary.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -8,7 +7,7 @@ namespace Handyman_Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+//Authorize]
 public class OrdersController : ControllerBase
 {
     IOrderData _orderData;

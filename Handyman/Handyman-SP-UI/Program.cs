@@ -1,5 +1,4 @@
 using Handyman_SP_UI.Helpers;
-using Handyman_SP_UI.Hubs;
 using HandymanProviderLibrary.Api.ApiHelper;
 using HandymanProviderLibrary.Api.EndPoints.Implementation;
 using HandymanProviderLibrary.Api.EndPoints.Interface;
@@ -40,7 +39,18 @@ builder.Services.AddResponseCompression(opt =>
       new[] { "application/octet-stream" });
 });
 builder.Services.AddAuthorizationCore();
-builder.Services.AddAuthentication();
+
+
+var services = builder.Services;
+var configuration = builder.Configuration;
+
+services.AddAuthentication()//.AddGoogle(googleOptions =>
+//{
+//    googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
+//    googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+//})
+;
+
 
 
 var app = builder.Build();
@@ -62,8 +72,6 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.MapBlazorHub();
-app.MapHub<NegotiationHub>("/negoHub");
-app.MapHub<RequestHub>("/reqHub");
 app.MapFallbackToPage("/_Host");
 app.UseAuthentication();
 app.UseAuthorization();

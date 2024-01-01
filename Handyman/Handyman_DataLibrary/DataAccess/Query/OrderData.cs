@@ -18,7 +18,7 @@ public class OrderData : IOrderData
 
     }
 
-    //Get all the Orders for the given service and their tasks
+    //Get all the Orders for the given Service and their tasks
     //These are actually orders that represent new Orders
     public IList<OrderModel> GetNewOrders(int serviceId)
     {
@@ -41,7 +41,7 @@ public class OrderData : IOrderData
                 order.order_datecreated = ord.datecreated;
                 order.order_status = ord.status;
 
-                //populate service of each order
+                //populate Service of each order
                 order.Service = _serviceData.GetService(serviceId);
 
                 //Check if the has been populated already
@@ -107,7 +107,7 @@ public class OrderData : IOrderData
             {
                 foreach (OrderModel Order in Orders)
                 {
-                    //Get the service
+                    //Get the Service
                     Order.Service = _serviceData.GetServiceByOrder(Order.order_id);
 
                     //Get tasks
@@ -199,7 +199,7 @@ public class OrderData : IOrderData
 
             if (Order != null && Order.order_id != 0)
             {
-                //Get a service
+                //Get a Service
                 Order.Service = _serviceData.GetServiceByOrder(Order.order_id);
                 //Get tasks
                 Order.tasks = _taskData.GetTasks(Order.order_id).ToList();

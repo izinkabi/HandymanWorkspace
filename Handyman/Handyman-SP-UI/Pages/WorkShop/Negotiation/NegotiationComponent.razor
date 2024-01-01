@@ -8,10 +8,10 @@
 @*Errors*@
 @if (Errors.Count > 0)
 {
-    <div class="border-2">
+    <div class="border-2 ">
         @foreach(string error in Errors)
         {
-            <span>@error</span>
+            <p class="text-danger"><span>@error</span></p>
         }
     </div>
 }

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SP_MMobile.Views.LoginPage"
+             Title="Login"
+             xmlns:viewmodel="clr-namespace:SP_MMobile.ViewModels"
+             x:DataType="viewmodel:LoginViewModel">
+    <Grid RowDefinitions="Auto, Auto, Auto, Auto,Auto,Auto,Auto"
+       Margin="10"
+       Padding="10"
+       RowSpacing="20">
+
+        <Label Text="Login"
+            FontSize="Medium"
+            VerticalTextAlignment="Center"
+            HorizontalOptions="Center"/>
+
+        <Entry Placeholder="Username" 
+            Grid.Row="1"
+            HorizontalTextAlignment="Center"
+            VerticalTextAlignment="Center"/>
+
+        <Entry Placeholder="Password" 
+            Grid.Row="2"
+            IsPassword="True"
+            HorizontalTextAlignment="Center"
+            VerticalTextAlignment="Center"/>
+
+        <Grid  ColumnDefinitions="Auto,Auto"
+            Grid.Row="3">
+            <CheckBox />
+            <Label Text="Remember Me"
+                Padding="5"
+                Grid.Column="1"/>
+
+        </Grid>
+
+        <Button Text="Sign In"
+             Grid.Row="4"
+             Command="{Binding SignInCommand}"
+             HorizontalOptions="Center" />
+        <Label Text="{Binding ErrorMsg}"
+               HorizontalOptions="Center"
+               Grid.Row="5"/>
+        <Button Text="Register"
+              Grid.Row="6"
+              Command="{Binding RegisterCommand}"
+              FontSize="Small"
+              HorizontalOptions="Center" />
+
+    </Grid>
+</ContentPage>

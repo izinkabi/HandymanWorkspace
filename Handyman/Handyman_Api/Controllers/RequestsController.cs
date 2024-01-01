@@ -1,6 +1,5 @@
 ﻿using Handyman_DataLibrary.DataAccess.Interfaces;
 using Handyman_DataLibrary.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +8,7 @@ namespace Handyman_Api.Controllers;
 
 [Route("api/Requests")]
 [ApiController]
-[Authorize(Roles = "Consumer,Member,Owner")]
+//[Authorize(Roles = "Consumer,Member,Owner")]
 public class RequestsController : ControllerBase
 {
     IRequestData _requestData;
@@ -29,7 +28,7 @@ public class RequestsController : ControllerBase
         {
 
             var user = _signInManager.Context.User;
-            var id = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+            var id = "162cdb1e-d4e2-44d4-9589-aa3c8b647f30";//user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
             if (id != null)
                 Requests = _requestData.GetRequests(id);
             return Requests;

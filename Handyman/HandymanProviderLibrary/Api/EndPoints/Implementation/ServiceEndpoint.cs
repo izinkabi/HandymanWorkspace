@@ -1,7 +1,6 @@
 ﻿using HandymanProviderLibrary.Api.ApiHelper;
 using HandymanProviderLibrary.Api.EndPoints.Interface;
 using HandymanProviderLibrary.Models;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
 
@@ -32,15 +31,15 @@ public class ServiceEndpoint : IServiceEndpoint
     {
         try
         {
-            if (_authedModel.Access_Token != null)
-            {
-                _apiClient.ApiClient.DefaultRequestHeaders.Clear();
-                _apiClient.ApiClient.DefaultRequestHeaders.Accept.Clear();
-                _apiClient.ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("applications/json"));
-                _apiClient.ApiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_authedModel.Access_Token}");
+            //if (_authedModel.Access_Token != null)
+            //{
+            //    _apiClient.ApiClient.DefaultRequestHeaders.Clear();
+            //    _apiClient.ApiClient.DefaultRequestHeaders.Accept.Clear();
+            //    _apiClient.ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("applications/json"));
+            //    _apiClient.ApiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_authedModel.Access_Token}");
 
-                services = await _apiClient.ApiClient.GetFromJsonAsync<List<ServiceModel>>("/api/services/GetServices");
-            }
+            services = await _apiClient.ApiClient.GetFromJsonAsync<List<ServiceModel>>("/api/services/GetServices");
+            //}
 
 
         }

@@ -29,7 +29,7 @@ public class RequestData : IRequestData
         HashSet<RequestModel> requestSet = new()!;//It does not allow duplicates
         try
         {
-            requestTasks = _dataAccess.LoadData<RequestTaskModel, dynamic>("Request.spRequestLookUp_ByConsumerId_RequestByDateCreated",
+            requestTasks = _dataAccess.LoadData<RequestTaskModel, dynamic>("Request.spRequestLookUp_ByConsumerId_OrderByDateCreated",
                      new { consumerID = consumerID }, "Handyman_DB");
 
             //Braking down the requestTask entity
@@ -37,7 +37,7 @@ public class RequestData : IRequestData
             foreach (var requestTask in requestTasks)
             {
                 var req = new RequestModel();
-                req.service = new();
+                req.Service = new();
                 //populate req
 
                 req.Id = requestTask.req_id;
@@ -45,22 +45,22 @@ public class RequestData : IRequestData
                 req.status = requestTask.req_status;
 
                 Service_CategoryModel service = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Request.spServiceLookUpBy_Id",
-                     new { serviceId = requestTask.req_id }, "Handyman_DB").First();
-                //populate service of each req
-                req.service.name = service.serv_name;
-                req.service.status = service.serv_status;
-                req.service.datecreated = service.serv_datecreated;
-                req.service.img = service.serv_img;
-                req.service.id = service.serv_id;
-                req.service.PriceId = service.price_id;
+                     new { serviceId = requestTask.req_service_id }, "Handyman_DB").First();
+                //populate Service of each req
+                req.Service.name = service.serv_name;
+                req.Service.status = service.serv_status;
+                req.Service.datecreated = service.serv_datecreated;
+                req.Service.img = service.serv_img;
+                req.Service.id = service.serv_id;
+                req.Service.PriceId = service.price_id;
 
 
-                req.service.category = new ServiceCategoryModel();
+                req.Service.category = new ServiceCategoryModel();
 
                 //populate category
-                req.service.category.name = service.cat_name;
-                req.service.category.description = service.cat_description;
-                req.service.category.type = service.cat_type;
+                req.Service.category.name = service.cat_name;
+                req.Service.category.description = service.cat_description;
+                req.Service.category.type = service.cat_type;
 
                 //Check if the has been populated already
                 foreach (var o in requestSet)
@@ -156,7 +156,7 @@ public class RequestData : IRequestData
                 DateCreated = Request.datecreated,
                 Status = Request.status,
                 DueDate = Request.duedate,
-                ServiceId = Request.service.id
+                ServiceId = Request.Service.id
             }).First();
 
             /*Saving the task*/
@@ -279,7 +279,7 @@ public class RequestData : IRequestData
             foreach (var requestTask in requestTasks)
             {
                 var req = new RequestModel();
-                req.service = new();
+                req.Service = new();
                 //populate req
 
                 req.Id = requestTask.task_id;
@@ -288,20 +288,20 @@ public class RequestData : IRequestData
 
                 Service_CategoryModel service = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Request.spServiceLookUpBy_Id",
                      new { serviceId = requestTask.req_service_id }, "Handyman_DB").First();
-                //populate service of each req
-                req.service.name = service.serv_name;
-                req.service.status = service.serv_status;
-                req.service.datecreated = service.serv_datecreated;
-                req.service.img = service.serv_img;
-                req.service.id = service.serv_id;
+                //populate Service of each req
+                req.Service.name = service.serv_name;
+                req.Service.status = service.serv_status;
+                req.Service.datecreated = service.serv_datecreated;
+                req.Service.img = service.serv_img;
+                req.Service.id = service.serv_id;
 
 
-                req.service.category = new ServiceCategoryModel();
+                req.Service.category = new ServiceCategoryModel();
 
                 //populate category
-                req.service.category.name = service.cat_name;
-                req.service.category.description = service.cat_description;
-                req.service.category.type = service.cat_type;
+                req.Service.category.name = service.cat_name;
+                req.Service.category.description = service.cat_description;
+                req.Service.category.type = service.cat_type;
 
                 //Check if the has been populated already
                 foreach (var o in requestSet)

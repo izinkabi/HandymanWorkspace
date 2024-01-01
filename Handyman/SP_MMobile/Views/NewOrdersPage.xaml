@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SP_MMobile.Views.NewOrdersPage"
+             Title="Orders"
+             xmlns:viewmodel="clr-namespace:SP_MMobile.ViewModels"
+             xmlns:model="clr-namespace:SP_MMobile.Model"
+             x:DataType="viewmodel:NewOrdersViewModel">
+    <Grid ColumnDefinitions="Auto,Auto"
+          RowDefinitions="Auto,*">
+        <CollectionView ItemsSource="{Binding Orders}"
+                    Grid.ColumnSpan="2"
+                    SelectionMode="None">
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:OrderModel">
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Delete"
+                                               BackgroundColor="Red"/>
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+                        <Grid Padding="5">
+                            <Frame HeightRequest="125">
+                                <Grid Padding="0"
+                                          ColumnDefinitions="125,Auto,Auto">
+                                    <Image Aspect="AspectFill"
+                                               Source="{Binding Service.img}"
+                                               WidthRequest="125"
+                                               HeightRequest="125"
+                                               Grid.Column="0"/>
+                                    <StackLayout Padding="10"
+                                                     VerticalOptions="Center"
+                                                     Grid.Column="1">
+
+                                        <Label Text="{Binding Service.name}"
+                                                    FontSize="24"/>
+                                        <Label Text="{Binding Service.category.name}"
+                                                    FontSize="18"/>
+                                    </StackLayout>
+
+                                    <Button Padding="10"
+                                                Grid.Column="2"
+                                                Text="Accept"/>
+                                </Grid>
+
+                            </Frame>
+                        </Grid>
+
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Button Text="Orders"
+                Grid.Row="1"
+                IsEnabled="{Binding IsNotBusy}"
+                Grid.ColumnSpan="2"
+                HorizontalOptions="Center"
+                Command="{Binding GetOrdersCommand}"
+                VerticalOptions="Center"/>
+    </Grid>
+        
+    <ActivityIndicator IsVisible="{Binding IsBusy}"
+                       IsRunning="{Binding IsBusy}"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="CenterAndExpand"/>
+</ContentPage>

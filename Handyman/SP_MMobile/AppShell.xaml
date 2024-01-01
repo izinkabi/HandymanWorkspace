@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="SP_MMobile.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:SP_MMobile.Views"
+    Shell.FlyoutBehavior="Flyout">
+
+    <Shell.FlyoutHeader>
+        <Grid BackgroundColor="Gray">
+            <Image Aspect="AspectFit"
+               Source="loginicon.png"
+               HeightRequest="200"
+               Opacity="0.6" />
+            <Label Text="Profile"
+               TextColor="White"
+               FontAttributes="Bold"
+               HorizontalTextAlignment="Center"
+               VerticalTextAlignment="Center" />
+        </Grid>
+    </Shell.FlyoutHeader>
+
+
+    <FlyoutItem Title="Home"
+        Icon="homeicon.jpg">
+        <Tab>
+            <ShellContent ContentTemplate="{DataTemplate local:NewOrdersPage}" />
+        </Tab>
+    </FlyoutItem>
+    <FlyoutItem Title="Revenues"
+            Icon="moneybagicon.jpg">
+        <Tab>
+            <ShellContent ContentTemplate="{DataTemplate local:FinancePage}" />
+        </Tab>
+    </FlyoutItem>
+    <FlyoutItem Title="Membership"
+            Icon="profilecardicon.jpg">
+        <Tab>
+            <ShellContent ContentTemplate="{DataTemplate local:MembershipPage}" />
+        </Tab>
+    </FlyoutItem>
+</Shell>

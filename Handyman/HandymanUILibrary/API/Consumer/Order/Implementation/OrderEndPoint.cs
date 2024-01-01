@@ -45,7 +45,7 @@ public class OrderEndPoint : IOrderEndPoint
                 _apiHelper.ApiClient.DefaultRequestHeaders.Accept.Clear();
                 _apiHelper.ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/*+json"));
                 _apiHelper.ApiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_authenticatedUser.Access_Token}");
-                httpResponseMessage = await _apiHelper.ApiClient.PostAsJsonAsync<OrderModel>("/api/orders/Post", order);
+                httpResponseMessage = await _apiHelper.ApiClient.PostAsJsonAsync<OrderModel>("/api/requests/Post", order);
             }
 
             if (httpResponseMessage.IsSuccessStatusCode)
@@ -88,7 +88,7 @@ public class OrderEndPoint : IOrderEndPoint
                 _apiHelper.ApiClient.DefaultRequestHeaders.Accept.Clear();
                 _apiHelper.ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/*+json"));
                 _apiHelper.ApiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_authenticatedUser.Access_Token}");
-                orders = await _apiHelper.ApiClient.GetFromJsonAsync<IList<OrderModel>>($"/api/orders/GetOrders");
+                orders = await _apiHelper.ApiClient.GetFromJsonAsync<IList<OrderModel>>($"/api/requests/GetRequests");
             }
 
             return orders;

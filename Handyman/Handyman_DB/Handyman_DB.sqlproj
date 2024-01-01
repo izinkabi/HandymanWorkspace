@@ -99,7 +99,7 @@
     <Build Include="Stored Procedures\Task\spTaskInsert.sql" />
     <Build Include="Stored Procedures\Task\spTaskUpdate.sql" />
     <Build Include="Stored Procedures\Request\pRequestUpdate.sql" />
-    <Build Include="Stored Procedures\Order_Task\spOrder_Task_Insert.sql" />
+    <Build Include="Stored Procedures\Order_Task\spRequest_Task_Insert.sql" />
     <Build Include="Stored Procedures\Order_Task\spDeleteRequestTask.sql" />
     <Build Include="Stored Procedures\Service\spServiceLookUpBy_Id.sql" />
     <Build Include="Schemas\dbo.sql" />

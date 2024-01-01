@@ -1,9 +1,9 @@
-﻿CREATE PROCEDURE [Request].[spGetHandymenDetailsByOrder]
+﻿CREATE PROCEDURE [Request].[spGetHandymenDetailsByRequest]
 --Look up details of a provider 
 	@requestId int = 0
 AS
 
-IF EXISTS (SELECT * FROM [Delivery].[request] WHERE [req_orderid] = @requestId)
+IF EXISTS (SELECT * FROM [Request].[request] WHERE [req_id] = @requestId)
 BEGIN
 	SELECT p.Names , p.Surname, p.DateOfBirth, p.Gender, p.PhoneNumber,
             w.work_name, w.work_registrationid
