@@ -68,6 +68,7 @@
 	<ItemGroup>
 	  <None Remove="Resources\Images\babyicon.jpg" />
 	  <None Remove="Resources\Images\cleaningicon.jpg" />
+	  <None Remove="Resources\Images\cleaningicon2.jpg" />
 	  <None Remove="Resources\Images\concrete.jpg" />
 	  <None Remove="Resources\Images\display.jpg" />
 	  <None Remove="Resources\Images\foodicon.png" />
@@ -164,6 +165,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\NewOrdersPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\OrderDetailsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ProfileDetailsPage.xaml">

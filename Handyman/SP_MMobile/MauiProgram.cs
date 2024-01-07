@@ -35,6 +35,8 @@ namespace SP_MMobile
             builder.Services.AddTransient<NewOrdersViewModel>();
             builder.Services.AddTransient<IOrderEndpoint, OrderEndpoint>();
             builder.Services.AddTransient<IAuthEndpoint, AuthEndpoint>();
+            builder.Services.AddTransient<OrderDetailsPage>();
+            builder.Services.AddTransient<OrderDetailsViewModel>();
 
             //var a = Assembly.GetExecutingAssembly();
             //using var stream = a.GetManifestResourceStream("SP_MMobile.appsettings.json");

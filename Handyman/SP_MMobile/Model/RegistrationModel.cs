@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SP_MLibrary.Model;
+namespace SP_MMobile.Model;
 
 public class RegistrationModel
 {

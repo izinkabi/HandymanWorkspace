@@ -9,6 +9,7 @@ namespace SP_MMobile
             InitializeComponent();
             Routing.RegisterRoute(nameof(NewOrdersPage), typeof(NewOrdersPage));
             Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
+            Routing.RegisterRoute(nameof(OrderDetailsPage), typeof(OrderDetailsPage));
         }
     }
 }

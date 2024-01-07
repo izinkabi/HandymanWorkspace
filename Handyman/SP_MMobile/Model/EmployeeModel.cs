@@ -1,4 +1,4 @@
-﻿namespace SP_MLibrary.Model;
+﻿namespace SP_MMobile.Model;
 
 /// <summary>
 /// Employees model with a list of services, business and ratings

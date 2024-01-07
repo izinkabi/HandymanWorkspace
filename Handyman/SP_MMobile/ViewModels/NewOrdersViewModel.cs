@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using SP_MLibrary.Models;
 using SP_MLibrary.Services.Interface;
+using SP_MMobile.Views;
 using System.Collections.ObjectModel;
 
 namespace SP_MMobile.ViewModels;
@@ -56,5 +57,23 @@ public partial class NewOrdersViewModel : BaseViewModel
         }
 
 
+    }
+
+    [RelayCommand]
+    public async void ViewOrderDetails(OrderModel order)
+    {
+        if (order is null)
+            return;
+        try
+        {
+            await Shell.Current.GoToAsync($"{nameof(OrderDetailsPage)}", true, new Dictionary<string, object>
+            {
+                { "Order", order }
+            });
+        }
+        catch (Exception ex)
+        {
+
+        }
     }
 }

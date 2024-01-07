@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SP_MMobile.Views.OrderDetailsPage"
+             xmlns:viewmodel="clr-namespace:SP_MMobile.ViewModels"
+             xmlns:model="clr-namespace:SP_MMobile.Model"
+             x:DataType="viewmodel:OrderDetailsViewModel"
+             Title="{Binding Order.Service.name}">
+
+
+    <ScrollView>
+        <VerticalStackLayout>
+            <Grid ColumnDefinitions="*,Auto,*"
+                  RowDefinitions="160,Auto">
+                <BoxView BackgroundColor="#5E036C"
+                         Grid.ColumnSpan="3"
+                         HeightRequest="160"
+                         HorizontalOptions="Fill"/>
+
+                <Frame Grid.RowSpan="2"
+                       Grid.Column="1"
+                       HeightRequest="160"
+                       WidthRequest="160"
+                       CornerRadius="80"
+                       IsClippedToBounds="True"
+                       HorizontalOptions="Center"
+                       Padding="0"
+                       Margin="0,80,0,0">
+                    <Image Aspect="AspectFill"
+                           HeightRequest="160"
+                           WidthRequest="160"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Source="{Binding Order.Service.img}"/>
+                </Frame>
+            </Grid>
+
+            <VerticalStackLayout Padding="10" Spacing="10">
+                <Label Text="{Binding Order.Service.category.description}"/>
+                <Label Text="{Binding Order.datecreated}"/>
+            </VerticalStackLayout>
+
+            <CollectionView ItemsSource="{Binding Order.Tasks}"
+                            SelectionMode="None">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:TaskModel">
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="Done"
+                                BackgroundColor="Green"/>
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <Grid Padding="5">
+                                <Frame HeightRequest="125">
+                                    <Grid Padding="0"
+                                          ColumnDefinitions="Auto,Auto">
+
+                                        <StackLayout Padding="10"
+                                                     VerticalOptions="Center">
+
+                                            <Label Text="{Binding tas_title, StringFormat='Title: {0}'}"
+                                                   Style="{StaticResource SmallLabel}"
+                                                   FontSize="24"/>
+                                            <Label Text="{Binding tas_description}"
+                                                    Style="{StaticResource MediumLabel}"
+                                                   FontSize="18"/>
+                                        </StackLayout>
+
+                                    </Grid>
+
+                                </Frame>
+                            </Grid>
+
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+    
+</ContentPage>

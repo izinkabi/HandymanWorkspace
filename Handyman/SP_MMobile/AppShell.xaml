@@ -4,8 +4,10 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:SP_MMobile.Views"
-    Shell.FlyoutBehavior="Flyout">
-
+    Shell.FlyoutBehavior="Flyout"
+    BackgroundColor="#5E036C">
+    
+    
     <Shell.FlyoutHeader>
         <Grid BackgroundColor="Gray">
             <Image Aspect="AspectFit"

@@ -6,43 +6,42 @@
              xmlns:viewmodel="clr-namespace:SP_MMobile.ViewModels"
              xmlns:model="clr-namespace:SP_MMobile.Model"
              x:DataType="viewmodel:NewOrdersViewModel">
-    <Grid ColumnDefinitions="Auto,Auto"
-          RowDefinitions="Auto,*">
+    <Grid ColumnDefinitions="*">
         <CollectionView ItemsSource="{Binding Orders}"
-                    Grid.ColumnSpan="2"
-                    SelectionMode="None">
-
+             SelectionMode="None">
+            
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:OrderModel">
                     <SwipeView>
                         <SwipeView.RightItems>
                             <SwipeItems>
-                                <SwipeItem Text="Delete"
-                                               BackgroundColor="Red"/>
+                                <SwipeItem Text="Start"
+                                        BackgroundColor="Blue"/>
                             </SwipeItems>
                         </SwipeView.RightItems>
                         <Grid Padding="5">
                             <Frame HeightRequest="125">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer CommandParameter="{Binding .}"
+                                                          Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:NewOrdersViewModel}},Path=ViewOrderDetailsCommand}"/>
+                                </Frame.GestureRecognizers>
                                 <Grid Padding="0"
-                                          ColumnDefinitions="125,Auto,Auto">
+                                   ColumnDefinitions="125,Auto,Auto">
                                     <Image Aspect="AspectFill"
-                                               Source="{Binding Service.img}"
-                                               WidthRequest="125"
-                                               HeightRequest="125"
-                                               Grid.Column="0"/>
+                                        Source="{Binding Service.img}"
+                                        WidthRequest="125"
+                                        HeightRequest="125"
+                                        Grid.Column="0"/>
                                     <StackLayout Padding="10"
-                                                     VerticalOptions="Center"
-                                                     Grid.Column="1">
+                                              VerticalOptions="Center"
+                                              Grid.Column="1">
 
                                         <Label Text="{Binding Service.name}"
-                                                    FontSize="24"/>
-                                        <Label Text="{Binding Service.category.name}"
-                                                    FontSize="18"/>
+                                             FontSize="24"/>
+                                        <Label Text="{Binding Service.category.description}"
+                                             FontSize="18"/>
                                     </StackLayout>
 
-                                    <Button Padding="10"
-                                                Grid.Column="2"
-                                                Text="Accept"/>
                                 </Grid>
 
                             </Frame>
@@ -52,17 +51,14 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        <Button Text="Orders"
-                Grid.Row="1"
-                IsEnabled="{Binding IsNotBusy}"
-                Grid.ColumnSpan="2"
-                HorizontalOptions="Center"
-                Command="{Binding GetOrdersCommand}"
-                VerticalOptions="Center"/>
+       
+
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                    IsRunning="{Binding IsBusy}"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="CenterAndExpand"/>
+
     </Grid>
         
-    <ActivityIndicator IsVisible="{Binding IsBusy}"
-                       IsRunning="{Binding IsBusy}"
-                       HorizontalOptions="FillAndExpand"
-                       VerticalOptions="CenterAndExpand"/>
+   
 </ContentPage>
