@@ -1,0 +1,219 @@
+﻿.orders-container {
+    padding: 10px;
+    width: 90%;
+    height: 82%;
+    border-radius: 15px;
+    background-color: hsla(210, 28%, 55%, 0.13);
+    position: relative;
+    top: 12%;
+    left: 5%;
+    box-shadow: 0px 2px 13px 1px var(--bg-GRANNY-SMITH);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr;
+    grid-auto-columns: 1fr;
+    grid-auto-rows: 1fr;
+    gap: 0% 1%;
+    grid-auto-flow: row;
+    grid-template-areas:
+        "requests orders Negotiations Todo";
+}
+
+.requests {
+    background-color: var(--bg-PAMPAS);
+    box-shadow: 0px 2px 8px 2px var(--bg-GRANNY-SMITH);
+    border-radius: 15px;
+    padding: 10px;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    gap: 0px 0px;
+    grid-template-areas:
+        ".";
+    grid-area: requests;
+}
+
+.new-requests {
+    /*TODO - */
+}
+
+    .new-requests h2 {
+        font-size: 16px;
+        margin-bottom: 1%;
+    }
+
+    .new-requests p {
+        font-size: 12px;
+        color: var(--bg-GRANNY-SMITH);
+        margin-bottom: 4%;
+    }
+
+    .new-requests ul {
+        list-style: none;
+        height: 320px;
+        overflow-y: auto;
+        gap: 17px;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-content: stretch;
+        justify-content: space-between;
+        align-items: stretch;
+        padding: 10px 10px;
+        transition: all 0.7s ease-in-out;
+        scroll-snap-type: both;
+    }
+
+        .new-requests ul li {
+            width: 100%;
+            height: 90px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            align-items: flex-start;
+            background: url(/img/Graph\ Report.png) center no-repeat;
+            border-radius: 7px;
+            gap: 2px;
+            box-shadow: 0px 1px 3px 2px var(--bg-GRANNY-SMITH);
+            color: white;
+            justify-content: flex-end;
+        }
+
+            .new-requests ul li h4 {
+                font-size: 14px;
+                align-self: flex-end;
+            }
+
+            .new-requests ul li p {
+                font-size: 9px;
+                align-self: flex-end;
+            }
+
+            .new-requests ul li img {
+                /*TODO - Need to either remove this or configure it properly */
+            }
+
+            .new-requests ul li span {
+                font-size: 10px;
+                align-self: flex-end;
+                color: var(rgb(168, 70, 70));
+                justify-self: self-end;
+            }
+/* width and height for the track and thumb */
+::-webkit-scrollbar {
+    width: 8px; /* width of the scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888; /* color of the thumb */
+    border-radius: 6px; /* rounded corners */
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1; /* color of the track */
+    border-radius: 6px; /* rounded corners */
+}
+
+/* hover effect on the thumb */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; /* color on hover */
+}
+
+.orders {
+    grid-area: orders;
+    background-color: var(--bg-PAMPAS);
+    box-shadow: 0px 2px 8px 2px var(--bg-GRANNY-SMITH);
+    border-radius: 15px;
+    padding: 10px;
+    height: 100%;
+}
+
+.Negotiations {
+    grid-area: Negotiations;
+    background-color: var(--bg-PAMPAS);
+    box-shadow: 0px 2px 8px 2px var(--bg-GRANNY-SMITH);
+    border-radius: 15px;
+    padding: 10px;
+    height: 100%;
+}
+
+.Todo {
+    grid-area: Todo;
+    background-color: var(--bg-PAMPAS);
+    box-shadow: 0px 2px 8px 2px var(--bg-GRANNY-SMITH);
+    border-radius: 15px;
+    padding: 10px;
+    height: 100%;
+}
+
+@media all and (-ms-high-contrast:none) {
+    .orders-container {
+        display: -ms-grid;
+        -ms-grid-columns: repeat(3, 1fr);
+        -ms-grid-rows: 1fr;
+    }
+
+    .requests {
+        -ms-grid-row: 1;
+        -ms-grid-row-span: 1;
+        -ms-grid-column: 1;
+        -ms-grid-column-span: 1;
+    }
+
+    .orders {
+        -ms-grid-row: 1;
+        -ms-grid-row-span: 1;
+        -ms-grid-column: 2;
+        -ms-grid-column-span: 1;
+    }
+
+    .Negotiations {
+        -ms-grid-row: 1;
+        -ms-grid-row-span: 1;
+        -ms-grid-column: 3;
+        -ms-grid-column-span: 1;
+    }
+}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0, 78%); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 60%;
+    height: 50%;
+    border-radius: 25px; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }

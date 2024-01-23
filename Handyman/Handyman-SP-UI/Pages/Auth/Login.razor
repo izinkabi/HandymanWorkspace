@@ -6,9 +6,10 @@
 @inject NavigationManager NavManager
 @inject AuthenticationStateProvider _authStateProvider
 
+@layout AuthLayout
+
 @if (!IsSubmitted && !IsLoggedIn && !IsRegistered)
 {
-    <div class="authContainer">
         <div class="signin-signup">
 
             @*-------Sign in form-------*@
@@ -119,7 +120,6 @@
                 <img src="/img/bg-auth/signup.svg" alt="" class="image">
             </div>
         </div>
-    </div>
 }
 else if (IsSubmitted && IsRegistered)
 {

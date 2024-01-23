@@ -19,8 +19,75 @@
 
 }
 
+<div class="orders-container">
+    <div class="requests">
+        <div class="new-requests">
+            <h2>Requests</h2>
+            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi, assumenda fugiat. Maiores nobis iusto officia !</p>
+            <ul>
+                <li id="myBtn">
 
-        <!--New Requests Section-->
+                    <h4>Test tiling</h4>
+                    <p>Renovation</p>
+
+                    <span>R1080,88</span>
+                    <!-- The Modal -->
+                    <div id="myModal" class="modal">
+                        <!-- Modal content -->
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <p>Some text in the Modal..</p>
+                        </div>
+                    </div>
+                </li>
+                <li id="myBtn">
+                    <h4>Wall tiling</h4>
+                    <p>Renovation</p>
+                    <img src="/img/Briefcase.png" alt="">
+                    <span>R1080,88</span>
+                </li>
+                <li id="myBtn">
+                    <h4>Wall tiling</h4>
+                    <p>Renovation</p>
+                    <img src="/img/Briefcase.png" alt="">
+                    <span>R1080,88</span>
+                </li>
+                <li id="myBtn">
+                    <h4>Test tiling</h4>
+                    <p>Renovation</p>
+                    <img src="/img/Male User.png" alt="">
+                    <span>R1080,88</span>
+                    <!-- The Modal -->
+                    <div id="myModal" class="modal">
+                        <!-- Modal content -->
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <p>Some text in the Modal..</p>
+                        </div>
+                    </div>
+                </li>
+                <li id="myBtn">
+                    <h4>Wall tiling</h4>
+                    <p>Renovation</p>
+                    <img src="/img/Briefcase.png" alt="">
+                    <span>R1080,88</span>
+                </li>
+                <li id="myBtn">
+                    <h4>Wall tiling</h4>
+                    <p>Renovation</p>
+                    <img src="/img/Briefcase.png" alt="">
+                    <span>R1080,88</span>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+    <div class="orders"></div>
+    <div class="Negotiations"></div>
+    <div class="Todo"></div>
+</div>
+
+ @*        <!--New Requests Section-->
         <section class="container-fluid justify-content-center  m-auto align-content-lg-center ">
 
             <!--Table-->
@@ -122,7 +189,7 @@
 
 
    
-    
+     *@
 
 @code {
 
@@ -133,50 +200,50 @@
     bool isRequestsDisplayed;
     List<string>? Errors = new List<string>();
 
-    protected override async Task OnInitializedAsync()
-    {
-        try
-        {
-            try
-            {
-                requests = await _requestHelper.GetOwnRequests();
-                if(requests!=null& requests.Count > 0)
-                {
-                    foreach (var service in await _providerHelper.GetWorkShopServices())
-                    {
-                        var listoforders = await _requestHelper.GetNewRequests(service.originalServiceId) ?? new List<OrderModel>();
-                        foreach (var o in listoforders)
-                        {
-                            if (o.status == 0)
-                            {
-                                NumberOfOrders++;
-                            }
-                        }
-                    }
-                    await InvokeAsync(StateHasChanged);
-                }
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     try
+    //     {
+    //         try
+    //         {
+    //             requests = await _requestHelper.GetOwnRequests();
+    //             if(requests!=null& requests.Count > 0)
+    //             {
+    //                 foreach (var service in await _providerHelper.GetWorkShopServices())
+    //                 {
+    //                     var listoforders = await _requestHelper.GetNewRequests(service.originalServiceId) ?? new List<OrderModel>();
+    //                     foreach (var o in listoforders)
+    //                     {
+    //                         if (o.status == 0)
+    //                         {
+    //                             NumberOfOrders++;
+    //                         }
+    //                     }
+    //                 }
+    //                 await InvokeAsync(StateHasChanged);
+    //             }
 
-            }
-            catch (Exception ex)
-            {
-                Errors.Add(ex.Message);
+    //         }
+    //         catch (Exception ex)
+    //         {
+    //             Errors.Add(ex.Message);
 
-            }
+    //         }
 
-            //Check own requests status
-            if (requests != null && requests.Count > 0)
-            {
-                //Display both the new and old requests
-                isOrdersDisplayed = true;
-                isRequestsDisplayed = true;
-                await InvokeAsync(StateHasChanged);
-            }
-        }
-        catch (Exception ex)
-        {
-            Errors.Add(ex.Message);
-        }
-    }
+    //         //Check own requests status
+    //         if (requests != null && requests.Count > 0)
+    //         {
+    //             //Display both the new and old requests
+    //             isOrdersDisplayed = true;
+    //             isRequestsDisplayed = true;
+    //             await InvokeAsync(StateHasChanged);
+    //         }
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         Errors.Add(ex.Message);
+    //     }
+    // }
 
     //Go to top page
     [JSInvokable]
