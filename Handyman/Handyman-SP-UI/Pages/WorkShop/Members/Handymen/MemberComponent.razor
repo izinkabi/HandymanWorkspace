@@ -1,17 +1,17 @@
 ﻿@page "/member"
 
 @inject NavigationManager NavManager
-@inject IBusinessHelper _business
+@inject IWorkshopHelper _work
 @inject AuthenticationStateProvider authenticationStateProvider
-@inject IProviderHelper _providerHelper
-@attribute [Authorize]
-        @if (business != null && business.registration != null)
+@inject IMemberHelper _member
+
+        @if (work != null && work.registration != null)
         {
             <!--Welcome-->
             <div class="p-4 p-md-3 mb-2 rounded-4 text-bg-dark" role="document">
                 <div class="col-md-6 px-0">
                     <h1 class="display-4 fst-italic">Hi   </h1>
-                    <p class="lead my-3">Welcome to Handyman's @business.Name</p>
+                    <p class="lead my-3">Welcome to Handyman's @work.Name</p>
                 </div>
             </div>
             <!--End Welcome-->
@@ -22,9 +22,9 @@
 
                         <a href="business-dashboard" class="col p-4 d-flex flex-column btn-outline-warning">
                             <strong class="d-inline-block mb-2">Business details </strong>
-                            <h3 class="mb-0">@business.Name</h3>
+                            <h3 class="mb-0">@work.Name</h3>
 
-                            <p class="card-text mb-auto"><strong>Reg Number: </strong>@business.registration.regNumber</p> <!--Should come from db -->
+                            <p class="card-text mb-auto"><strong>Reg Number: </strong>@work.registration.regNumber</p> <!--Should come from db -->
 
                         </a>
                     </div>
@@ -33,18 +33,18 @@
                 <!--Business Component-->
                 
                 <!--End Business Component-->
-                @if (business.address != null)
+                @if (work.address != null)
                 {
                     <!--Addresses Component-->
                     <div class="col-md-3 shadow rounded-4 p-2 " role="document">
                         <div class="row g-0 border rounded-4 overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                             <div class="col p-4 d-flex flex-column position-static">
                                 <strong class="d-inline-block mb-2 text-primary">Address</strong>
-                                <h3 class="mb-0">@business.address.add_suburb</h3>
-                                <h4 class="card-text mb-auto">@business.address.add_state.ToUpper()</h4>
+                                <h3 class="mb-0">@work.address.add_suburb</h3>
+                                <h4 class="card-text mb-auto">@work.address.add_state.ToUpper()</h4>
                                 <br />
-                                <p class="card-text mb-auto">@business.address.add_country.ToUpper()</p>
-                                <p class="card-text mb-auto">@business.address.add_zip</p>
+                                <p class="card-text mb-auto">@work.address.add_country.ToUpper()</p>
+                                <p class="card-text mb-auto">@work.address.add_zip</p>
                             </div>
                         </div>
                     </div>
@@ -76,7 +76,7 @@
                 }
             </div>
         }
-        @if (business is null || business.registration is null)
+        @if (work is null || work.registration is null)
         {
             @if(member is not null)
             {
@@ -101,8 +101,8 @@
 
 @code {
 
-    BusinessModel? business = new();
-    ServiceProviderModel? member = new();
+    WorkshopModel? work = new();
+    MemberModel? member = new();
 
     enum Categories
     {
@@ -117,17 +117,17 @@
         try
         {
 
-            business = await _business.GetBusiness();
-            if(business!=null && business.Employees.Count > 0)
+            work = await _work.GetWorkshop();
+            if(work!=null && work.Employees.Count > 0)
             {
 
-                foreach(var member in business.Employees)
+                foreach(var member in work.Employees)
                 {
                     if (member != null)
                     {
                         var user = (await authenticationStateProvider.GetAuthenticationStateAsync()).User;
                         var userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
-                        if (member.pro_providerId == userId)
+                        if (member.member_profileId == userId)
                         {
                             this.member = member;
                         }
@@ -135,10 +135,10 @@
                 }
             }
 
-            if(business is null)
+            if(work is null)
             {
                member = new();
-               member.employeeProfile = await _providerHelper.GetProviderProfile();
+                member.employeeProfile = await _member.GetMemberProfile();
             }
         }
         catch (Exception ex)

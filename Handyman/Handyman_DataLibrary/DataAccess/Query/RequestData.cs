@@ -2,79 +2,105 @@
 using Handyman_DataLibrary.Internal.DataAccess;
 using Handyman_DataLibrary.Models;
 
+
+
 namespace Handyman_DataLibrary.DataAccess.Query;
 
 public class RequestData : IRequestData
 {
     ISQLDataAccess _dataAccess;
     ITaskData _taskData;
-    IServiceData _serviceData;
-
-    public RequestData(ISQLDataAccess dataAccess, ITaskData taskData, IServiceData serviceData)
+    public RequestData(ISQLDataAccess dataAccess, ITaskData taskData)
     {
         _dataAccess = dataAccess;
         _taskData = taskData;
-        _serviceData = serviceData;
 
     }
 
-    //Get all the requests for the given service and their tasks
-    //These are actually orders that represent new requests
-    public IList<OrderModel> GetNewRequests(int serviceId)
+    /// <summary>
+    /// Get the consumer's Requests and their respective tasks
+    /// </summary>
+    /// <param name="consumerID"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    public IEnumerable<RequestModel> GetRequests(string consumerID)
     {
-        List<OrderTaskModel> ordertasks = new()!;
-        HashSet<OrderModel> orderSet = new()!;//It does not allow duplicates
+        List<RequestTaskModel> requestTasks = new()!;
+        HashSet<RequestModel> requestSet = new()!;//It does not allow duplicates
         try
         {
-            ordertasks = _dataAccess.LoadData<OrderTaskModel, dynamic>("Delivery.spOrderLookUpByService",
-                     new { serviceId = serviceId }, "Handyman_DB");
+            requestTasks = _dataAccess.LoadData<RequestTaskModel, dynamic>("Request.spRequestLookUp_ByConsumerId_OrderByDateCreated",
+                     new { consumerID = consumerID }, "Handyman_DB");
 
-            //Braking down the ordertask entity
-            //First get get orders then get services
-            foreach (var ordertask in ordertasks)
+            //Braking down the requestTask entity
+            //First get get Requests then get 
+            foreach (var requestTask in requestTasks)
             {
-                var order = new OrderModel();
-                order.service = new();
-                //populate order
+                var req = new RequestModel();
+                req.Service = new();
+                //populate req
 
-                order.Id = ordertask.ord_id;
-                order.duedate = ordertask.ord_duedate;
-                order.status = ordertask.ord_status;
+                req.Id = requestTask.req_id;
+                req.duedate = requestTask.req_duedate;
+                req.status = requestTask.req_status;
 
-                //populate service of each order
-                order.service = _serviceData.GetService(serviceId);
+                Service_CategoryModel service = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Request.spServiceLookUpBy_Id",
+                     new { serviceId = requestTask.req_service_id }, "Handyman_DB").First();
+                //populate Service of each req
+                req.Service.name = service.serv_name;
+                req.Service.status = service.serv_status;
+                req.Service.datecreated = service.serv_datecreated;
+                req.Service.img = service.serv_img;
+                req.Service.id = service.serv_id;
+                req.Service.PriceId = service.price_id;
+
+
+                req.Service.category = new ServiceCategoryModel();
+
+                //populate category
+                req.Service.category.name = service.cat_name;
+                req.Service.category.description = service.cat_description;
+                req.Service.category.type = service.cat_type;
 
                 //Check if the has been populated already
-                foreach (var o in orderSet)
+                foreach (var o in requestSet)
                 {
-                    if (o.Id == order.Id)
+                    if (o.Id == req.Id)
                     {
-                        orderSet.Remove(o);
+                        requestSet.Remove(o);
                     }
                 }
-                orderSet.Add(order);
+                requestSet.Add(req);
+                //Find provider's details
+                foreach (var o in requestSet)
+                {
+                    req.Member = GetHandymenDetails(o.Id);
+                }
+
 
 
             }
             //populate task
 
-            foreach (var order in orderSet)
+            foreach (var request in requestSet)
             {
-                order.Tasks = new List<TaskModel>();
-                foreach (var ordertask in ordertasks)
+                request.Tasks = new List<TaskModel>();
+                foreach (var requestTask in requestTasks)
                 {
                     var task = new TaskModel()!;
 
                     //populate task
-                    task.tas_description = ordertask.tas_description;
-                    task.tas_date_finished = ordertask.tas_date_finished;
-                    task.tas_date_started = ordertask.tas_date_started;
-                    task.tas_title = ordertask.tas_title;
-                    task.task_id = ordertask.task_id;
-                    //task.duration = ordertask.tas_duration;
-                    if (order.Id == ordertask.ord_id)
+                    task.tas_description = requestTask.tas_description;
+                    task.tas_date_finished = requestTask.tas_date_finished;
+                    task.tas_date_started = requestTask.tas_date_started;
+                    task.tas_title = requestTask.tas_title;
+                    task.task_id = requestTask.task_id;
+                    task.tas_duration = requestTask.tas_duration;
+                    task.tas_status = requestTask.tas_status;
+                    task.task_id = requestTask.task_id;
+                    if (request.Id == requestTask.req_id)
                     {
-                        order.Tasks.Add(task);
+                        request.Tasks.Add(task);
                     }
 
                 }
@@ -85,237 +111,260 @@ public class RequestData : IRequestData
             throw new Exception(ex.Message);
         }
 
-        return orderSet.ToList();
+        return requestSet.ToList();
     }
-    //Service of the given Request
 
-
-    //Get Task by ID
-    public TaskModel GetTask(int Id) => _taskData.GetTask(Id);
-
-    //Get the request(s) of the given provider and their tasks
-    public IList<RequestModel> GetRequests(string providerId)
+    //get the provider's details
+    private HandymenDetailsModel GetHandymenDetails(int RequestId)
     {
         try
         {
-            //Get the requests first
-            List<RequestModel> requests = _dataAccess.LoadData<RequestModel, dynamic>("Delivery.spRequestLookUpByProvider", new { providerId = providerId }, "Handyman_DB");
-
-
-            //Get tasks for each order, hence for each request 
-            if (requests != null && requests.Count > 0)
+            if (RequestId != 0)
             {
-                foreach (RequestModel request in requests)
+                var HDM = _dataAccess.LoadData<HandymenDetailsModel, dynamic>("Request.spGetHandymenDetailsByRequest", new { RequestId = RequestId }, "Handyman_DB").FirstOrDefault();
+                if (HDM != null)
                 {
-                    //Get the service
-                    request.Service = _serviceData.GetServiceByOrder(request.req_orderid);
-
-                    //Get tasks
-                    request.tasks = _taskData.GetTasks(request.req_orderid).ToList();
-
+                    return HDM;
                 }
             }
 
 
-            return requests;
-        }
-        catch (Exception ex)
-        {
             return null;
-            throw new Exception(ex.Message, ex.InnerException);
+        }
+        catch (Exception)
+        {
+
+            throw;
         }
     }
 
+
     /// <summary>
-    /// Post or insert a new request and it's tasks
+    /// Insert an req
     /// </summary>
-    /// <param name="request"></param>
-    /// <exception cref="Exception"></exception>
-    //This can only be made by the provider given
-    //the fact that it is an order accepted by the provider
-    public void InsertRequest(RequestModel request)
+    /// <param name="Request"></param>
+    public int InsertRequest(RequestModel Request)
     {
         try
         {
-            //insert a request
+            var DateCreated = DateTime.Now;
+            /*Save req*/
             _dataAccess.StartTransaction("Handyman_DB");
-            _dataAccess.SaveDataTransaction("Delivery.spRequestInsert",
+            int RequestId = _dataAccess.LoadDataTransaction<int, dynamic>("Request.spRequestInsert", new
+            {
+                ConsumerID = Request.ConsumerID,
+                DateCreated = Request.datecreated,
+                Status = Request.status,
+                DueDate = Request.duedate,
+                ServiceId = Request.Service.id
+            }).First();
+
+            /*Saving the task*/
+            if (Request.Tasks != null && Request.Tasks.Count > 0)
+            {
+                foreach (var item in Request.Tasks)
+                {
+                    //Save the task item
+
+                    //get a new task id
+                    int taskId = _taskData.InsertTask(item);
+                    //save the Request_task 
+                    _dataAccess.SaveDataTransaction("Request.spRequest_Task_Insert",
+                        new
+                        {
+                            taskId = taskId,
+                            RequestId = RequestId
+                        });
+                }
+            }
+
+
+
+            _dataAccess.CommitTransation();
+            return RequestId;
+        }
+        catch
+        {
+            _dataAccess.RollBackTransaction();
+            throw;
+        }
+    }
+
+    //Update req and request
+    public void UpdateRequest(RequestModel Request)
+    {
+        try
+        {
+            _dataAccess.SaveData("Request.spRequestUpdate",
                 new
                 {
-                    req_datecreated = request.req_datecreated,
-                    req_employeeid = request.req_employeeid,
-                    req_progress = request.req_progress,
-                    req_orderid = request.req_orderid,
-                    req_status = request.req_status
-                });
+                    ConsumerID = Request.ConsumerID,
+                    Status = Request.status,
+                    DueDate = Request.duedate,
+                    Id = Request.Id
 
-            //update the accepted order
-            _dataAccess.SaveDataTransaction("Delivery.spOrderUpdateByRequest", new { orderId = request.req_orderid, status = 2 });
+                },
+                "Handyman_DB");
+            //Update tasks
+            if (Request.Tasks.Count() > 0)
+            {
+                foreach (var task in Request.Tasks)
+                {
+                    if (task != null)
+                        _taskData.UpdateTask(task);
+                }
+
+            }
+
+            //Update req
+            _dataAccess.SaveData("Request.spRequestUpdate",
+                new
+                {
+                    RequestId = Request.Id,
+                    requestStatus = Request.status
+
+                },
+                "Handyman_DB");
+
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+    /// <summary>
+    /// Delete req and related tasks go to _dataaccess for more
+    /// </summary>
+    /// <param name="consumerId"></param>
+    /// <param name="RequestId"></param>
+    /// <exception cref="Exception"></exception>
+    public void DeleteRequestAndTasks(string consumerId, int RequestId)
+    {
+        try
+        {
+            _dataAccess.StartTransaction("Handyman_DB");
+            //Delete the request first
+            _dataAccess.SaveDataTransaction("Request.spRequestDelete", new { RequestId = RequestId });
+            //Then delete req and it's tasks
+            _dataAccess.SaveDataTransaction("Request.spDeleteRequestTask", new { consumerId = consumerId, RequestId = RequestId });
+            //Commit the transaction
             _dataAccess.CommitTransation();
         }
         catch (Exception ex)
         {
             _dataAccess.RollBackTransaction();
-            throw new Exception(ex.Message, ex.InnerException);
+
+            throw new Exception(ex.Message);
+            _dataAccess.Dispose();
         }
     }
 
     /// <summary>
-    /// Update a task for a given request
+    /// Get Requests and its
+    /// </summary>
+    /// <param name="RequestId"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    public IList<RequestModel> GetRequest(int RequestId)
+    {
+        List<RequestTaskModel> requestTasks = new()!;
+        HashSet<RequestModel> requestSet = new()!;//It does not allow duplicates
+        try
+        {
+            requestTasks = _dataAccess.LoadData<RequestTaskModel, dynamic>("Delivery.spRequestLookUpByService",
+                     new { RequestId = RequestId }, "Handyman_DB");
+
+            //Braking down the requestTask entity
+            //First get get Requests then get 
+            foreach (var requestTask in requestTasks)
+            {
+                var req = new RequestModel();
+                req.Service = new();
+                //populate req
+
+                req.Id = requestTask.task_id;
+                req.duedate = requestTask.req_duedate;
+                req.status = requestTask.req_status;
+
+                Service_CategoryModel service = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Request.spServiceLookUpBy_Id",
+                     new { serviceId = requestTask.req_service_id }, "Handyman_DB").First();
+                //populate Service of each req
+                req.Service.name = service.serv_name;
+                req.Service.status = service.serv_status;
+                req.Service.datecreated = service.serv_datecreated;
+                req.Service.img = service.serv_img;
+                req.Service.id = service.serv_id;
+
+
+                req.Service.category = new ServiceCategoryModel();
+
+                //populate category
+                req.Service.category.name = service.cat_name;
+                req.Service.category.description = service.cat_description;
+                req.Service.category.type = service.cat_type;
+
+                //Check if the has been populated already
+                foreach (var o in requestSet)
+                {
+                    if (o.Id == req.Id)
+                    {
+                        requestSet.Remove(o);
+                    }
+                }
+                requestSet.Add(req);
+
+
+            }
+            //populate task
+            foreach (var request in requestSet)
+            {
+                request.Tasks = new List<TaskModel>();
+                foreach (var requestTask in requestTasks)
+                {
+                    var task = new TaskModel()!;
+
+                    //populate task
+                    task.tas_description = requestTask.tas_description;
+                    task.tas_date_finished = requestTask.tas_date_finished;
+                    task.tas_date_started = requestTask.tas_date_started;
+                    task.tas_title = requestTask.tas_title;
+                    task.task_id = requestTask.task_id;
+                    //task.duration = requestTask.tas_duration;
+                    if (request.Id == requestTask.req_id)
+                    {
+                        request.Tasks.Add(task);
+                    }
+
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+
+        return requestSet.ToList();
+    }
+
+
+
+    /// <summary>
+    /// Insert a new task
     /// </summary>
     /// <param name="task"></param>
-    public void UpdateRequest(RequestModel requestUpdate)
-    {
-        try
-        {
-            if (requestUpdate != null)
-            {
-                _dataAccess.StartTransaction("Handyman_DB");
-                _dataAccess.SaveDataTransaction("Delivery.spRequestUpdate", requestUpdate);
-
-                foreach (var item in requestUpdate.tasks)
-                {
-                    _dataAccess.SaveDataTransaction("Request.spTaskUpdate", item);
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message, ex.InnerException);
-        }
-    }
-
-    //Get Request by an ID
-    public RequestModel GetRequest(int id)
-    {
-        try
-        {
-            RequestModel request = new()!;
-            if (id > 0)
-            {
-                request = _dataAccess.LoadData<RequestModel, dynamic>("Delivery.spRequestLookUpByProvider", new { orderId = id }, "Handyman_DB").FirstOrDefault();
-            }
-
-
-            if (request != null && request.req_orderid != 0)
-            {
-                //Get a service
-                request.Service = _serviceData.GetServiceByOrder(request.req_orderid);
-                //Get tasks
-                request.tasks = _taskData.GetTasks(request.req_orderid).ToList();
-
-                return request;
-            }
-            return request;
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message, ex.InnerException);
-            throw;
-        }
-    }
-
-    //Update a task of a request
-    public void UpdateTask(TaskModel taskUpdate) => _taskData.UpdateTask(taskUpdate);
-
-    /// <summary>
-    /// Getting Provider's Current month requests
-    /// </summary>
-    /// <param name="employeeId"></param>
     /// <returns></returns>
-    /// <exception cref="Exception"></exception>
-    public IList<RequestModel> GetCurrentMonthRequests(string employeeId)
-    {
-        try
-        {
-            IList<RequestModel> thisMonthRequests = _dataAccess.LoadData<RequestModel, dynamic>("Delivery.spRequestsLookUp_ByCurrentMonth", new { employeeId = employeeId }, "Handyman_DB");
+    public int InsertTask(TaskModel task) => _taskData.InsertTask(task);
 
-            if (thisMonthRequests != null && thisMonthRequests.Count > 0)
-            {
-                foreach (RequestModel request in thisMonthRequests)
-                {
-                    request.tasks = _taskData.GetTasks(request.req_orderid).ToList();
-                    request.Service = _serviceData.GetServiceByOrder(request.req_orderid);
-                }
-
-            }
-
-            return thisMonthRequests;
-
-        }
-        catch (Exception ex)
-        {
-
-            throw new Exception(ex.Message, ex.InnerException);
-        }
-    }
+    //Updating a task alone
 
 
-    /// <summary>
-    /// Similar to the above method only differ in date (week)
-    /// </summary>
-    /// <param name="employeeId"></param>
-    /// <returns></returns>
-    /// <exception cref="Exception"></exception>
-    public IList<RequestModel> GetCurrentWeekRequests(string employeeId)
-    {
-        try
-        {
-            IList<RequestModel>? thisWeekRequests = _dataAccess.LoadData<RequestModel, dynamic>("Delivery.spRequestsLookUp_ByCurrentWeek", new { employeeId = employeeId }, "Handyman_DB");
 
-            if (thisWeekRequests != null && thisWeekRequests.Count > 0)
-            {
-                foreach (RequestModel request in thisWeekRequests)
-                {
-                    request.tasks = _taskData.GetTasks(request.req_orderid).ToList();
-                    request.Service = _serviceData.GetServiceByOrder(request.req_orderid);
-                }
-
-            }
-
-            return thisWeekRequests;
-
-        }
-        catch (Exception ex)
-        {
-
-            throw new Exception(ex.Message, ex.InnerException);
-        }
-    }
+    /////////////////////////////////////////////////
+    /// / <summary>
+    /// / Negotiation data class
+    /// </summary>    ///
+    /////////////////////////////////////////////////
 
 
-    /// <summary>
-    /// Requests that are flagged as cancelled
-    /// </summary>
-    /// <param name="employeeId"></param>
-    /// <returns></returns>
-    /// <exception cref="Exception"></exception>
-    public IList<RequestModel> GetCancelledRequests(string employeeId)
-    {
-        try
-        {
-            IList<RequestModel> cancelledRequests = _dataAccess.LoadData<RequestModel, dynamic>("Delivery.spCancelledRequestLookUp", new { employeeId = employeeId }, "Handyman_DB");
 
-            if (cancelledRequests != null && cancelledRequests.Count > 0)
-            {
-                foreach (RequestModel request in cancelledRequests)
-                {
-
-                    request.tasks = _taskData.GetTasks(request.req_orderid).ToList();
-                    request.Service = _serviceData.GetServiceByOrder(request.req_orderid);
-                }
-
-            }
-
-            return cancelledRequests;
-
-        }
-        catch (Exception ex)
-        {
-
-            throw new Exception(ex.Message, ex.InnerException);
-            return null;
-        }
-    }
 }
-

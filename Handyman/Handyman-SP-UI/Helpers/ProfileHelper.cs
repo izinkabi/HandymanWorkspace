@@ -7,14 +7,14 @@ namespace Handyman_SP_UI.Helpers;
 
 public class ProfileHelper
 {
-    private readonly IServiceProviderEndPoint _providerEndPoint;
+    private readonly IMemberEndpoint _memberEndPoint;
     private readonly AuthenticationStateProvider? _authenticationStateProvider;
 
 
-    public ProfileHelper(IServiceProviderEndPoint providerEndPoint, AuthenticationStateProvider? authenticationStateProvider
+    public ProfileHelper(IMemberEndpoint memberEndPoint, AuthenticationStateProvider? authenticationStateProvider
        )
     {
-        _providerEndPoint = providerEndPoint;
+        _memberEndPoint = memberEndPoint;
         _authenticationStateProvider = authenticationStateProvider;
 
     }
@@ -27,7 +27,7 @@ public class ProfileHelper
     {
         try
         {
-            ProfileModel profile = await _providerEndPoint.GetProfile(await GetUserId());
+            ProfileModel profile = await _memberEndPoint.GetProfile(await GetUserId());
             return profile;
         }
         catch (Exception)
@@ -45,7 +45,7 @@ public class ProfileHelper
         {
             try
             {
-                return await _providerEndPoint.CreateProfile(newProfile);
+                return await _memberEndPoint.CreateProfile(newProfile);
             }
             catch (Exception ex)
             {

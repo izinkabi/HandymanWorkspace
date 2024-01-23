@@ -14,7 +14,7 @@ public class ServiceData : IServiceData
     }
 
     /// <summary>
-    /// Get service, by sp query specifications
+    /// Get Service, by sp query specifications
     /// </summary>
     /// <returns></returns>
     public List<ServiceModel> GetAllServices()
@@ -25,12 +25,12 @@ public class ServiceData : IServiceData
             new { },
             "Handyman_DB");
 
-        //populate the service and its category
+        //populate the Service and its category
         var services = new List<ServiceModel>();
 
         foreach (Service_CategoryModel outputItem in output)
         {
-            //populate service
+            //populate Service
             var service = new ServiceModel()!;
             service.datecreated = outputItem.serv_datecreated;
             service.status = outputItem.serv_status;
@@ -86,7 +86,7 @@ public class ServiceData : IServiceData
     }
 
     /// <summary>
-    /// Getting a service by its ID
+    /// Getting a Service by its ID
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -100,7 +100,7 @@ public class ServiceData : IServiceData
             {
                 Service_CategoryModel serviceCat = _dataAccess.LoadData<Service_CategoryModel, dynamic>("Request.spServiceLookUpBy_Id",
                      new { serviceId = id }, "Handyman_DB").First();
-                //Populate service
+                //Populate Service
                 service.name = serviceCat.serv_name;
                 service.status = serviceCat.serv_status;
                 service.datecreated = serviceCat.serv_datecreated;
@@ -132,7 +132,7 @@ public class ServiceData : IServiceData
     }
 
     /// <summary>
-    /// Looking for a service of the given order
+    /// Looking for a Service of the given order
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -149,7 +149,7 @@ public class ServiceData : IServiceData
 
                 if (serviceCat != null)
                 {
-                    //Populate service
+                    //Populate Service
                     service.name = serviceCat.serv_name;
                     service.status = serviceCat.serv_status;
                     service.datecreated = serviceCat.serv_datecreated;
@@ -187,9 +187,9 @@ public class ServiceData : IServiceData
             _dataAccess.StartTransaction("Handyman_DB");
             foreach (ServiceModel service in services)
             {
-                //Save the new service
+                //Save the new Service
                 _dataAccess.SaveDataTransaction<ServiceModel>("Service.spServiceInsert", service);
-                //save a custom of a service
+                //save a custom of a Service
                 if (service.Customs != null && service.Customs.Count > 0)
                 {
                     foreach (var custom in service.Customs)
@@ -207,8 +207,8 @@ public class ServiceData : IServiceData
         }
     }
 
-    //Update the service OR insert customs
-    //Customs only insert if the service exists
+    //Update the Service OR insert customs
+    //Customs only insert if the Service exists
     public int InsertCustomService(ServiceModel serviceUpdate)
     {
         try
@@ -218,7 +218,7 @@ public class ServiceData : IServiceData
                 return 0;
             }
             int customServiceId = 0;
-            //Insert custom services of updated service
+            //Insert custom services of updated Service
             foreach (var custom in serviceUpdate.Customs)
             {
                 if (custom != null)
@@ -238,8 +238,8 @@ public class ServiceData : IServiceData
         }
     }
 
-    //Insert the negotiated price of the service
-    //as it might be handy in getting a general price for each service
+    //Insert the negotiated price of the Service
+    //as it might be handy in getting a general price for each Service
     public bool InsertNegotiatedPrice(int priceId, float nPrice)
     {
         try
@@ -255,7 +255,7 @@ public class ServiceData : IServiceData
 
     }
 
-    //Update the service
+    //Update the Service
     public void UpdateService(ServiceModel serviceUpdate)
     {
         try
@@ -314,7 +314,7 @@ public class ServiceData : IServiceData
         }
     }
 
-    //Update workshop service
+    //Update workshop Service
     public void UpdateWorkshopService(CustomServiceModel wsService)
     {
         try
@@ -333,7 +333,7 @@ public class ServiceData : IServiceData
         }
     }
 
-    //Delete a service of a workshop 
+    //Delete a Service of a workshop 
     public void DeleteService(int wsServiceId, int wsRegId)
     {
         if (wsServiceId == 0 || wsRegId == 0)

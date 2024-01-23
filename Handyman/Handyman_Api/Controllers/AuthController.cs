@@ -258,7 +258,7 @@ public class AuthController : ControllerBase
             Dictionary<string, Uri?> appRoles = new Dictionary<string, Uri?>()
             {
                 ["ServiceProvider"] = new Uri($"https://localhost:7042/confirm-email?userId={user.Id}&code={code}"),
-                ["Consumer"] = new Uri($"https://localhost:7250/auth/confirmemail?userId={user.Id}&code={code}")
+                ["Consumer"] = new Uri($"https://localhost:7207/confirm-email?userId={user.Id}&code={code}")
 
             };
             //Initialized

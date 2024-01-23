@@ -2,12 +2,14 @@
 {
     public class OrderModel
     {
-        public string? ConsumerID { get; set; }//this is highly prohibited
-        public DateTime datecreated { get; set; }
-        public int status { get; set; }
-        public DateTime duedate { get; set; }
-        public ServiceModel? service { get; set; }
-        public IList<TaskModel>? Tasks { get; set; }
-        public int Id { get; set; }
+        public int order_id { get; set; }
+        public ServiceModel? Service { get; set; }
+        public DateTime order_datecreated { get; set; }
+        public int order_status { get; set; }
+        public int order_progress { get; set; }
+        public string? order_employeeid { get; set; }
+        public int order_orderid { get; set; }
+        public List<TaskModel>? tasks { get; set; }
+
     }
 }

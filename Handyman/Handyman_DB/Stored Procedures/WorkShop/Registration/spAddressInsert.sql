@@ -1,5 +1,5 @@
 ﻿CREATE PROCEDURE [Delivery].[spAddressInsert]
-	
+	--A ne Address record
     @add_street NVARCHAR(50), 
     @add_suburb NVARCHAR(50), 
     @add_city NVARCHAR(50), 

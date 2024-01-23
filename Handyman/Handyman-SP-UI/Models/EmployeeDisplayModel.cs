@@ -7,9 +7,9 @@ namespace Handyman_SP_UI.Models;
 /// </summary>
 public class EmployeeDisplayModel
 {
-    public string? employeeId { get; set; }
+    protected string? employeeId { get; set; }
     public IList<RatingsDisplayModel>? ratings { get; set; }
-    public int BusinessId { get; set; }
+    protected int workId { get; set; }
 
     [DataType(DataType.DateTime)]
     [Required]

@@ -3,6 +3,7 @@ using Handyman_DataLibrary.DataAccess.Interfaces;
 using Handyman_DataLibrary.DataAccess.Query;
 using Handyman_DataLibrary.Helpers;
 using Handyman_DataLibrary.Internal.DataAccess;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +22,16 @@ var connectionString = builder.Configuration.GetConnectionString("Handyman_DB") 
 builder.Services.AddDbContext<IdentityDataContext>(options =>
     options.UseSqlServer(connectionString));
 
+//builder.AddMobileAuth(auth =>
+//{
+//    // Configure override for Token Store
+//    auth.ConfigureDbTokenStore<UserContext>(o => o.UseInMemoryDatabase("DemoApi"));
+//    // Configure override for Claims Handler
+//    auth.AddMobileAuthClaimsHandler<CustomClaimsHandler>();
+
+//    // Add Additional Providers like Facebook, Twitter, LinkedIn, GitHub, etc...
+//});
+
 //Configure Identity to use User and Role identity and Framework as storage provider
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<IdentityDataContext>()
@@ -35,8 +46,8 @@ builder.Services.AddSingleton<ISQLDataAccess, SQLDataAccess>();
 builder.Services.AddScoped<IServiceData, ServiceData>();
 builder.Services.AddTransient<IOrderData, OrderData>();
 builder.Services.AddScoped<EmployeeData>();
-builder.Services.AddScoped<IServiceProviderData, ServiceProviderData>();
-builder.Services.AddScoped<IBusinessData, BusinessData>();
+builder.Services.AddScoped<IMemberData, MemberData>();
+builder.Services.AddScoped<IWorkshopData, WorkshopData>();
 builder.Services.AddTransient<IRequestData, RequestData>();
 builder.Services.AddScoped<ITaskData, TaskData>();
 builder.Services.AddScoped<IProfileData, ProfileData>();
@@ -55,6 +66,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 //Configuration options for Authentication and adding a Token
 builder.Services.AddAuthentication(options =>
 {
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
@@ -69,7 +81,8 @@ builder.Services.AddAuthentication(options =>
         ValidIssuer = builder.Configuration.GetSection("JWT:JWTIssuer").Value,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("Jwt:JWTSecretKey").Value))
     };
-});
+}).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
+        options => builder.Configuration.Bind("CookieSettings", options));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

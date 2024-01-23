@@ -1,13 +1,10 @@
-﻿CREATE PROCEDURE [Request].[spOrderUpdate]
-	@ConsumerID NVARCHAR(450),
-    @id int = 0,
-    @status NCHAR(100),
-    @dueDate DATETIME
+﻿CREATE PROCEDURE [Delivery].[spOrderUpdate]
+--Update the order by the request
+	@requestId int = 0,
+    @orderStatus int = 0
 AS
 BEGIN
-	UPDATE [Request].[order]
-    SET   
-    [ord_duedate] = @dueDate,
-    [ord_status] = @status
-    WHERE [ord_id] = @id AND [ord_consumer_id] = @ConsumerID
+	UPDATE [Delivery].[Order]
+    SET [order_status] = @orderStatus
+    WHERE [order_requestId] = @requestId
 END

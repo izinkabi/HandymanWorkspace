@@ -12,5 +12,5 @@ public class RegistrationModel
     [StringLength(11, ErrorMessage = "Invalid Registration Number", MinimumLength = 11)]
     public string? regNumber { get; set; }
     public string? taxNumber { get; set; }
-    public int businessType { get; set; }
+    public int workType { get; set; }
 }

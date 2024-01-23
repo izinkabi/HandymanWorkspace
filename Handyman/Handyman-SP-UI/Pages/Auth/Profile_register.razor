@@ -2,7 +2,7 @@
 
 @inject IJSRuntime JS 
 @inject NavigationManager NavManager
-@inject IProviderHelper _providerHelper
+@inject IMemberHelper _memberHelper
 
 @if (!IsSubmitted && !IsProfileSuccefullySave)
 {
@@ -233,7 +233,7 @@ else
                 newProfile.UserId = userId;
             }
             
-            IsProfileSuccefullySave = await _providerHelper.RegisterProfile(newProfile);
+            IsProfileSuccefullySave = await _memberHelper.RegisterProfile(newProfile);
             if (IsProfileSuccefullySave)
             {
                 NavManager.NavigateTo("/", true);

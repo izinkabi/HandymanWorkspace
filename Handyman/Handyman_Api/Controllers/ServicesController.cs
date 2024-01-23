@@ -16,7 +16,7 @@ public class ServicesController : ControllerBase
         _serviceData = serviceData;
     }
 
-    //Get service list
+    //Get Service list
     [HttpGet]
     [AllowAnonymous]
     [Route("Getservices")]
@@ -42,7 +42,7 @@ public class ServicesController : ControllerBase
         }
     }
 
-    //Insert a new custom service
+    //Insert a new custom Service
     [HttpPost]
     [Route("InsertCustomService")]
     public int Post(ServiceModel newService)
@@ -58,7 +58,7 @@ public class ServicesController : ControllerBase
         }
     }
 
-    //Update the price of the service by adding the negotiated price
+    //Update the price of the Service by adding the negotiated price
     [HttpPut]
     [Route("UpdateNegotiatedPrice")]
     public void Put(int priceId, float nPrice)
@@ -74,12 +74,12 @@ public class ServicesController : ControllerBase
         }
     }
 
-    //Get a service by id
+    //Get a Service by id
     [HttpGet]
     [Route("GetService")]
     public ServiceModel GetService(int id) => _serviceData.GetService(id);
 
-    //Update the service
+    //Update the Service
     [HttpPut]
     [Route("UpdateService")]
     public void UpdateService(ServiceModel service)
@@ -132,7 +132,7 @@ public class ServicesController : ControllerBase
     [Route("GetWorkShopServices")]
     public List<CustomServiceModel> GetWorkShopServices(int wsregId) => _serviceData.GetWorkShopServices(wsregId);
 
-    //Update workshop service
+    //Update workshop Service
     [HttpPut]
     [Route("Updatewsservice")]
     public void UpdateWorkShopService(CustomServiceModel wsService)
@@ -153,7 +153,7 @@ public class ServicesController : ControllerBase
         }
     }
 
-    //Remove a workshop-service from a workshop
+    //Remove a workshop-Service from a workshop
     [HttpDelete]
     [Route("DeleteWorkShopService")]
     public void DeleteWorkShopService(int wsServiceId, int wsRegId)
@@ -173,7 +173,7 @@ public class ServicesController : ControllerBase
         }
     }
 
-    // DELETE provider service
+    // DELETE provider Service
     [HttpDelete]
     [Route("DeleteProviderService")]
     public void DeleteProviderService(int wsServiceId, string providerId)

@@ -1,7 +1,8 @@
 ﻿@page "/service-register"
-@attribute [Authorize]
+@using HandymanProviderLibrary.Api.EndPoints.Implementation;
 
-@inject IBusinessEndPoint _businessHLP
+
+@inject IWorkshopEndPoint _work
 @inject IServiceEndpoint _servicesEP
 @inject NavigationManager NavManager
 @inject AuthenticationStateProvider AuthStateProvider

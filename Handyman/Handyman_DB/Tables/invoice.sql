@@ -6,7 +6,7 @@
     [inv_total] MONEY NOT NULL, 
     [inv_subtotal] MONEY NOT NULL, 
     [inv_tax] FLOAT NOT NULL, 
-    CONSTRAINT [FK_invoice_request] FOREIGN KEY (inv_requestid) REFERENCES [Delivery].[request]([req_id]), 
+    CONSTRAINT [FK_invoice_request] FOREIGN KEY (inv_requestid) REFERENCES [Delivery].[order]([order_id]), 
 )
 
 GO

@@ -315,4 +315,130 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="PriceId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="0d7738b9-8561-4790-985f-48c03c5f1170" ChangeDateTime="11/11/2023 08:01:44">
+    <Property Name="ElementName" Value="[Request].[taskPrice].[PriceId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Request].[taskPrice]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="priceId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="83e0d696-a6b4-4281-9b9f-4eba5661b133" ChangeDateTime="11/11/2023 08:01:48">
+    <Property Name="ElementName" Value="[Request].[taskPrice].[TaskId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Request].[taskPrice]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="taskId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="cf26718f-86a0-49ed-a6da-48477b3cd46b" ChangeDateTime="11/11/2023 08:13:52">
+    <Property Name="ElementName" Value="[Request].[negotiation].[OrderId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Request].[negotiation]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="req_Id" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a08a1f83-315a-4011-ba5b-356b33688513" ChangeDateTime="11/11/2023 08:14:00">
+    <Property Name="ElementName" Value="[Request].[negotiation].[DateCreated]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Request].[negotiation]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="req_DateCreated" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="26591ee4-7feb-4188-9179-a00ce6f12ea7" ChangeDateTime="11/11/2023 08:14:06">
+    <Property Name="ElementName" Value="[Request].[negotiation].[PriceId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Request].[negotiation]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="req_PriceId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="13c037ae-6d0d-40b2-97fe-bcb97ae64ad3" ChangeDateTime="11/11/2023 08:14:12">
+    <Property Name="ElementName" Value="[Request].[negotiation].[IsCompleted]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Request].[negotiation]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="req_IsCompleted" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="2f48cc67-3574-4df4-934e-4386c5490599" ChangeDateTime="11/11/2023 08:14:21">
+    <Property Name="ElementName" Value="[Request].[negotiation].[Order_DueDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Request].[negotiation]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="req_Order_DueDate" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="43de6b46-ca51-45a0-8479-d4020ec03508" ChangeDateTime="11/11/2023 08:14:27">
+    <Property Name="ElementName" Value="[Request].[negotiation].[LastDateModified]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Request].[negotiation]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="req_LastDateModified" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="8f32e72a-5a4e-4fa3-97e4-35d47b2a3802" ChangeDateTime="11/11/2023 08:15:15">
+    <Property Name="ElementName" Value="[Request].[negotiation].[req_DateCreated]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Request].[negotiation]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="neg_DateCreated" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="8b337bb5-a204-4602-8516-605cd96ec151" ChangeDateTime="11/11/2023 08:15:34">
+    <Property Name="ElementName" Value="[Request].[negotiation].[req_Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Request].[negotiation]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="neg_requestId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="37c927ed-6c21-4220-9050-0ebb5e4ce779" ChangeDateTime="11/11/2023 08:15:45">
+    <Property Name="ElementName" Value="[Request].[negotiation].[req_PriceId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Request].[negotiation]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="neg_PriceId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a3b22da9-66f8-4fbe-ac2b-f08b4a9eec9f" ChangeDateTime="11/11/2023 08:15:59">
+    <Property Name="ElementName" Value="[Request].[negotiation].[req_IsCompleted]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Request].[negotiation]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="neg_IsCompleted" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="588741aa-63d4-4c35-b211-eadbd7dbbf08" ChangeDateTime="11/11/2023 08:16:07">
+    <Property Name="ElementName" Value="[Request].[negotiation].[req_Order_DueDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Request].[negotiation]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="neg_Order_DueDate" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="90a66cd4-2893-41d0-a981-2ccedcf8e322" ChangeDateTime="11/11/2023 08:16:17">
+    <Property Name="ElementName" Value="[Request].[negotiation].[req_LastDateModified]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Request].[negotiation]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="neg_LastDateModified" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="10ea2063-9632-463d-9712-bd439ce22d8a" ChangeDateTime="11/11/2023 08:42:38">
+    <Property Name="ElementName" Value="[Delivery].[workshop_owner].[workOwner_Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Delivery].[workshop_owner]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="owner_Id" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e1fef773-cf91-45ed-ac0b-27bbb7b1f593" ChangeDateTime="11/11/2023 08:54:22">
+    <Property Name="ElementName" Value="[Delivery].[member].[member_userid]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Delivery].[member]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="member_profileId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="5b9798fb-9df0-466d-8465-d037ec5affa5" ChangeDateTime="11/12/2023 16:27:11">
+    <Property Name="ElementName" Value="[Delivery].[registration].[reg_businesstype]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Delivery].[registration]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="reg_workType" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="15c94f94-74c7-4286-ae1e-1781192fa76e" ChangeDateTime="11/12/2023 17:07:45">
+    <Property Name="ElementName" Value="[Request].[negotiation].[neg_DateCreated]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Request].[negotiation]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="neg_DateCreatedED" />
+  </Operation>
 </Operations>

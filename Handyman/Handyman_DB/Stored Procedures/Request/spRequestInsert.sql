@@ -1,15 +1,34 @@
-﻿CREATE PROCEDURE [Delivery].[spRequestInsert]
+﻿CREATE PROCEDURE [Request].[spRequestInsert]
 	
-	@req_datecreated datetime2 (7) ,
-	@req_status nchar(10) ,
-	@req_progress nchar(10) , 
-    @req_employeeid NVARCHAR (450) , 
-    @req_orderid INT 
+	@ConsumerID NVARCHAR(MAX),
+	@ServiceId INT = 0,
+    @DateCreated DATETIME,
+    @Status INT,
+    @DueDate DATETIME
 AS
-    IF NOT EXISTS (SELECT * FROM  [Delivery].[request] WHERE [req_orderid] = @req_orderid AND [req_employeeid] = @req_employeeid)
 BEGIN
-	INSERT INTO [Delivery].[request] (req_datecreated, req_status, 
-                                        req_progress, req_employeeid, req_orderid)
-    VALUES (@req_datecreated, @req_status, @req_progress,
-            @req_employeeid,@req_orderid)
+	INSERT INTO [Request].[request] 
+    (
+    [req_consumer_id],
+    [req_datecreated],
+    [req_duedate],
+    [req_status],
+    [req_service_id]
+    )
+    
+    VALUES
+    (
+    @ConsumerID,
+    @DateCreated,
+    @DueDate,
+    @Status,
+    @ServiceId
+    )
+    
+
+DECLARE @Id INT = SCOPE_IDENTITY();
+
+SELECT [req_id] FROM [Request].[request] WHERE [req_id] = @Id
 END
+
+

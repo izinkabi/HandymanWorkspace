@@ -1,9 +1,8 @@
 ﻿@page "/ws-sign-up"
-@attribute [Authorize]
 @using Microsoft.AspNetCore.Components.Web
 @inject NavigationManager NavManager
-@inject IBusinessHelper _workshopHelper
-@inject IProviderHelper _providerHelper
+@inject IWorkshopHelper _workshopHelper
+@inject IMemberHelper _providerHelper
 
 
 @if (!CanAddServices)
@@ -95,7 +94,7 @@
 }
 else
 {
-    <RegisterServices OnSaveServices="SaveServices"/>
+    
 }
 
 
@@ -103,7 +102,7 @@ else
 
 
 @code {
-    private BusinessModel newWorkShop = new BusinessModel()!;
+    private WorkshopModel newWorkShop = new WorkshopModel()!;
     List<string> Errors = new List<string>();
     bool CanAddServices;
 
@@ -117,7 +116,7 @@ else
     {
         try
         {
-            var registerWS = await _workshopHelper.CreateBusiness(newWorkShop);
+            var registerWS = await _workshopHelper.CreateWorkshop(newWorkShop);
 
             if (registerWS != null)
             {
@@ -187,7 +186,7 @@ else
         return randomstring;
     }
 
-    //Navigate to Member registeration
+    //Navigate to member registeration
     private void GoToRegisterMember()
     {
         NavManager.NavigateTo("m-sign-up");

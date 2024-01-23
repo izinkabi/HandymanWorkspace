@@ -1,5 +1,4 @@
 using Handyman_SP_UI.Helpers;
-using Handyman_SP_UI.Hubs;
 using HandymanProviderLibrary.Api.ApiHelper;
 using HandymanProviderLibrary.Api.EndPoints.Implementation;
 using HandymanProviderLibrary.Api.EndPoints.Interface;
@@ -19,17 +18,17 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<IAPIHelper, APIHelper>();
 
-builder.Services.AddScoped<IBusinessEndPoint, BusinessEndPoint>();
+builder.Services.AddScoped<IWorkshopEndPoint, WorkshopEndPoint>();
 builder.Services.AddScoped<AuthenticatedUserModel>();
 builder.Services.AddTransient<EmployeeEndPoint>();
-builder.Services.AddScoped<IServiceProviderEndPoint, ServiceProviderEndPoint>();
-builder.Services.AddTransient<IRequestEndPoint, RequestEndPoint>();
+builder.Services.AddScoped<IMemberEndpoint, MemberEndpoint>();
+builder.Services.AddTransient<IOrderEndpoint, OrderEndpoint>();
 builder.Services.AddScoped<IServiceEndpoint, ServiceEndpoint>();
 builder.Services.AddScoped<IAuthEndpoint, AuthEndpoint>();
 builder.Services.AddScoped<INegotiationEndPoint, NegotiationEndPoint>();
-builder.Services.AddScoped<IBusinessHelper, BusinessHelper>();
-builder.Services.AddScoped<IRequestHelper, RequestHelper>();
-builder.Services.AddScoped<IProviderHelper, ProviderHelper>();
+builder.Services.AddScoped<IWorkshopHelper, WorkshopHelper>();
+builder.Services.AddScoped<IOrderHelper, OrderHelper>();
+builder.Services.AddScoped<IMemberHelper, MemberHelper>();
 
 
 builder.Services.AddScoped<AuthenticationStateProvider, CustomeAuthStateProvider>();
@@ -40,7 +39,18 @@ builder.Services.AddResponseCompression(opt =>
       new[] { "application/octet-stream" });
 });
 builder.Services.AddAuthorizationCore();
-builder.Services.AddAuthentication();
+
+
+var services = builder.Services;
+var configuration = builder.Configuration;
+
+services.AddAuthentication()//.AddGoogle(googleOptions =>
+//{
+//    googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
+//    googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+//})
+;
+
 
 
 var app = builder.Build();
@@ -62,8 +72,6 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.MapBlazorHub();
-app.MapHub<NegotiationHub>("/negoHub");
-app.MapHub<RequestHub>("/reqHub");
 app.MapFallbackToPage("/_Host");
 app.UseAuthentication();
 app.UseAuthorization();

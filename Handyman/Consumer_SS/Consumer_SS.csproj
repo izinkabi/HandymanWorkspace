@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Pages\ConfirmEmailComponent.razor" />
     <Content Remove="Pages\Login.razor" />
     <Content Remove="Shared\DeleteConfirmation.razor" />
     <Content Remove="wwwroot\assets\brand\bootstrap-logo-white.svg" />
@@ -52,7 +51,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Pages\Auth\ConfirmEmailComponent.razor" />
+    <None Include="Pages\ConfirmEmailComponent.razor" />
     <None Include="Pages\Auth\Login.razor" />
     <None Include="Pages\Orders\DeleteConfirmation.razor" />
     <None Include="wwwroot\assets\brand\bootstrap-logo-white.svg" />

@@ -5,7 +5,7 @@ namespace Handyman_SP_UI.Hubs
 {
     public class RequestHub : Hub
     {
-        public Task PlaceOrder(OrderModel order)
+        public Task PlaceOrder(RequestModel order)
         {
             return Clients.All.SendAsync("ReceiveOrder", order);
         }
