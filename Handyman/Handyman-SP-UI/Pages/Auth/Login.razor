@@ -1,11 +1,17 @@
 ﻿@page "/sign-in"
 
 @using System.ComponentModel.DataAnnotations
+
 @inject IJSRuntime JS 
 @inject IAuthEndpoint authEndPoint
 @inject NavigationManager NavManager
 @inject AuthenticationStateProvider _authStateProvider
+
+@layout AuthenticationLayout
+
 <meta name="google-signin-client_id" content="868484711602-rvsfj11o5t8jn7b3lgg8f93ajjvrfseo.apps.googleusercontent.com">
+
+
 @if (!IsSubmitted && !IsLoggedIn && !IsRegistered)
 {
     <div class="authContainer">

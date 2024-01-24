@@ -31,9 +31,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI-Mobile", "UI-Mobile", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consumer_SS", "Consumer_SS\Consumer_SS.csproj", "{B21F2536-0CC7-41B6-9E65-872CB285FE8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SP_MMobile", "SP_MMobile\SP_MMobile.csproj", "{778A0C9C-A0B3-4980-B79E-4CB0C34417EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SP_MMobile", "SP_MMobile\SP_MMobile.csproj", "{778A0C9C-A0B3-4980-B79E-4CB0C34417EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SP_MLibrary", "SP_MLibrary\SP_MLibrary.csproj", "{6FEA4A9A-F45E-41F4-BCA3-90ACA8539969}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SP_MLibrary", "SP_MLibrary\SP_MLibrary.csproj", "{6FEA4A9A-F45E-41F4-BCA3-90ACA8539969}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -99,7 +99,7 @@ Global
 		{6FEA4A9A-F45E-41F4-BCA3-90ACA8539969} = {1DC69EE4-865B-4AFD-97EB-87E772FF6297}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
 		SolutionGuid = {9CE7BC51-6CF4-496B-8C0C-3627C4C48F8D}
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
 	EndGlobalSection
 EndGlobal
