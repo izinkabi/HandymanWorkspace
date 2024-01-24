@@ -1,0 +1,164 @@
+﻿.service-container {
+    padding: 10px;
+    width: 90%;
+    height: 82%;
+    border-radius: 15px;
+    background-color: hsla(210, 28%, 55%, 0.13);
+    position: relative;
+    top: 12%;
+    left: 5%;
+    box-shadow: 0px 2px 13px 1px var(--bg-GRANNY-SMITH);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 0.3fr 1.7fr;
+    gap: 2% 1%;
+    grid-auto-flow: row;
+    grid-template-areas:
+        "service-status service-functions"
+        "services-table services-table";
+}
+
+.services-table {
+    grid-area: services-table;
+    background-color: var(--bg-PAMPAS);
+    box-shadow: 0px 2px 8px 2px var(--bg-GRANNY-SMITH);
+    border-radius: 15px;
+    padding: 10px;
+    height: 100%;
+}
+
+.service-status {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    gap: 0px 2%;
+    grid-template-areas:
+        ". .";
+    grid-area: service-status;
+}
+
+.service-functions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    gap: 0px 2%;
+    grid-template-areas:
+        ". .";
+    grid-area: service-functions;
+}
+
+.service-card {
+    height: 100%;
+    width: 100%;
+    background-color: var(--bg-PAMPAS);
+    box-shadow: 0px 2px 8px 2px var(--bg-GRANNY-SMITH);
+    border-radius: 15px;
+    padding: 15px;
+}
+
+    .service-card h4 {
+        font-size: 18px;
+    }
+
+    .service-card ul {
+        list-style: none;
+    }
+
+
+@media all and (-ms-high-contrast:none) {
+    .service-container {
+        display: -ms-grid;
+        -ms-grid-columns: repeat(2, 1fr);
+        -ms-grid-rows: 1.1fr 1fr;
+    }
+
+    .services-table {
+        -ms-grid-row: 2;
+        -ms-grid-row-span: 1;
+        -ms-grid-column: 1;
+        -ms-grid-column-span: 2;
+    }
+
+    .service-status {
+        -ms-grid-row: 1;
+        -ms-grid-row-span: 1;
+        -ms-grid-column: 1;
+        -ms-grid-column-span: 1;
+    }
+
+    .service-functions {
+        -ms-grid-row: 1;
+        -ms-grid-row-span: 1;
+        -ms-grid-column: 2;
+        -ms-grid-column-span: 1;
+    }
+}
+
+table.blueTable {
+    border: 1px solid #1C6EA4;
+    background-color: #EEEEEE;
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+}
+
+    table.blueTable td, table.blueTable th {
+        border: 1px solid #AAAAAA;
+        padding: 3px 2px;
+    }
+
+    table.blueTable tbody td {
+        font-size: 13px;
+    }
+
+    table.blueTable tr:nth-child(even) {
+        background: #D0E4F5;
+    }
+
+    table.blueTable thead {
+        background: #1C6EA4;
+        background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+        background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+        background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+        border-bottom: 2px solid #444444;
+    }
+
+        table.blueTable thead th {
+            font-size: 15px;
+            font-weight: bold;
+            color: #FFFFFF;
+            border-left: 2px solid #D0E4F5;
+        }
+
+            table.blueTable thead th:first-child {
+                border-left: none;
+            }
+
+    table.blueTable tfoot {
+        font-size: 14px;
+        font-weight: bold;
+        color: #FFFFFF;
+        background: #D0E4F5;
+        background: -moz-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+        background: -webkit-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+        background: linear-gradient(to bottom, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+        border-top: 2px solid #444444;
+    }
+
+        table.blueTable tfoot td {
+            font-size: 14px;
+        }
+
+        table.blueTable tfoot .links {
+            text-align: right;
+        }
+
+            table.blueTable tfoot .links a {
+                display: inline-block;
+                background: #1C6EA4;
+                color: #FFFFFF;
+                padding: 2px 8px;
+                border-radius: 5px;
+            }

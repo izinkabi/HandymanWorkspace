@@ -1,0 +1,336 @@
+﻿@page "/requests"
+
+@using Microsoft.JSInterop
+
+@inject NavigationManager NavManager
+@inject IRequestHelper _requestHelper
+@inject IProviderHelper _providerHelper
+@inject IJSRuntime JSRuntime
+
+
+
+@if (Errors != null)
+{
+    @foreach(string error in Errors)
+    {
+        <h4 class="text-danger">@Errors</h4>
+    }
+   
+
+}
+
+<div class="orders-container">
+    <div class="requests">
+        <div class="new-requests">
+            <h2>Requests</h2>
+            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi, assumenda fugiat. Maiores nobis iusto officia !</p>
+            <ul>
+                <li id="myBtn">
+
+                    <h4>Test tiling</h4>
+                    <p>Renovation</p>
+
+                    <span>R1080,88</span>
+                    <!-- The Modal -->
+                    <div id="myModal" class="modal">
+                        <!-- Modal content -->
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <p>Some text in the Modal..</p>
+                        </div>
+                    </div>
+                </li>
+                <li id="myBtn">
+                    <h4>Wall tiling</h4>
+                    <p>Renovation</p>
+                    <img src="/img/Briefcase.png" alt="">
+                    <span>R1080,88</span>
+                </li>
+                <li id="myBtn">
+                    <h4>Wall tiling</h4>
+                    <p>Renovation</p>
+                    <img src="/img/Briefcase.png" alt="">
+                    <span>R1080,88</span>
+                </li>
+                <li id="myBtn">
+                    <h4>Test tiling</h4>
+                    <p>Renovation</p>
+                    <img src="/img/Male User.png" alt="">
+                    <span>R1080,88</span>
+                    <!-- The Modal -->
+                    <div id="myModal" class="modal">
+                        <!-- Modal content -->
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <p>Some text in the Modal..</p>
+                        </div>
+                    </div>
+                </li>
+                <li id="myBtn">
+                    <h4>Wall tiling</h4>
+                    <p>Renovation</p>
+                    <img src="/img/Briefcase.png" alt="">
+                    <span>R1080,88</span>
+                </li>
+                <li id="myBtn">
+                    <h4>Wall tiling</h4>
+                    <p>Renovation</p>
+                    <img src="/img/Briefcase.png" alt="">
+                    <span>R1080,88</span>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+    <div class="orders"></div>
+    <div class="Negotiations"></div>
+    <div class="Todo"></div>
+</div>
+
+ @*        <!--New Requests Section-->
+        <section class="container-fluid justify-content-center  m-auto align-content-lg-center ">
+
+            <!--Table-->
+            <div class="table-responsive shadow rounded bg-white">
+                <div class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom bg-dark">
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <div class="btn-group me-2 ">
+                            <button type="button" @onclick="displayOrdersOnly" class="btn btn-sm btn-outline-secondary">
+                                Orders
+                                <span class="badge text-bg-success">@NumberOfOrders</span>
+
+                            </button>
+                            <button type="button" @onclick="displayRequestsOnly" class="btn btn-sm btn-outline-secondary">
+                                Jobs
+                                @if (requests != null)
+                                {
+                                    <span class="badge text-bg-info">@requests.Count</span>
+                                }
+
+                            </button>
+                        </div>
+                        <!--Dropdown-->
+                        <button type="submit" class="btn btn-sm btn-outline-secondary dropdown-toggle" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span data-feather="calendar" class="align-text-bottom"></span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event" viewBox="0 0 16 16">
+                                <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z" />
+                                <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
+                            </svg>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
+                            <li><a class="dropdown-item" @onclick="displayCurrentWeek">Week</a></li>
+                            <li><a class="dropdown-item" @onclick="displayCurrentMonth">Month</a></li>
+                        </ul>
+                        <!--End Dropdown-->
+                    </div>
+                </div>
+                <!--Displaying orders only-->
+                @if (isOrdersDisplayed)
+                {
+
+                    <OrdersComponent />
+
+                }
+
+
+                <!--End table-->
+            </div>
+
+        </section>
+
+        <br />
+        @if (isRequestsDisplayed)
+        {
+            @if (requests != null && requests.Count > 0)
+            {
+                <!--Own requests Album-->
+                <h4 class="bg-light font-monospace text-center rounded-4 shadow ">Jobs</h4>
+                <!--Displaying Requests only-->
+
+                <div class="album py-2 m-auto shadow rounded bg-light">
+                    <div class="container container-fluid">
+
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 " style="height:480px;overflow-y:scroll">
+                            @foreach (var ownR in requests)
+                            {
+                                <div class="col p-0 m-0" @onclick="@(()=>viewOwnRequest(ownR.req_id))">
+                                    <AcceptedRequestComponent AcceptedRequestProperty="@ownR" IsOnFrontDisplay="true" OnViewTask="OnViewTask" />
+                                </div>
+                            }
+                            <!--End Own requests Album-->
+                            <!--Back to top button-->
+                            <button @onclick="@BackToTop" class="float-end border-0 bg-transparent">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-up-circle border-0" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z" />
+                                </svg>
+                            </button>
+                            <!--End Back to top button-->
+                        </div>
+                    </div>
+                </div>
+
+               
+            }
+            else if (requests != null && requests.Count == 0)
+            {
+                <span class=" text-danger">0 requests</span>
+            }
+
+            @if (requests == null)
+            {
+                <span class=" text-danger">Loading your jobs...try again</span>
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border" role="status">
+                    </div>
+                </div>
+            }
+        }
+
+
+
+   
+     *@
+
+@code {
+
+
+    List<RequestModel>? requests = new List<RequestModel>();
+    int NumberOfOrders;
+    bool isOrdersDisplayed;
+    bool isRequestsDisplayed;
+    List<string>? Errors = new List<string>();
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     try
+    //     {
+    //         try
+    //         {
+    //             requests = await _requestHelper.GetOwnRequests();
+    //             if(requests!=null& requests.Count > 0)
+    //             {
+    //                 foreach (var service in await _providerHelper.GetWorkShopServices())
+    //                 {
+    //                     var listoforders = await _requestHelper.GetNewRequests(service.originalServiceId) ?? new List<OrderModel>();
+    //                     foreach (var o in listoforders)
+    //                     {
+    //                         if (o.status == 0)
+    //                         {
+    //                             NumberOfOrders++;
+    //                         }
+    //                     }
+    //                 }
+    //                 await InvokeAsync(StateHasChanged);
+    //             }
+
+    //         }
+    //         catch (Exception ex)
+    //         {
+    //             Errors.Add(ex.Message);
+
+    //         }
+
+    //         //Check own requests status
+    //         if (requests != null && requests.Count > 0)
+    //         {
+    //             //Display both the new and old requests
+    //             isOrdersDisplayed = true;
+    //             isRequestsDisplayed = true;
+    //             await InvokeAsync(StateHasChanged);
+    //         }
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         Errors.Add(ex.Message);
+    //     }
+    // }
+
+    //Go to top page
+    [JSInvokable]
+    private async Task BackToTop()
+    {
+        await JSRuntime.InvokeVoidAsync("OnScrollEvent");
+    }
+
+    /// <summary>
+    /// Display / route to a request-Component
+    /// </summary>
+    /// <param name="ownRId"></param>
+    void viewOwnRequest(int ownRId)
+    {
+        NavManager.NavigateTo(NavManager.GetUriWithQueryParameters("request", new Dictionary<string, object>()
+            {
+                ["ORId"] = ownRId
+            }));
+    }
+
+    void OnViewTask(int o)
+    {
+
+    }
+
+
+    //Display orders only
+    void displayOrdersOnly()
+    {
+        isOrdersDisplayed = true;
+        isRequestsDisplayed = false;
+    }
+
+    //Display requests only
+    void displayRequestsOnly()
+    {
+        isRequestsDisplayed = true;
+        isOrdersDisplayed = false;
+    }
+
+    //Display the current month's requests
+    async Task displayCurrentMonth()
+    {
+        try
+        {
+            requests = await _requestHelper.GetCurrentMonthRequests();
+            if (requests is null)
+            {
+                return;
+            }
+            if (requests != null && requests.Count > 0)
+            {
+                foreach (var rs in requests)
+                {
+                    rs.req_status = _requestHelper.CheckStatus(rs);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+
+            Errors.Add(ex.Message);
+        }
+    }
+
+    //Displaying current week requests
+    async Task displayCurrentWeek()
+    {
+        try
+        {
+            requests = await _requestHelper.GetCurrentWeekRequests();
+            if (requests != null && requests.Count > 0)
+            {
+                foreach (var rs in requests)
+                {
+                    rs.req_status = _requestHelper.CheckStatus(rs);
+                }
+            }
+
+
+        }
+        catch (Exception ex)
+        {
+
+            Errors.Add(ex.Message);
+        }
+    }
+
+ 
+}

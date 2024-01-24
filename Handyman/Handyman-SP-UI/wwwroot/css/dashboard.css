@@ -167,7 +167,7 @@ section {
         "."
         ".";
     grid-area: card-side;
-    height: 104.5%;
+    height: 100%;
     width: 100%;
     background-color: var(--bg-PAMPAS);
     box-shadow: 0px 2px 8px 2px var(--bg-GRANNY-SMITH);
@@ -245,7 +245,7 @@ section {
 
 
 .card-bottom {
-    height: 107%;
+    height: 100%;
     width: 100%;
     background-color: var(--bg-PAMPAS);
     box-shadow: 0px 2px 8px 2px var(--bg-GRANNY-SMITH);

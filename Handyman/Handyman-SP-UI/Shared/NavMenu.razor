@@ -1,5 +1,5 @@
-﻿   <!-- * ####Side Navigation Bar Start####-->
-<!--######Top Navigation Section Start #######-->
+﻿@using Handyman_SP_UI.Pages.Auth        
+
 <!--######Top Navigation Section Start #######-->
 <nav>
     <div class="logo">
@@ -20,17 +20,8 @@
                 <li><img src="/img/Notification.png" alt="notification"></li>
             </ul>
         </div>
-        <div class="profile">
-            <button class="dropbtn"><img src="/img/Male User.png" alt="profile picture"></button>
-            <div class="dropdown-content">
-                <a href="#">Mbuzi</a><hr>
-                <a href="#">Owner</a>
-                <a href="/pages/Samples/Profile-Owner.html">Profile</a>
-                <a href="#">Support</a>
-                <a href="404">Setting</a><hr>
-                <a href="#">LogOut</a>
-            </div>
-        </div>
+<!-- PPROFILE INFORMATION FOR LOGGED IN USER AND A LOG IN BUTTO FOR NOT LOGGED IN USER-->
+    <LoginDisplay/>
     </div>
 </nav>
 

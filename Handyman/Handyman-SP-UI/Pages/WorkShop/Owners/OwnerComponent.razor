@@ -1,18 +1,10 @@
 ﻿@page "/owner"
 @page "/manager"
-
+@attribute [Authorize]
 
 @inject AuthenticationStateProvider authProvider
 @inject IJSRuntime JS
 
-<main>
-    <!--######Top Navigation Section Start #######-->
-  
-    <NavMenu />
-    <!-- * ####Side Navigation Bar Start####-->
-    <SideNav />
-    <!-- * Grid Container to display Cards on the Dashboard ####-->
-    <section>
         <div class="container">
             <div class="cards-top">
                 <div class="card">
@@ -66,8 +58,7 @@
                 </canvas>
             </div>
         </div>
-    </section>
-</main>
+
 
 
 @code {
