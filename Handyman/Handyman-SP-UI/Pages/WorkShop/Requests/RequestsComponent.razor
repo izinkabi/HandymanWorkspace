@@ -3,8 +3,8 @@
 @using Microsoft.JSInterop
 
 @inject NavigationManager NavManager
-@inject IRequestHelper _requestHelper
-@inject IProviderHelper _providerHelper
+@* @inject IRequestHelper _requestHelper
+@inject IProviderHelper _providerHelper *@
 @inject IJSRuntime JSRuntime
 
 
@@ -284,53 +284,53 @@
         isOrdersDisplayed = false;
     }
 
-    //Display the current month's requests
-    async Task displayCurrentMonth()
-    {
-        try
-        {
-            requests = await _requestHelper.GetCurrentMonthRequests();
-            if (requests is null)
-            {
-                return;
-            }
-            if (requests != null && requests.Count > 0)
-            {
-                foreach (var rs in requests)
-                {
-                    rs.req_status = _requestHelper.CheckStatus(rs);
-                }
-            }
-        }
-        catch (Exception ex)
-        {
+    // //Display the current month's requests
+    // async Task displayCurrentMonth()
+    // {
+    //     try
+    //     {
+    //         requests = await _requestHelper.GetCurrentMonthRequests();
+    //         if (requests is null)
+    //         {
+    //             return;
+    //         }
+    //         if (requests != null && requests.Count > 0)
+    //         {
+    //             foreach (var rs in requests)
+    //             {
+    //                 rs.req_status = _requestHelper.CheckStatus(rs);
+    //             }
+    //         }
+    //     }
+    //     catch (Exception ex)
+    //     {
 
-            Errors.Add(ex.Message);
-        }
-    }
+    //         Errors.Add(ex.Message);
+    //     }
+    // }
 
-    //Displaying current week requests
-    async Task displayCurrentWeek()
-    {
-        try
-        {
-            requests = await _requestHelper.GetCurrentWeekRequests();
-            if (requests != null && requests.Count > 0)
-            {
-                foreach (var rs in requests)
-                {
-                    rs.req_status = _requestHelper.CheckStatus(rs);
-                }
-            }
+    // //Displaying current week requests
+    // async Task displayCurrentWeek()
+    // {
+    //     try
+    //     {
+    //         requests = await _requestHelper.GetCurrentWeekRequests();
+    //         if (requests != null && requests.Count > 0)
+    //         {
+    //             foreach (var rs in requests)
+    //             {
+    //                 rs.req_status = _requestHelper.CheckStatus(rs);
+    //             }
+    //         }
 
 
-        }
-        catch (Exception ex)
-        {
+    //     }
+    //     catch (Exception ex)
+    //     {
 
-            Errors.Add(ex.Message);
-        }
-    }
+    //         Errors.Add(ex.Message);
+    //     }
+    // }
 
  
 }
