@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HandymanProviderLibrary.Models
+﻿namespace HandymanProviderLibrary.Models
 {
     public class RequestModel
     {
-        
+        public string? ConsumerID { get; set; }//this is highly prohibited
+        public DateTime datecreated { get; set; }
+        public int status { get; set; }
+        public DateTime duedate { get; set; }
+        public ServiceModel? service { get; set; }
+        public IList<TaskModel>? Tasks { get; set; }
         public int Id { get; set; }
-        public int OrderId { get; set; }
-        public string? ProviderId { get; set; }
-        public int ServiceId { get; set; }
-        public string? Status { get; set; } = string.Empty; 
-        public int IsDelivered { get; set; }
-        public DateTime DateAccepted { get; set; }
     }
 }

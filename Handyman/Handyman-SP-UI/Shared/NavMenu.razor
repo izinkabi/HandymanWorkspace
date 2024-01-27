@@ -1,0 +1,37 @@
+﻿@using Handyman_SP_UI.Pages.Auth        
+
+<!--######Top Navigation Section Start #######-->
+<nav>
+    <div class="logo">
+        <i class="fa-solid fa-fingerprint fa-2x"></i>
+        <h1>Okane</h1>
+    </div>
+    <div class="search">
+        <input type="text" placeholder="Type your text">
+        <button class="search-button">
+            <i class="fa-solid fa-magnifying-glass fa-1x"></i>
+        </button>
+    </div>
+    <div class="icons-profile">
+        <div class="icons">
+            <ul>
+                <li><img src="/img/Planner.png" alt="calender"></li>
+                <li><img src="/img/Chat.png" alt="chats"></li>
+                <li><img src="/img/Notification.png" alt="notification"></li>
+            </ul>
+        </div>
+<!-- PPROFILE INFORMATION FOR LOGGED IN USER AND A LOG IN BUTTO FOR NOT LOGGED IN USER-->
+    <LoginDisplay/>
+    </div>
+</nav>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

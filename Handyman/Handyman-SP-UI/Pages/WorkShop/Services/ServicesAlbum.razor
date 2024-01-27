@@ -1,0 +1,79 @@
+﻿@page "/services-album"
+@page "/servicists"
+
+@using Microsoft.AspNetCore.Components.Web
+@inject IServiceEndpoint _serviceEP
+@inject IMemberHelper _memberHelper
+@inject NavigationManager NavManager 
+  
+    <section class="py-1 text-center container">
+        <div class="p-2 bg-light rounded-3">
+            <div class="container-fluid py-1">
+                <h1 class="fw-light">Offered Services</h1>
+                <p class="lead text-muted">These are all service you need to add your business and start up on tha money making </p>
+            </div>
+        </div>
+    </section>
+    <div class="album py-1 bg-light">
+        <div class="container">
+        @if (services != null)
+        {
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 m-auto">
+                @foreach(var service in @services)
+                {                   
+                    <MyService serviceModel="@service">
+
+                    </MyService>
+                }                
+            </div>
+        }
+        else
+        {
+            <p class="text-danger">
+                @ErrorMsg
+            </p>
+        }
+    </div>
+    </div>
+
+
+@code {
+    IList<ServiceModel>? services;
+    string? ErrorMsg;
+
+
+
+    enum ServiceTypes{
+        Indoor,
+        Outdoor,
+    }
+
+    enum TaskTypes
+    {
+        Collect,
+        Inhouse,
+        Remote,
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            services = await _serviceEP.GetServices();    
+
+        }catch(Exception ex)
+        {
+            ErrorMsg = ex.Message;
+        }
+    }
+
+    
+    void ViewServiceDetails(ServiceModel s)
+    {
+        NavManager.NavigateTo(NavManager.GetUriWithQueryParameters("servicist",new Dictionary<string, object>()
+        {
+                ["serviceModel"] = s
+             
+        }));
+    }
+}

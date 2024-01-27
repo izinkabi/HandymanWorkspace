@@ -1,0 +1,150 @@
+﻿@page "/order-builder"
+
+
+@inject IServiceEndPoint _serviceEndPoint
+@inject NavigationManager NavManager
+
+<OrderConfirmation />
+<!--Go back button-->
+<!--Breadcrumbs-->
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="##" onclick="history.go(-1); return false;">Details</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Confirmation</li>
+    </ol>
+</nav>
+
+<!--EndBreadCrumbs-->
+<h3 class="text-capitalize font-monospace shadow text-center">Confirm Order</h3>
+
+
+@if (order == null)
+{
+  
+    <div class="card" aria-hidden="true">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title placeholder-glow">
+                <span class="placeholder col-6"></span>
+            </h5>
+            <p class="card-text placeholder-glow">
+                <span class="placeholder col-7"></span>
+                <span class="placeholder col-4"></span>
+                <span class="placeholder col-4"></span>
+                <span class="placeholder col-6"></span>
+                <span class="placeholder col-8"></span>
+            </p>
+            <a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>
+        </div>
+    </div>
+}
+else
+{
+    <OrderComponent IsOnDetails="false" OrderComponentModel="order" />
+    <!--Buttons-->
+    <div class="row shadow" role="document">
+
+
+        @if (!(order.status == 0))
+        {
+            <div class="col-5 justify-content-start">
+
+                <button type="submit" class="btn-outline-secondary">Close</button>
+
+            </div>
+            <div class="col-7 ">
+
+                @*<button type="submit" class="btn btn-outline-success">Confirm</button> <!--data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"-->
+                *@  <!-- Button trigger modal -->
+
+
+
+            </div>
+        }
+    </div>
+
+}
+         
+
+
+
+
+@code {
+
+    OrderModel? order;
+    string? ErrorMsg;
+    IList<ServiceModel>? serviceDisplayList;
+
+
+    // OID is the service ID to create an order for
+    [Parameter]
+    [SupplyParameterFromQuery(Name ="OID")]
+    public int Id { get; set; }
+
+    private OrderModel? OrderProperty
+    {
+        get
+        {
+            return order;
+        }
+        set
+        {
+            order = value;
+        }
+    }
+
+
+    //Get the order for display (the default method on OrderPage redirect or call)
+    protected override async Task OnInitializedAsync()
+    {
+
+        await buildOrder(Id);
+
+        if(order!=null)
+        if (order.Id == Id)
+        {
+            NavManager.NavigateTo($"detailed-order?oid={order.Id}");
+        }
+
+    }
+
+    //Load / Create the Order
+    private async Task buildOrder(int? id)
+    {
+        if (serviceDisplayList == null)
+        {
+            await LoadServices();
+        }
+      
+
+        foreach (var service in serviceDisplayList)
+        {
+            if (service.id == id.Value)
+            {
+                order = new HandymanUILibrary.Models.OrderModel();
+                order.service = new();
+                order.service = service;
+
+            }
+        }
+
+    }
+    //Load Services from the IServiceEndPoint service
+    private async Task LoadServices()
+    {
+
+        try
+        {
+            //await the endpoint
+            serviceDisplayList = await _serviceEndPoint.GetServices();
+
+        }
+        catch (Exception ex)
+        {
+            ErrorMsg = ex.Message;
+        }
+
+    }
+
+
+}

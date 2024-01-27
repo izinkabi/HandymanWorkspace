@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>Handyman_DB</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{f35ad620-a691-4d10-abe4-eea50b25fdc4}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath />
+    <RootNamespace>Handyman_DB</RootNamespace>
+    <AssemblyName>Handyman_DB</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="Tables" />
+    <Folder Include="Stored Procedures" />
+    <Folder Include="Views" />
+    <Folder Include="Publish Script" />
+    <Folder Include="Schemas" />
+    <Folder Include="Post Deployment Scripts" />
+    <Folder Include="Pre Deployment Scripts" />
+    <Folder Include="Stored Procedures\Service" />
+    <Folder Include="Stored Procedures\Request" />
+    <Folder Include="Stored Procedures\Order" />
+    <Folder Include="Stored Procedures\Task" />
+    <Folder Include="Stored Procedures\Order_Task" />
+    <Folder Include="Stored Procedures\Stuff" />
+    <Folder Include="Stored Procedures\WorkShop" />
+    <Folder Include="Stored Procedures\WorkShop\Members" />
+    <Folder Include="Stored Procedures\WorkShop\Members\Provider" />
+    <Folder Include="Stored Procedures\Handymen" />
+    <Folder Include="Stored Procedures\Service\Customs" />
+    <Folder Include="Stored Procedures\WorkShop\Registration" />
+    <Folder Include="Stored Procedures\Request\Negotiations" />
+    <Folder Include="Stored Procedures\Prices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Schemas\Request.sql" />
+    <Build Include="Schemas\Service.sql" />
+    <Build Include="Tables\service.sql" />
+    <Build Include="Tables\category.sql" />
+    <Build Include="Tables\request.sql" />
+    <Build Include="Tables\order.sql" />
+    <Build Include="Tables\rating.sql" />
+    <Build Include="Schemas\Delivery.sql" />
+    <Build Include="Tables\address.sql" />
+    <Build Include="Tables\member.sql" />
+    <Build Include="Tables\employee.sql" />
+    <Build Include="Tables\ratings.sql" />
+    <Build Include="Tables\invoice.sql" />
+    <Build Include="Tables\task.sql" />
+    <Build Include="Tables\workshop.sql" />
+    <Build Include="Tables\registration.sql" />
+    <Build Include="Stored Procedures\Service\spServiceLookUp_GroupByCategory.sql" />
+    <Build Include="Stored Procedures\Request\spRequestLookUp_ByConsumerId_OrderByDateCreated.sql" />
+    <Build Include="Tables\request_task.sql" />
+    <Build Include="Stored Procedures\Task\spTaskInsert.sql" />
+    <Build Include="Stored Procedures\Task\spTaskUpdate.sql" />
+    <Build Include="Stored Procedures\Request\pRequestUpdate.sql" />
+    <Build Include="Stored Procedures\Order_Task\spRequest_Task_Insert.sql" />
+    <Build Include="Stored Procedures\Order_Task\spDeleteRequestTask.sql" />
+    <Build Include="Stored Procedures\Service\spServiceLookUpBy_Id.sql" />
+    <Build Include="Schemas\dbo.sql" />
+    <Build Include="Stored Procedures\WorkShop\Members\spEmployeesLookUp.sql" />
+    <Build Include="Stored Procedures\WorkShop\Members\Provider\spMember_Service_LookUp.sql" />
+    <Build Include="Stored Procedures\WorkShop\Members\spEmployeeInsert.sql" />
+    <Build Include="Stored Procedures\WorkShop\Members\Provider\spMemberInsert.sql" />
+    <Build Include="Tables\employee_ratings.sql" />
+    <Build Include="Stored Procedures\WorkShop\Members\spEmployee_Rating_Insert.sql" />
+    <Build Include="Stored Procedures\WorkShop\Members\spRatingInsert.sql" />
+    <Build Include="Tables\profile.sql" />
+    <Build Include="Stored Procedures\Order\spOrderLookUpByProvider.sql" />
+    <Build Include="Stored Procedures\Request\spRequestLookUpByService.sql" />
+    <Build Include="Stored Procedures\Task\spTaskLookUpByRequest.sql" />
+    <Build Include="Stored Procedures\Request\spRequestUpdateByRequest.sql" />
+    <Build Include="Stored Procedures\Task\spTaskLookUp.sql" />
+    <Build Include="Stored Procedures\Order\spOrderDelete.sql" />
+    <Build Include="Stored Procedures\Task\spTaskDelete.sql" />
+    <Build Include="Stored Procedures\Request\spServiceLookUp_ByOrder.sql" />
+    <Build Include="Stored Procedures\Order\spOrdersLookUp_ByCurrentWeek.sql" />
+    <Build Include="Stored Procedures\Order\spOrdersLookUp_ByCurrentMonth.sql" />
+    <Build Include="Stored Procedures\Order\spCancelledOrderLookUp.sql" />
+    <Build Include="Stored Procedures\Order\spOrderUpdate.sql" />
+    <Build Include="Stored Procedures\Request\spGetHandymenDetailsByOrder.sql" />
+    <Build Include="Tables\AspNetUsers.sql" />
+    <Build Include="Tables\customService.sql" />
+    <Build Include="Stored Procedures\Handymen\spProfileInsert.sql" />
+    <Build Include="Stored Procedures\Handymen\spProfileLookUp.sql" />
+    <Build Include="Stored Procedures\WorkShop\spWorkShopsLookUp.sql" />
+    <Build Include="Stored Procedures\WorkShop\Members\spEmployeesLookUpByWorkShop.sql" />
+    <Build Include="Tables\price.sql" />
+    <Build Include="Stored Procedures\Request\spServicePriceNegotiationInsert.sql" />
+    <Build Include="Stored Procedures\Service\spService_Insert.sql" />
+    <Build Include="Stored Procedures\Service\spServiceUpdate.sql" />
+    <Build Include="Tables\workshop_services.sql" />
+    <Build Include="Stored Procedures\Service\Customs\spCustomService_Insert.sql" />
+    <Build Include="Stored Procedures\Service\Customs\spCustomServicesLookUp.sql" />
+    <Build Include="Stored Procedures\Service\spWorkShopService_Insert.sql" />
+    <Build Include="Stored Procedures\Service\spWorShopServices_LookUp.sql" />
+    <Build Include="Stored Procedures\Service\spWorkShopService_Update.sql" />
+    <Build Include="Stored Procedures\Service\spWorkShopService_Delete.sql" />
+    <Build Include="Stored Procedures\WorkShop\Members\Provider\spMemberService_Delete.sql" />
+    <Build Include="Tables\negotiation.sql" />
+    <Build Include="Stored Procedures\WorkShop\Registration\spAddressInsert.sql" />
+    <Build Include="Stored Procedures\WorkShop\Registration\spWorkshopInsert.sql" />
+    <Build Include="Stored Procedures\WorkShop\Registration\spRegistrationInsert.sql" />
+    <Build Include="Stored Procedures\Request\Negotiations\spNegoInsert.sql" />
+    <Build Include="Stored Procedures\Request\Negotiations\spNegoUpdate.sql" />
+    <Build Include="Tables\task_price.sql" />
+    <Build Include="Stored Procedures\Task\spTaskPriceInsert.sql" />
+    <Build Include="Stored Procedures\Request\Negotiations\spNegoLookUp.sql" />
+    <Build Include="Stored Procedures\Task\spTaskPriceLookUp.sql" />
+    <Build Include="Stored Procedures\Prices\spPriceInsert.sql" />
+    <Build Include="Stored Procedures\Prices\spPriceLookUp.sql" />
+    <Build Include="Stored Procedures\Prices\spPriceUpdate.sql" />
+    <Build Include="Tables\AspNetUserTokens.sql" />
+    <Build Include="Stored Procedures\spJwtToken_Delete.sql" />
+    <Build Include="Tables\workshop_owner.sql" />
+    <Build Include="Stored Procedures\Order\spOrderInsert.sql" />
+    <Build Include="Stored Procedures\Request\spRequestInsert.sql" />
+    <Build Include="Stored Procedures\WorkShop\Registration\spWorkshop_Registration_LookUp.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Publish Script\DevNathi_Handyman_DB.publish.publish.xml" />
+    <None Include="Handyman_DB.publish.xml" />
+    <None Include="Publish Script\Zee_Handyman_DB.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Post Deployment Scripts\CreatANDPopulateServiceScript.PostDeployment.sql" />
+    <None Include="Post Deployment Scripts\CreateANDPopolateRate.PostDeployment.sql" />
+    <None Include="Post Deployment Scripts\PopulateCategory.PostDeployment.sql" />
+    <None Include="Post Deployment Scripts\PopulateOrder.PostDeployment.sql" />
+    <None Include="Post Deployment Scripts\PopulateOrderTask.PostDeployment.sql" />
+    <None Include="Post Deployment Scripts\PopulateTask.PostDeployment.sql" />
+    <None Include="Post Deployment Scripts\PopulateBasePrices.PostDeployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="Handyman_DB.refactorlog" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,64 @@
+﻿@page "/confirm-email"
+
+@inject IAuthEndpoint _authEndPoint
+@inject NavigationManager NavManager
+@inject AuthenticationStateProvider _authStateProvider
+
+@*-----Errors-----*@
+@if (Errors.Count > 0)
+{
+    @foreach(string error in Errors)
+    {
+        <span class="text-danger">@error</span>
+    }
+}
+@*-----End Errors-----*@
+
+
+
+@code {
+    private string? userId,code;
+    private bool IsConfirmed;
+    [Parameter]
+    [SupplyParameterFromQuery(Name ="userId")]
+    public string UserId { get { return userId; } set { userId = value; } }
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name ="code")]
+    public string? Code { get { return code; } set { code = value; } }
+
+    private List<string> Errors = new List<string>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try 
+        {
+            if (userId !=null && code != null)
+            {
+                IsConfirmed = await _authEndPoint.ConfirmEmail(userId, code);
+                if (IsConfirmed)
+                {
+                    //Logging again to access the workshop sign-up page
+                    var authedUserModel = await _authEndPoint.LoginUser(userId);
+                    var state = await _authStateProvider.GetAuthenticationStateAsync();
+                    await InvokeAsync(StateHasChanged);
+                    NavManager.NavigateTo(NavManager.GetUriWithQueryParameters("profile-register", new Dictionary<string, object>()
+                    {
+                        ["uid"]=userId,
+                    }));
+                }
+                else
+                {
+                    Errors.Add("Error: Email not confirmed!");
+                }
+            }
+            //Confirm the code and the user
+            
+           
+        }catch(Exception ex)
+        {
+            Errors.Add(ex.Message);
+        }
+    }
+
+}

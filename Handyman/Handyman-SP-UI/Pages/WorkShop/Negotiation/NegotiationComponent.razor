@@ -1,0 +1,279 @@
+﻿@page "/nego"
+@using Microsoft.AspNetCore.SignalR.Client
+@inject NavigationManager NavManager
+@implements IAsyncDisposable
+@inject AuthenticatedUserModel authUser
+
+
+@*Errors*@
+@if (Errors.Count > 0)
+{
+    <div class="border-2 ">
+        @foreach(string error in Errors)
+        {
+            <p class="text-danger"><span>@error</span></p>
+        }
+    </div>
+}
+
+
+<!--Tasks and their total & -->
+<div class="container overflow-hidden text-center">
+    <div class="row gx-5">
+        <div class="col">
+            <div class="accordion" id="tasksAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tasksAccordionCollapse" aria-expanded="true" aria-controls="collapseOne">
+                            Tasks
+                        </button>
+                        @if (HasNewtasks)
+                        {
+                            <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                                <span class="visually-hidden">New alerts</span>
+                            </span>
+                        }
+                    </h2>
+                    <div id="tasksAccordionCollapse" class="accordion-collapse collapse show" data-bs-parent="#tasksAccordion">
+                        <div class="accordion-body">
+                            <div class="card m-auto p-1 border-0 rounded" style="width: 18rem;">
+                                <!--Tasks List and their prices-->
+                                
+
+                             
+                                <ul class="list-group list-group-flush">
+                                    @foreach (var task in orderTasks)
+                                    {
+                                        
+                                        <li class="list-group-item shadow form-control">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <strong> @task.tas_title</strong>
+                                                </div>
+                                                <div class="col">
+                                                    <label>
+                                                        Price (ZAR)
+                                                        @if (TaskPrices.ContainsKey(task.task_id))
+                                                        {
+                                                            <input type="number" @bind-value="@TaskPrices[task.task_id].negotiated_price" class="form-control" placeholder="R" />
+                                                        }
+                                                        
+                                                    </label>
+
+                                                </div>
+                                            </div>
+                                            
+                                           
+                                        </li>
+
+                                    }
+                                </ul>
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-outline-dark mt-2 px-3" @onclick="AddTotal">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-plus-fill" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5v-.5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0zM8.5 8a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V12a.5.5 0 0 0 1 0v-1.5H10a.5.5 0 0 0 0-1H8.5V8z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                               
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col shadow">
+            <h4>Total Price</h4>
+            <p><strong>R @priceOffer</strong></p>
+            <hr />
+            <!--Due date-->
+            <div class="row">
+                <div class="row form-group g-2">
+
+                    <div class="col">
+                    <div class="col px-3">
+                        <label>
+                            Due Date: <br />
+                            <small class="fst-italic">@DateOnly.Parse($"{orderDueDate.ToShortDateString()}")</small>
+                        </label>
+                        <hr/>
+                            
+                        <!--Nego Messages-->
+                            @if (ReceivedOffers.Count > 0 || negoMessages.Count>0)
+                            {
+                                <div class="container text-center">
+                                    <div class="row">
+                                        <div class="col order-last flex-lg-wrap" style="height:250px;overflow-y:scroll">
+                                            @foreach (var offerMessage in ReceivedOffers)
+                                            {
+                                            
+                                               
+                                                <p class="float-start bg-light rounded shadow">
+                                                    <small class="fst-italic bg-light" style="color:gray">@(TimeOnly.FromDateTime(offerMessage.Key)) </small>
+                                                    <hr/>
+                                                    @offerMessage.Value
+                                                </p>
+                                              
+                                            }
+                                        </div>
+                                       
+                                        <div class="col order-first flex-lg-wrap">
+                                            @foreach (KeyValuePair<DateTime,string> negoMessages in negoMessages)
+                                            {
+                                                
+                                                <p class="float-end bg-light rounded shadow">
+                                                    <small class="fst-italic bg-light " style="color:gray">@(TimeOnly.FromDateTime(negoMessages.Key))</small>
+                                                    <hr/>
+                                                    @negoMessages.Value
+                                                </p>
+                                               
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+                        </div>
+                    </div>
+                    
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<hr/>
+<button type="button" class="btn btn-outline-dark" @onclick="Send">
+    Send
+</button>
+
+@code {
+
+    private HubConnection? hubConnection;
+    private string? userInput;
+    private Dictionary<DateTime,string> negoMessages = new();
+    private float priceOffer;
+    private DateTime orderDueDate;
+    bool IsNegoComplete;
+    bool HasNewtasks;
+    private List<TaskModel>? orderTasks = new List<TaskModel>();
+    private Dictionary<DateTime, string?> ReceivedOffers = new Dictionary<DateTime, string?>();
+    private List<string> Errors = new List<string>();
+    bool IsNewNotification;
+    int newTasks;
+    Dictionary<int, PriceModel>? TaskPrices = new Dictionary<int, PriceModel>();
+
+    [Parameter]
+    public List<TaskModel>? OrderTasks
+    {
+        get { return orderTasks; } set { orderTasks = value; }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (orderTasks.Count > 0)
+        {
+            foreach(TaskModel task in orderTasks)
+            {
+                TaskPrices.Add(task.task_id, new PriceModel());//Cheating
+            }
+        }
+
+        hubConnection = new HubConnectionBuilder()
+        .WithUrl(NavManager.ToAbsoluteUri("/negoHub"))
+        .WithAutomaticReconnect()
+        .Build();
+        //, options =>
+        //    {
+        //       //provide the token to SignalR
+        //        options.AccessTokenProvider = () => Task.FromResult(authUser.Access_Token ?? "");
+        //        //Since auto reconnect is on then the token need be reset also else the connection will be lost
+        //    }
+
+
+        //Client Side
+        //Reciever of the message 
+        hubConnection.On<string, DateTime, float>(("ReceiveNegoUpdate"), (user, orderDueDate, total) =>
+        {
+            var formattedMessage = $" Your client {user} submits this for a due date:{DateOnly.FromDateTime(DateTime.Now)}";
+            priceOffer = total;
+            this.orderDueDate = orderDueDate;
+            //if (taskPrices.Count > orderTasks.Count)
+            //{
+            //    HasNewtasks = true;
+            //    newTasks = taskPrices.Count - orderTasks.Count;
+            //}
+            IsNewNotification = true;
+            ReceivedOffers.Add(DateTime.Now,formattedMessage);
+            InvokeAsync(StateHasChanged);
+        });
+
+        try
+        {
+            await hubConnection.StartAsync();
+            await InvokeAsync(StateHasChanged);
+        }
+        catch (Exception ex)
+        {
+
+            Errors.Add(ex.Message);
+        }
+
+    }
+
+
+    //Add the price of each task to the total 
+    private void AddTotal()
+    {
+        float total = 0;
+        foreach(var price in TaskPrices.ToList())
+        {
+            total += price.Value.negotiated_price; 
+        }
+        priceOffer = total;
+    }
+
+    //Send Message to Hub
+    private async Task Send()
+    {
+        AddTotal();
+        try
+        {
+            if (hubConnection != null)
+            {
+                negoMessages.Add(DateTime.Now, $"{priceOffer.ToString()} at {TimeOnly.FromDateTime(DateTime.Now)}");
+
+                await hubConnection.SendAsync("SendOffer", "Blazor Client", TaskPrices, orderDueDate);
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+        catch (Exception ex)
+        {
+
+            Errors.Add(ex.Message);
+        }
+
+    }
+
+    public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
+
+    public async ValueTask DisposeAsync()
+    {
+        try
+        {
+            if (hubConnection != null)
+            {
+                await hubConnection.DisposeAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+
+            Errors.Add(ex.Message);
+        }
+       
+    }
+}

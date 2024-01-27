@@ -1,32 +1,26 @@
-﻿using HandymanUILibrary.Models;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading.Tasks;
-
-namespace HandymanUILibrary.API
+﻿namespace HandymanUILibrary.API.User
 {
     public class ProfileEndPoint/*: IProfileEndPoint*/
     {
 
         private IAPIHelper _aPIHelper;
-        
-       // private List<ProviderAddress> addresses;
-       
-        
+
+        // private List<ProviderAddress> addresses;
+
+
         public ProfileEndPoint(IAPIHelper aPIHelper)
         {
             _aPIHelper = aPIHelper;
-            
+
         }
 
         //a Profile Post endpoint
         //public async Task<ProfileModel> PostProfile(ProfileModel profile)
         //{
-          
+
 
         //    HttpResponseMessage responseMessage = await _aPIHelper.ApiClient.PostAsJsonAsync("/api/PostProfile", profile);
-            
+
         //        if (responseMessage.IsSuccessStatusCode)
         //        {
         //            var result = await responseMessage.Content.ReadAsAsync<ProfileModel>();
@@ -38,7 +32,7 @@ namespace HandymanUILibrary.API
         //        }
         //}
 
-      
+
         //Getting a profile endpoint
         //public async Task<ProfileModel> GetProfile(string id)
         //{
@@ -59,7 +53,7 @@ namespace HandymanUILibrary.API
         //    }
 
         //}
-        
+
         //Only invoked by the request 
         //Get the profile by id
         //public async Task<ProfileModel> GetProfileById(int Id)
@@ -90,7 +84,7 @@ namespace HandymanUILibrary.API
         //    if (responseMessage.IsSuccessStatusCode)
         //    {
         //        var result = await responseMessage.Content.ReadAsAsync<ProfileModel>();
-              
+
         //    }
         //    else
         //    {

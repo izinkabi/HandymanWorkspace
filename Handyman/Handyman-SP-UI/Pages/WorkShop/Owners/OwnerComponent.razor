@@ -1,0 +1,95 @@
+﻿@page "/owner"
+@page "/manager"
+@attribute [Authorize]
+
+@inject AuthenticationStateProvider authProvider
+@inject IJSRuntime JS
+
+        <div class="container">
+            <div class="cards-top">
+                <div class="card">
+                    <h2>Revenues</h2>
+                    <div class="card-icon"><i class="fa fa-chart-simple fa-2x"></i></div>
+                    <div class="card-content">
+                        <div class="card-info"><label for="Active">Active</label><br><span>8</span></div>
+                        <div class="card-info"><label for="Pending">Pending</label><br><span>19</span></div>
+                        <div class="card-info"><label for="Closed">Closed</label><br><span>90</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h2>Orders</h2>
+                    <div class="card-icon"><i class="fa fa-bar-chart fa-2x"></i></div>
+                    <div class="card-content">
+                        <div class="card-info"><label for="Active">Active</label><br><span>8</span></div>
+                        <div class="card-info"><label for="Pending">Pending</label><br><span>19</span></div>
+                        <div class="card-info"><label for="Closed">Closed</label><br><span>90</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h2>stuff</h2>
+                    <div class="card-icon"><i class="fa fa-building fa-2x"></i></div>
+                    <div class="card-content">
+                        <div class="card-info"><label for="Active">Active</label><br><span>8</span></div>
+                        <div class="card-info"><label for="Pending">Pending</label><br><span>19</span></div>
+                        <div class="card-info"><label for="Closed">Closed</label><br><span>90</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-side">
+                <div class="card-weather">
+                    <p class="time-text" id="time"></p>
+                    <p class="day-text" id="date"></p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" stroke-width="0" fill="currentColor" stroke="currentColor" class="moon"><path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"></path><path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"></path></svg>
+                </div>
+                <!--Add a small table to display events with buttons to edit-->
+            </div>
+            
+            <div class="card-bottom">
+              
+
+                @if(Errors!=null){
+                    @foreach(var error in Errors)
+                    {
+                        <p>Error : error</p>
+                    }
+                    <hr/>
+                }
+                <canvas id="myChart" width="400" height="auto" aria-label="Hello ARIA World" role="img">
+                </canvas>
+            </div>
+        </div>
+
+
+
+@code {
+
+    private IList<string?>? Errors;
+    /// <summary>
+    /// JS Object Reference 
+    /// </summary>
+    private IJSObjectReference? moduleReference;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+            if(Errors!=null) Errors.Clear();   
+
+            try{
+                //importing site.js as a module and invoking the referenced methods 
+                moduleReference  = await JS.InvokeAsync<IJSObjectReference>("import","/js/site.js");
+                if (moduleReference != null) await moduleReference.InvokeVoidAsync("displayGraph");
+
+            }catch(Exception ex)
+            {
+                Errors?.Add($"Something happened, while importing the js module, Error: " + ex.Message);
+            }
+        }
+
+    }
+
+
+
+    
+}
+ 

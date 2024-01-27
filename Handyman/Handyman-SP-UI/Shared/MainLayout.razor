@@ -1,0 +1,25 @@
+﻿@inherits LayoutComponentBase
+
+
+@inject NavigationManager Navigation
+@inject IMemberHelper _providerHelper
+@inject IConfiguration _config
+
+
+    <main>
+    <!--######Top Navigation Section Start #######-->
+    <NavMenu />
+    <!-- * ####Side Navigation Bar Start####-->
+    <SideNav />
+    <!-- * Grid Container to display Cards on the Dashboard ####-->
+    <section>
+    @Body
+    </section>
+</main>
+     
+
+@code{
+   
+    
+}
+ 
