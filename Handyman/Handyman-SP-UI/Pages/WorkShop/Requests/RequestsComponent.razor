@@ -3,8 +3,8 @@
 @using Microsoft.JSInterop
 
 @inject NavigationManager NavManager
-@inject IRequestHelper _requestHelper
-@inject IProviderHelper _providerHelper
+@inject IOrderHelper _orderHelper
+@inject IMemberHelper _memberHelper
 @inject IJSRuntime JSRuntime
 
 
@@ -194,7 +194,7 @@
 @code {
 
 
-    List<RequestModel>? requests = new List<RequestModel>();
+    List<OrderModel>? orders = new List<OrderModel>();
     int NumberOfOrders;
     bool isOrdersDisplayed;
     bool isRequestsDisplayed;
@@ -289,16 +289,16 @@
     {
         try
         {
-            requests = await _requestHelper.GetCurrentMonthRequests();
-            if (requests is null)
+            orders = await _orderHelper.GetCurrentMonthOrders();
+            if (orders is null)
             {
                 return;
             }
-            if (requests != null && requests.Count > 0)
+            if (orders != null && orders.Count > 0)
             {
-                foreach (var rs in requests)
+                foreach (var ord in orders)
                 {
-                    rs.req_status = _requestHelper.CheckStatus(rs);
+                    ord.order_status = _orderHelper.CheckStatus(ord);
                 }
             }
         }
@@ -314,12 +314,12 @@
     {
         try
         {
-            requests = await _requestHelper.GetCurrentWeekRequests();
-            if (requests != null && requests.Count > 0)
+            orders = await _orderHelper.GetCurrentWeekOrders();
+            if (orders != null && orders.Count > 0)
             {
-                foreach (var rs in requests)
+                foreach (var ord in orders)
                 {
-                    rs.req_status = _requestHelper.CheckStatus(rs);
+                    ord.order_status = _orderHelper.CheckStatus(ord);
                 }
             }
 
