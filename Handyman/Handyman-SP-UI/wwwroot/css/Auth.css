@@ -89,7 +89,7 @@ form {
         outline: none;
         width: 100%;
         font-size: 18PX;
-        font-weight: 600;
+        /*font-weight: 600;*/
         color: var(--bg-GRANNY-SMITH);
     }
 

@@ -6,6 +6,7 @@
 @inject IMemberHelper _memberHelper
 @inject NavigationManager NavManager 
   
+ <div class="container">
     <section class="py-1 text-center container">
         <div class="p-2 bg-light rounded-3">
             <div class="container-fluid py-1">
@@ -14,27 +15,24 @@
             </div>
         </div>
     </section>
-    <div class="album py-1 bg-light">
-        <div class="container">
-        @if (services != null)
-        {
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 m-auto">
-                @foreach(var service in @services)
-                {                   
-                    <MyService serviceModel="@service">
+    @if (services != null)
+    {
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 m-auto">
+            @foreach(var service in @services)
+            {                   
+                <MyService serviceModel="@service">
 
-                    </MyService>
-                }                
-            </div>
-        }
-        else
-        {
-            <p class="text-danger">
-                @ErrorMsg
-            </p>
-        }
-    </div>
-    </div>
+                </MyService>
+            }                
+        </div>
+    }
+    else
+    {
+        <p class="text-danger">
+            @ErrorMsg
+        </p>
+    }
+</div>
 
 
 @code {

@@ -1,4 +1,7 @@
-﻿.loader {
+﻿.loader-content{
+    display:flex;
+}
+.loader {
     --path: #2f3545;
     --dot: #5628ee;
     --duration: 3s;
