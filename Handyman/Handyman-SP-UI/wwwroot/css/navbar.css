@@ -135,18 +135,18 @@ nav {
             transition: all ease-in 0.1s;
         }
 /*#### Profile Drowdown*/
-.profile {
+.profile-logo {
     width: 45px !important;
     height: 45px !important;
     display: flex;
-    align-items: stretch;
+    align-items: flex-start;
     justify-content: space-around;
     align-content: space-around;
     flex-wrap: nowrap;
     flex-direction: row;
 }
 
-    .profile img {
+    .profile-logo img {
         width: 45px;
         height: 45px;
     }
@@ -185,7 +185,7 @@ button.dropbtn:hover {
             background-color: #f1f1f1
         }
 
-.profile:hover .dropdown-content {
+.profile-logo:hover .dropdown-content {
     display: block;
 }
 

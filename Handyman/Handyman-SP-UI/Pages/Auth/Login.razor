@@ -5,16 +5,17 @@
 @inject IJSRuntime JS 
 @inject IAuthEndpoint authEndPoint
 @inject NavigationManager NavManager
-@inject AuthenticationStateProvider _authStateProvider
+@inject AuthenticationStateProvider authStateProvider
+
 
 @layout AuthenticationLayout
 
 <meta name="google-signin-client_id" content="868484711602-rvsfj11o5t8jn7b3lgg8f93ajjvrfseo.apps.googleusercontent.com">
 
-
+ <div class="authContainer">
 @if (!IsSubmitted && !IsLoggedIn && !IsRegistered)
 {
-    <div class="authContainer">
+   
         <div class="signin-signup">
 
             @*-------Sign in form-------*@
@@ -126,7 +127,7 @@
                 <img src="/img/bg-auth/signup.svg" alt="" class="image">
             </div>
         </div>
-    </div>
+   
 }
 else if (IsSubmitted && IsRegistered)
 {
@@ -140,7 +141,7 @@ else
 {
     <Loader/>
 }
-
+ </div>
 
 
 @code {
@@ -200,7 +201,7 @@ else
             try
             {
                 moduleReference = await JS.InvokeAsync<IJSObjectReference>("import", "/js/Auth.js");
-                googleModuleRef = await JS.InvokeAsync<IJSObjectReference>("import", "/js/googleAuth.js");
+            //    googleModuleRef = await JS.InvokeAsync<IJSObjectReference>("import", "/js/googleAuth.js");
             }
             catch (Exception ex)
             {
@@ -266,7 +267,7 @@ else
                 //get the auth state
                 if (authedUser != null)
                 {
-                    var state = await _authStateProvider?.GetAuthenticationStateAsync();
+                    var state = await authStateProvider.GetAuthenticationStateAsync();
                     await InvokeAsync(StateHasChanged);
                     if ( state!=null && state.User.Identity.IsAuthenticated)
                     {

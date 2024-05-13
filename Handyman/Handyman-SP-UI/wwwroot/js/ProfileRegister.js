@@ -1,6 +1,6 @@
 ﻿
 // profile container
-const container = document.querySelector(".profileContainer");
+const container = document.querySelector(".profile-container");
 
 // swap create-profile panel with add-address panel -> (Forward Direction)
 export function swapToCreateProfile() {

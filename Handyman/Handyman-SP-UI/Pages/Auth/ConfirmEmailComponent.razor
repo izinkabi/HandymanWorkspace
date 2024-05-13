@@ -21,7 +21,7 @@
     private bool IsConfirmed;
     [Parameter]
     [SupplyParameterFromQuery(Name ="userId")]
-    public string UserId { get { return userId; } set { userId = value; } }
+    public string? UserId { get { return userId; } set { userId = value; } }
 
     [Parameter]
     [SupplyParameterFromQuery(Name ="code")]

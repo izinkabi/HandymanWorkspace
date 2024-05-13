@@ -2,7 +2,6 @@
 @page "/manager"
 @attribute [Authorize]
 
-@inject AuthenticationStateProvider authProvider
 @inject IJSRuntime JS
 
         <div class="container">
@@ -62,6 +61,7 @@
 
 
 @code {
+
 
     private IList<string?>? Errors;
     /// <summary>

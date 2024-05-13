@@ -7,13 +7,12 @@
 }
 
 * {
-    margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
 
-.profileContainer {
+.profile-container {
     position: relative;
     width: 70vw;
     height: 80vh;
@@ -21,9 +20,10 @@
     border-radius: 15px;
     box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.3), 0 6px 20px 0 rgba(0, 0, 0, 0.3);
     overflow: hidden;
+    margin: auto;
 }
 
-    .profileContainer::before {
+    .profile-container::before {
         content: "";
         position: absolute;
         top: 0;
@@ -40,13 +40,14 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
     display: flex;
-    align-items: center;
-    justify-content: space-around;
+    align-items: flex-start;
+    justify-content: space-between; 
+    align-content: space-around;
+    flex-direction: row;
     z-index: 5;
 }
+
 
 form {
     display: flex;
@@ -68,6 +69,7 @@ form {
         opacity: 0;
         transition: 0.5s ease-in-out;
         transition-delay: 1s;
+        margin-left: 300px;
     }
 
 .title {
@@ -211,41 +213,41 @@ a {
     transform: translateX(0);
 }
 
-/*Animation for the Sign in and Sign up*/
-.profileContainer.create-profile-mode::before {
+/*Animation for the Profile and Address Creation*/
+.profile-container.create-profile-mode::before {
     transform: translateX(0);
 }
 
-.profileContainer.create-profile-mode .right-panel .image,
-.profileContainer.create-profile-mode .right-panel .content {
+.profile-container.create-profile-mode .right-panel .image,
+.profile-container.create-profile-mode .right-panel .content {
     transform: translateX(200%);
 }
 
-.profileContainer.create-profile-mode .left-panel .image,
-.profileContainer.create-profile-mode .left-panel .content {
+.profile-container.create-profile-mode .left-panel .image,
+.profile-container.create-profile-mode .left-panel .content {
     transform: translateX(0);
 }
 
-.profileContainer.create-profile-mode .profile-form {
+.profile-container.create-profile-mode .profile-form {
     opacity: 0;
 }
 
-.profileContainer.create-profile-mode .add-address-form {
+.profile-container.create-profile-mode .add-address-form {
     opacity: 1;
 }
 
-.profileContainer.create-profile-mode.create-profile-mode .right-panel {
+.profile-container.create-profile-mode.create-profile-mode .right-panel {
     pointer-events: none;
 }
 
-.profileContainer.create-profile-mode .left-panel {
+.profile-container.create-profile-mode .left-panel {
     pointer-events: all;
 }
 
 
 /*Media Queries*/
 @media (max-width:635px) {
-    .profileContainer::before {
+    .profile-container::before {
         display: none;
     }
 

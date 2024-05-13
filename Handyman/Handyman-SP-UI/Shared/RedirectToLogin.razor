@@ -12,8 +12,15 @@
         {
             returnUrl = "";
         }
-        
-        NavManager.NavigateTo($"sign-in?returnUrl={returnUrl}",
-           forceLoad: true);
+        try
+        {
+            NavManager.NavigateTo($"sign-in?returnUrl={returnUrl}", true, true);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error: " + ex.Message);
+        }
+
+
     }
 }

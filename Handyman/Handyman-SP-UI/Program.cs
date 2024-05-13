@@ -4,7 +4,6 @@ using HandymanProviderLibrary.Api.EndPoints.Implementation;
 using HandymanProviderLibrary.Api.EndPoints.Interface;
 using HandymanProviderLibrary.Models;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.ResponseCompression;
 
 
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions
@@ -33,23 +32,10 @@ builder.Services.AddScoped<IMemberHelper, MemberHelper>();
 
 builder.Services.AddScoped<AuthenticationStateProvider, CustomeAuthStateProvider>();
 
-builder.Services.AddResponseCompression(opt =>
-{
-    opt.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
-      new[] { "application/octet-stream" });
-});
 builder.Services.AddAuthorizationCore();
 
+builder.Services.AddAuthentication();
 
-var services = builder.Services;
-var configuration = builder.Configuration;
-
-services.AddAuthentication()//.AddGoogle(googleOptions =>
-//{
-//    googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
-//    googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
-//})
-;
 
 
 
