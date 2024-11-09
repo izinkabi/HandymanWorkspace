@@ -20,7 +20,7 @@ namespace Handyman_DataLibrary.Internal.DataAccess
 
         public List<T> LoadData<T, U>(string storedProcedure, U parameters, string connectionStringName)
         {
-            string connectionString = GetConnectionString(connectionStringName);
+            string connectionString = "Data Source=Dev;Initial Catalog=Handyman_DB;Integrated Security=True;TrustServerCertificate=True";  //GetConnectionString(connectionStringName);
 
             using IDbConnection connection = new SqlConnection(connectionString);
             List<T> rows = connection.Query<T>(storedProcedure, parameters, commandType: CommandType.StoredProcedure).ToList();

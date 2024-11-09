@@ -10,8 +10,10 @@
       "connectionId": "ConnectionStrings:Handyman_SP_UIContextConnection"
     },
     "appInsights1": {
+      "secretStore": null,
+      "resourceId": null,
       "type": "appInsights.sdk",
-      "dynamicId": null
+      "connectionId": null
     }
   }
 }

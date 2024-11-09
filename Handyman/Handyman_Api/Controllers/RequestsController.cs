@@ -28,7 +28,7 @@ public class RequestsController : ControllerBase
         {
 
             var user = _signInManager.Context.User;
-            var id = "162cdb1e-d4e2-44d4-9589-aa3c8b647f30";//user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+            var id = /*"1e8acb5b-8647-405a-b671-23adc8c922ff";//*/user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
             if (id != null)
                 Requests = _requestData.GetRequests(id);
             return Requests;

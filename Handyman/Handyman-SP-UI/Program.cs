@@ -50,6 +50,7 @@ services.AddAuthentication()//.AddGoogle(googleOptions =>
 //    googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
 //})
 ;
+builder.Services.AddApplicationInsightsTelemetry();
 
 
 

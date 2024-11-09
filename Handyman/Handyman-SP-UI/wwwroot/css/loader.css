@@ -1,4 +1,15 @@
-﻿.loader {
+﻿.load-contet{
+    width: 100vw;
+    height: 90vh;
+    display: flex;
+
+}
+.load-content-loads {
+    width: 100vw;
+    height: 90vh;
+    display: flex;
+}
+.loader {
     --path: #2f3545;
     --dot: #5628ee;
     --duration: 3s;

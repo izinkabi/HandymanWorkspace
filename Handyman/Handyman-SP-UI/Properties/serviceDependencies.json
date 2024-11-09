@@ -9,7 +9,7 @@
     },
     "appInsights1": {
       "type": "appInsights",
-      "dynamicId": null
+      "connectionId": null
     }
   }
 }

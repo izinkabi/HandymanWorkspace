@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.WebUtilities;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
+using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
+
 
 namespace Handyman_Api.Controllers;
 [Route("api/Auth")]
@@ -56,7 +58,7 @@ public class AuthController : ControllerBase
     {
         try
         {
-            Microsoft.AspNetCore.Identity.SignInResult result = new Microsoft.AspNetCore.Identity.SignInResult();
+            SignInResult result = new SignInResult();
             //Authenticate the user using Identity - Signin Manager
             //This to log in the user
             if (loginModel == null)

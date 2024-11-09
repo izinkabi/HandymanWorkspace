@@ -1,0 +1,12 @@
+﻿.load-contet
+{
+    width: 100vw;
+    height: 80vh;
+}
+.load-content-loads{
+    width: 100%;
+    height:100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

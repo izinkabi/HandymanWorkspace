@@ -164,7 +164,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Script\DevNathi_Handyman_DB.publish.publish.xml" />
-    <None Include="Handyman_DB.publish.xml" />
     <None Include="Publish Script\Zee_Handyman_DB.publish.xml" />
   </ItemGroup>
   <ItemGroup>

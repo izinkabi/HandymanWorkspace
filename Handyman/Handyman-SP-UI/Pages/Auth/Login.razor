@@ -22,38 +22,43 @@
                 <DataAnnotationsValidator />
                 <ValidationSummary />
                 <h2 class="title">Sign In</h2>
-                <div class="input-field">
-                    <i class="fas fa-user"></i>
-                    <input type="email" @bind-value="LoginCredentialsInput.Username" placeholder="Username">
-                </div>
-                <div class="input-field">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" @bind-value="LoginCredentialsInput.Password" placeholder="Password" >
-                </div>
-                @*-----Form Errors-----*@
-                @if (Errors.Count > 0)
-                {
-                    @foreach (string error in Errors)
+               <div class="sign-in-form-inputs">
+                    <div class="input-field">
+                        <i class="fas fa-user"></i>
+                        <input type="email" @bind-value="LoginCredentialsInput.Username" placeholder="Username">
+                    </div>
+                    <div class="input-field">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" @bind-value="LoginCredentialsInput.Password" placeholder="Password">
+                    </div>
+                    @*-----Form Errors-----*@
+                    @if (Errors.Count > 0)
                     {
-                        <span class="text-bg-danger">@error</span>
+                        @foreach (string error in Errors)
+                        {
+                            <span class="text-bg-danger">@error</span>
+                        }
                     }
-                }
-                @*-----End Form Errors-----*@
-                <button type="submit" class="login-btn">Login</button>
-                <p class="social-text">Or Sign In with socail platforms</p>
-                <div class="social-media">
-                    <a href="" class="social-icon">
-                        <i class="fab fa-facebook"></i>
-                    </a>
-                    <a href="" class="social-icon">
-                        <i class="fab fa-facebook"></i>
-                    </a>
-                    <a href="" class="social-icon">
-                        <i class="fab fa-facebook"></i>
-                    </a>
-                    <a href="" class="social-icon">
-                        <i class="fab fa-facebook"></i>
-                    </a>
+                    @*-----End Form Errors-----*@
+                    <button type="submit" class="login-btn">Login</button>
+               </div>
+                <div class="sign-in-form-bottom">
+
+                    <p class="social-text">Or Sign In with socail platforms</p>
+                    <div class="social-media">
+                        <a href="" class="social-icon">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="" class="social-icon">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="" class="social-icon">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="" class="social-icon">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                    </div>
                 </div>
             </EditForm>
             @*-----End Sign in form-----*@
